@@ -1,103 +1,145 @@
-<?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Créer un compte - Gardien des Animaux</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <img src="images/logo.png" alt="Logo Gardien des Animaux">
+            <h1 class="header-slogan">Un foyer chaleureux même en votre absence</h1>
+        <div class="auth-buttons">
+            <button class="btn" onclick="window.location.href='index.php'">Accueil</button>
+        </div>
+        </div>
+    </header>
+    <div class="form-container">
+        <h2>Création de compte :</h2>
 
-session_start(); 
+        <form id="registerForm" method="POST" novalidate>
+            <div class="form-group">
+                <label for="prenom">Prénom :</label>
+                <input type="text" id="prenom" name="prenom" required>
+            </div>
 
-include 'config.php';
+            <div class="form-group">
+                <label for="nom">Nom :</label>
+                <input type="text" id="nom" name="nom" required>
+            </div>
 
-$response = array(); 
+            <div class="form-group">
+                <label for="username">Nom d'utilisateur :</label>
+                <input type="text" id="username" name="username" required>
+            </div>
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if (isset($_POST['username'], $_POST['password'])) {
-        $username = $_POST['username'];
-        $password = $_POST['password'];
+            <div class="form-group">
+                <label for="email">Adresse mail :</label>
+                <input type="email" id="email" name="email" required>
+            </div>
 
-        $hashed_password = md5($password);
+            <div class="form-group">
+                <label for="telephone">Numéro de téléphone :</label>
+                <input type="tel" id="telephone" name="telephone" pattern="[0-9]{10}" required>
+            </div>
 
-        $sql = "SELECT id, nom_utilisateur, mot_de_passe, role FROM creation_compte WHERE nom_utilisateur = ?";
-        
-        if ($stmt = $conn->prepare($sql)) {
-            $stmt->bind_param("s", $username);
-            $stmt->execute();
-            $stmt->store_result();
-            
-            if ($stmt->num_rows > 0) {
-                $stmt->bind_result($user_id, $nom_utilisateur, $stored_password, $role);
-                $stmt->fetch();
+            <div class="form-group">
+                <label for="adresse">Adresse :</label>
+                <input type="text" id="adresse" name="adresse" required>
+            </div>
 
-                if ($hashed_password == $stored_password) {
-                    $_SESSION['user_id'] = $user_id;
-                    $_SESSION['nom_utilisateur'] = $nom_utilisateur;
-                    $_SESSION['role'] = $role;
-                    
-                    $response['status'] = 'success';
-                    $response['message'] = 'Connexion réussie.';
+            <div class="form-group">
+                <label for="ville">Ville :</label>
+                <input type="text" id="ville" name="ville" required>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Mot de passe :</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+
+            <div class="form-group">
+                <label for="confirm_password">Confirmation du mot de passe :</label>
+                <input type="password" id="confirm_password" name="confirm_password" required>
+                <small id="passwordError" style="color: red; display: none;">Les mots de passe ne correspondent pas.</small>
+            </div>
+
+            <div class="form-group">
+                <label>Rôle :</label>
+                <input type="radio" id="role" name="role" value="0" required>
+                <label for="gardien">Gardien</label>
+
+                <input type="radio" id="role" name="role" value="1" required>
+                <label for="proprietaire">Propriétaire</label>
+            </div>
+
+            <button type="submit" class="btn">Créer un compte</button>
+        </form>
+
+        <div id="message"></div> <!-- Zone d'affichage des messages -->
+    </div>
+
+    <script>
+        document.getElementById('registerForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Empêche le rechargement de la page
+
+            const formData = new FormData(this);
+
+            // Vérification des mots de passe
+            const password = formData.get('password');
+            const confirmPassword = formData.get('confirm_password');
+            const passwordError = document.getElementById('passwordError');
+
+            if (password !== confirmPassword) {
+                passwordError.style.display = 'inline'; // Affiche un message si les mots de passe ne correspondent pas
+                return;
+            } else {
+                passwordError.style.display = 'none';
+            }
+
+            // Envoi de la requête AJAX
+            fetch('register.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.text())
+            .then(data => {
+                if (data.trim() === "success") {
+                    window.location.href = "confirmation.php"; // Redirection vers la page de confirmation
                 } else {
-                    $response['status'] = 'error';
-                    $response['message'] = 'Mot de passe incorrect.';
+                    document.getElementById('message').innerHTML = data; // Affiche uniquement le message d'erreur
                 }
-            } else {
-                $response['status'] = 'error';
-                $response['message'] = "Nom d'utilisateur incorrect.";
-            }
+            })
+            .catch(error => console.error('Erreur:', error));
+        });
+    </script>
 
-            $stmt->close();
-        } else {
-            $response['status'] = 'error';
-            $response['message'] = "Erreur de connexion à la base de données.";
-        }
-    } elseif (isset($_POST['reset_email'])) {
-        $reset_email = $_POST['reset_email'];
-
-        // Vérifier si l'e-mail existe
-        $sql = "SELECT id FROM creation_compte WHERE mail = ?";
-        if ($stmt = $conn->prepare($sql)) {
-            $stmt->bind_param("s", $reset_email);
-            $stmt->execute();
-            $stmt->store_result();
-
-            if ($stmt->num_rows > 0) {
-                $stmt->bind_result($user_id);
-                $stmt->fetch();
-
-                // Générer un token unique
-                $token = bin2hex(random_bytes(50));
-                $expiry = date("Y-m-d H:i:s", strtotime("+1 hour"));
-
-                // Mettre à jour la base de données avec le token
-                $update_sql = "UPDATE creation_compte SET reset_token = ?, token_expiration = ? WHERE id = ?";
-                if ($update_stmt = $conn->prepare($update_sql)) {
-                    $update_stmt->bind_param("ssi", $token, $expiry, $user_id);
-                    $update_stmt->execute();
-
-                    // Envoyer l'e-mail
-                    $reset_link = "http://example.com/reset_password.php?token=" . $token;
-                    $subject = "Réinitialisation de votre mot de passe";
-                    $message = "Cliquez sur le lien suivant pour réinitialiser votre mot de passe : " . $reset_link;
-                    $headers = "From: noreply@example.com";
-
-                    if (mail($reset_email, $subject, $message, $headers)) {
-                        $response['status'] = 'success';
-                        $response['message'] = "Un e-mail de réinitialisation a été envoyé.";
-                    } else {
-                        $response['status'] = 'error';
-                        $response['message'] = "Échec de l'envoi de l'e-mail.";
-                    }
-                }
-            } else {
-                $response['status'] = 'error';
-                $response['message'] = "Adresse e-mail introuvable.";
-            }
-
-            $stmt->close();
-        }
-    }
-}
-
-header('Content-Type: application/json');
-echo json_encode($response);
-
-$conn->close();
-?>
+    <footer>
+        <div class="footer-links">
+            <div>
+                <h4>En savoir plus :</h4>
+                <ul>
+                    <li>Sécurité</li>
+                    <li>Centre d'aide</li>
+                </ul>
+            </div>
+            <div>
+                <h4>A propos de nous :</h4>
+                <ul>
+                    <li>Politique de confidentialité</li>
+                    <li>Nous contacter</li>
+                </ul>
+            </div>
+            <div>
+                <h4>Conditions Générales :</h4>
+                <ul>
+                    <li>Conditions de Service</li>
+                    <li>Télécharger l'app</li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
