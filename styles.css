@@ -1,0 +1,809 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+}
+
+header {
+    background-color: #ded3c0; /* Couleur plus foncée pour plus de contraste */
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); /* Ombre pour donner de la profondeur */
+}
+
+header h1 {
+    color: #f5a623; /* Orange pour faire ressortir le texte */
+    font-size: 2em;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); /* Ombre légère sur le texte */
+}
+
+header img {
+    height: 150px; /* Augmentation significative de la hauteur */
+    max-width: 300px; /* Largeur maximale élargie */
+    margin: 0 auto;
+    display: block;
+    background: linear-gradient(135deg, #ff7f00, #ffd700); /* Gradient lumineux derrière */
+    padding: 15px; /* Espacement autour du logo */
+    border-radius: 50%; /* Forme circulaire pour attirer l'attention */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3); /* Ombre plus importante */
+    transition: transform 0.4s ease-in-out, box-shadow 0.4s ease-in-out; /* Effets de transition */
+}
+
+header img:hover {
+    transform: scale(1.1) rotate(5deg); /* Léger agrandissement et rotation */
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4); /* Ombre plus marquée au survol */
+}
+
+.auth-buttons {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    display: flex;
+}
+
+.auth-buttons .btn {
+    background-color: orange;
+    border: none;
+    padding: 10px 15px;
+    color: white;
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+.hero {
+    position: relative;
+    text-align: center;
+}
+
+.hero img {
+    width: 100%;
+    height: auto;
+}
+
+.hero-text {
+    position: absolute;
+    bottom: 20px; 
+    left: 50%;
+    transform: translateX(-50%); 
+    color: white;
+    padding: 20px;
+}
+
+.btn-hero {
+    background-color: orange;
+    border: none;
+    padding: 20px 40px; 
+    font-size: 2em; 
+    color: white;
+    cursor: pointer;
+    border-radius: 10px; 
+}
+
+.gardiens {
+    text-align: center;
+    padding: 50px 0;
+    background-color: #f9f9f9;
+}
+
+.gardien-list {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+}
+
+.gardien {
+    text-align: center;
+}
+
+.gardien img {
+    height: 100px;
+    width: 100px;
+    border-radius: 50%;
+    background-color: #f5a623;
+}
+
+.avis-section {
+    padding: 50px;
+    background-color: white;
+    text-align: center;
+}
+
+.avis-list {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+	align-items: center;
+}
+
+.avis {
+    background-color: #f3e3cd;
+    border-radius: 20px;
+    padding: 30px;
+    border: 3px solid #f5a623;
+    display: flex;
+    justify-content: space-between;
+    width: 500px;
+    height: 100px;
+    align-items: center;
+    font-size: 1.2em;
+	gap: 20px;
+}
+
+.avis p {
+    margin-right: auto;
+}
+
+.avis span {
+    display: flex;
+    align-items: center;
+}
+
+.avis img {
+    height: 30px;
+    width: 30px;
+}
+
+.voir-plus {
+    background-color: #f5a623;
+    color: white;
+    padding: 15px 30px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.2em;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    margin-top: 30px; /* Ajoute un espace en haut pour descendre le bouton */
+}
+
+.voir-plus:hover {
+    background-color: #ff7f00;
+    transform: translateY(-5px);
+}
+
+
+
+footer {
+    background-color: #ded3c0;
+    padding: 20px;
+    color: white;
+}
+
+footer h4 {
+    margin-bottom: 10px;
+}
+
+footer ul {
+    list-style: none;
+}
+
+footer ul li {
+    margin-bottom: 5px;
+}
+
+.form-container {
+    width: 50%;
+    margin: 50px auto; /* Ajout d'un espace supérieur */
+    padding: 30px;
+    border: 2px solid #f5a623;
+    border-radius: 15px; /* Bords plus arrondis pour un look plus doux */
+    background-color: #fff; /* Couleur blanche pour un meilleur contraste */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); /* Ombre pour donner de la profondeur */
+    transition: transform 0.3s ease-in-out; /* Effet de zoom léger au survol */
+}
+
+.form-container:hover {
+    transform: scale(1.05); /* Zoom léger au survol */
+}
+
+.form-container h2 {
+    text-align: center;
+    color: #f5a623;
+    font-size: 2em; /* Texte plus grand et plus visible */
+    margin-bottom: 20px;
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.1); /* Ombre sur le texte pour le rendre plus dynamique */
+}
+
+.form-container p {
+    font-size: 1.2em;
+    color: #555;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+
+h2 {
+    text-align: center;
+    color: orange;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="password"],
+.form-group input[type="tel"] {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%;
+}
+
+.form-group input[type="radio"] {
+    margin-right: 10px;
+}
+
+.btn {
+    background-color: #f5a623;
+    color: white;
+    padding: 15px 30px; /* Plus grand pour un meilleur impact visuel */
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.2em;
+    transition: background-color 0.3s ease, transform 0.3s ease; /* Transition sur la couleur et la taille */
+}
+
+.btn:hover {
+    background-color: #ff7f00; /* Couleur plus foncée au survol */
+    transform: translateY(-5px); /* Légère élévation au survol */
+}
+
+.forgot-password {
+    display: block;
+    margin-bottom: 10px;
+    color: #f5a623;
+    text-decoration: none;
+}
+
+.forgot-password:hover {
+    text-decoration: underline;
+}
+
+footer {
+    background-color: #ded3c0; /* Couleur plus sombre pour le fond */
+    padding: 40px 0;
+    color: #f9f9f9;
+    display: flex;
+    justify-content: space-around;
+    text-align: left;
+}
+
+footer h4 {
+    color: #f5a623;
+    font-size: 1.2em;
+    margin-bottom: 15px;
+}
+
+footer ul li {
+    color: #fff;
+    font-size: 1em;
+}
+
+footer ul li:hover {
+    text-decoration: underline;
+    color: #f5a623; /* Changement de couleur au survol */
+}
+
+
+footer ul li:hover {
+    text-decoration: underline; 
+}
+
+.header-container {
+    background-color: #ded3c0; 
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-slogan {
+    color: white;
+    font-size: 1.5em;
+}
+
+.profile-container {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 15px;
+    max-width: 800px;
+    margin: 50px auto; /* Espacement pour centrer et espacer */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); /* Ombre pour donner de la profondeur */
+    border: 2px solid #ded3c0; /* Bordure beige pour garder le thème */
+    transition: transform 0.3s ease-in-out; /* Transition au survol */
+}
+
+.profile-container:hover {
+    transform: scale(1.05); /* Zoom léger au survol */
+}
+
+.profile-title {
+    font-size: 2.5em;
+    color: #f5a623; /* Orange vif pour le titre */
+    text-align: center;
+    margin-bottom: 40px;
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.1); /* Ombre légère */
+}
+
+
+.profile-item {
+    background-color: #fff;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Ombre légère */
+    transition: transform 0.3s ease; /* Transition de taille */
+}
+
+.profile-item:hover {
+    transform: translateY(-5px); /* Légère élévation au survol */
+}
+
+.profile-item label {
+    font-weight: bold;
+    color: #f5a623;
+    margin-bottom: 5px;
+    font-size: 1.1em;
+}
+
+.profile-item input[type="text"],
+.profile-item input[type="email"],
+.profile-item input[type="password"],
+.profile-item input[type="tel"] {
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1em;
+    width: 100%;
+    margin-top: 5px;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1); 
+    transition: border-color 0.3s ease;
+}
+
+.profile-item input:focus {
+    border-color: #f5a623;
+    outline: none;
+}
+
+input[type="email"], input[type="text"], input[type="password"], input[type="tel"] {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 1em;
+}
+
+@media (max-width: 768px) {
+    input[type="email"], input[type="text"], input[type="password"], input[type="tel"] {
+        width: 100%; 
+    }
+}
+
+
+.profile-details {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.profile-value {
+    padding: 10px;
+    background-color: #f0f0f0;
+    border-radius: 5px;
+    color: #333;
+    font-size: 1em;
+    margin-top: 5px;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.profile-picture {
+    display: flex;
+    justify-content: center; /* Centre l'image horizontalement */
+    align-items: flex-start; /* Aligne l'image en haut du conteneur */
+    margin-top: -20px; /* Ajuste la hauteur en utilisant une marge négative si nécessaire */
+}
+
+
+.profile-picture img {
+    max-width: 100px; 
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+}
+
+.btn {
+    background-color: #f5a623;
+    color: white;
+    padding: 15px 30px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.2em;
+    transition: background-color 0.3s ease, transform 0.3s ease; /* Effet de couleur et de taille */
+}
+
+.btn:hover {
+    background-color: #ff7f00; /* Couleur plus foncée au survol */
+    transform: translateY(-5px); /* Légère élévation au survol */
+}
+
+.btn-photo {
+    background-color: orange;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease; /* Effet de survol */
+}
+
+.btn-photo:hover {
+    background-color: #ff7f00;
+    transform: translateY(-3px);
+}
+
+
+/* Style pour le bouton de changement de photo de profil */
+.btn-photo {
+    background-color: orange;
+    color: white;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9em;
+    margin-top: 10px;
+    transition: background-color 0.3s ease;
+    display: block; /* S'assure que le bouton occupe une ligne entière */
+    margin-left: auto;
+    margin-right: auto; /* Centre le bouton horizontalement */
+}
+
+.btn-photo:hover {
+    background-color: #ff7f00; /* Couleur plus foncée au survol */
+}
+
+.btn-action {
+    display: block;
+    background-color: transparent;
+    border: 2px solid orange;
+    color: orange;
+    padding: 15px;
+    margin: 10px auto;
+    width: 60%;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 10px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.btn-action:hover {
+    background-color: orange;
+    color: white;
+}
+
+.btn-delete-account {
+    background-color: orange;
+    color: white;
+    padding: 10px 20px;
+    margin: 20px auto;
+    border: 2px solid #000;
+    border-radius: 15px;
+    cursor: pointer;
+}
+
+.btn-delete-account:hover {
+    background-color: #ff5733;
+}
+
+.footer-links {
+    background-color: #ded3c0;
+    padding: 20px;
+    color: white;
+    display: flex;
+    justify-content: space-around;
+    text-align: left;
+}
+
+.footer-links h4 {
+    margin-bottom: 10px;
+}
+
+.footer-links ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-links ul li {
+    margin-bottom: 5px;
+    cursor: pointer;
+}
+
+.footer-links ul li:hover {
+    text-decoration: underline;
+}
+
+.profile-item {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 15px; 
+}
+
+.profile-item input {
+    width: calc(50% - 10px); 
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+    font-size: 1em;
+}
+
+.header-slogan {
+    color: #f5a623; /* Même couleur que Connexion Réussie */
+    font-size: 2em; /* Même taille de police */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); /* Même ombre légère */
+    text-align: center; /* Centre le texte */
+    margin-top: 20px; /* Ajout d'espace en haut si nécessaire */
+}
+
+header h1 {
+    color: #f5a623; /* Couleur orange */
+    font-size: 2em;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); /* Ombre légère sur le texte */
+}
+
+.alert-message {
+    color: orange; /* Couleur du texte */
+    padding: 15px; /* Espace autour du texte */
+    border-radius: 8px; /* Arrondir les coins */
+    text-align: center; /* Centrer le texte */
+    margin-bottom: 20px; /* Espacement en bas */
+    font-size: 1.2em; /* Taille du texte */
+    font-weight: bold; /* Mettre le texte en gras */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Ajouter une ombre pour plus de profondeur */
+}
+
+.search-container {
+	background-color: white;
+	padding: 30px;
+	border-radius: 15px;
+	width: 50%;
+	margin: 50px auto;
+	box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+.search-container h2 {
+	text-align: center;
+	color: orange;
+}
+.form-group {
+	display: flex;
+	flex-direction: column;
+	margin-bottom: 20px;
+}
+.form-group label {
+	margin-bottom: 10px;
+	font-weight: bold;
+	color: #333;
+}
+.form-group select, .form-group input {
+	padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%;
+}
+.search-btn {
+    background-color: orange;
+    color: white;
+    padding: 15px;
+    border: none;
+    border-radius: 8px;
+    width: 100%;
+    font-size: 1.2em;
+    cursor: pointer;
+}
+.search-btn:hover {
+    background-color: #ff7f00;
+}
+.search-container {
+    background-color: white;
+    padding: 30px;
+    border-radius: 15px;
+    width: 50%;
+    margin: 50px auto;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.search-container h2 {
+    text-align: center;
+    color: orange;
+}
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+.form-group label {
+    margin-bottom: 10px;
+    font-weight: bold;
+    color: #333;
+}
+.form-group select, .form-group input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%;
+}
+.search-btn {
+    background-color: orange;
+    color: white;
+    padding: 15px;
+    border: none;
+    border-radius: 8px;
+    width: 100%;
+    font-size: 1.2em;
+    cursor: pointer;
+}
+.search-btn:hover {
+    background-color: #ff7f00;
+}
+
+.availability-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.btn-availability {
+    background-color: white;
+    color: orange;
+    border: 2px solid orange;
+    border-radius: 50%;
+    padding: 10px 20px;
+    font-size: 1.2em;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.btn-availability.selected {
+    background-color: orange;
+    color: white;
+}
+
+.btn-availability:hover {
+    background-color: orange;
+    color: white;
+}
+
+.search-container {
+    background-color: white;
+    padding: 30px;
+    border-radius: 15px;
+    width: 50%;
+    margin: 50px auto;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+ 
+.search-container h2 {
+    text-align: center;
+    color: orange;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+.form-group label {
+    margin-bottom: 10px;
+    font-weight: bold;
+    color: #333;
+}
+
+.form-group select, .form-group input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%;
+}
+
+.search-btn {
+    background-color: orange;
+    color: white;
+    padding: 15px;
+    border: none;
+    border-radius: 8px;
+    width: 100%;
+    font-size: 1.2em;
+    cursor: pointer;
+}
+
+.search-btn:hover {
+    background-color: #ff7f00;
+}
+
+.chatButton {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #f5a623;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.chatWindow {
+    display: none;
+    position: fixed;
+    bottom: 90px;
+    right: 20px;
+    width: 300px;
+    height: 400px;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.chatHeader {
+    background-color: #f5a623;
+    color: white;
+    padding: 10px;
+    text-align: center;
+}
+
+.chatMessages {
+    flex: 1;
+    padding: 10px;
+    overflow-y: auto;
+    background-color: #f9f9f9;
+}
+
+.chatInput {
+    display: flex;
+    border-top: 1px solid #ccc;
+}
+
+.chatInput input {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    outline: none;
+}
+
+.chatInput button {
+    padding: 10px;
+    background-color: #f5a623;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
