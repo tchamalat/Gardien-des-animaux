@@ -13,13 +13,18 @@
             <!-- Boutons de redirection -->
             <button class="btn" onclick="window.location.href='create_account.php'">Créer un compte</button>
             <button class="btn" onclick="window.location.href='login.html'">Je me connecte</button>
+            <button class="btn" onclick="window.location.href='index.php'">Accueil</button>
         </div>
     </header>
 
     <!-- Conteneur principal de la recherche -->
     <div class="search-container">
         <h2>Trouvez un gardien pour vos animaux</h2>
-        <form action="resultats_recherche.php" method="GET">
+        
+    <form action="resultats_recherche_index.php" method="GET">
+        <input type="hidden" name="latitude" value="<?php echo htmlspecialchars($_GET['latitude'] ?? ''); ?>">
+        <input type="hidden" name="longitude" value="<?php echo htmlspecialchars($_GET['longitude'] ?? ''); ?>">
+    
             <!-- Type de service -->
             <div class="form-group">
                 <label for="service">Type de service</label>
@@ -47,12 +52,6 @@
                     <option value="2">2</option>
                     <option value="3">3+</option>
                 </select>
-            </div>
-
-            <!-- Ville -->
-            <div class="form-group">
-                <label for="ville">Ville</label>
-                <input type="text" name="ville" id="ville" placeholder="Entrez une ville" required>
             </div>
 
             <!-- Rayon de recherche autour -->
