@@ -5,6 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recherche de Gardien</title>
     <link rel="stylesheet" href="styles.css">
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Vérifier si la géolocalisation est disponible
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    function (position) {
+                        // Remplir automatiquement les champs cachés avec latitude et longitude
+                        document.getElementById("latitude").value = position.coords.latitude;
+                        document.getElementById("longitude").value = position.coords.longitude;
+                    },
+                    function (error) {
+                        console.error("Erreur de géolocalisation : ", error);
+                        alert("Impossible de récupérer votre localisation. Veuillez vérifier vos paramètres.");
+                    }
+                );
+            } else {
+                alert("La géolocalisation n'est pas supportée par votre navigateur.");
+            }
+        });
+    </script>
 </head>
 <body>
     <header>
@@ -48,11 +68,15 @@
                 </select>
             </div>
 
-            <!-- Ville -->
+            <!-- Rayon de recherche autour -->
             <div class="form-group">
-                <label for="ville">Ville</label>
-                <input type="text" name="ville" id="ville" placeholder="Entrez une ville">
+                <label for="rayon">Rayon autour de vous (km)</label>
+                <input type="number" name="rayon" id="rayon" value="20" min="1">
             </div>
+
+            <!-- Champs cachés pour latitude et longitude -->
+            <input type="hidden" id="latitude" name="latitude">
+            <input type="hidden" id="longitude" name="longitude">
 
             <!-- Budget -->
             <div class="form-group">
