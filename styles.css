@@ -807,3 +807,69 @@ header h1 {
     border: none;
     cursor: pointer;
 }
+
+.results-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.result-card {
+    background-color: rgba(255, 255, 255, 0.8); /* Fond semi-transparent */
+    border-radius: 15px; /* Coins arrondis */
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); /* Ombre légère */
+    padding: 20px;
+    margin: 15px auto; /* Espacement entre les cartes */
+    width: 90%; /* Largeur adaptable */
+    max-width: 600px; /* Limite maximale pour les grands écrans */
+    transition: transform 0.3s, box-shadow 0.3s; /* Animation fluide au survol */
+}
+
+.result-card:hover {
+    transform: scale(1.02); /* Légère mise en avant au survol */
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.3); /* Ombre accentuée */
+}
+
+.result-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.gardien-name {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+.service-type.badge {
+    background-color: #f5a623; /* Couleur orange pour le badge */
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 12px;
+    font-size: 0.9em;
+}
+
+.result-details {
+    margin-top: 10px;
+}
+
+.result-details p {
+    margin: 5px 0;
+    font-size: 1em;
+    color: #333; /* Texte plus visible */
+}
+
+.icon {
+    margin-right: 8px;
+    color: #e67e22;
+    font-size: 1.2em; /* Icônes légèrement agrandies */
+}
+
+.no-results {
+    color: #e74c3c;
+    font-size: 1.2em;
+    text-align: center;
+    margin-top: 20px;
+    font-weight: bold;
+}

@@ -133,8 +133,26 @@ include 'config.php'; // Connexion à la base de données
     <!-- Hero Section -->
     <section class="hero">
         <img src="images/premierplan.png" alt="Un foyer chaleureux">
-        <div class="hero-text">
-            <button class="btn-hero" onclick="window.location.href='search_page_index.php'">Trouver un gardien</button>
+        
+    <div class="hero-text">
+    <form id="locationForm" action="search_page_index.php" method="GET" style="display: none;">
+        <input type="hidden" name="latitude" id="latitude">
+        <input type="hidden" name="longitude" id="longitude">
+    </form>
+    <script>
+        function redirectToSearch() {
+            const form = document.getElementById('locationForm');
+            if (userLatitude && userLongitude) {
+                document.getElementById('latitude').value = userLatitude;
+                document.getElementById('longitude').value = userLongitude;
+                form.submit();
+            } else {
+                alert("La localisation n'est pas disponible.");
+            }
+        }
+    </script>
+    
+            <button class="btn btn-hero" onclick="window.location.href='search_page_index.php'">Trouver un gardien</button>
         </div>
     </section>
 

@@ -4,8 +4,8 @@ session_start();
 
 
 // Récupération des paramètres de recherche
-$latitude_user = $_GET['latitude'] ?? 0;
-$longitude_user = $_GET['longitude'] ?? 0;
+$latitude_user = isset($_GET['latitude']) ? floatval($_GET['latitude']) : 0;
+$longitude_user = isset($_GET['longitude']) ? floatval($_GET['longitude']) : 0;
 $rayon = $_GET['rayon'] ?? 20;
 
 $service = $_GET['service'] ?? '';
@@ -57,7 +57,7 @@ $conn->close();
 <body>
     <header>
         <h1>Résultats de la recherche</h1>
-        <button class="btn" onclick="window.location.href='search_page.php'">Nouvelle recherche</button>
+        <button class="btn" onclick="window.location.href='search_page_index.php'">Nouvelle recherche</button>
     </header>
 
     <div class="resultats-container">
