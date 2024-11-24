@@ -6,14 +6,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nom = $_POST['nom'];
     $nom_utilisateur = $_POST['username'];
     $mail = $_POST['email'];
-    $numero_telephone = $_POST['telephone'];
+    $numero_telephone = preg_replace('/\D/', '', $_POST['telephone']); // Supprimer tous les caractères non numériques
     $adresse = $_POST['adresse'];
     $ville = $_POST['ville'];
     $mot_de_passe = md5($_POST['password']); // Hachage MD5 du mot de passe
     $role = $_POST['role'];
 
     // Vérification de l'unicité de l'email et du numéro de téléphone
-    $stmt = $conn->prepare("SELECT id FROM creation_compte WHERE mail = ? OR numero_telephone = ?");
+    $stmt = $conn->prepare("SELECT id FROM creation_compte WHERE mail = ? OR REPLACE(REPLACE(REPLACE(numero_telephone, ' ', ''), '-', ''), '.', '') = ?");
     $stmt->bind_param("ss", $mail, $numero_telephone);
     $stmt->execute();
     $stmt->store_result();
