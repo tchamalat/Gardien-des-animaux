@@ -2,9 +2,9 @@
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-require 'lib/src/PHPMailer.php';
-require 'lib/src/SMTP.php';
-require 'lib/src/Exception.php';
+require 'C:/xampp/htdocs/projet/lib/src/PHPMailer.php';
+require 'C:/xampp/htdocs/projet/lib/src/SMTP.php';
+require 'C:/xampp/htdocs/projet/lib/src/Exception.php';
 
 $message = ''; // Initialisation du message
 
@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $query = $conn->prepare('UPDATE creation_compte SET reset_token = ?, token_expiration = ? WHERE mail = ?');
         $query->bind_param('sss', $token, $expiry, $email);
         $query->execute();
-        $reset_link = "gardien-des-animaux.fr/reset_password.php?token=$token";
+        $reset_link = "localhost/projet/reset_password.php?token=$token";
 
         $mail = new PHPMailer(true);
         try {

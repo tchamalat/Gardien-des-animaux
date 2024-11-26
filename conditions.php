@@ -159,7 +159,7 @@ include 'config.php';
 
     <h2>5. Confidentialité</h2>
 <p>
-    Votre vie privée est une priorité pour <strong>Gardien-des-animaux.fr</strong>. Nous collectons et utilisons vos données personnelles conformément à notre <a href="#">Politique de Confidentialité</a>, qui décrit en détail :
+    Votre vie privée est une priorité pour <strong>Gardien-des-animaux.fr</strong>. Nous collectons et utilisons vos données personnelles conformément à notre <a href="confidentialite.php">Politique de Confidentialité</a>, qui décrit en détail :
 </p>
 <ul>
     <li>

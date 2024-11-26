@@ -75,15 +75,44 @@ header img:hover {
     padding: 20px;
 }
 
+.result-actions {
+    display: flex;
+    justify-content: center; /* Centre le bouton horizontalement */
+    margin-top: 20px; /* Ajoute un espacement au-dessus */
+}
+
 .btn-hero {
     background-color: orange;
-    border: none;
-    padding: 20px 40px; 
-    font-size: 2em; 
     color: white;
+    padding: 10px 20px;
+    font-size: 1.2em;
+    border: none;
+    border-radius: 8px;
     cursor: pointer;
-    border-radius: 10px; 
+    text-align: center;
+    text-decoration: none;
+    transition: background-color 0.3s ease, transform 0.3s ease;
 }
+
+.btn-hero:hover {
+    background-color: #ff7f00;
+    transform: scale(1.05); /* Légère mise en avant au survol */
+}
+
+
+.result-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Espace entre les éléments */
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    margin-bottom: 20px;
+    max-width: 600px;
+    margin: 0 auto 20px auto; /* Centre horizontalement et ajoute un espace en bas */
+}
+
 
 .gardiens {
     text-align: center;
