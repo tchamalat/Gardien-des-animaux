@@ -2,9 +2,9 @@
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-require 'C:/xampp/htdocs/projet/lib/src/PHPMailer.php';
-require 'C:/xampp/htdocs/projet/lib/src/SMTP.php';
-require 'C:/xampp/htdocs/projet/lib/src/Exception.php';
+require 'lib/src/PHPMailer.php';
+require 'lib/src/SMTP.php';
+require 'lib/src/Exception.php';
 
 $message = ''; // Initialisation du message
 
