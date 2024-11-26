@@ -91,30 +91,29 @@
     </div>
         <!-- Footer -->
         <footer>
-        <div class="footer-links">
-            <div>
-                <h4>En savoir plus :</h4>
-                <ul>
-                    <li>Sécurité</li>
-                    <li>Centre d'aide</li>
-                </ul>
-            </div>
-            <div>
-                <h4>A propos de nous :</h4>
-                <ul>
-                    <li>Politique de confidentialité</li>
-                    <li>Nous contacter</li>
-                </ul>
-            </div>
-            <div>
-                <h4>Conditions Générales :</h4>
-                <ul>
-                    <li>Conditions de Service</li>
-                    <li>Télécharger l'app</li>
-                </ul>
-            </div>
+    <div class="footer-links">
+        <div>
+            <h4>En savoir plus :</h4>
+            <ul>
+                <li><a href="securite.php">Sécurité</a></li>
+                <li><a href="aide.php">Centre d'aide</a></li>
+            </ul>
         </div>
-    </footer>
+        <div>
+            <h4>A propos de nous :</h4>
+            <ul>
+                <li><a href="confidentialite.php">Politique de confidentialité</a></li>
+                <li><a href="contact.php">Nous contacter</a></li>
+            </ul>
+        </div>
+        <div>
+            <h4>Conditions Générales :</h4>
+            <ul>
+                <li><a href="conditions.php">Conditions d'utilisateur et de Service</a></li>
+            </ul>
+        </div>
+    </div>
+</footer>
 
 </body>
 </html>

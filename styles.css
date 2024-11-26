@@ -266,7 +266,7 @@ h2 {
 .forgot-password {
     display: block;
     margin-bottom: 10px;
-    color: #f5a623;
+    color: #f5a623 !important;
     text-decoration: none;
 }
 
@@ -872,4 +872,15 @@ header h1 {
     text-align: center;
     margin-top: 20px;
     font-weight: bold;
+}
+
+footer ul li a {
+    color: #fff; /* Couleur par défaut du lien */
+    text-decoration: none; /* Supprime le soulignement */
+    font-weight: bold; /* Met en gras */
+}
+
+footer ul li a:hover {
+    color: #ff6600; /* Couleur au survol */
+    text-decoration: underline; /* Ajoute un soulignement au survol */
 }
