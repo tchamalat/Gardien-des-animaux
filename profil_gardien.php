@@ -205,7 +205,9 @@ $disponibilites_array = explode(',', $disponibilites);
 
         <button type="submit" class="btn">Enregistrer les modifications</button>
     </form>
-    
+    <form method="POST" action="delete_account.php">
+        <button class="btn-delete-account" type="submit" name="delete_account">Supprimer mon compte</button>
+    </form>
     <div class="availability-buttons">
         <h3>Disponibilités :</h3>
         <button class="btn-availability">Lu</button>
