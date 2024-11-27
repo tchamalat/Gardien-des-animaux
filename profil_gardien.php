@@ -20,6 +20,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nombre_animal = $_POST['nombre_animal'];
     $budget_min = $_POST['budget_min'];
     $budget_max = $_POST['budget_max'];
+
+// Ensure budget_min and budget_max are not negative
+if ($budget_min < 0 || $budget_max < 0) {
+    $_SESSION['message'] = 'Les budgets minimum et maximum ne peuvent pas être négatifs.';
+    header('Location: profil_gardien.php');
+    exit();
+}
+
+// Ensure budget_min is not greater than budget_max
+if ($budget_min > $budget_max) {
+    $_SESSION['message'] = 'Le budget minimum ne peut pas être supérieur au budget maximum.';
+    header('Location: profil_gardien.php');
+    exit();
+}
+
     $service = $_POST['service'];
     $disponibilites = $_POST['disponibilites']; 
 
@@ -205,9 +220,11 @@ $disponibilites_array = explode(',', $disponibilites);
 
         <button type="submit" class="btn">Enregistrer les modifications</button>
     </form>
+
     <form method="POST" action="delete_account.php">
         <button class="btn-delete-account" type="submit" name="delete_account">Supprimer mon compte</button>
     </form>
+    
     <div class="availability-buttons">
         <h3>Disponibilités :</h3>
         <button class="btn-availability">Lu</button>
