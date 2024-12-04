@@ -1,3 +1,31 @@
+<?php
+session_start();
+include 'config.php'; // Assure que la configuration pour la base de données est incluse
+
+// Vérifiez si l'utilisateur est connecté
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit();
+}
+
+$user_id = $_SESSION['user_id'];
+
+// Récupérez le rôle de l'utilisateur à partir de la base de données
+$sql = "SELECT role FROM creation_compte WHERE id = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $user_id);
+$stmt->execute();
+$result = $stmt->get_result();
+$user = $result->fetch_assoc();
+
+if ($user) {
+    $role = $user['role'];
+} else {
+    // Si l'utilisateur n'existe pas, redirigez vers la page de connexion
+    header("Location: login.php");
+    exit();
+}
+?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -17,33 +45,32 @@
     <div class="form-container">
         <h2>Bienvenue !</h2>
         <p>Votre connexion a été effectuée avec succès. Vous pouvez maintenant accéder à votre profil.</p>
-        <button class="btn" onclick="window.location.href='index_connect.php'">Aller à la page d'accueil</button>
+        <button class="btn" onclick="window.location.href='<?php echo $role == 0 ? 'index_connect_gardien.php' : 'index_connect.php'; ?>'">Aller à la page d'accueil</button>
     </div>
 
     <footer>
-        <div class="footer-links">
-            <div>
-                <h4>En savoir plus :</h4>
-                <ul>
-                    <li>Sécurité</li>
-                    <li>Centre d'aide</li>
-                </ul>
-            </div>
-            <div>
-                <h4>A propos de nous :</h4>
-                <ul>
-                    <li>Politique de confidentialité</li>
-                    <li>Nous contacter</li>
-                </ul>
-            </div>
-            <div>
-                <h4>Conditions Générales :</h4>
-                <ul>
-                    <li>Conditions de Service</li>
-                    <li>Télécharger l'app</li>
-                </ul>
-            </div>
+    <div class="footer-links">
+        <div>
+            <h4>En savoir plus :</h4>
+            <ul>
+                <li><a href="securite.php">Sécurité</a></li>
+                <li><a href="aide.php">Centre d'aide</a></li>
+            </ul>
         </div>
-    </footer>
+        <div>
+            <h4>A propos de nous :</h4>
+            <ul>
+                <li><a href="confidentialite.php">Politique de confidentialité</a></li>
+                <li><a href="contact.php">Nous contacter</a></li>
+            </ul>
+        </div>
+        <div>
+            <h4>Conditions Générales :</h4>
+            <ul>
+                <li><a href="conditions.php">Conditions d'utilisateur et de Service</a></li>
+            </ul>
+        </div>
+    </div>
+</footer>
 </body>
 </html>

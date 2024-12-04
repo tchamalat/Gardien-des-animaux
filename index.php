@@ -1,5 +1,5 @@
 <?php
-include 'config.php'; // Connexion à la base de données
+include 'config.php'; 
 ?>
 
 <!DOCTYPE html>
@@ -133,22 +133,42 @@ include 'config.php'; // Connexion à la base de données
     <!-- Hero Section -->
     <section class="hero">
         <img src="images/premierplan.png" alt="Un foyer chaleureux">
-        <div class="hero-text">
-            <button class="btn-hero" onclick="window.location.href='search_page_index.php'">Trouver un gardien</button>
+        
+    <div class="hero-text">
+    <form id="locationForm" action="search_page_index.php" method="GET" style="display: none;">
+        <input type="hidden" name="latitude" id="latitude">
+        <input type="hidden" name="longitude" id="longitude">
+    </form>
+    <script>
+        function redirectToSearch() {
+            const form = document.getElementById('locationForm');
+            if (userLatitude && userLongitude) {
+                document.getElementById('latitude').value = userLatitude;
+                document.getElementById('longitude').value = userLongitude;
+                form.submit();
+            } else {
+                alert("La localisation n'est pas disponible.");
+            }
+        }
+    </script>
+    
+            <button class="btn btn-hero" onclick="window.location.href='search_page_index.php'">Trouver un gardien</button>
         </div>
     </section>
 
     <!-- Section Gardien -->
     <section class="gardiens">
-        <h2>Nos gardiens près de chez vous :</h2>
+        <h2>Découvrez nos gardiens disponibles :</h2>
+        <p>Ils sont prêts à offrir amour, soins et attention à vos animaux.</p>
         <div id="gardiens-container">
-            <p>Chargement des gardiens...</p>
+            <p>Chargement des gardiens en cours... Merci de patienter.</p>
         </div>
     </section>
 
     <!-- Avis Section -->
     <section class="avis-section">
-        <h3>Avis</h3>
+        <h2>Ce que disent nos utilisateurs</h2>
+        <p>Vos retours sont précieux et aident à améliorer nos services.</p>
         <div class="avis-list">
             <?php
             $query = "SELECT avis.review, avis.rating, avis.date_created, creation_compte.nom_utilisateur 
@@ -159,42 +179,45 @@ include 'config.php'; // Connexion à la base de données
 
             while ($row = $result->fetch_assoc()) {
                 echo "<div class='avis'>";
-                echo "<p>" . htmlspecialchars($row['nom_utilisateur']) . " :</p>";
-                echo "<p>" . htmlspecialchars($row['review']) . "</p>";
+                echo "<p><strong>" . htmlspecialchars($row['nom_utilisateur']) . " :</strong></p>";
+                echo "<p>“" . htmlspecialchars($row['review']) . "”</p>";
                 echo "<span>" . htmlspecialchars($row['rating']) . " / 5 <img src='images/star.png' alt='étoile'></span>";
                 echo "</div>";
             }
             ?>
         </div>
-        <button class="voir-plus" onclick="window.location.href='leave_review.php'">Laisser un avis</button>
+        <button class="voir-plus" onclick="window.location.href='leave_review.php'">
+            Laisser un avis
+        </button>
     </section>
 
 
     <!-- Footer -->
     <footer>
-        <div class="footer-links">
-            <div>
-                <h4>En savoir plus :</h4>
-                <ul>
-                    <li>Sécurité</li>
-                    <li>Centre d'aide</li>
-                </ul>
-            </div>
-            <div>
-                <h4>A propos de nous :</h4>
-                <ul>
-                    <li>Politique de confidentialité</li>
-                    <li>Nous contacter</li>
-                </ul>
-            </div>
-            <div>
-                <h4>Conditions Générales :</h4>
-                <ul>
-                    <li>Conditions de Service</li>
-                </ul>
-            </div>
+    <div class="footer-links">
+        <div>
+            <h4>En savoir plus :</h4>
+            <ul>
+                <li><a href="securite.php">Sécurité</a></li>
+                <li><a href="aide.php">Centre d'aide</a></li>
+            </ul>
         </div>
-    </footer>
+        <div>
+            <h4>A propos de nous :</h4>
+            <ul>
+                <li><a href="confidentialite.php">Politique de confidentialité</a></li>
+                <li><a href="contact.php">Nous contacter</a></li>
+            </ul>
+        </div>
+        <div>
+            <h4>Conditions Générales :</h4>
+            <ul>
+                <li><a href="conditions.php">Conditions d'utilisateur et de Service</a></li>
+            </ul>
+        </div>
+    </div>
+</footer>
+
 
 </body>
 </html>

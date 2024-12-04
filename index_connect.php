@@ -1,18 +1,53 @@
-<?php
+<?php  
 include 'config.php'; // Connexion à la base de données
 session_start();
 
-// Vérification de connexion de l'utilisateur
+// Gestion des requêtes AJAX pour la discussion et les gardiens
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $input = json_decode(file_get_contents('php://input'), true);
-    if (isset($input['latitude']) && isset($input['longitude'])) {
+
+    // Récupérer les messages pour le chat
+    if (isset($input['action']) && $input['action'] === 'get_messages') {
+        $sender_id = $_SESSION['user_id']; // L'utilisateur connecté
+        $receiver_id = $input['receiver_id'];
+
+        $stmt = $conn->prepare("
+            SELECT * FROM discussion 
+            WHERE (sender_id = ? AND receiver_id = ?) OR (sender_id = ? AND receiver_id = ?) 
+            ORDER BY timestamp ASC
+        ");
+        $stmt->bind_param("iiii", $sender_id, $receiver_id, $receiver_id, $sender_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $messages = [];
+
+        while ($row = $result->fetch_assoc()) {
+            $messages[] = $row;
+        }
+        echo json_encode($messages);
+        exit;
+    }
+
+    // Envoyer un message pour le chat
+    if (isset($input['action']) && $input['action'] === 'send_message') {
+        $sender_id = $_SESSION['user_id']; // L'utilisateur connecté
+        $receiver_id = $input['receiver_id'];
+        $message = $input['message'];
+
+        $stmt = $conn->prepare("INSERT INTO discussion (sender_id, receiver_id, message) VALUES (?, ?, ?)");
+        $stmt->bind_param("iis", $sender_id, $receiver_id, $message);
+        $stmt->execute();
+
+        echo json_encode(['status' => 'success']);
+        exit;
+    }
+
+    // Garder la logique pour récupérer les gardiens
+    if (isset($input['latitude']) && isset($input['longitude']) && isset($_SESSION['role']) && $_SESSION['role'] == 1) { 
         $user_latitude = floatval($input['latitude']);
         $user_longitude = floatval($input['longitude']);
-        
-        // Définir le rayon en kilomètres (par exemple : 10 km)
         $radius = 10;
 
-        // Requête pour récupérer les gardiens dans un certain périmètre autour de l'utilisateur
         $gardiens_query = $conn->prepare("
             SELECT 
                 id, prenom, nom_utilisateur, profile_picture, latitude, longitude,
@@ -26,7 +61,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $gardiens_query->execute();
         $gardiens_result = $gardiens_query->get_result();
 
-        // Retourne les résultats sous forme de HTML
         while ($gardien = $gardiens_result->fetch_assoc()) {
             echo '<div class="gardien">';
             echo '<img src="images/' . htmlspecialchars($gardien['profile_picture']) . '" alt="' . htmlspecialchars($gardien['prenom']) . '">';
@@ -46,7 +80,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <title>Gardien des Animaux - Connecté</title>
     <link rel="stylesheet" href="styles.css">
     <style>
-        /* Chat styles */
+        /* Styles pour la fenêtre de discussion */
         #chatButton {
             position: fixed;
             bottom: 20px;
@@ -63,7 +97,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         #chatWindow {
-            display: none; /* La fenêtre de chat est masquée par défaut */
+            display: none;
             position: fixed;
             bottom: 90px;
             right: 20px;
@@ -73,7 +107,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             border: 1px solid #ccc;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            overflow: hidden;
             display: flex;
             flex-direction: column;
         }
@@ -140,17 +173,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <section class="hero">
         <img src="images/premierplan.png" alt="Un foyer chaleureux">
         <div class="hero-text">
-            <button class="btn-hero" onclick="window.location.href='search_page.php'">Trouver un gardien</button>
+            <button class="btn btn-hero" onclick="window.location.href='search_page.php'">Trouver un gardien</button>
         </div>
     </section>
 
     <!-- Section Gardien -->
+    <?php if (isset($_SESSION['role']) && $_SESSION['role'] == 1): ?>
     <section class="gardiens">
         <h2>Gardiens près de chez vous :</h2>
         <div class="gardien-list">
             <p>Chargement des gardiens en fonction de votre position...</p>
         </div>
     </section>
+    <?php endif; ?>
 
     <!-- Avis Section -->
     <section class="avis-section">
@@ -188,29 +223,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <!-- Footer -->
     <footer>
-        <div class="footer-links">
-            <div>
-                <h4>En savoir plus :</h4>
-                <ul>
-                    <li>Sécurité</li>
-                    <li>Centre d'aide</li>
-                </ul>
-            </div>
-            <div>
-                <h4>A propos de nous :</h4>
-                <ul>
-                    <li>Politique de confidentialité</li>
-                    <li>Nous contacter</li>
-                </ul>
-            </div>
-            <div>
-                <h4>Conditions Générales :</h4>
-                <ul>
-                    <li>Conditions de Service</li>
-                </ul>
-            </div>
+    <div class="footer-links">
+        <div>
+            <h4>En savoir plus :</h4>
+            <ul>
+                <li><a href="securite_connect.php">Sécurité</a></li>
+                <li><a href="aide_connect.php">Centre d'aide</a></li>
+            </ul>
         </div>
-    </footer>
+        <div>
+            <h4>A propos de nous :</h4>
+            <ul>
+                <li><a href="confidentialite_connect.php">Politique de confidentialité</a></li>
+                <li><a href="contact_connect.php">Nous contacter</a></li>
+            </ul>
+        </div>
+        <div>
+            <h4>Conditions Générales :</h4>
+            <ul>
+                <li><a href="conditions_connect.php">Conditions d'utilisateur et de Service</a></li>
+            </ul>
+        </div>
+    </div>
+</footer>
 
     <script>
         // Gestion de l'affichage/masquage de la fenêtre de chat
@@ -253,8 +288,96 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
 
-        document.addEventListener('DOMContentLoaded', getLocationAndFetchGardiens);
+        document.addEventListener('DOMContentLoaded', function() {
+            <?php if (isset($_SESSION['role']) && $_SESSION['role'] == 1): ?>
+            getLocationAndFetchGardiens();
+            <?php endif; ?>
+        });
+    </script>
+
+    <script>
+        // Afficher/Masquer la fenêtre de chat
+        document.getElementById('chatButton').addEventListener('click', function () {
+            const chatWindow = document.getElementById('chatWindow');
+            chatWindow.style.display = chatWindow.style.display === 'none' || chatWindow.style.display === '' ? 'flex' : 'none';
+        });
+
+        // Charger les messages
+        function loadMessages(receiverId) {
+            fetch('index_connect.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ action: 'get_messages', receiver_id: receiverId })
+            })
+            .then(response => response.json())
+            .then(messages => {
+                const chatMessages = document.getElementById('chatMessages');
+                chatMessages.innerHTML = '';
+                messages.forEach(msg => {
+                    const messageElement = document.createElement('p');
+                    messageElement.textContent = msg.sender_id === receiverId ? `Lui: ${msg.message}` : `Vous: ${msg.message}`;
+                    chatMessages.appendChild(messageElement);
+                });
+            });
+        }
+
+        // Envoyer un message
+        document.getElementById('sendButton').addEventListener('click', function () {
+            const messageInput = document.getElementById('messageInput');
+            const receiverId = 1; // Remplacez par l'ID du destinataire
+            const message = messageInput.value;
+
+            fetch('index_connect.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ action: 'send_message', receiver_id: receiverId, message })
+            }).then(() => {
+                messageInput.value = '';
+                loadMessages(receiverId);
+            });
+        });
+
+        // Charger les messages à l'ouverture
+        loadMessages(1); // Remplacez "1" par l'ID réel du destinataire
     </script>
 
 </body>
 </html>
+
+<script>
+function getUserLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function (position) {
+            const latitude = position.coords.latitude;
+            const longitude = position.coords.longitude;
+
+            // Envoyer les coordonnées au serveur
+            fetch('save_location.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ latitude: latitude, longitude: longitude })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    console.log('Location saved successfully:', data.message);
+                } else {
+                    console.error('Error saving location:', data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }, function (error) {
+            console.error('Error retrieving location:', error.message);
+        });
+    } else {
+        console.error('Geolocation is not supported by this browser.');
+    }
+}
+
+// Appeler la fonction après que l'utilisateur se connecte
+window.onload = getUserLocation;
+</script>

@@ -20,6 +20,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nombre_animal = $_POST['nombre_animal'];
     $budget_min = $_POST['budget_min'];
     $budget_max = $_POST['budget_max'];
+
+// Ensure budget_min and budget_max are not negative
+if ($budget_min < 0 || $budget_max < 0) {
+    $_SESSION['message'] = 'Les budgets minimum et maximum ne peuvent pas être négatifs.';
+    header('Location: profil_gardien.php');
+    exit();
+}
+
+// Ensure budget_min is not greater than budget_max
+if ($budget_min > $budget_max) {
+    $_SESSION['message'] = 'Le budget minimum ne peut pas être supérieur au budget maximum.';
+    header('Location: profil_gardien.php');
+    exit();
+}
+
     $service = $_POST['service'];
     $disponibilites = $_POST['disponibilites']; 
 
@@ -205,6 +220,10 @@ $disponibilites_array = explode(',', $disponibilites);
 
         <button type="submit" class="btn">Enregistrer les modifications</button>
     </form>
+
+    <form method="POST" action="delete_account.php">
+        <button class="btn-delete-account" type="submit" name="delete_account">Supprimer mon compte</button>
+    </form>
     
     <div class="availability-buttons">
         <h3>Disponibilités :</h3>
@@ -223,21 +242,21 @@ $disponibilites_array = explode(',', $disponibilites);
         <div>
             <h4>En savoir plus :</h4>
             <ul>
-                <li>Sécurité</li>
-                <li>Centre d'aide</li>
+                <li><a href="securite.php">Sécurité</a></li>
+                <li><a href="aide.php">Centre d'aide</a></li>
             </ul>
         </div>
         <div>
             <h4>A propos de nous :</h4>
             <ul>
-                <li>Politique de confidentialité</li>
-                <li>Nous contacter</li>
+                <li><a href="confidentialite.php">Politique de confidentialité</a></li>
+                <li><a href="contact.php">Nous contacter</a></li>
             </ul>
         </div>
         <div>
             <h4>Conditions Générales :</h4>
             <ul>
-                <li>Conditions de Service</li>
+                <li><a href="conditions.php">Conditions d'utilisateur et de Service</a></li>
             </ul>
         </div>
     </div>

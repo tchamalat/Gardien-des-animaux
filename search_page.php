@@ -5,6 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recherche de Gardien</title>
     <link rel="stylesheet" href="styles.css">
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Vérifier si la géolocalisation est disponible
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    function (position) {
+                        // Remplir automatiquement les champs cachés avec latitude et longitude
+                        document.getElementById("latitude").value = position.coords.latitude;
+                        document.getElementById("longitude").value = position.coords.longitude;
+                    },
+                    function (error) {
+                        console.error("Erreur de géolocalisation : ", error);
+                        alert("Impossible de récupérer votre localisation. Veuillez vérifier vos paramètres.");
+                    }
+                );
+            } else {
+                alert("La géolocalisation n'est pas supportée par votre navigateur.");
+            }
+        });
+    </script>
 </head>
 <body>
     <header>
@@ -48,11 +68,15 @@
                 </select>
             </div>
 
-            <!-- Ville -->
+            <!-- Rayon de recherche autour -->
             <div class="form-group">
-                <label for="ville">Ville</label>
-                <input type="text" name="ville" id="ville" placeholder="Entrez une ville">
+                <label for="rayon">Rayon autour de vous (km)</label>
+                <input type="number" name="rayon" id="rayon" value="20" min="1">
             </div>
+
+            <!-- Champs cachés pour latitude et longitude -->
+            <input type="hidden" id="latitude" name="latitude">
+            <input type="hidden" id="longitude" name="longitude">
 
             <!-- Budget -->
             <div class="form-group">
@@ -67,30 +91,29 @@
     </div>
         <!-- Footer -->
         <footer>
-        <div class="footer-links">
-            <div>
-                <h4>En savoir plus :</h4>
-                <ul>
-                    <li>Sécurité</li>
-                    <li>Centre d'aide</li>
-                </ul>
-            </div>
-            <div>
-                <h4>A propos de nous :</h4>
-                <ul>
-                    <li>Politique de confidentialité</li>
-                    <li>Nous contacter</li>
-                </ul>
-            </div>
-            <div>
-                <h4>Conditions Générales :</h4>
-                <ul>
-                    <li>Conditions de Service</li>
-                    <li>Télécharger l'app</li>
-                </ul>
-            </div>
+    <div class="footer-links">
+        <div>
+            <h4>En savoir plus :</h4>
+            <ul>
+                <li><a href="securite.php">Sécurité</a></li>
+                <li><a href="aide.php">Centre d'aide</a></li>
+            </ul>
         </div>
-    </footer>
+        <div>
+            <h4>A propos de nous :</h4>
+            <ul>
+                <li><a href="confidentialite.php">Politique de confidentialité</a></li>
+                <li><a href="contact.php">Nous contacter</a></li>
+            </ul>
+        </div>
+        <div>
+            <h4>Conditions Générales :</h4>
+            <ul>
+                <li><a href="conditions.php">Conditions d'utilisateur et de Service</a></li>
+            </ul>
+        </div>
+    </div>
+</footer>
 
 </body>
 </html>

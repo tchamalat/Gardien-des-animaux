@@ -10,6 +10,10 @@
     <header>
         <div class="header-container">
             <img src="images/logo.png" alt="Logo Gardien des Animaux">
+            <h1 class="header-slogan">Un foyer chaleureux même en votre absence</h1>
+        <div class="auth-buttons">
+            <button class="btn" onclick="window.location.href='index.php'">Accueil</button>
+        </div>
         </div>
     </header>
     <div class="form-container">
@@ -117,22 +121,21 @@
             <div>
                 <h4>En savoir plus :</h4>
                 <ul>
-                    <li>Sécurité</li>
-                    <li>Centre d'aide</li>
+                    <li><a href="securite.php">Sécurité</a></li>
+                    <li><a href="aide.php">Centre d'aide</a></li>
                 </ul>
             </div>
             <div>
                 <h4>A propos de nous :</h4>
                 <ul>
-                    <li>Politique de confidentialité</li>
-                    <li>Nous contacter</li>
+                    <li><a href="confidentialite.php">Politique de confidentialité</a></li>
+                    <li><a href="contact.php">Nous contacter</a></li>
                 </ul>
             </div>
             <div>
                 <h4>Conditions Générales :</h4>
                 <ul>
-                    <li>Conditions de Service</li>
-                    <li>Télécharger l'app</li>
+                    <li><a href="conditions.php">Conditions d'utilisateur et de Service</a></li>
                 </ul>
             </div>
         </div>

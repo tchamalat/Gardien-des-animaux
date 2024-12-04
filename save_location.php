@@ -1,27 +1,36 @@
+
 <?php
-include 'config.php'; // Connexion à la base de données
+session_start();
+include 'config.php';
 
-// Récupérer les données JSON envoyées
-$data = json_decode(file_get_contents('php://input'), true);
-
-if (isset($data['latitude'], $data['longitude'], $data['user_id'])) {
-    $latitude = $data['latitude'];
-    $longitude = $data['longitude'];
-    $user_id = $data['user_id'];
-
-    // Mise à jour des coordonnées de l'utilisateur dans la base de données
-    $query = "UPDATE creation_compte SET latitude = ?, longitude = ? WHERE id = ?";
-    $stmt = $conn->prepare($query);
-    $stmt->bind_param("ddi", $latitude, $longitude, $user_id);
-
-    if ($stmt->execute()) {
-        echo json_encode(['status' => 'success', 'message' => 'Position enregistrée avec succès.']);
-    } else {
-        echo json_encode(['status' => 'error', 'message' => 'Erreur lors de l\'enregistrement des coordonnées.']);
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (!isset($_SESSION['user_id'])) {
+        echo json_encode(['status' => 'error', 'message' => 'User not logged in']);
+        exit();
     }
 
-    $stmt->close();
-} else {
-    echo json_encode(['status' => 'error', 'message' => 'Données invalides.']);
+    $user_id = $_SESSION['user_id'];
+    $data = json_decode(file_get_contents('php://input'), true);
+
+    if (isset($data['latitude']) && isset($data['longitude'])) {
+        $latitude = floatval($data['latitude']);
+        $longitude = floatval($data['longitude']);
+
+        $query = "UPDATE creation_compte SET latitude = ?, longitude = ? WHERE id = ?";
+        $stmt = $conn->prepare($query);
+        $stmt->bind_param("ddi", $latitude, $longitude, $user_id);
+
+        if ($stmt->execute()) {
+            echo json_encode(['status' => 'success', 'message' => 'Location updated successfully']);
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'Failed to update location']);
+        }
+
+        $stmt->close();
+    } else {
+        echo json_encode(['status' => 'error', 'message' => 'Invalid location data']);
+    }
+
+    $conn->close();
 }
 ?>
