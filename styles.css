@@ -9,35 +9,35 @@ body {
 }
 
 header {
-    background-color: #ded3c0; /* Couleur plus foncée pour plus de contraste */
+    background-color: #ded3c0; 
     padding: 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); /* Ombre pour donner de la profondeur */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 header h1 {
-    color: #f5a623; /* Orange pour faire ressortir le texte */
+    color: #f5a623; 
     font-size: 2em;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); /* Ombre légère sur le texte */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); 
 }
 
 header img {
-    height: 150px; /* Augmentation significative de la hauteur */
-    max-width: 300px; /* Largeur maximale élargie */
+    height: 150px; 
+    max-width: 300px; 
     margin: 0 auto;
     display: block;
-    background: linear-gradient(135deg, #ff7f00, #ffd700); /* Gradient lumineux derrière */
-    padding: 15px; /* Espacement autour du logo */
-    border-radius: 50%; /* Forme circulaire pour attirer l'attention */
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3); /* Ombre plus importante */
-    transition: transform 0.4s ease-in-out, box-shadow 0.4s ease-in-out; /* Effets de transition */
+    background: linear-gradient(135deg, #ff7f00, #ffd700); 
+    padding: 15px;
+    border-radius: 50%; 
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3); 
+    transition: transform 0.4s ease-in-out, box-shadow 0.4s ease-in-out; 
 }
 
 header img:hover {
-    transform: scale(1.1) rotate(5deg); /* Léger agrandissement et rotation */
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4); /* Ombre plus marquée au survol */
+    transform: scale(1.1) rotate(5deg); 
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
 }
 
 .auth-buttons {
@@ -77,8 +77,8 @@ header img:hover {
 
 .result-actions {
     display: flex;
-    justify-content: center; /* Centre le bouton horizontalement */
-    margin-top: 20px; /* Ajoute un espacement au-dessus */
+    justify-content: center; 
+    margin-top: 20px; 
 }
 
 .btn-hero {
@@ -96,21 +96,21 @@ header img:hover {
 
 .btn-hero:hover {
     background-color: #ff7f00;
-    transform: scale(1.05); /* Légère mise en avant au survol */
+    transform: scale(1.05); 
 }
 
 
 .result-card {
     display: flex;
     flex-direction: column;
-    justify-content: space-between; /* Espace entre les éléments */
+    justify-content: space-between; 
     background-color: rgba(255, 255, 255, 0.9);
     border-radius: 10px;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
     padding: 20px;
     margin-bottom: 20px;
     max-width: 600px;
-    margin: 0 auto 20px auto; /* Centre horizontalement et ajoute un espace en bas */
+    margin: 0 auto 20px auto; 
 }
 
 
@@ -187,7 +187,7 @@ header img:hover {
     cursor: pointer;
     font-size: 1.2em;
     transition: background-color 0.3s ease, transform 0.3s ease;
-    margin-top: 30px; /* Ajoute un espace en haut pour descendre le bouton */
+    margin-top: 30px;
 }
 
 .voir-plus:hover {
@@ -217,25 +217,25 @@ footer ul li {
 
 .form-container {
     width: 50%;
-    margin: 50px auto; /* Ajout d'un espace supérieur */
+    margin: 50px auto; 
     padding: 30px;
     border: 2px solid #f5a623;
-    border-radius: 15px; /* Bords plus arrondis pour un look plus doux */
-    background-color: #fff; /* Couleur blanche pour un meilleur contraste */
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); /* Ombre pour donner de la profondeur */
-    transition: transform 0.3s ease-in-out; /* Effet de zoom léger au survol */
+    border-radius: 15px; 
+    background-color: #fff; 
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); 
+    transition: transform 0.3s ease-in-out; 
 }
 
 .form-container:hover {
-    transform: scale(1.05); /* Zoom léger au survol */
+    transform: scale(1.05);
 }
 
 .form-container h2 {
     text-align: center;
     color: #f5a623;
-    font-size: 2em; /* Texte plus grand et plus visible */
+    font-size: 2em; 
     margin-bottom: 20px;
-    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.1); /* Ombre sur le texte pour le rendre plus dynamique */
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.1); 
 }
 
 .form-container p {
@@ -279,17 +279,17 @@ h2 {
 .btn {
     background-color: #f5a623;
     color: white;
-    padding: 15px 30px; /* Plus grand pour un meilleur impact visuel */
+    padding: 15px 30px; 
     border: none;
     border-radius: 8px;
     cursor: pointer;
     font-size: 1.2em;
-    transition: background-color 0.3s ease, transform 0.3s ease; /* Transition sur la couleur et la taille */
+    transition: background-color 0.3s ease, transform 0.3s ease; 
 }
 
 .btn:hover {
-    background-color: #ff7f00; /* Couleur plus foncée au survol */
-    transform: translateY(-5px); /* Légère élévation au survol */
+    background-color: #ff7f00; 
+    transform: translateY(-5px);
 }
 
 .forgot-password {
@@ -304,7 +304,7 @@ h2 {
 }
 
 footer {
-    background-color: #ded3c0; /* Couleur plus sombre pour le fond */
+    background-color: #ded3c0; 
     padding: 40px 0;
     color: #f9f9f9;
     display: flex;
@@ -325,7 +325,7 @@ footer ul li {
 
 footer ul li:hover {
     text-decoration: underline;
-    color: #f5a623; /* Changement de couleur au survol */
+    color: #f5a623; 
 }
 
 
@@ -351,22 +351,22 @@ footer ul li:hover {
     padding: 30px;
     border-radius: 15px;
     max-width: 800px;
-    margin: 50px auto; /* Espacement pour centrer et espacer */
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); /* Ombre pour donner de la profondeur */
-    border: 2px solid #ded3c0; /* Bordure beige pour garder le thème */
-    transition: transform 0.3s ease-in-out; /* Transition au survol */
+    margin: 50px auto; 
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); 
+    border: 2px solid #ded3c0; 
+    transition: transform 0.3s ease-in-out;
 }
 
 .profile-container:hover {
-    transform: scale(1.05); /* Zoom léger au survol */
+    transform: scale(1.05); 
 }
 
 .profile-title {
     font-size: 2.5em;
-    color: #f5a623; /* Orange vif pour le titre */
+    color: #f5a623; 
     text-align: center;
     margin-bottom: 40px;
-    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.1); /* Ombre légère */
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.1); 
 }
 
 
@@ -375,12 +375,12 @@ footer ul li:hover {
     padding: 20px;
     margin-bottom: 20px;
     border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Ombre légère */
-    transition: transform 0.3s ease; /* Transition de taille */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease; 
 }
 
 .profile-item:hover {
-    transform: translateY(-5px); /* Légère élévation au survol */
+    transform: translateY(-5px); 
 }
 
 .profile-item label {
@@ -441,9 +441,9 @@ input[type="email"], input[type="text"], input[type="password"], input[type="tel
 
 .profile-picture {
     display: flex;
-    justify-content: center; /* Centre l'image horizontalement */
-    align-items: flex-start; /* Aligne l'image en haut du conteneur */
-    margin-top: -20px; /* Ajuste la hauteur en utilisant une marge négative si nécessaire */
+    justify-content: center; 
+    align-items: flex-start; 
+    margin-top: -20px; 
 }
 
 
@@ -462,12 +462,12 @@ input[type="email"], input[type="text"], input[type="password"], input[type="tel
     border-radius: 8px;
     cursor: pointer;
     font-size: 1.2em;
-    transition: background-color 0.3s ease, transform 0.3s ease; /* Effet de couleur et de taille */
+    transition: background-color 0.3s ease, transform 0.3s ease; 
 }
 
 .btn:hover {
-    background-color: #ff7f00; /* Couleur plus foncée au survol */
-    transform: translateY(-5px); /* Légère élévation au survol */
+    background-color: #ff7f00; 
+    transform: translateY(-5px);
 }
 
 .btn-photo {
@@ -477,7 +477,7 @@ input[type="email"], input[type="text"], input[type="password"], input[type="tel
     border: none;
     border-radius: 8px;
     cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.3s ease; /* Effet de survol */
+    transition: background-color 0.3s ease, transform 0.3s ease; 
 }
 
 .btn-photo:hover {
@@ -486,7 +486,7 @@ input[type="email"], input[type="text"], input[type="password"], input[type="tel
 }
 
 
-/* Style pour le bouton de changement de photo de profil */
+
 .btn-photo {
     background-color: orange;
     color: white;
@@ -497,13 +497,13 @@ input[type="email"], input[type="text"], input[type="password"], input[type="tel
     font-size: 0.9em;
     margin-top: 10px;
     transition: background-color 0.3s ease;
-    display: block; /* S'assure que le bouton occupe une ligne entière */
+    display: block; 
     margin-left: auto;
-    margin-right: auto; /* Centre le bouton horizontalement */
+    margin-right: auto; 
 }
 
 .btn-photo:hover {
-    background-color: #ff7f00; /* Couleur plus foncée au survol */
+    background-color: #ff7f00; 
 }
 
 .btn-action {
@@ -584,28 +584,28 @@ input[type="email"], input[type="text"], input[type="password"], input[type="tel
 }
 
 .header-slogan {
-    color: #f5a623; /* Même couleur que Connexion Réussie */
-    font-size: 2em; /* Même taille de police */
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); /* Même ombre légère */
-    text-align: center; /* Centre le texte */
-    margin-top: 20px; /* Ajout d'espace en haut si nécessaire */
+    color: #f5a623; 
+    font-size: 2em; 
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    margin-top: 20px;
 }
 
 header h1 {
-    color: #f5a623; /* Couleur orange */
+    color: #f5a623;
     font-size: 2em;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); /* Ombre légère sur le texte */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .alert-message {
-    color: orange; /* Couleur du texte */
-    padding: 15px; /* Espace autour du texte */
-    border-radius: 8px; /* Arrondir les coins */
-    text-align: center; /* Centrer le texte */
-    margin-bottom: 20px; /* Espacement en bas */
-    font-size: 1.2em; /* Taille du texte */
-    font-weight: bold; /* Mettre le texte en gras */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Ajouter une ombre pour plus de profondeur */
+    color: orange; 
+    padding: 15px; 
+    border-radius: 8px; 
+    text-align: center; 
+    margin-bottom: 20px; 
+    font-size: 1.2em; 
+    font-weight: bold; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
 }
 
 .search-container {
@@ -843,19 +843,19 @@ header h1 {
 }
 
 .result-card {
-    background-color: rgba(255, 255, 255, 0.8); /* Fond semi-transparent */
-    border-radius: 15px; /* Coins arrondis */
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); /* Ombre légère */
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 15px; 
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); 
     padding: 20px;
-    margin: 15px auto; /* Espacement entre les cartes */
-    width: 90%; /* Largeur adaptable */
-    max-width: 600px; /* Limite maximale pour les grands écrans */
-    transition: transform 0.3s, box-shadow 0.3s; /* Animation fluide au survol */
+    margin: 15px auto; 
+    width: 90%; 
+    max-width: 600px; 
+    transition: transform 0.3s, box-shadow 0.3s; 
 }
 
 .result-card:hover {
-    transform: scale(1.02); /* Légère mise en avant au survol */
-    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.3); /* Ombre accentuée */
+    transform: scale(1.02); 
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.3);
 }
 
 .result-header {
@@ -872,7 +872,7 @@ header h1 {
 }
 
 .service-type.badge {
-    background-color: #f5a623; /* Couleur orange pour le badge */
+    background-color: #f5a623;
     color: #fff;
     padding: 5px 10px;
     border-radius: 12px;
@@ -886,13 +886,13 @@ header h1 {
 .result-details p {
     margin: 5px 0;
     font-size: 1em;
-    color: #333; /* Texte plus visible */
+    color: #333; 
 }
 
 .icon {
     margin-right: 8px;
     color: #e67e22;
-    font-size: 1.2em; /* Icônes légèrement agrandies */
+    font-size: 1.2em;
 }
 
 .no-results {
@@ -904,12 +904,46 @@ header h1 {
 }
 
 footer ul li a {
-    color: #fff; /* Couleur par défaut du lien */
-    text-decoration: none; /* Supprime le soulignement */
-    font-weight: bold; /* Met en gras */
+    color: #fff; 
+    text-decoration: none;
+    font-weight: bold;
 }
 
 footer ul li a:hover {
-    color: #ff6600; /* Couleur au survol */
-    text-decoration: underline; /* Ajoute un soulignement au survol */
+    color: #ff6600; 
+    text-decoration: underline; 
+}
+
+gardiens-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.gardien {
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    width: 200px;
+    padding: 15px;
+    text-align: center;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.gardien img {
+    width: 100%;
+    height: auto;
+    border-radius: 50%;
+    margin-bottom: 10px;
+}
+
+.gardien p {
+    margin: 5px 0;
+}
+
+.gardien p.distance {
+    font-size: 0.9em;
+    color: #555;
 }
