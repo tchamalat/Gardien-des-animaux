@@ -1,5 +1,5 @@
 <?php
-include 'config.php'; // Connexion à la base de données
+include 'config.php'; 
 ?>
 
 <!DOCTYPE html>
