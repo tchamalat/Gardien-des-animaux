@@ -11,9 +11,9 @@
         <div class="header-container">
             <img src="images/logo.png" alt="Logo Gardien des Animaux">
             <h1 class="header-slogan">Un foyer chaleureux même en votre absence</h1>
-        <div class="auth-buttons">
-            <button class="btn" onclick="window.location.href='index.php'">Accueil</button>
-        </div>
+            <div class="auth-buttons">
+                <button class="btn" onclick="window.location.href='index.php'">Accueil</button>
+            </div>
         </div>
     </header>
 
@@ -29,33 +29,13 @@
                 <input type="password" id="password" name="password" required>
             </div>
             <div class="form-group">
-                <a href="#" class="forgot-password" onclick="openForgotPassword()">Mot de passe oublié</a>
+                <p class="forgot-password">
+                    <a href="forgot_password.php">Mot de passe oublié ?</a>
+                </p>
             </div>
             <button type="submit" class="btn">S'identifier</button>
-        
-<!-- Forgot Password Section -->
-<p class="forgot-password">
-    <a href="forgot_password.php">Mot de passe oublié ?</a>
-</p>
-
-</form>
+        </form>
     </div>
-
-    <!-- Modal de réinitialisation du mot de passe -->
-    <div id="forgotPasswordModal" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); background:white; padding:20px; border:1px solid #ccc; box-shadow:0px 4px 6px rgba(0,0,0,0.1);">
-        <h2>Réinitialiser le mot de passe</h2>
-        <form id="forgotPasswordForm">
-            <label for="email">Entrez votre email :</label>
-            <input type="email" id="email" name="email" required>
-            <div style="margin-top: 10px;">
-                <button type="submit" class="btn">Envoyer</button>
-                <button type="button" class="btn" onclick="closeForgotPassword()">Annuler</button>
-            </div>
-        
-<!-- Forgot Password Section -->
-<p class="forgot-password">
-    <a href="forgot_password.php">Mot de passe oublié ?</a>
-</p>
 
 </form>
     </div>
@@ -116,31 +96,29 @@
         });
     </script>
 
-    <footer>
-        <div class="footer-links">
-            <div>
-                <h4>En savoir plus :</h4>
-                <ul>
-                    <li>Sécurité</li>
-                    <li>Centre d'aide</li>
-                </ul>
-            </div>
-            <div>
-                <h4>A propos de nous :</h4>
-                <ul>
-                    <li>Politique de confidentialité</li>
-                    <li>Nous contacter</li>
-                </ul>
-            </div>
-            <div>
-                <h4>Conditions Générales :</h4>
-                <ul>
-                    <li>Conditions de Service</li>
-                    <li>Télécharger l'app</li>
-                </ul>
-            </div>
+<footer>
+    <div class="footer-links">
+        <div>
+            <h4>En savoir plus :</h4>
+            <ul>
+                <li><a href="securite.php">Sécurité</a></li>
+                <li><a href="aide.php">Centre d'aide</a></li>
+            </ul>
         </div>
-    </footer>
-
+        <div>
+            <h4>A propos de nous :</h4>
+            <ul>
+                <li><a href="confidentialite.php">Politique de confidentialité</a></li>
+                <li><a href="contact.php">Nous contacter</a></li>
+            </ul>
+        </div>
+        <div>
+            <h4>Conditions Générales :</h4>
+            <ul>
+                <li><a href="conditions.php">Conditions d'utilisateur et de Service</a></li>
+            </ul>
+        </div>
+    </div>
+</footer>
 </body>
 </html>

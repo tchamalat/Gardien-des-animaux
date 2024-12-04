@@ -223,29 +223,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <!-- Footer -->
     <footer>
-        <div class="footer-links">
-            <div>
-                <h4>En savoir plus :</h4>
-                <ul>
-                    <li>Sécurité</li>
-                    <li>Centre d'aide</li>
-                </ul>
-            </div>
-            <div>
-                <h4>A propos de nous :</h4>
-                <ul>
-                    <li>Politique de confidentialité</li>
-                    <li>Nous contacter</li>
-                </ul>
-            </div>
-            <div>
-                <h4>Conditions Générales :</h4>
-                <ul>
-                    <li>Conditions de Service</li>
-                </ul>
-            </div>
+    <div class="footer-links">
+        <div>
+            <h4>En savoir plus :</h4>
+            <ul>
+                <li><a href="securite_connect.php">Sécurité</a></li>
+                <li><a href="aide_connect.php">Centre d'aide</a></li>
+            </ul>
         </div>
-    </footer>
+        <div>
+            <h4>A propos de nous :</h4>
+            <ul>
+                <li><a href="confidentialite_connect.php">Politique de confidentialité</a></li>
+                <li><a href="contact_connect.php">Nous contacter</a></li>
+            </ul>
+        </div>
+        <div>
+            <h4>Conditions Générales :</h4>
+            <ul>
+                <li><a href="conditions_connect.php">Conditions d'utilisateur et de Service</a></li>
+            </ul>
+        </div>
+    </div>
+</footer>
 
     <script>
         // Gestion de l'affichage/masquage de la fenêtre de chat
