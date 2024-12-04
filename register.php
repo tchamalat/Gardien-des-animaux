@@ -6,10 +6,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nom = $_POST['nom'];
     $nom_utilisateur = $_POST['username'];
     $mail = $_POST['email'];
-    $numero_telephone = preg_replace('/\D/', '', $_POST['telephone']); // Supprimer tous les caractères non numériques
+    $numero_telephone = preg_replace('/\D/', '', $_POST['telephone']); 
     $adresse = $_POST['adresse'];
     $ville = $_POST['ville'];
-    $mot_de_passe = md5($_POST['password']); // Hachage MD5 du mot de passe
+    $mot_de_passe = md5($_POST['password']); 
     $role = $_POST['role'];
 
     // Vérification de l'unicité de l'email et du numéro de téléphone
