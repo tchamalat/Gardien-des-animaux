@@ -1,5 +1,5 @@
 <?php
-
+include 'config.php'; 
 
 // Fonction pour afficher l'historique des messages
 function getMessages($pdo, $sender_id, $receiver_id) {
