@@ -174,6 +174,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <img src="images/premierplan.png" alt="Un foyer chaleureux">
         <div class="hero-text">
             <button class="btn btn-hero" onclick="window.location.href='search_page.php'">Trouver un gardien</button>
+            <button class="btn" onclick="window.location.href='discussion.php'">Discussion</button>
         </div>
     </section>
 
