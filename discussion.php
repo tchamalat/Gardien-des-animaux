@@ -1,5 +1,8 @@
 <?php
-include 'config.php'; 
+$servername = "localhost";
+$username = "gardien";
+$password = "G@rdien-des-chiens";
+$dbname = "gardiendb";
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);
