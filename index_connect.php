@@ -382,3 +382,8 @@ function getUserLocation() {
 // Appeler la fonction après que l'utilisateur se connecte
 window.onload = getUserLocation;
 </script>
+
+<!-- Bouton discussion -->
+
+<a href="discussion.php?username={gardien_username}" class="btn-discussion">Commencer une discussion</a>
+
