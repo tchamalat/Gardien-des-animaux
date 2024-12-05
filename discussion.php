@@ -1,15 +1,5 @@
 <?php
-$servername = "localhost";
-$username = "gardien";
-$password = "G@rdien-des-chiens";
-$dbname = "gardiendb";
 
-try {
-    $pdo = new mysqli($servername, $username, $password, $dbname);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch (PDOException $e) {
-    die("Erreur de connexion : " . $e->getMessage());
-}
 
 // Fonction pour afficher l'historique des messages
 function getMessages($pdo, $sender_id, $receiver_id) {
