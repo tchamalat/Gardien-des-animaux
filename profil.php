@@ -55,7 +55,7 @@ unset($_SESSION['message']);
     <h2 class="profile-title">Mon profil :</h2>
     <div class="profile-info">
         <div class="profile-picture">
-            <img id="profile-img" src="<?php echo htmlspecialchars($profile_picture); ?>" alt="Photo de profil">
+            <img id="profile-img" src="display_image.php" alt="Photo de profil">
         </div>
         
         <form action="upload_image.php" method="POST" enctype="multipart/form-data" class="profile-form">
