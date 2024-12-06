@@ -2,7 +2,7 @@
 session_start();
 
 if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php");
+    header("Location: /controllers/login.php");
     exit();
 }
 
@@ -17,7 +17,7 @@ $stmt->bind_param("i", $user_id);
 if ($stmt->execute()) {
     session_unset();
     session_destroy();
-    header("Location: index.php");
+    header("Location: /index.php");
     exit();
 } else {
     echo "Une erreur est survenue lors de la suppression de votre compte.";
