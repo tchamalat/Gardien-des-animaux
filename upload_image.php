@@ -2,28 +2,27 @@
 session_start();
 include 'config.php';
 
-// Détermine si l'utilisateur est un gardien
-$is_gardien = isset($_POST['is_gardien']) && $_POST['is_gardien'] === '1';
+// Vérifier si l'utilisateur est connecté
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit();
+}
 
-$fileInputName = $is_gardien ? 'photo_profil' : 'profilePicture';
+$user_id = $_SESSION['user_id'];
 
-if (isset($_FILES[$fileInputName]) && $_FILES[$fileInputName]['error'] === 0) {
-    $fileType = strtolower(pathinfo($_FILES[$fileInputName]['name'], PATHINFO_EXTENSION));
+if (isset($_FILES['profilePicture']) && $_FILES['profilePicture']['error'] === 0) {
+    $fileType = strtolower(pathinfo($_FILES['profilePicture']['name'], PATHINFO_EXTENSION));
     $allowedTypes = ['jpg', 'jpeg', 'png', 'gif'];
 
+    // Vérifier le type de fichier
     if (in_array($fileType, $allowedTypes)) {
         // Lire le contenu du fichier
-        $fileContent = file_get_contents($_FILES[$fileInputName]['tmp_name']);
-
-        // Échapper les données binaires pour les insérer dans la base
-        $fileContentEscaped = addslashes($fileContent);
-
-        $userId = $_SESSION['user_id'];
-
-        // Mettre à jour la base de données avec les données binaires
-        $query = "UPDATE creation_compte SET profile_picture = ? WHERE id = ?";
-        $stmt = $conn->prepare($query);
-        $stmt->bind_param("bi", $fileContent, $userId);
+        $fileContent = file_get_contents($_FILES['profilePicture']['tmp_name']);
+        
+        // Préparer la requête pour insérer l'image dans la base de données
+        $sql = "UPDATE creation_compte SET profile_picture = ? WHERE id = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("bi", $fileContent, $user_id);
 
         if ($stmt->execute()) {
             $_SESSION['message'] = "La photo de profil a été mise à jour avec succès.";
@@ -38,6 +37,7 @@ if (isset($_FILES[$fileInputName]) && $_FILES[$fileInputName]['error'] === 0) {
     $_SESSION['message'] = "Aucun fichier téléchargé ou erreur lors de l'upload.";
 }
 
-header("Location: " . ($is_gardien ? "profil_gardien.php" : "profil.php"));
+// Redirection après l'upload
+header("Location: profil.php");
 exit();
 ?>
