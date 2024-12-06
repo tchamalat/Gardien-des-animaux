@@ -2,57 +2,47 @@
 session_start();
 include 'config.php';
 
-if (isset($_FILES['profilePicture']) && $_FILES['profilePicture']['error'] === 0) {
-    // Define the upload directory
-    $uploadDir = __DIR__ . '/images/';
+// Détermine si l'utilisateur est un gardien
+$is_gardien = isset($_POST['is_gardien']) && $_POST['is_gardien'] === '1';
 
-    // Create the directory if it doesn't exist
+$uploadDir = $is_gardien ? 'uploads/' : 'images/';
+$fileInputName = $is_gardien ? 'photo_profil' : 'profilePicture';
+
+if (isset($_FILES[$fileInputName]) && $_FILES[$fileInputName]['error'] === 0) {
+    // Crée le dossier si nécessaire
     if (!is_dir($uploadDir)) {
         mkdir($uploadDir, 0777, true);
     }
 
-    // Generate a unique file name to avoid conflicts
-    $fileName = uniqid() . "_" . basename($_FILES['profilePicture']['name']);
+    $fileName = uniqid() . '_' . basename($_FILES[$fileInputName]['name']);
     $uploadFile = $uploadDir . $fileName;
 
-    // Validate the file type
-    $fileType = pathinfo($uploadFile, PATHINFO_EXTENSION);
-    $allowedTypes = array('jpg', 'png', 'jpeg', 'gif');
+    $fileType = strtolower(pathinfo($uploadFile, PATHINFO_EXTENSION));
+    $allowedTypes = ['jpg', 'jpeg', 'png', 'gif'];
 
-    if (in_array(strtolower($fileType), $allowedTypes)) {
-        // Check if the temporary file exists
-        if (!file_exists($_FILES['profilePicture']['tmp_name'])) {
-            $_SESSION['message'] = "Le fichier temporaire n'existe pas.";
-            header("Location: profil.php");
-            exit();
-        }
-
-        // Move the uploaded file
-        if (move_uploaded_file($_FILES['profilePicture']['tmp_name'], $uploadFile)) {
-            // Save the file path relative to the web directory
-            $relativePath = 'images/' . $fileName;
-
-            // Update the database
+    if (in_array($fileType, $allowedTypes)) {
+        if (move_uploaded_file($_FILES[$fileInputName]['tmp_name'], $uploadFile)) {
             $userId = $_SESSION['user_id'];
             $query = "UPDATE creation_compte SET profile_picture = ? WHERE id = ?";
             $stmt = $conn->prepare($query);
-            $stmt->bind_param("si", $relativePath, $userId);
+            $stmt->bind_param("si", $fileName, $userId);
 
             if ($stmt->execute()) {
                 $_SESSION['message'] = "La photo de profil a été mise à jour avec succès.";
             } else {
                 $_SESSION['message'] = "Erreur lors de la mise à jour de la base de données.";
             }
+            $stmt->close();
         } else {
-            $_SESSION['message'] = "Erreur lors du téléversement du fichier. Vérifiez les permissions du dossier.";
+            $_SESSION['message'] = "Erreur lors de l'enregistrement de l'image.";
         }
     } else {
-        $_SESSION['message'] = "Type de fichier non autorisé. Veuillez téléverser une image (jpg, jpeg, png, gif).";
+        $_SESSION['message'] = "Type de fichier non autorisé.";
     }
 } else {
-    $_SESSION['message'] = "Aucun fichier sélectionné ou erreur lors du téléversement : " . $_FILES['profilePicture']['error'];
+    $_SESSION['message'] = "Aucun fichier téléchargé ou erreur lors de l'upload.";
 }
 
-header("Location: profil.php");
+header("Location: " . ($is_gardien ? "profil_gardien.php" : "profil.php"));
 exit();
 ?>
