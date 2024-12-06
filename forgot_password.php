@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $query = $conn->prepare('UPDATE creation_compte SET reset_token = ?, token_expiration = ? WHERE mail = ?');
         $query->bind_param('sss', $token, $expiry, $email);
         $query->execute();
-        $reset_link = "gardien-des-animaux/reset_password.php?token=$token";
+        $reset_link = "gardien-des-animaux.com/reset_password.php?token=$token";
 
         $mail = new PHPMailer(true);
         try {
