@@ -12,7 +12,7 @@
             <img src="images/logo.png" alt="Logo Gardien des Animaux">
             <h1 class="header-slogan">Un foyer chaleureux même en votre absence</h1>
         <div class="auth-buttons">
-            <button class="btn" onclick="window.location.href='index.php'">Accueil</button>
+            <button class="btn" onclick="window.location.href='/index.php'">Accueil</button>
         </div>
         </div>
     </header>
@@ -100,14 +100,14 @@
             }
 
             // Envoi de la requête AJAX
-            fetch('register.php', {
+            fetch('/controllers/register.php', {
                 method: 'POST',
                 body: formData
             })
             .then(response => response.text())
             .then(data => {
                 if (data.trim() === "success") {
-                    window.location.href = "confirmation.php"; // Redirection vers la page de confirmation
+                    window.location.href = "/views/confirmation.php"; // Redirection vers la page de confirmation
                 } else {
                     document.getElementById('message').innerHTML = data; // Affiche uniquement le message d'erreur
                 }
@@ -121,21 +121,21 @@
             <div>
                 <h4>En savoir plus :</h4>
                 <ul>
-                    <li><a href="securite.php">Sécurité</a></li>
-                    <li><a href="aide.php">Centre d'aide</a></li>
+                    <li><a href="/views/securite.php">Sécurité</a></li>
+                    <li><a href="/views/aide.php">Centre d'aide</a></li>
                 </ul>
             </div>
             <div>
                 <h4>A propos de nous :</h4>
                 <ul>
-                    <li><a href="confidentialite.php">Politique de confidentialité</a></li>
-                    <li><a href="contact.php">Nous contacter</a></li>
+                    <li><a href="/views/confidentialite.php">Politique de confidentialité</a></li>
+                    <li><a href="/views/contact.php">Nous contacter</a></li>
                 </ul>
             </div>
             <div>
                 <h4>Conditions Générales :</h4>
                 <ul>
-                    <li><a href="conditions.php">Conditions d'utilisateur et de Service</a></li>
+                    <li><a href="/views/conditions.php">Conditions d'utilisateur et de Service</a></li>
                 </ul>
             </div>
         </div>
