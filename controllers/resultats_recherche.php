@@ -57,7 +57,7 @@ $conn->close();
 <body>
 <header>
     <h1>Résultats de la recherche</h1>
-    <button class="btn" onclick="window.location.href='search_page.php'">Nouvelle recherche</button>
+    <button class="btn" onclick="window.location.href='/views/search_page.php'">Nouvelle recherche</button>
 </header>
 
 <div class="resultats-container">
@@ -78,7 +78,7 @@ $conn->close();
                         <p><span class="icon">🌍</span><strong>Distance:</strong> <?php echo round($gardien['distance'], 2); ?> km</p>
                     </div>
                     <div class="result-actions">
-                        <a href="reservation.php?gardien_id=<?php echo htmlspecialchars($gardien['id']); ?>" class="btn btn-hero">
+                        <a href="/controllers/reservation.php?gardien_id=<?php echo htmlspecialchars($gardien['id']); ?>" class="btn btn-hero">
                             Réserver ce gardien
                         </a>
                     </div>
@@ -95,21 +95,21 @@ $conn->close();
         <div>
             <h4>En savoir plus :</h4>
             <ul>
-                <li><a href="securite.php">Sécurité</a></li>
-                <li><a href="aide.php">Centre d'aide</a></li>
+                <li><a href="/views/securite.php">Sécurité</a></li>
+                <li><a href="/views/aide.php">Centre d'aide</a></li>
             </ul>
         </div>
         <div>
             <h4>A propos de nous :</h4>
             <ul>
-                <li><a href="confidentialite.php">Politique de confidentialité</a></li>
-                <li><a href="contact.php">Nous contacter</a></li>
+                <li><a href="/views/confidentialite.php">Politique de confidentialité</a></li>
+                <li><a href="/views/contact.php">Nous contacter</a></li>
             </ul>
         </div>
         <div>
             <h4>Conditions Générales :</h4>
             <ul>
-                <li><a href="conditions.php">Conditions d'utilisateur et de Service</a></li>
+                <li><a href="/views/conditions.php">Conditions d'utilisateur et de Service</a></li>
             </ul>
         </div>
     </div>
