@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recherche de Gardien</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="/CSS/styles.css">
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             // Vérifier si la géolocalisation est disponible
@@ -31,14 +31,14 @@
         <h1>Gardien des Animaux</h1>
         <div class="auth-buttons">
             <!-- Boutons de redirection -->
-            <button class="btn" onclick="window.location.href='index_connect.php'">Accueil</button>
+            <button class="btn" onclick="window.location.href='/controllers/index_connect.php'">Accueil</button>
         </div>
     </header>
 
     <!-- Conteneur principal de la recherche -->
     <div class="search-container">
         <h2>Trouvez un gardien pour vos animaux</h2>
-        <form action="resultats_recherche.php" method="GET">
+        <form action="/controllers/resultats_recherche.php" method="GET">
             <!-- Type de service -->
             <div class="form-group">
                 <label for="service">Type de service</label>
@@ -95,21 +95,21 @@
         <div>
             <h4>En savoir plus :</h4>
             <ul>
-                <li><a href="securite.php">Sécurité</a></li>
-                <li><a href="aide.php">Centre d'aide</a></li>
+                <li><a href="/views/securite.php">Sécurité</a></li>
+                <li><a href="/views/aide.php">Centre d'aide</a></li>
             </ul>
         </div>
         <div>
             <h4>A propos de nous :</h4>
             <ul>
-                <li><a href="confidentialite.php">Politique de confidentialité</a></li>
-                <li><a href="contact.php">Nous contacter</a></li>
+                <li><a href="/views/confidentialite.php">Politique de confidentialité</a></li>
+                <li><a href="/views/contact.php">Nous contacter</a></li>
             </ul>
         </div>
         <div>
             <h4>Conditions Générales :</h4>
             <ul>
-                <li><a href="conditions.php">Conditions d'utilisateur et de Service</a></li>
+                <li><a href="/views/conditions.php">Conditions d'utilisateur et de Service</a></li>
             </ul>
         </div>
     </div>
