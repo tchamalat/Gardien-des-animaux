@@ -8,7 +8,7 @@ include 'config.php'; // Connexion à la base de données
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nous contacter - Gardien des Animaux</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="/CSS/styles.css">
 </head>
 <body>
 
@@ -18,7 +18,7 @@ include 'config.php'; // Connexion à la base de données
         <img src="images/logo.png" alt="Logo Gardien des Animaux">
         <h1 class="header-slogan">Une question ? Contactez-nous !</h1>
         <div class="auth-buttons">
-            <button class="btn" onclick="window.location.href='index_connect.php'">Accueil</button>
+            <button class="btn" onclick="window.location.href='/controllers/index_connect.php'">Accueil</button>
         </div>
     </div>
 </header>
@@ -78,21 +78,21 @@ include 'config.php'; // Connexion à la base de données
         <div>
             <h4>En savoir plus :</h4>
             <ul>
-                <li><a href="securite_connect.php">Sécurité</a></li>
-                <li><a href="aide_connect.php">Centre d'aide</a></li>
+                <li><a href="/views/securite_connect.php">Sécurité</a></li>
+                <li><a href="/views/aide_connect.php">Centre d'aide</a></li>
             </ul>
         </div>
         <div>
             <h4>A propos de nous :</h4>
             <ul>
-                <li><a href="confidentialite_connect.php">Politique de confidentialité</a></li>
-                <li><a href="contact_connect.php">Nous contacter</a></li>
+                <li><a href="/views/confidentialite_connect.php">Politique de confidentialité</a></li>
+                <li><a href="/views/contact_connect.php">Nous contacter</a></li>
             </ul>
         </div>
         <div>
             <h4>Conditions Générales :</h4>
             <ul>
-                <li><a href="conditions_connect.php">Conditions d'utilisateur et de Service</a></li>
+                <li><a href="/views/conditions_connect.php">Conditions d'utilisateur et de Service</a></li>
             </ul>
         </div>
     </div>
