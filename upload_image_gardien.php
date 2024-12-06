@@ -2,37 +2,46 @@
 session_start();
 include 'config.php';
 
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit();
+}
+
 if (isset($_FILES['photo_profil']) && $_FILES['photo_profil']['error'] === 0) {
-    $uploadDir = 'uploads/'; 
-    $fileName = basename($_FILES['photo_profil']['name']);
-    $uploadFile = $uploadDir . $fileName;
-    
-    $fileType = pathinfo($uploadFile, PATHINFO_EXTENSION);
+    $fileType = strtolower(pathinfo($_FILES['photo_profil']['name'], PATHINFO_EXTENSION));
     $allowedTypes = array('jpg', 'png', 'jpeg', 'gif');
-    
+
+    // Vérification du type de fichier
     if (in_array($fileType, $allowedTypes)) {
-        if (move_uploaded_file($_FILES['photo_profil']['tmp_name'], $uploadFile)) {
-            $userId = $_SESSION['user_id'];
-            // Ici on utilise profile_picture, qui correspond à la colonne de la base de données
-            $query = "UPDATE creation_compte SET profile_picture = ? WHERE id = ?";
-            $stmt = $conn->prepare($query);
-            $stmt->bind_param("si", $fileName, $userId);
+        // Lire le contenu de l'image
+        $fileContent = file_get_contents($_FILES['photo_profil']['tmp_name']);
+
+        $userId = $_SESSION['user_id'];
+
+        // Préparer la requête pour mettre à jour les données binaires
+        $query = "UPDATE creation_compte SET profile_picture = ? WHERE id = ?";
+        $stmt = $conn->prepare($query);
+        if ($stmt) {
+            $null = NULL;
+            $stmt->bind_param("bi", $null, $userId);
+            $stmt->send_long_data(0, $fileContent); // Envoi des données binaires
             if ($stmt->execute()) {
                 $_SESSION['message'] = "La photo de profil a été mise à jour avec succès.";
             } else {
-                $_SESSION['message'] = "Erreur lors de la mise à jour de la base de données.";
+                $_SESSION['message'] = "Erreur lors de la mise à jour de la base de données : " . $stmt->error;
             }
             $stmt->close();
         } else {
-            $_SESSION['message'] = "Erreur lors de l'enregistrement de l'image.";
+            $_SESSION['message'] = "Erreur de préparation de la requête : " . $conn->error;
         }
     } else {
         $_SESSION['message'] = "Type de fichier non autorisé. Veuillez choisir un fichier JPG, PNG, JPEG ou GIF.";
     }
 } else {
-    $_SESSION['message'] = "Aucun fichier téléchargé. Veuillez sélectionner une image.";
+    $_SESSION['message'] = "Aucun fichier téléchargé ou erreur lors de l'upload.";
 }
 
-header("Location: profil_gardien.php"); 
+// Redirection après traitement
+header("Location: profil_gardien.php");
 exit();
 ?>
