@@ -23,7 +23,7 @@ if (isset($_FILES['profilePicture']) && $_FILES['profilePicture']['error'] === 0
         // Check if the temporary file exists
         if (!file_exists($_FILES['profilePicture']['tmp_name'])) {
             $_SESSION['message'] = "Le fichier temporaire n'existe pas.";
-            header("Location: profil.php");
+            header("Location: /views/profil.php");
             exit();
         }
 
@@ -53,6 +53,6 @@ if (isset($_FILES['profilePicture']) && $_FILES['profilePicture']['error'] === 0
     $_SESSION['message'] = "Aucun fichier sélectionné ou erreur lors du téléversement : " . $_FILES['profilePicture']['error'];
 }
 
-header("Location: profil.php");
+header("Location: /views/profil.php");
 exit();
 ?>
