@@ -151,7 +151,7 @@ $disponibilites_array = explode(',', $disponibilites);
     <h2 class="profile-title">Profil du Gardien</h2>
     
     <div class="profile-picture">
-        <img id="profile-img" src="<?= !empty($profile_picture) ? "uploads/$profile_picture" : 'images/profile-placeholder.png'; ?>" alt="Photo de profil">
+        <img id="profile-img" src="display_image_gardien.php" alt="Photo de profil">
     </div>
 
     <form action="upload_image_gardien.php" method="POST" enctype="multipart/form-data" class="profile-form">
