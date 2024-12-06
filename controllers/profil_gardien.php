@@ -2,7 +2,7 @@
 session_start();
 
 if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php");
+    header("Location: /controllers/login.php");
     exit();
 }
 
@@ -24,14 +24,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 // Ensure budget_min and budget_max are not negative
 if ($budget_min < 0 || $budget_max < 0) {
     $_SESSION['message'] = 'Les budgets minimum et maximum ne peuvent pas être négatifs.';
-    header('Location: profil_gardien.php');
+    header('Location: /controllers/profil_gardien.php');
     exit();
 }
 
 // Ensure budget_min is not greater than budget_max
 if ($budget_min > $budget_max) {
     $_SESSION['message'] = 'Le budget minimum ne peut pas être supérieur au budget maximum.';
-    header('Location: profil_gardien.php');
+    header('Location: /controllers/profil_gardien.php');
     exit();
 }
 
@@ -41,13 +41,13 @@ if ($budget_min > $budget_max) {
     // Validate service to be either 'garde' or 'promenade'
     if ($service !== 'garde' && $service !== 'promenade') {
         $_SESSION['message'] = 'Le type de service doit être soit garde, soit promenade.';
-        header('Location: profil_gardien.php');
+        header('Location: /controllers/profil_gardien.php');
         exit();
     }
 
     if (empty($disponibilites)) {
         $_SESSION['message'] = 'Veuillez sélectionner vos disponibilités.';
-        header('Location: profil_gardien.php');
+        header('Location: /controllers/profil_gardien.php');
         exit();
     } else {
         $sql_update = "UPDATE creation_compte SET type_animal = ?, nombre_animal = ?, budget_min = ?, budget_max = ?, service = ?, disponibilites = ? WHERE id = ?";
@@ -56,11 +56,11 @@ if ($budget_min > $budget_max) {
 
         if ($stmt_update->execute()) {
             $_SESSION['message'] = 'Modifications enregistrées avec succès !';
-            header('Location: profil_gardien.php');
+            header('Location: /controllers/profil_gardien.php');
             exit();
         } else {
             $_SESSION['message'] = 'Erreur lors de l\'enregistrement des modifications.';
-            header('Location: profil_gardien.php');
+            header('Location: /controllers/profil_gardien.php');
             exit();
         }
 
@@ -134,8 +134,8 @@ $disponibilites_array = explode(',', $disponibilites);
         <img src="images/logo.png" alt="Logo Gardien des Animaux">
         <h1 class="header-slogan">Un foyer chaleureux même en votre absence</h1>
         <div class="auth-buttons">
-            <button class="btn" onclick="window.location.href='logout.php'">Déconnexion</button>
-            <button class="btn" onclick="window.location.href='index_connect.php'">Accueil</button>
+            <button class="btn" onclick="window.location.href='/controllers/logout.php'">Déconnexion</button>
+            <button class="btn" onclick="window.location.href='/controllers/index_connect.php'">Accueil</button>
         </div>
     </div>
 </header>
@@ -154,13 +154,13 @@ $disponibilites_array = explode(',', $disponibilites);
         <img id="profile-img" src="<?= !empty($profile_picture) ? "uploads/$profile_picture" : 'images/profile-placeholder.png'; ?>" alt="Photo de profil">
     </div>
 
-    <form action="upload_image_gardien.php" method="POST" enctype="multipart/form-data" class="profile-form">
+    <form action="/controllers/upload_image_gardien.php" method="POST" enctype="multipart/form-data" class="profile-form">
         <input type="file" id="profile-picture-input" name="photo_profil" accept="image/*" style="display: none;" onchange="previewProfileImage(event)">
         <button type="button" class="btn-photo" onclick="document.getElementById('profile-picture-input').click();">Changer la photo de profil</button>
         <button type="submit" class="btn-photo">Enregistrer la nouvelle photo</button>
     </form>
 
-    <form action="profil_gardien.php" method="POST">
+    <form action="/controllers/profil_gardien.php" method="POST">
         <div class="profile-details">
             <div class="profile-item">
                 <label>Nom d'utilisateur :</label>
@@ -221,7 +221,7 @@ $disponibilites_array = explode(',', $disponibilites);
         <button type="submit" class="btn">Enregistrer les modifications</button>
     </form>
 
-    <form method="POST" action="delete_account.php">
+    <form method="POST" action="/controllers/delete_account.php">
         <button class="btn-delete-account" type="submit" name="delete_account">Supprimer mon compte</button>
     </form>
     
@@ -242,21 +242,21 @@ $disponibilites_array = explode(',', $disponibilites);
         <div>
             <h4>En savoir plus :</h4>
             <ul>
-                <li><a href="securite.php">Sécurité</a></li>
-                <li><a href="aide.php">Centre d'aide</a></li>
+                <li><a href="/views/securite.php">Sécurité</a></li>
+                <li><a href="/views/aide.php">Centre d'aide</a></li>
             </ul>
         </div>
         <div>
             <h4>A propos de nous :</h4>
             <ul>
-                <li><a href="confidentialite.php">Politique de confidentialité</a></li>
-                <li><a href="contact.php">Nous contacter</a></li>
+                <li><a href="/views/confidentialite.php">Politique de confidentialité</a></li>
+                <li><a href="/views/contact.php">Nous contacter</a></li>
             </ul>
         </div>
         <div>
             <h4>Conditions Générales :</h4>
             <ul>
-                <li><a href="conditions.php">Conditions d'utilisateur et de Service</a></li>
+                <li><a href="/views/conditions.php">Conditions d'utilisateur et de Service</a></li>
             </ul>
         </div>
     </div>
