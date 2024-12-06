@@ -51,32 +51,32 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 // Succès
                 echo "<script>
                         alert('Merci, votre message a été envoyé avec succès !');
-                        window.location.href = 'contact.php';
+                        window.location.href = '/views/contact.php';
                       </script>";
             } catch (Exception $e) {
                 // Erreur lors de l'envoi
                 echo "<script>
                         alert('Désolé, une erreur est survenue lors de l\'envoi du message. Erreur : {$mail->ErrorInfo}');
-                        window.location.href = 'contact.php';
+                        window.location.href = '/views/contact.php';
                       </script>";
             }
         } else {
             // Adresse email invalide
             echo "<script>
                     alert('Veuillez fournir une adresse email valide.');
-                    window.location.href = 'contact.php';
+                    window.location.href = '/views/contact.php';
                   </script>";
         }
     } else {
         // Champs obligatoires non remplis
         echo "<script>
                 alert('Veuillez remplir tous les champs.');
-                window.location.href = 'contact.php';
+                window.location.href = '/views/contact.php';
               </script>";
     }
 } else {
     // Accès non autorisé
-    header("Location: contact.php");
+    header("Location: /views/contact.php");
     exit();
 }
 ?>
