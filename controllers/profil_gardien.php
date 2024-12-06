@@ -86,7 +86,7 @@ $disponibilites_array = explode(',', $disponibilites);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mon Profil de Gardien - Gardien des Animaux</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="/CSS/styles.css">
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const availabilityButtons = document.querySelectorAll('.btn-availability');
