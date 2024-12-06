@@ -3,7 +3,7 @@ include 'config.php';
 session_start();
 
 if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php");
+    header("Location: /controllers/login.php");
     exit;
 }
 
@@ -48,7 +48,7 @@ if ($receiver_id) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="/CSS/styles.css">
     <title>Discussion</title>
 </head>
 <body>
