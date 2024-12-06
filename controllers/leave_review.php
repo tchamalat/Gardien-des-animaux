@@ -5,7 +5,7 @@ include 'config.php'; // Inclut la configuration pour la connexion à la base de
 // Vérifiez si l'utilisateur est connecté
 if (!isset($_SESSION['user_id'])) {
     // Redirigez vers la page de connexion si l'utilisateur n'est pas connecté
-    header("Location: login.html");
+    header("Location: /views/login.html");
     exit();
 }
 
@@ -39,7 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Laisser un Avis</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="/CSS/styles.css">
     <style>
         .review-container {
             max-width: 600px;
@@ -83,7 +83,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <body>
     <header class="header-container">
         <h1>Laisser un Avis</h1>
-        <a href="index_connect.php" class="btn">Accueil</a>
+        <a href="/controllers/index_connect.php" class="btn">Accueil</a>
     </header>
     <main>
         <div class="review-container">
@@ -111,21 +111,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <div>
             <h4>En savoir plus :</h4>
             <ul>
-                <li><a href="securite.php">Sécurité</a></li>
-                <li><a href="aide.php">Centre d'aide</a></li>
+                <li><a href="/views/securite.php">Sécurité</a></li>
+                <li><a href="/views/aide.php">Centre d'aide</a></li>
             </ul>
         </div>
         <div>
             <h4>A propos de nous :</h4>
             <ul>
-                <li><a href="confidentialite.php">Politique de confidentialité</a></li>
-                <li><a href="contact.php">Nous contacter</a></li>
+                <li><a href="/views/confidentialite.php">Politique de confidentialité</a></li>
+                <li><a href="/views/contact.php">Nous contacter</a></li>
             </ul>
         </div>
         <div>
             <h4>Conditions Générales :</h4>
             <ul>
-                <li><a href="conditions.php">Conditions d'utilisateur et de Service</a></li>
+                <li><a href="/views/conditions.php">Conditions d'utilisateur et de Service</a></li>
             </ul>
         </div>
     </div>
