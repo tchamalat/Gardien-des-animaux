@@ -135,7 +135,7 @@ include 'config.php';
         <img src="images/premierplan.png" alt="Un foyer chaleureux">
         
     <div class="hero-text">
-    <form id="locationForm" action="search_page_index.php" method="GET" style="display: none;">
+    <form id="locationForm" action="views/search_page_index.php" method="GET" style="display: none;">
         <input type="hidden" name="latitude" id="latitude">
         <input type="hidden" name="longitude" id="longitude">
     </form>
@@ -152,7 +152,7 @@ include 'config.php';
         }
     </script>
     
-            <button class="btn btn-hero" onclick="window.location.href='search_page_index.php'">Trouver un gardien</button>
+            <button class="btn btn-hero" onclick="window.location.href='views/search_page_index.php'">Trouver un gardien</button>
         </div>
     </section>
 
@@ -186,7 +186,7 @@ include 'config.php';
             }
             ?>
         </div>
-        <button class="voir-plus" onclick="window.location.href='leave_review.php'">
+        <button class="voir-plus" onclick="window.location.href='controllers/leave_review.php'">
             Laisser un avis
         </button>
     </section>
@@ -198,21 +198,21 @@ include 'config.php';
         <div>
             <h4>En savoir plus :</h4>
             <ul>
-                <li><a href="securite.php">Sécurité</a></li>
-                <li><a href="aide.php">Centre d'aide</a></li>
+                <li><a href="views/securite.php">Sécurité</a></li>
+                <li><a href="views/aide.php">Centre d'aide</a></li>
             </ul>
         </div>
         <div>
             <h4>A propos de nous :</h4>
             <ul>
-                <li><a href="confidentialite.php">Politique de confidentialité</a></li>
-                <li><a href="contact.php">Nous contacter</a></li>
+                <li><a href="views/confidentialite.php">Politique de confidentialité</a></li>
+                <li><a href="views/contact.php">Nous contacter</a></li>
             </ul>
         </div>
         <div>
             <h4>Conditions Générales :</h4>
             <ul>
-                <li><a href="conditions.php">Conditions d'utilisateur et de Service</a></li>
+                <li><a href="views/conditions.php">Conditions d'utilisateur et de Service</a></li>
             </ul>
         </div>
     </div>
