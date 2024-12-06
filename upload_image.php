@@ -22,14 +22,20 @@ if (isset($_FILES['profilePicture']) && $_FILES['profilePicture']['error'] === 0
         // Préparer la requête pour insérer l'image dans la base de données
         $sql = "UPDATE creation_compte SET profile_picture = ? WHERE id = ?";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("bi", $fileContent, $user_id);
+        if ($stmt) {
+            $null = NULL;
+            $stmt->bind_param("bi", $null, $user_id);
+            $stmt->send_long_data(0, $fileContent); // Envoie des données binaires à MySQL
 
-        if ($stmt->execute()) {
-            $_SESSION['message'] = "La photo de profil a été mise à jour avec succès.";
+            if ($stmt->execute()) {
+                $_SESSION['message'] = "La photo de profil a été mise à jour avec succès.";
+            } else {
+                $_SESSION['message'] = "Erreur lors de la mise à jour de la base de données : " . $stmt->error;
+            }
+            $stmt->close();
         } else {
-            $_SESSION['message'] = "Erreur lors de la mise à jour de la base de données.";
+            $_SESSION['message'] = "Erreur de préparation de la requête : " . $conn->error;
         }
-        $stmt->close();
     } else {
         $_SESSION['message'] = "Type de fichier non autorisé.";
     }
