@@ -62,7 +62,7 @@ if (isset($_GET['gardien_id'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Réservation</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="/CSS/styles.css">
     <style>
         .reservation-container {
             background-color: #f9f9f9;
