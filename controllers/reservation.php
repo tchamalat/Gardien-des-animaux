@@ -141,8 +141,8 @@ if (isset($_GET['gardien_id'])) {
 <header>
     <h1>Réservation</h1>
     <div class="auth-buttons">
-        <button class="btn" onclick="window.location.href='logout.php'">Déconnexion</button> 
-        <button class="btn" onclick="window.location.href='index_connect.php'">Accueil</button>
+        <button class="btn" onclick="window.location.href='/controllers/logout.php'">Déconnexion</button> 
+        <button class="btn" onclick="window.location.href='/controllers/index_connect.php'">Accueil</button>
     </div>
 </header>
 
@@ -165,7 +165,7 @@ if (isset($_GET['gardien_id'])) {
         </div>
     <?php endif; ?>
 
-    <form action="reservation.php" method="POST" class="reservation-form">
+    <form action="/controllers/reservation.php" method="POST" class="reservation-form">
         <label for="date_debut">Date de début :</label>
         <input type="date" name="date_debut" id="date_debut" required>
 
@@ -197,21 +197,21 @@ if (isset($_GET['gardien_id'])) {
         <div>
             <h4>En savoir plus :</h4>
             <ul>
-                <li><a href="securite.php">Sécurité</a></li>
-                <li><a href="aide.php">Centre d'aide</a></li>
+                <li><a href="/views/securite.php">Sécurité</a></li>
+                <li><a href="/views/aide.php">Centre d'aide</a></li>
             </ul>
         </div>
         <div>
             <h4>A propos de nous :</h4>
             <ul>
-                <li><a href="confidentialite.php">Politique de confidentialité</a></li>
-                <li><a href="contact.php">Nous contacter</a></li>
+                <li><a href="/views/confidentialite.php">Politique de confidentialité</a></li>
+                <li><a href="/views/contact.php">Nous contacter</a></li>
             </ul>
         </div>
         <div>
             <h4>Conditions Générales :</h4>
             <ul>
-                <li><a href="conditions.php">Conditions d'utilisateur et de Service</a></li>
+                <li><a href="/views/conditions.php">Conditions d'utilisateur et de Service</a></li>
             </ul>
         </div>
     </div>
