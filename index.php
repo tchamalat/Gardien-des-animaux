@@ -120,10 +120,10 @@ include 'config.php';
         <div class="header-container">
             <img src="images/logo.png" alt="Logo Gardien des Animaux">
             <div class="auth-buttons">
-                <button class="btn" onclick="window.location.href='create_account.php'">
+                <button class="btn" onclick="window.location.href='views/create_account.php'">
                     <i class="icon">➕</i> Créer un compte
                 </button>
-                <button class="btn" onclick="window.location.href='login.html'">
+                <button class="btn" onclick="window.location.href='views/login.html'">
                     <i class="icon">👤</i> Je me connecte
                 </button>
             </div>
