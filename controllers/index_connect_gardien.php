@@ -78,7 +78,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gardien des Animaux - Connecté</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="/CSS/styles.css">
     <style>
         /* Styles pour la fenêtre de discussion */
         #chatButton {
@@ -156,15 +156,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <?php
                 if (isset($_SESSION['role'])) {
                     if ($_SESSION['role'] == 0) {
-                        echo '<button class="btn" onclick="window.location.href=\'profil_gardien.php\'">Mon Profil</button>';
+                        echo '<button class="btn" onclick="window.location.href=\'/controllers/profil_gardien.php\'">Mon Profil</button>';
                     } elseif ($_SESSION['role'] == 1) {
-                        echo '<button class="btn" onclick="window.location.href=\'profil.php\'">Mon Profil</button>';
+                        echo '<button class="btn" onclick="window.location.href=\'/views/profil.php\'">Mon Profil</button>';
                     }
                 } else {
-                    echo '<button class="btn" onclick="window.location.href=\'login.php\'">Mon Profil</button>';
+                    echo '<button class="btn" onclick="window.location.href=\'/controllers/login.php\'">Mon Profil</button>';
                 }
                 ?>
-                <button class="btn" onclick="window.location.href='search_page.php'">Je poste une annonce</button>
+                <button class="btn" onclick="window.location.href='/views/search_page.php'">Je poste une annonce</button>
             </div>
         </div>
     </header>
@@ -173,7 +173,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <section class="hero">
         <img src="images/premierplan.png" alt="Un foyer chaleureux">
         <div class="hero-text">
-            <button class="btn btn-hero" onclick="window.location.href='search_page.php'">Trouver un gardien</button>
+            <button class="btn btn-hero" onclick="window.location.href='/views/search_page.php'">Trouver un gardien</button>
         </div>
     </section>
 
@@ -227,21 +227,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div>
             <h4>En savoir plus :</h4>
             <ul>
-                <li><a href="securite_connect.php">Sécurité</a></li>
-                <li><a href="aide_connect.php">Centre d'aide</a></li>
+                <li><a href="/views/securite_connect.php">Sécurité</a></li>
+                <li><a href="/views/aide_connect.php">Centre d'aide</a></li>
             </ul>
         </div>
         <div>
             <h4>A propos de nous :</h4>
             <ul>
-                <li><a href="confidentialite_connect.php">Politique de confidentialité</a></li>
-                <li><a href="contact_connect.php">Nous contacter</a></li>
+                <li><a href="/views/confidentialite_connect.php">Politique de confidentialité</a></li>
+                <li><a href="/views/contact_connect.php">Nous contacter</a></li>
             </ul>
         </div>
         <div>
             <h4>Conditions Générales :</h4>
             <ul>
-                <li><a href="conditions_connect.php">Conditions d'utilisateur et de Service</a></li>
+                <li><a href="/views/conditions_connect.php">Conditions d'utilisateur et de Service</a></li>
             </ul>
         </div>
     </div>
@@ -304,7 +304,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Charger les messages
         function loadMessages(receiverId) {
-            fetch('index_connect.php', {
+            fetch('/controllers/index_connect.php', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ action: 'get_messages', receiver_id: receiverId })
@@ -327,7 +327,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             const receiverId = 1; // Remplacez par l'ID du destinataire
             const message = messageInput.value;
 
-            fetch('index_connect.php', {
+            fetch('/controllers/index_connect.php', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ action: 'send_message', receiver_id: receiverId, message })
@@ -352,7 +352,7 @@ function getUserLocation() {
             const longitude = position.coords.longitude;
 
             // Envoyer les coordonnées au serveur
-            fetch('save_location.php', {
+            fetch('/controllers/save_location.php', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
