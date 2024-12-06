@@ -33,6 +33,6 @@ if (isset($_FILES['photo_profil']) && $_FILES['photo_profil']['error'] === 0) {
     $_SESSION['message'] = "Aucun fichier téléchargé. Veuillez sélectionner une image.";
 }
 
-header("Location: profil_gardien.php"); 
+header("Location: /controllers/profil_gardien.php"); 
 exit();
 ?>
