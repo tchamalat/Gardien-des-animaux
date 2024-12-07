@@ -123,6 +123,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             font-size: 12px;
         }
         .envoyer {
+            display: block;
+            width: fit-content;
+            margin: 0 auto;
             background-color: #f5a623;
             color: white;
             padding: 15px 30px; 
@@ -131,7 +134,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             cursor: pointer;
             font-size: 1.2em;
             transition: background-color 0.3s ease, transform 0.3s ease;
-            text-align: center;
         }
 
         .envoyer:hover {
