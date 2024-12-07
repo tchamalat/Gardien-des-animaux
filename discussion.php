@@ -83,9 +83,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         textarea {
             resize: vertical;
         }
-        .btn:hover {
-            background-color: #e66b00;  /* Teinte plus foncée d'orange au survol */
-        }
         .message {
             padding: 10px;
             border-radius: 4px;
