@@ -3,7 +3,7 @@ session_start();
 include 'config.php'; // Inclut le fichier de connexion à la base de données
 
 // Vérifie si le gardien est connecté
-if (!isset($_SESSION['gardien_id'])) {
+if (!isset($_SESSION['user_id'])) {
     header("Location: login.html");
     exit();
 }
