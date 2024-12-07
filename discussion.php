@@ -39,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['recipient_username'])
 // Gestion de la suppression des messages
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_message_id'])) {
     $message_id = $_POST['delete_message_id'];
-    
+
     // Vérifie si l'utilisateur est le sender ou le receiver du message
     $check = $conn->prepare("SELECT * FROM discussion WHERE id = ? AND (sender_id = ? OR receiver_id = ?)");
     $check->bind_param('iii', $message_id, $user_id, $user_id);
@@ -66,91 +66,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_message_id']))
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Discussion</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Assurez-vous d'avoir un fichier CSS externe -->
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
-        }
-        .container {
-            width: 90%;
-            max-width: 600px;
-            margin: 40px auto;
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-        h2 {
-            text-align: center;
-            color: #333;
-        }
-        .form-group {
-            margin-bottom: 20px;
-        }
-        label {
-            display: block;
-            font-weight: bold;
-            margin-bottom: 5px;
-            color: #555;
-        }
-        input[type="text"], textarea {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            font-size: 16px;
-        }
-        textarea {
-            resize: vertical;
-        }
-        .message {
-            padding: 10px;
-            border-radius: 4px;
-            margin-bottom: 15px;
-        }
-        .success {
-            background-color: #d4edda;
-            color: #155724;
-        }
-        .error {
-            background-color: #f8d7da;
-            color: #721c24;
-        }
-        .messages-list p {
-            background-color: #f1f1f1;
-            padding: 10px;
-            border-left: 4px solid #f5a623;
-            margin-bottom: 10px;
-            border-radius: 4px;
-            font-size: 14px;
-        }
-        .messages-list em {
-            color: #888;
-            font-size: 12px;
-        }
-        .btn {
-            padding: 10px 15px;
-            background-color: #007BFF;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        .btn-danger {
-            background-color: #DC3545;
-        }
-        .btn:hover {
-            background-color: #0056b3;
-        }
-        .btn-danger:hover {
-            background-color: #c82333;
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <img src="images/logo.png" alt="Logo Gardien des Animaux">
+            <div class="auth-buttons">
+                <?php
+                if (isset($_SESSION['role'])) {
+                    if ($_SESSION['role'] == 0) {
+                        echo '<button class="btn" onclick="window.location.href=\'profil_gardien.php\'">Mon Profil</button>';
+                    } elseif ($_SESSION['role'] == 1) {
+                        echo '<button class="btn" onclick="window.location.href=\'profil.php\'">Mon Profil</button>';
+                    }
+                } else {
+                    echo '<button class="btn" onclick="window.location.href=\'login.php\'">Mon Profil</button>';
+                }
+                ?>
+                <button class="btn" onclick="window.location.href='search_page.php'">Je poste une annonce</button>
+            </div>
+        </div>
+    </header>
+
     <div class="container">
         <h2>Envoyer un message</h2>
 
@@ -208,5 +147,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_message_id']))
             ?>
         </div>
     </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-links">
+            <div>
+                <h4>En savoir plus :</h4>
+                <ul>
+                    <li><a href="securite_connect.php">Sécurité</a></li>
+                    <li><a href="aide_connect.php">Centre d'aide</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4>À propos de nous :</h4>
+                <ul>
+                    <li><a href="confidentialite_connect.php">Politique de confidentialité</a></li>
+                    <li><a href="contact_connect.php">Nous contacter</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4>Conditions Générales :</h4>
+                <ul>
+                    <li><a href="conditions_connect.php">Conditions d'utilisateur et de Service</a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
 </body>
 </html>
