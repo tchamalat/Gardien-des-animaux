@@ -211,17 +211,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <button class="voir-plus" onclick="window.location.href='leave_review.php'">Laisser un avis</button>
     </section>
 
-    <!-- Chat Section -->
-    <button id="chatButton">💬</button>
-    <div id="chatWindow">
-        <div id="chatHeader">Discussion</div>
-        <div id="chatMessages"></div>
-        <div id="chatInput">
-            <input type="text" id="messageInput" placeholder="Écrire un message..." />
-            <button id="sendButton">Envoyer</button>
-        </div>
-    </div>
-
     <!-- Footer -->
     <footer>
     <div class="footer-links">
