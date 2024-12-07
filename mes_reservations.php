@@ -142,10 +142,6 @@ $result = $stmt->get_result();
         <?php else: ?>
             <p class="no-reservation">Aucune réservation trouvée.</p>
         <?php endif; ?>
-
-        <div class="center">
-            <a href="dashboard.php" class="btn">Retour au tableau de bord</a>
-        </div>
     </div>
 </body>
 </html>
