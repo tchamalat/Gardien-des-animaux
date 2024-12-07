@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once 'db.php'; // Fichier de connexion à la base de données
+require_once 'config.php'; // Fichier de connexion à la base de données
 
 // Vérifie si l'utilisateur est connecté
 if (!isset($_SESSION['user_id'])) {
