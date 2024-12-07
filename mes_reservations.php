@@ -43,46 +43,109 @@ $result = $stmt->get_result();
 <head>
     <meta charset="UTF-8">
     <title>Mes Réservations</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Inclut une feuille de style CSS si existante -->
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1100px;
+            margin: 50px auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #444;
+            margin-bottom: 30px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        table th, table td {
+            padding: 12px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+
+        table th {
+            background-color: #f5a623;
+            color: #fff;
+            font-weight: bold;
+        }
+
+        table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        table tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .no-reservation {
+            text-align: center;
+            font-size: 18px;
+            color: #888;
+        }
+        .center {
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
-    <h1>Mes Réservations</h1>
+    <div class="container">
+        <h1>Mes Réservations</h1>
 
-    <?php if ($result->num_rows > 0): ?>
-        <table border="1">
-            <thead>
-                <tr>
-                    <th>ID Réservation</th>
-                    <th>Nom Utilisateur</th>
-                    <th>Email</th>
-                    <th>Date Début</th>
-                    <th>Date Fin</th>
-                    <th>Lieu</th>
-                    <th>Type</th>
-                    <th>Heure Début</th>
-                    <th>Heure Fin</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php while ($row = $result->fetch_assoc()): ?>
+        <?php if ($result->num_rows > 0): ?>
+            <table>
+                <thead>
                     <tr>
-                        <td><?php echo htmlspecialchars($row['id_reservation']); ?></td>
-                        <td><?php echo htmlspecialchars($row['prenom'] . ' ' . $row['nom']); ?></td>
-                        <td><?php echo htmlspecialchars($row['mail']); ?></td>
-                        <td><?php echo htmlspecialchars($row['date_debut']); ?></td>
-                        <td><?php echo htmlspecialchars($row['date_fin']); ?></td>
-                        <td><?php echo htmlspecialchars($row['lieu']); ?></td>
-                        <td><?php echo htmlspecialchars($row['type']); ?></td>
-                        <td><?php echo htmlspecialchars($row['heure_debut']); ?></td>
-                        <td><?php echo htmlspecialchars($row['heure_fin']); ?></td>
+                        <th>ID Réservation</th>
+                        <th>Nom Utilisateur</th>
+                        <th>Email</th>
+                        <th>Date Début</th>
+                        <th>Date Fin</th>
+                        <th>Lieu</th>
+                        <th>Type</th>
+                        <th>Heure Début</th>
+                        <th>Heure Fin</th>
                     </tr>
-                <?php endwhile; ?>
-            </tbody>
-        </table>
-    <?php else: ?>
-        <p>Aucune réservation trouvée.</p>
-    <?php endif; ?>
+                </thead>
+                <tbody>
+                    <?php while ($row = $result->fetch_assoc()): ?>
+                        <tr>
+                            <td><?php echo htmlspecialchars($row['id_reservation']); ?></td>
+                            <td><?php echo htmlspecialchars($row['prenom'] . ' ' . $row['nom']); ?></td>
+                            <td><?php echo htmlspecialchars($row['mail']); ?></td>
+                            <td><?php echo htmlspecialchars($row['date_debut']); ?></td>
+                            <td><?php echo htmlspecialchars($row['date_fin']); ?></td>
+                            <td><?php echo htmlspecialchars($row['lieu']); ?></td>
+                            <td><?php echo htmlspecialchars($row['type']); ?></td>
+                            <td><?php echo htmlspecialchars($row['heure_debut']); ?></td>
+                            <td><?php echo htmlspecialchars($row['heure_fin']); ?></td>
+                        </tr>
+                    <?php endwhile; ?>
+                </tbody>
+            </table>
+        <?php else: ?>
+            <p class="no-reservation">Aucune réservation trouvée.</p>
+        <?php endif; ?>
 
-    <a href="dashboard.php">Retour au tableau de bord</a> <!-- Lien pour retourner au tableau de bord -->
+        <div class="center">
+            <a href="dashboard.php" class="btn">Retour au tableau de bord</a>
+        </div>
+    </div>
 </body>
 </html>
