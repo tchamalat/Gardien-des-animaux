@@ -1,0 +1,134 @@
+<?php
+session_start();
+require_once 'config.php'; // Fichier de connexion à la base de données
+
+// Vérifie si l'utilisateur est connecté et s'il a le rôle de propriétaire (role = 1)
+if (!isset($_SESSION['user_id']) || $_SESSION['role'] != 1) {
+    header('Location: login.php');
+    exit;
+}
+
+$user_id = $_SESSION['user_id'];
+
+// Récupération des réservations associées au propriétaire
+$sql = "
+    SELECT r.id_reservation, r.date_debut, r.date_fin, r.lieu, r.type, r.heure_debut, r.heure_fin, c.nom_utilisateur AS gardien
+    FROM reservation r
+    JOIN creation_compte c ON r.gardien_id = c.id
+    WHERE r.id_utilisateur = ?
+    ORDER BY r.date_debut DESC
+";
+
+$stmt = $conn->prepare($sql);
+$stmt->bind_param('i', $user_id);
+$stmt->execute();
+$result = $stmt->get_result();
+?>
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Historique des Réservations</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 90%;
+            max-width: 800px;
+            margin: 40px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+        }
+        th {
+            background-color: #f5a623;
+            color: #fff;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        .no-reservations {
+            text-align: center;
+            color: #888;
+            margin-top: 20px;
+        }
+        .btn-return {
+            display: block;
+            width: fit-content;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background-color: #f5a623;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+        }
+        .btn-return:hover {
+            background-color: #e59420;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Historique des Réservations</h2>
+
+    <?php if ($result->num_rows > 0): ?>
+        <table>
+            <tr>
+                <th>ID Réservation</th>
+                <th>Date Début</th>
+                <th>Date Fin</th>
+                <th>Heure Début</th>
+                <th>Heure Fin</th>
+                <th>Lieu</th>
+                <th>Type</th>
+                <th>Gardien</th>
+            </tr>
+            <?php while ($row = $result->fetch_assoc()): ?>
+                <tr>
+                    <td><?php echo htmlspecialchars($row['id_reservation']); ?></td>
+                    <td><?php echo htmlspecialchars($row['date_debut']); ?></td>
+                    <td><?php echo htmlspecialchars($row['date_fin']); ?></td>
+                    <td><?php echo htmlspecialchars($row['heure_debut']); ?></td>
+                    <td><?php echo htmlspecialchars($row['heure_fin']); ?></td>
+                    <td><?php echo htmlspecialchars($row['lieu']); ?></td>
+                    <td><?php echo htmlspecialchars($row['type']); ?></td>
+                    <td><?php echo htmlspecialchars($row['gardien']); ?></td>
+                </tr>
+            <?php endwhile; ?>
+        </table>
+    <?php else: ?>
+        <p class="no-reservations">Aucune réservation trouvée.</p>
+    <?php endif; ?>
+
+    <a href="profil.php" class="btn-return">Retour au Profil</a>
+</div>
+
+</body>
+</html>
