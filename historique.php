@@ -148,7 +148,7 @@ $result = $stmt->get_result();
         <p class="no-reservations">Aucune réservation trouvée.</p>
     <?php endif; ?>
 
-    <a href="profil.php" class="btn">Retour au Profil</a>
+    <a href="profil.php" class="btn-return">Retour au Profil</a>
 </div>
 
     <!-- Footer -->
