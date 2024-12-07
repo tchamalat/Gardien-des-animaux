@@ -2,14 +2,26 @@
 session_start();
 include 'config.php'; // Inclut le fichier de connexion à la base de données
 
-// Vérifie si le gardien est connecté
+// Vérifie si l'utilisateur est connecté et a le rôle de gardien (role = 0)
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.html");
     exit();
 }
 
-// Récupère l'ID du gardien connecté
-$gardien_id = $_SESSION['gardien_id'];
+// Récupère l'ID de l'utilisateur connecté
+$user_id = $_SESSION['user_id'];
+
+// Vérifie si l'utilisateur est un gardien en consultant la base de données
+$sql_check_role = "SELECT id FROM creation_compte WHERE id = ? AND role = 0";
+$stmt_check = $conn->prepare($sql_check_role);
+$stmt_check->bind_param("i", $user_id);
+$stmt_check->execute();
+$result_check = $stmt_check->get_result();
+
+if ($result_check->num_rows === 0) {
+    echo "Vous devez être un gardien pour voir vos réservations.";
+    exit();
+}
 
 // Requête SQL pour récupérer les réservations associées au gardien
 $sql = "
@@ -21,7 +33,7 @@ $sql = "
 ";
 
 $stmt = $conn->prepare($sql);
-$stmt->bind_param("i", $gardien_id);
+$stmt->bind_param("i", $user_id);
 $stmt->execute();
 $result = $stmt->get_result();
 ?>
