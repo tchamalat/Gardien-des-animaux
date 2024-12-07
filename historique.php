@@ -74,25 +74,6 @@ $result = $stmt->get_result();
             color: #888;
             margin-top: 20px;
         }
-        .btn-return {
-            display: block;
-            width: fit-content;
-            margin: 20px auto;
-            padding: 10px 20px;
-            background-color: #f5a623;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            font-size: 1.2em;
-            cursor: pointer;
-            text-align: center;
-            text-decoration: none;
-            transition: background-color 0.3s ease, transform 0.3s ease; 
-        }
-        .btn-return:hover {
-            background-color: #ff7f00;
-            transform: translateY(-5px);
-        }
     </style>
 </head>
 <body>
@@ -148,8 +129,6 @@ $result = $stmt->get_result();
     <?php else: ?>
         <p class="no-reservations">Aucune réservation trouvée.</p>
     <?php endif; ?>
-
-    <a href="profil.php" class="btn-return">Retour au Profil</a>
 </div>
 
     <!-- Footer -->
