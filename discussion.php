@@ -122,6 +122,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             color: #888;
             font-size: 12px;
         }
+        .btn {
+            display: block;
+            width: fit-content;
+            margin: 0 auto;
+            padding: 10px 20px;
+            background-color: #f5a623;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .btn:hover {
+            background-color: #e59420;
+        }
+
     </style>
 </head>
 <body>
