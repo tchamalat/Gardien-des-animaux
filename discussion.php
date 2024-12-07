@@ -30,12 +30,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $insert = $conn->prepare("INSERT INTO discussion (sender_id, receiver_id, message) VALUES (?, ?, ?)");
         $insert->bind_param('iis', $user_id, $receiver_id, $message_content);
         if ($insert->execute()) {
-            echo "<p style='color: green;'>Message envoyé avec succès.</p>";
+            $feedback = "<div class='alert success'>Message envoyé avec succès.</div>";
         } else {
-            echo "<p style='color: red;'>Erreur lors de l'envoi du message.</p>";
+            $feedback = "<div class='alert error'>Erreur lors de l'envoi du message.</div>";
         }
     } else {
-        echo "<p style='color: red;'>Destinataire introuvable.</p>";
+        $feedback = "<div class='alert error'>Destinataire introuvable.</div>";
     }
 }
 ?>
@@ -46,41 +46,58 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Discussion</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h2>Envoyer un message</h2>
-    <form method="POST">
-        <label for="recipient_username">Nom d'utilisateur du destinataire :</label><br>
-        <input type="text" name="recipient_username" required><br><br>
+    <div class="container">
+        <h1 class="page-title">Messagerie</h1>
+        <div class="form-container">
+            <h2>Envoyer un message</h2>
+            <?php if (isset($feedback)) echo $feedback; ?>
+            <form method="POST">
+                <div class="form-group">
+                    <label for="recipient_username">Nom d'utilisateur du destinataire :</label>
+                    <input type="text" name="recipient_username" id="recipient_username" required>
+                </div>
 
-        <label for="message">Message :</label><br>
-        <textarea name="message" rows="4" cols="50" required></textarea><br><br>
+                <div class="form-group">
+                    <label for="message">Message :</label>
+                    <textarea name="message" id="message" rows="4" required></textarea>
+                </div>
 
-        <input type="submit" value="Envoyer">
-    </form>
+                <button type="submit" class="btn">Envoyer</button>
+            </form>
+        </div>
 
-    <h2>Messages échangés</h2>
-    <?php
-    // Récupère les messages où l'utilisateur est soit l'expéditeur, soit le destinataire
-    $messages = $conn->prepare("
-        SELECT d.*, c1.nom_utilisateur AS sender_name, c2.nom_utilisateur AS receiver_name 
-        FROM discussion d
-        JOIN creation_compte c1 ON d.sender_id = c1.id
-        JOIN creation_compte c2 ON d.receiver_id = c2.id
-        WHERE d.sender_id = ? OR d.receiver_id = ?
-        ORDER BY d.timestamp DESC
-    ");
-    $messages->bind_param('ii', $user_id, $user_id);
-    $messages->execute();
-    $result = $messages->get_result();
+        <div class="messages-container">
+            <h2>Messages échangés</h2>
+            <?php
+            // Récupère les messages où l'utilisateur est soit l'expéditeur, soit le destinataire
+            $messages = $conn->prepare("
+                SELECT d.*, c1.nom_utilisateur AS sender_name, c2.nom_utilisateur AS receiver_name 
+                FROM discussion d
+                JOIN creation_compte c1 ON d.sender_id = c1.id
+                JOIN creation_compte c2 ON d.receiver_id = c2.id
+                WHERE d.sender_id = ? OR d.receiver_id = ?
+                ORDER BY d.timestamp DESC
+            ");
+            $messages->bind_param('ii', $user_id, $user_id);
+            $messages->execute();
+            $result = $messages->get_result();
 
-    if ($result->num_rows > 0) {
-        while ($msg = $result->fetch_assoc()) {
-            echo "<p><strong>{$msg['sender_name']}</strong> à <strong>{$msg['receiver_name']}</strong> : {$msg['message']} <em>({$msg['timestamp']})</em></p>";
-        }
-    } else {
-        echo "<p>Aucun message trouvé.</p>";
-    }
-    ?>
+            if ($result->num_rows > 0) {
+                while ($msg = $result->fetch_assoc()) {
+                    echo "<div class='message'>
+                            <p><strong>{$msg['sender_name']}</strong> à <strong>{$msg['receiver_name']}</strong> :</p>
+                            <p>{$msg['message']}</p>
+                            <p class='timestamp'>{$msg['timestamp']}</p>
+                          </div>";
+                }
+            } else {
+                echo "<p class='no-messages'>Aucun message trouvé.</p>";
+            }
+            ?>
+        </div>
+    </div>
 </body>
 </html>
