@@ -121,7 +121,8 @@ $result = $stmt->get_result();
                     echo '<button class="btn" onclick="window.location.href=\'login.php\'">Mon Profil</button>';
                 }
                 ?>
-
+            <div class="auth-buttons">
+                <button class="btn" onclick="window.location.href='index.php'">Accueil</button>;
             </div>
         </div>
     </header>
