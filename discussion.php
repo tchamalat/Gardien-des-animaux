@@ -123,16 +123,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             font-size: 12px;
         }
         .envoyer {
-            display: block;
-            width: fit-content;
-            margin: 0 auto;
-            padding: 10px 20px;
             background-color: #f5a623;
             color: white;
+            padding: 15px 30px; 
             border: none;
-            border-radius: 4px;
-            font-size: 16px;
+            border-radius: 8px;
             cursor: pointer;
+            font-size: 1.2em;
+            transition: background-color 0.3s ease, transform 0.3s ease;
             text-align: center;
         }
 
