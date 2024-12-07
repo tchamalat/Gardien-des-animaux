@@ -136,7 +136,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </header>
     
     <div class="container">
-        <h1>Envoyer un message</h1>
+        <h2>Envoyer un message</h2>
 
         <?php if (!empty($success_message)): ?>
             <div class="message success"><?= htmlspecialchars($success_message); ?></div>
