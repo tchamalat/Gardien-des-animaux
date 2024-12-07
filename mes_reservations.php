@@ -110,18 +110,6 @@ $result = $stmt->get_result();
         <div class="header-container">
             <img src="images/logo.png" alt="Logo Gardien des Animaux">
             <div class="auth-buttons">
-                <?php
-                if (isset($_SESSION['role'])) {
-                    if ($_SESSION['role'] == 0) {
-                        echo '<button class="btn" onclick="window.location.href=\'profil_gardien.php\'">Mon Profil</button>';
-                    } elseif ($_SESSION['role'] == 1) {
-                        echo '<button class="btn" onclick="window.location.href=\'profil.php\'">Mon Profil</button>';
-                    }
-                } else {
-                    echo '<button class="btn" onclick="window.location.href=\'login.php\'">Mon Profil</button>';
-                }
-                ?>
-            <div class="auth-buttons">
                 <button class="btn" onclick="window.location.href='index.php'">Accueil</button>;
             </div>
         </div>
