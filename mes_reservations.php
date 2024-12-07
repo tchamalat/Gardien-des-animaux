@@ -2,14 +2,14 @@
 session_start();
 include 'config.php'; // Inclut le fichier de connexion à la base de données
 
+// Récupère l'ID du gardien connecté
+$gardien_id = $_SESSION['gardien_id'];
+
 // Vérifie si le gardien est connecté
 if (!isset($_SESSION['gardien_id'])) {
     echo "Vous devez être connecté pour voir vos réservations.";
     exit();
 }
-
-// Récupère l'ID du gardien connecté
-$gardien_id = $_SESSION['gardien_id'];
 
 // Requête SQL pour récupérer les réservations associées au gardien
 $sql = "
