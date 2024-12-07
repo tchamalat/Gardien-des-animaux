@@ -74,23 +74,6 @@ $result = $stmt->get_result();
             color: #888;
             margin-top: 20px;
         }
-        .btn-return {
-            display: block;
-            width: fit-content;
-            margin: 20px auto;
-            padding: 10px 20px;
-            background-color: #f5a623;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            font-size: 16px;
-            cursor: pointer;
-            text-align: center;
-            text-decoration: none;
-        }
-        .btn-return:hover {
-            background-color: #e59420;
-        }
     </style>
 </head>
 <body>
@@ -147,7 +130,7 @@ $result = $stmt->get_result();
         <p class="no-reservations">Aucune réservation trouvée.</p>
     <?php endif; ?>
 
-    <a href="profil.php" class="btn-return">Retour au Profil</a>
+    <a href="profil.php" class="btn">Retour au Profil</a>
 </div>
 
     <!-- Footer -->
