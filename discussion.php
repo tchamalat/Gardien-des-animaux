@@ -172,14 +172,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             if ($result->num_rows > 0) {
                 while ($msg = $result->fetch_assoc()) {
-                    echo "<p><strong>" . htmlspecialchars($msg['sender_name']) . "</strong> à <strong>" . htmlspecialchars($msg['receiver_name']) . "</strong> : " . htmlspecialchars($msg['message']) . " <em>(" . $msg['timestamp'] . ")</em></p>";
+                    echo "<p style='position: relative; background-color: #f1f1f1; padding: 10px; border-left: 4px solid #f5a623; margin-bottom: 10px; border-radius: 4px;'>
+                        <strong>" . htmlspecialchars($msg['sender_name']) . "</strong> à 
+                        <strong>" . htmlspecialchars($msg['receiver_name']) . "</strong> : 
+                        " . htmlspecialchars($msg['message']) . " 
+                        <em>(" . $msg['timestamp'] . ")</em>
+                        <form method='POST' style='position: absolute; right: 10px; top: 50%; transform: translateY(-50%); margin: 0;'>
+                            <input type='hidden' name='delete_message_id' value='" . $msg['id'] . "'>
+                            <button type='submit' style='background: none; border: none; color: red; font-size: 20px; cursor: pointer;' title='Supprimer'>
+                                &#10060;
+                            </button>
+                        </form>
+                      </p>";
                 }
             } else {
                 echo "<p>Aucun message trouvé.</p>";
             }
             ?>
         </div>
-    </div>
+
         <!-- Footer -->
     <footer>
     <div class="footer-links">
