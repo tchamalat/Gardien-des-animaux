@@ -1,6 +1,6 @@
 <?php
 session_start();
-include 'index_connect_gardien.php'; // Inclut le fichier de connexion à la base de données
+include 'config.php'; // Inclut le fichier de connexion à la base de données
 
 // Vérifie si le gardien est connecté
 if (!isset($_SESSION['gardien_id'])) {
