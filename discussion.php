@@ -10,6 +10,20 @@ if (!isset($_SESSION['user_id'])) {
 
 $user_id = $_SESSION['user_id'];
 
+// Gestion de la suppression du message
+if (isset($_GET['delete_id'])) {
+    $delete_id = intval($_GET['delete_id']);
+
+    $delete = $conn->prepare("DELETE FROM discussion WHERE id = ? AND (sender_id = ? OR receiver_id = ?)");
+    $delete->bind_param('iii', $delete_id, $user_id, $user_id);
+
+    if ($delete->execute()) {
+        $success_message = "Message supprimé avec succès.";
+    } else {
+        $error_message = "Erreur lors de la suppression du message.";
+    }
+}
+
 // Gestion de l'envoi du message
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $recipient_username = $_POST['recipient_username'];
@@ -172,7 +186,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             if ($result->num_rows > 0) {
                 while ($msg = $result->fetch_assoc()) {
-                    echo "<p><strong>" . htmlspecialchars($msg['sender_name']) . "</strong> à <strong>" . htmlspecialchars($msg['receiver_name']) . "</strong> : " . htmlspecialchars($msg['message']) . " <em>(" . $msg['timestamp'] . ")</em></p>";
+                    echo "<p>
+                            <strong>" . htmlspecialchars($msg['sender_name']) . "</strong> à 
+                            <strong>" . htmlspecialchars($msg['receiver_name']) . "</strong> : 
+                            " . htmlspecialchars($msg['message']) . " 
+                            <em>(" . $msg['timestamp'] . ")</em>
+                            <a href='?delete_id=" . $msg['id'] . "' style='color: red; text-decoration: none; margin-left: 10px;' title='Supprimer'>
+                                &#10060;
+                            </a>
+                          </p>";
                 }
             } else {
                 echo "<p>Aucun message trouvé.</p>";
@@ -180,7 +202,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ?>
         </div>
     </div>
-        <!-- Footer -->
+
+    <!-- Footer -->
     <footer>
     <div class="footer-links">
         <div>
