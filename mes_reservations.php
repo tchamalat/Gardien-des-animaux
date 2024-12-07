@@ -110,7 +110,7 @@ $result = $stmt->get_result();
         <div class="header-container">
             <img src="images/logo.png" alt="Logo Gardien des Animaux">
             <div class="auth-buttons">
-                <button class="btn" onclick="window.location.href='index_connect_gardien.php'">Accueil</button>;
+                <button class="btn" onclick="window.location.href='index_connect_gardien.php'">Accueil</button>
             </div>
         </div>
     </header>
