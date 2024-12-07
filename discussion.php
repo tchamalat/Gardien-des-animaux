@@ -83,17 +83,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         textarea {
             resize: vertical;
         }
-        .btn {
-            background-color: #ff7f00;  /* Orange vif pour le bouton */
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            width: 100%;
-            font-size: 16px;
-            transition: background-color 0.3s ease;
-        }
         .btn:hover {
             background-color: #e66b00;  /* Teinte plus foncée d'orange au survol */
         }
