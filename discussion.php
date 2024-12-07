@@ -85,35 +85,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         echo json_encode(['status' => 'success']);
         exit;
     }
-
-    // Garder la logique pour récupérer les gardiens
-    if (isset($input['latitude']) && isset($input['longitude']) && isset($_SESSION['role']) && $_SESSION['role'] == 1) { 
-        $user_latitude = floatval($input['latitude']);
-        $user_longitude = floatval($input['longitude']);
-        $radius = 10;
-
-        $gardiens_query = $conn->prepare("
-            SELECT 
-                id, prenom, nom_utilisateur, profile_picture, latitude, longitude,
-                (6371 * ACOS(COS(RADIANS(?)) * COS(RADIANS(latitude)) * COS(RADIANS(longitude) - RADIANS(?)) + SIN(RADIANS(?)) * SIN(RADIANS(latitude)))) AS distance
-            FROM creation_compte
-            WHERE role = 0
-            HAVING distance <= ?
-            ORDER BY distance ASC
-        ");
-        $gardiens_query->bind_param("dddi", $user_latitude, $user_longitude, $user_latitude, $radius);
-        $gardiens_query->execute();
-        $gardiens_result = $gardiens_query->get_result();
-
-        while ($gardien = $gardiens_result->fetch_assoc()) {
-            echo '<div class="gardien">';
-            echo '<img src="images/' . htmlspecialchars($gardien['profile_picture']) . '" alt="' . htmlspecialchars($gardien['prenom']) . '">';
-            echo '<p><strong>' . htmlspecialchars($gardien['prenom']) . '</strong> (' . htmlspecialchars($gardien['nom_utilisateur']) . ')</p>';
-            echo '<p class="distance">Distance : ' . round($gardien['distance'], 2) . ' km</p>';
-            echo '</div>';
-        }
-        exit;
-    }
 }
 ?>
 <!DOCTYPE html>
