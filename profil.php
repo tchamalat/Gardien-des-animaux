@@ -97,7 +97,7 @@ unset($_SESSION['message']);
     </div>
 
     <div class="profile-actions">
-        <button class="btn-action">HISTORIQUE</button>
+        <button class="btn-action" onclick="window.location.href='historique.php'">HISTORIQUE</button>
     </div>
 
     <form method="POST" action="delete_account.php">
