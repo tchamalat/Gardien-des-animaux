@@ -83,7 +83,7 @@ $result = $stmt->get_result();
             color: white;
             border: none;
             border-radius: 4px;
-            font-size: 16px;
+            font-size: 1.2em;
             cursor: pointer;
             text-align: center;
             text-decoration: none;
