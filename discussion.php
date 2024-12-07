@@ -122,7 +122,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             color: #888;
             font-size: 12px;
         }
-        .btn {
+        .envoyer {
             display: block;
             width: fit-content;
             margin: 0 auto;
@@ -136,7 +136,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             text-align: center;
         }
 
-        .btn:hover {
+        .envoyer:hover {
             background-color: #e59420;
         }
 
@@ -184,7 +184,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <textarea name="message" rows="4" required></textarea>
             </div>
 
-            <button type="submit" class="btn">Envoyer</button>
+            <button type="submit" class="envoyer">Envoyer</button>
         </form>
 
         <h2>Messages échangés</h2>
