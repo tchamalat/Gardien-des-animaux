@@ -105,6 +105,26 @@ $result = $stmt->get_result();
     </style>
 </head>
 <body>
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <img src="images/logo.png" alt="Logo Gardien des Animaux">
+            <div class="auth-buttons">
+                <?php
+                if (isset($_SESSION['role'])) {
+                    if ($_SESSION['role'] == 0) {
+                        echo '<button class="btn" onclick="window.location.href=\'profil_gardien.php\'">Mon Profil</button>';
+                    } elseif ($_SESSION['role'] == 1) {
+                        echo '<button class="btn" onclick="window.location.href=\'profil.php\'">Mon Profil</button>';
+                    }
+                } else {
+                    echo '<button class="btn" onclick="window.location.href=\'login.php\'">Mon Profil</button>';
+                }
+                ?>
+
+            </div>
+        </div>
+    </header>
     <div class="container">
         <h1>Mes Réservations</h1>
 
