@@ -135,7 +135,7 @@ $disponibilites_array = explode(',', $disponibilites);
         <h1 class="header-slogan">Un foyer chaleureux même en votre absence</h1>
         <div class="auth-buttons">
             <button class="btn" onclick="window.location.href='logout.php'">Déconnexion</button>
-            <button class="btn" onclick="window.location.href='index_connect.php'">Accueil</button>
+            <button class="btn" onclick="window.location.href='index_connect_gardien.php'">Accueil</button>
         </div>
     </div>
 </header>
