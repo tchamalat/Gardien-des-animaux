@@ -74,6 +74,24 @@ $result = $stmt->get_result();
             color: #888;
             margin-top: 20px;
         }
+        .btn-return {
+            display: block;
+            width: fit-content;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background-color: #f5a623;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+        }
+        .btn-return:hover {
+            background-color: #e59420;
+            transform: translateY(-5px);
+        }
     </style>
 </head>
 <body>
