@@ -17,30 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $message_content = $_POST['message'];
 
     // Vérifie si le destinataire existe
-    $stmt = $conn->prepare("SELECT id FROM creation_compte WHERE nom_utilisateur = ?");
-    $stmt->bind_param('s', $recipient_username);
-    $stmt->execute();
-    $result = $stmt->get_result();
-
-    if ($result->num_rows > 0) {
-        $row = $result->fetch_assoc();
-        $receiver_id = $row['id'];
-
-        // Insère le message dans la table discussion
-        $insert = $conn->prepare("INSERT INTO discussion (sender_id, receiver_id, message) VALUES (?, ?, ?)");
-        $insert->bind_param('iis', $user_id, $receiver_id, $message_content);
-        if ($insert->execute()) {
-            echo "<p style='color: green;'>Message envoyé avec succès.</p>";
-        } else {
-            echo "<p style='color: red;'>Erreur lors de l'envoi du message.</p>";
-        }
-    } else {
-        echo "<p style='color: red;'>Destinataire introuvable.</p>";
-    }
-}
-?>
-
-<!DOCTYPE html>
+    $stmt = $conn->
 <html>
 <?php  
 include 'config.php'; // Connexion à la base de données
@@ -83,6 +60,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->execute();
 
         echo json_encode(['status' => 'success']);
+        exit;
+    }
+
+    // Garder la logique pour récupérer les gardiens
+    if (isset($input['latitude']) && isset($input['longitude']) && isset($_SESSION['role']) && $_SESSION['role'] == 1) { 
+        $user_latitude = floatval($input['latitude']);
+        $user_longitude = floatval($input['longitude']);
+        $radius = 10;
+
+        $gardiens_query = $conn->prepare("
+            SELECT 
+                id, prenom, nom_utilisateur, profile_picture, latitude, longitude,
+                (6371 * ACOS(COS(RADIANS(?)) * COS(RADIANS(latitude)) * COS(RADIANS(longitude) - RADIANS(?)) + SIN(RADIANS(?)) * SIN(RADIANS(latitude)))) AS distance
+            FROM creation_compte
+            WHERE role = 0
+            HAVING distance <= ?
+            ORDER BY distance ASC
+        ");
+        $gardiens_query->bind_param("dddi", $user_latitude, $user_longitude, $user_latitude, $radius);
+        $gardiens_query->execute();
+        $gardiens_result = $gardiens_query->get_result();
+
+        while ($gardien = $gardiens_result->fetch_assoc()) {
+            echo '<div class="gardien">';
+            echo '<img src="images/' . htmlspecialchars($gardien['profile_picture']) . '" alt="' . htmlspecialchars($gardien['prenom']) . '">';
+            echo '<p><strong>' . htmlspecialchars($gardien['prenom']) . '</strong> (' . htmlspecialchars($gardien['nom_utilisateur']) . ')</p>';
+            echo '<p class="distance">Distance : ' . round($gardien['distance'], 2) . ' km</p>';
+            echo '</div>';
+        }
         exit;
     }
 }
@@ -166,7 +172,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <!-- Header -->
     <header>
         <div class="header-container">
-            <img src="images/logo.png" alt="Logo Gardien des Animaux">
+            
             <div class="auth-buttons">
                 <?php
                 if (isset($_SESSION['role'])) {
@@ -261,6 +267,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         echo json_encode(['status' => 'success']);
         exit;
     }
+
+    // Garder la logique pour récupérer les gardiens
+    if (isset($input['latitude']) && isset($input['longitude']) && isset($_SESSION['role']) && $_SESSION['role'] == 1) { 
+        $user_latitude = floatval($input['latitude']);
+        $user_longitude = floatval($input['longitude']);
+        $radius = 10;
+
+        $gardiens_query = $conn->prepare("
+            SELECT 
+                id, prenom, nom_utilisateur, profile_picture, latitude, longitude,
+                (6371 * ACOS(COS(RADIANS(?)) * COS(RADIANS(latitude)) * COS(RADIANS(longitude) - RADIANS(?)) + SIN(RADIANS(?)) * SIN(RADIANS(latitude)))) AS distance
+            FROM creation_compte
+            WHERE role = 0
+            HAVING distance <= ?
+            ORDER BY distance ASC
+        ");
+        $gardiens_query->bind_param("dddi", $user_latitude, $user_longitude, $user_latitude, $radius);
+        $gardiens_query->execute();
+        $gardiens_result = $gardiens_query->get_result();
+
+        while ($gardien = $gardiens_result->fetch_assoc()) {
+            echo '<div class="gardien">';
+            echo '<img src="images/' . htmlspecialchars($gardien['profile_picture']) . '" alt="' . htmlspecialchars($gardien['prenom']) . '">';
+            echo '<p><strong>' . htmlspecialchars($gardien['prenom']) . '</strong> (' . htmlspecialchars($gardien['nom_utilisateur']) . ')</p>';
+            echo '<p class="distance">Distance : ' . round($gardien['distance'], 2) . ' km</p>';
+            echo '</div>';
+        }
+        exit;
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -342,7 +377,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <!-- Header -->
     <header>
         <div class="header-container">
-            <img src="images/logo.png" alt="Logo Gardien des Animaux">
+            
             <div class="auth-buttons">
                 <?php
                 if (isset($_SESSION['role'])) {
@@ -359,7 +394,60 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
         </div>
     </header>
-    
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <img src="images/premierplan.png" alt="Un foyer chaleureux">
+        <div class="hero-text">
+            <button class="btn btn-hero" onclick="window.location.href='search_page.php'">Trouver un gardien</button>
+            <button class="btn" onclick="window.location.href='discussion.php'">Discussion</button>
+        </div>
+    </section>
+
+    <!-- Section Gardien -->
+    <?php if (isset($_SESSION['role']) && $_SESSION['role'] == 1): ?>
+    <section class="gardiens">
+        <h2>Gardiens près de chez vous :</h2>
+        <div class="gardien-list">
+            <p>Chargement des gardiens en fonction de votre position...</p>
+        </div>
+    </section>
+    <?php endif; ?>
+
+    <!-- Avis Section -->
+    <section class="avis-section">
+        <h3>Avis</h3>
+        <div class="avis-list">
+            <?php
+            $query = "SELECT avis.review, avis.rating, avis.date_created, creation_compte.nom_utilisateur 
+                      FROM avis 
+                      JOIN creation_compte ON avis.user_id = creation_compte.id 
+                      ORDER BY avis.date_created DESC LIMIT 3";
+            $result = $conn->query($query);
+
+            while ($row = $result->fetch_assoc()) {
+                echo "<div class='avis'>";
+                echo "<p>" . htmlspecialchars($row['nom_utilisateur']) . " :</p>";
+                echo "<p>" . htmlspecialchars($row['review']) . "</p>";
+                echo "<span>" . htmlspecialchars($row['rating']) . " / 5 <img src='images/star.png' alt='étoile'></span>";
+                echo "</div>";
+            }
+            ?>
+        </div>
+        <button class="voir-plus" onclick="window.location.href='leave_review.php'">Laisser un avis</button>
+    </section>
+
+    <!-- Chat Section -->
+    <button id="chatButton">💬</button>
+    <div id="chatWindow">
+        <div id="chatHeader">Discussion</div>
+        <div id="chatMessages"></div>
+        <div id="chatInput">
+            <input type="text" id="messageInput" placeholder="Écrire un message..." />
+            <button id="sendButton">Envoyer</button>
+        </div>
+    </div>
+
     <!-- Footer -->
     <footer>
     <div class="footer-links">
