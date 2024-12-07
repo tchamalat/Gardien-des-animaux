@@ -125,6 +125,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </style>
 </head>
 <body>
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <img src="images/logo.png" alt="Logo Gardien des Animaux">
+            <div class="auth-buttons">
+                <?php
+                if (isset($_SESSION['role'])) {
+                    if ($_SESSION['role'] == 0) {
+                        echo '<button class="btn" onclick="window.location.href=\'profil_gardien.php\'">Mon Profil</button>';
+                    } elseif ($_SESSION['role'] == 1) {
+                        echo '<button class="btn" onclick="window.location.href=\'profil.php\'">Mon Profil</button>';
+                    }
+                } else {
+                    echo '<button class="btn" onclick="window.location.href=\'login.php\'">Mon Profil</button>';
+                }
+                ?>
+                <button class="btn" onclick="window.location.href='search_page.php'">Je poste une annonce</button>
+            </div>
+        </div>
+    </header>
+    
     <div class="container">
         <h2>Envoyer un message</h2>
 
@@ -173,5 +194,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ?>
         </div>
     </div>
+        <!-- Footer -->
+    <footer>
+    <div class="footer-links">
+        <div>
+            <h4>En savoir plus :</h4>
+            <ul>
+                <li><a href="securite_connect.php">Sécurité</a></li>
+                <li><a href="aide_connect.php">Centre d'aide</a></li>
+            </ul>
+        </div>
+        <div>
+            <h4>A propos de nous :</h4>
+            <ul>
+                <li><a href="confidentialite_connect.php">Politique de confidentialité</a></li>
+                <li><a href="contact_connect.php">Nous contacter</a></li>
+            </ul>
+        </div>
+        <div>
+            <h4>Conditions Générales :</h4>
+            <ul>
+                <li><a href="conditions_connect.php">Conditions d'utilisateur et de Service</a></li>
+            </ul>
+        </div>
+    </div>
+</footer>
 </body>
 </html>
