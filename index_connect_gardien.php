@@ -165,7 +165,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
                 ?>
                 <button class="btn" onclick="window.location.href='search_page.php'">Je poste une annonce</button>
-                <button class="btn" onclick="window.location.href='discussion.php'">Discussion</button>
+                <button class="btn" onclick="window.location.href='discussion.php'">Mes réservation</button>
             </div>
         </div>
     </header>
@@ -173,20 +173,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <!-- Hero Section -->
     <section class="hero">
         <img src="images/premierplan.png" alt="Un foyer chaleureux">
-        <div class="hero-text">
-            <button class="btn btn-hero" onclick="window.location.href='search_page.php'">Trouver un gardien</button>
-        </div>
     </section>
-
-    <!-- Section Gardien -->
-    <?php if (isset($_SESSION['role']) && $_SESSION['role'] == 1): ?>
-    <section class="gardiens">
-        <h2>Gardiens près de chez vous :</h2>
-        <div class="gardien-list">
-            <p>Chargement des gardiens en fonction de votre position...</p>
-        </div>
-    </section>
-    <?php endif; ?>
 
     <!-- Avis Section -->
     <section class="avis-section">
