@@ -165,6 +165,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
                 ?>
                 <button class="btn" onclick="window.location.href='mes_reservations.php'">Mes réservation</button>
+                <button class="btn" onclick="window.location.href='discussion.php'">Discussion</button>
             </div>
         </div>
     </header>
