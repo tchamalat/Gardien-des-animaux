@@ -4,7 +4,7 @@ include 'config.php'; // Inclut le fichier de connexion à la base de données
 
 // Vérifie si le gardien est connecté
 if (!isset($_SESSION['gardien_id'])) {
-    echo "Vous devez être connecté pour voir vos réservations.";
+    header("Location: login.html");
     exit();
 }
 
@@ -35,7 +35,7 @@ $result = $stmt->get_result();
 </head>
 <body>
     <h1>Mes Réservations</h1>
-    
+
     <?php if ($result->num_rows > 0): ?>
         <table border="1">
             <thead>
