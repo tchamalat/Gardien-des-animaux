@@ -19,7 +19,7 @@ if (isset($data['latitude'], $data['longitude'])) {
         HAVING distance <= ?
         ORDER BY distance ASC
     ");
-    $query->bind_param("dddi", $latitude, $longitude, $latitude, $radius);
+    $query->bind_param("dddi", $latitude, $longitude, $latitude, (double)$radius);
     $query->execute();
     $result = $query->get_result();
 
