@@ -283,53 +283,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <?php endif; ?>
         });
     </script>
-
-    <script>
-        // Afficher/Masquer la fenêtre de chat
-        document.getElementById('chatButton').addEventListener('click', function () {
-            const chatWindow = document.getElementById('chatWindow');
-            chatWindow.style.display = chatWindow.style.display === 'none' || chatWindow.style.display === '' ? 'flex' : 'none';
-        });
-
-        // Charger les messages
-        function loadMessages(receiverId) {
-            fetch('index_connect.php', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ action: 'get_messages', receiver_id: receiverId })
-            })
-            .then(response => response.json())
-            .then(messages => {
-                const chatMessages = document.getElementById('chatMessages');
-                chatMessages.innerHTML = '';
-                messages.forEach(msg => {
-                    const messageElement = document.createElement('p');
-                    messageElement.textContent = msg.sender_id === receiverId ? `Lui: ${msg.message}` : `Vous: ${msg.message}`;
-                    chatMessages.appendChild(messageElement);
-                });
-            });
-        }
-
-        // Envoyer un message
-        document.getElementById('sendButton').addEventListener('click', function () {
-            const messageInput = document.getElementById('messageInput');
-            const receiverId = 1; // Remplacez par l'ID du destinataire
-            const message = messageInput.value;
-
-            fetch('index_connect.php', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ action: 'send_message', receiver_id: receiverId, message })
-            }).then(() => {
-                messageInput.value = '';
-                loadMessages(receiverId);
-            });
-        });
-
-        // Charger les messages à l'ouverture
-        loadMessages(1); // Remplacez "1" par l'ID réel du destinataire
-    </script>
-
 </body>
 </html>
 
