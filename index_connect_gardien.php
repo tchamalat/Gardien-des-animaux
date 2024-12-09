@@ -5,43 +5,6 @@ session_start();
 // Gestion des requêtes AJAX pour la discussion et les gardiens
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $input = json_decode(file_get_contents('php://input'), true);
-
-    // Récupérer les messages pour le chat
-    if (isset($input['action']) && $input['action'] === 'get_messages') {
-        $sender_id = $_SESSION['user_id']; // L'utilisateur connecté
-        $receiver_id = $input['receiver_id'];
-
-        $stmt = $conn->prepare("
-            SELECT * FROM discussion 
-            WHERE (sender_id = ? AND receiver_id = ?) OR (sender_id = ? AND receiver_id = ?) 
-            ORDER BY timestamp ASC
-        ");
-        $stmt->bind_param("iiii", $sender_id, $receiver_id, $receiver_id, $sender_id);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $messages = [];
-
-        while ($row = $result->fetch_assoc()) {
-            $messages[] = $row;
-        }
-        echo json_encode($messages);
-        exit;
-    }
-
-    // Envoyer un message pour le chat
-    if (isset($input['action']) && $input['action'] === 'send_message') {
-        $sender_id = $_SESSION['user_id']; // L'utilisateur connecté
-        $receiver_id = $input['receiver_id'];
-        $message = $input['message'];
-
-        $stmt = $conn->prepare("INSERT INTO discussion (sender_id, receiver_id, message) VALUES (?, ?, ?)");
-        $stmt->bind_param("iis", $sender_id, $receiver_id, $message);
-        $stmt->execute();
-
-        echo json_encode(['status' => 'success']);
-        exit;
-    }
-
     // Garder la logique pour récupérer les gardiens
     if (isset($input['latitude']) && isset($input['longitude']) && isset($_SESSION['role']) && $_SESSION['role'] == 1) { 
         $user_latitude = floatval($input['latitude']);
@@ -225,16 +188,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </footer>
 
     <script>
-        // Gestion de l'affichage/masquage de la fenêtre de chat
-        document.getElementById('chatButton').addEventListener('click', function () {
-            const chatWindow = document.getElementById('chatWindow');
-            if (chatWindow.style.display === 'none' || chatWindow.style.display === '') {
-                chatWindow.style.display = 'flex'; // Affiche la fenêtre
-            } else {
-                chatWindow.style.display = 'none'; // Masque la fenêtre
-            }
-        });
-
         // Récupération des gardiens en fonction de la localisation
         function getLocationAndFetchGardiens() {
             if (navigator.geolocation) {
@@ -273,51 +226,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </script>
 
     <script>
-        // Afficher/Masquer la fenêtre de chat
-        document.getElementById('chatButton').addEventListener('click', function () {
-            const chatWindow = document.getElementById('chatWindow');
-            chatWindow.style.display = chatWindow.style.display === 'none' || chatWindow.style.display === '' ? 'flex' : 'none';
-        });
-
-        // Charger les messages
-        function loadMessages(receiverId) {
-            fetch('index_connect.php', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ action: 'get_messages', receiver_id: receiverId })
-            })
-            .then(response => response.json())
-            .then(messages => {
-                const chatMessages = document.getElementById('chatMessages');
-                chatMessages.innerHTML = '';
-                messages.forEach(msg => {
-                    const messageElement = document.createElement('p');
-                    messageElement.textContent = msg.sender_id === receiverId ? `Lui: ${msg.message}` : `Vous: ${msg.message}`;
-                    chatMessages.appendChild(messageElement);
-                });
-            });
-        }
-
-        // Envoyer un message
-        document.getElementById('sendButton').addEventListener('click', function () {
-            const messageInput = document.getElementById('messageInput');
-            const receiverId = 1; // Remplacez par l'ID du destinataire
-            const message = messageInput.value;
-
-            fetch('index_connect.php', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ action: 'send_message', receiver_id: receiverId, message })
-            }).then(() => {
-                messageInput.value = '';
-                loadMessages(receiverId);
-            });
-        });
-
-        // Charger les messages à l'ouverture
-        loadMessages(1); // Remplacez "1" par l'ID réel du destinataire
-    </script>
-
 </body>
 </html>
 
