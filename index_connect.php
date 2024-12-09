@@ -6,42 +6,6 @@ session_start();
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $input = json_decode(file_get_contents('php://input'), true);
 
-    // Récupérer les messages pour le chat
-    if (isset($input['action']) && $input['action'] === 'get_messages') {
-        $sender_id = $_SESSION['user_id']; // L'utilisateur connecté
-        $receiver_id = $input['receiver_id'];
-
-        $stmt = $conn->prepare("
-            SELECT * FROM discussion 
-            WHERE (sender_id = ? AND receiver_id = ?) OR (sender_id = ? AND receiver_id = ?) 
-            ORDER BY timestamp ASC
-        ");
-        $stmt->bind_param("iiii", $sender_id, $receiver_id, $receiver_id, $sender_id);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $messages = [];
-
-        while ($row = $result->fetch_assoc()) {
-            $messages[] = $row;
-        }
-        echo json_encode($messages);
-        exit;
-    }
-
-    // Envoyer un message pour le chat
-    if (isset($input['action']) && $input['action'] === 'send_message') {
-        $sender_id = $_SESSION['user_id']; // L'utilisateur connecté
-        $receiver_id = $input['receiver_id'];
-        $message = $input['message'];
-
-        $stmt = $conn->prepare("INSERT INTO discussion (sender_id, receiver_id, message) VALUES (?, ?, ?)");
-        $stmt->bind_param("iis", $sender_id, $receiver_id, $message);
-        $stmt->execute();
-
-        echo json_encode(['status' => 'success']);
-        exit;
-    }
-
     // Garder la logique pour récupérer les gardiens
     if (isset($input['latitude']) && isset($input['longitude']) && isset($_SESSION['role']) && $_SESSION['role'] == 1) { 
         $user_latitude = floatval($input['latitude']);
