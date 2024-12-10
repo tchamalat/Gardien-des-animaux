@@ -10,6 +10,11 @@ include 'config.php';
 
 $user_id = $_SESSION['user_id'];
 
+// Activer le débogage
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 // Gérer l'ajout des animaux
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom_animal'])) {
     $noms_animaux = $_POST['nom_animal'];
@@ -17,15 +22,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom_animal'])) {
 
     for ($i = 0; $i < count($noms_animaux); $i++) {
         $nom_animal = $noms_animaux[$i];
+
         if ($photos_animaux['error'][$i] === UPLOAD_ERR_OK) {
             $photo_tmp_name = $photos_animaux['tmp_name'][$i];
             $photo_content = file_get_contents($photo_tmp_name);
 
             $sql = "INSERT INTO Animal (id_utilisateur, prenom_animal, url_photo) VALUES (?, ?, ?)";
             $stmt = $conn->prepare($sql);
+            
+            if (!$stmt) {
+                die("Erreur de préparation de la requête : " . $conn->error);
+            }
+
             $stmt->bind_param("iss", $user_id, $nom_animal, $photo_content);
-            $stmt->execute();
+
+            if (!$stmt->execute()) {
+                die("Erreur d'exécution de la requête : " . $stmt->error);
+            }
+
             $stmt->close();
+        } else {
+            die("Erreur de téléchargement de la photo : " . $photos_animaux['error'][$i]);
         }
     }
 
@@ -121,31 +138,6 @@ $stmt_animaux->close();
         <?php endwhile; ?>
     </div>
 </div>
-
-<footer>
-    <div class="footer-links">
-        <div>
-            <h4>En savoir plus :</h4>
-            <ul>
-                <li><a href="securite.php">Sécurité</a></li>
-                <li><a href="aide.php">Centre d'aide</a></li>
-            </ul>
-        </div>
-        <div>
-            <h4>A propos de nous :</h4>
-            <ul>
-                <li><a href="confidentialite.php">Politique de confidentialité</a></li>
-                <li><a href="contact.php">Nous contacter</a></li>
-            </ul>
-        </div>
-        <div>
-            <h4>Conditions Générales :</h4>
-            <ul>
-                <li><a href="conditions.php">Conditions d'utilisateur et de Service</a></li>
-            </ul>
-        </div>
-    </div>
-</footer>
 
 <script>
 document.getElementById('nombre_animal').addEventListener('input', function() {
