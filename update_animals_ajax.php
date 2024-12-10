@@ -16,9 +16,19 @@ if (!isset($_SESSION['user_id'])) {
 
 $user_id = $_SESSION['user_id'];
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom_animal'])) {
+// Vérifier les données reçues
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (!isset($_POST['nom_animal']) || !isset($_FILES['photo_animal'])) {
+        echo json_encode(['success' => false, 'message' => 'Données manquantes.']);
+        exit();
+    }
+
     $noms_animaux = $_POST['nom_animal'];
     $photos_animaux = $_FILES['photo_animal'];
+
+    // Afficher le contenu des données reçues pour le débogage
+    error_log(print_r($noms_animaux, true));
+    error_log(print_r($photos_animaux, true));
 
     for ($i = 0; $i < count($noms_animaux); $i++) {
         $nom_animal = $noms_animaux[$i];
@@ -46,29 +56,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom_animal'])) {
         }
     }
 
-    // Récupérer la liste mise à jour des animaux
-    $sql_animaux = "SELECT prenom_animal, url_photo FROM Animal WHERE id_utilisateur = ?";
-    $stmt = $conn->prepare($sql_animaux);
-    $stmt->bind_param("i", $user_id);
-    $stmt->execute();
-    $result = $stmt->get_result();
-
-    $animals_html = '';
-    while ($row = $result->fetch_assoc()) {
-        $photo = base64_encode($row['url_photo']);
-        $animals_html .= "
-            <div class='animal-card'>
-                <p><strong>Nom :</strong> " . htmlspecialchars($row['prenom_animal']) . "</p>
-                <div class='animal-photo'>
-                    <img src='data:image/jpeg;base64,$photo' alt='Photo de " . htmlspecialchars($row['prenom_animal']) . "'>
-                </div>
-            </div>";
-    }
-
-    echo json_encode(['success' => true, 'animals_html' => $animals_html]);
-    exit();
+    echo json_encode(['success' => true, 'message' => 'Animaux ajoutés avec succès.']);
 } else {
-    echo json_encode(['success' => false, 'message' => 'Erreur lors de l\'ajout des animaux.']);
-    exit();
+    echo json_encode(['success' => false, 'message' => 'Méthode de requête invalide.']);
 }
 ?>
