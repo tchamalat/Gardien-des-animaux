@@ -104,15 +104,17 @@ $result = $stmt->get_result();
         .btn-profile {
             display: inline-block;
             padding: 8px 12px;
-            background-color: #007bff;
+            background-color: #f5a623;
             color: #fff;
             text-decoration: none;
             border-radius: 5px;
-            transition: background-color 0.3s;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease; 
         }
 
         .btn-profile:hover {
-            background-color: #0056b3;
+            background-color: #ff7f00;
+            transform: translateY(-5px);
         }
     </style>
 </head>
