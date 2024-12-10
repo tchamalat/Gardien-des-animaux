@@ -59,12 +59,6 @@ unset($_SESSION['message']);
             <img id="profile-img" src="display_image.php" alt="Photo de profil">
         </div>
 
-        <form action="upload_image.php" method="POST" enctype="multipart/form-data" class="profile-form">
-            <input type="file" id="profile-picture-input" name="profilePicture" accept="image/*" style="display: none;" onchange="previewProfileImage(event)">
-            <button type="button" class="btn-photo" onclick="document.getElementById('profile-picture-input').click();">Changer la photo de profil</button>
-            <button type="submit" class="btn-photo">Enregistrer la nouvelle photo</button>
-        </form>
-
         <form action="update_profile_public.php" method="POST">
             <div class="profile-details">
                 <div class="profile-item">
@@ -77,7 +71,12 @@ unset($_SESSION['message']);
                 </div>
                 <div class="profile-item">
                     <label for="nombre_animal">Nombre d'animaux :</label>
-                    <input type="number" id="nombre_animal" name="nombre_animal" value="<?php echo htmlspecialchars($nombre_animal ?? ''); ?>" required>
+                    <input type="number" id="nombre_animal" name="nombre_animal" value="<?php echo htmlspecialchars($nombre_animal ?? ''); ?>" min="1" required>
+                </div>
+                
+                <div class="profile-item" id="animal-names-container">
+                    <label>Noms des animaux :</label>
+                    <div id="animal-names-fields"></div>
                 </div>
             </div>
 
@@ -121,9 +120,30 @@ function previewProfileImage(event) {
             imgElement.src = reader.result; 
         }
     }
-    
     reader.readAsDataURL(event.target.files[0]);
 }
+
+// Générer dynamiquement les champs pour les noms des animaux
+document.getElementById('nombre_animal').addEventListener('input', function() {
+    const container = document.getElementById('animal-names-fields');
+    container.innerHTML = ''; // Effacer les champs précédents
+    const count = parseInt(this.value, 10) || 0;
+
+    for (let i = 1; i <= count; i++) {
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.name = 'nom_animal[]';
+        input.placeholder = 'Nom de l\'animal ' + i;
+        input.required = true;
+        container.appendChild(input);
+    }
+});
+
+// Pour charger les champs au chargement de la page si un nombre est déjà défini
+document.addEventListener('DOMContentLoaded', function() {
+    const event = new Event('input');
+    document.getElementById('nombre_animal').dispatchEvent(event);
+});
 </script>
 
 </body>
