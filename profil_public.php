@@ -73,7 +73,7 @@ unset($_SESSION['message']);
                 </div>
                 <div class="profile-item">
                     <label for="type_animal">Type d'animal :</label>
-                    <input type="text" id="type_animal" name="type_animal" value="<?php echo htmlspecialchars($type_animal ?? ''); ?>" required>
+                    <input type="text" id="type_animal" name="type_animal" value="<?= htmlspecialchars($type_animal) ?>" required>
                 </div>
                 <div class="profile-item">
                     <label for="nombre_animal">Nombre d'animaux :</label>
