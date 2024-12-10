@@ -25,7 +25,7 @@ if ($result_check->num_rows === 0) {
 
 // Requête SQL pour récupérer les réservations associées au gardien
 $sql = "
-    SELECT r.id_reservation, r.date_debut, r.date_fin, r.lieu, r.type, r.heure_debut, r.heure_fin, c.nom, c.prenom, c.mail
+    SELECT r.id_reservation, r.date_debut, r.date_fin, r.lieu, r.type, r.heure_debut, r.heure_fin, c.id AS proprietaire_id, c.nom, c.prenom, c.mail
     FROM reservation r
     INNER JOIN creation_compte c ON r.id_utilisateur = c.id
     WHERE r.gardien_id = ?
@@ -99,8 +99,20 @@ $result = $stmt->get_result();
             font-size: 18px;
             color: #888;
         }
-        .center {
-            text-align: center;
+
+        .btn-profile {
+            background-color: #28a745;
+            color: #fff;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .btn-profile:hover {
+            background-color: #218838;
         }
     </style>
 </head>
@@ -130,6 +142,7 @@ $result = $stmt->get_result();
                         <th>Type</th>
                         <th>Heure Début</th>
                         <th>Heure Fin</th>
+                        <th>Profil Public</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -144,6 +157,9 @@ $result = $stmt->get_result();
                             <td><?php echo htmlspecialchars($row['type']); ?></td>
                             <td><?php echo htmlspecialchars($row['heure_debut']); ?></td>
                             <td><?php echo htmlspecialchars($row['heure_fin']); ?></td>
+                            <td>
+                                <a href="profil_public.php?id=<?php echo htmlspecialchars($row['proprietaire_id']); ?>" class="btn-profile">Voir le Profil</a>
+                            </td>
                         </tr>
                     <?php endwhile; ?>
                 </tbody>
@@ -154,28 +170,28 @@ $result = $stmt->get_result();
     </div>
     <!-- Footer -->
     <footer>
-    <div class="footer-links">
-        <div>
-            <h4>En savoir plus :</h4>
-            <ul>
-                <li><a href="securite_connect.php">Sécurité</a></li>
-                <li><a href="aide_connect.php">Centre d'aide</a></li>
-            </ul>
+        <div class="footer-links">
+            <div>
+                <h4>En savoir plus :</h4>
+                <ul>
+                    <li><a href="securite_connect.php">Sécurité</a></li>
+                    <li><a href="aide_connect.php">Centre d'aide</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4>A propos de nous :</h4>
+                <ul>
+                    <li><a href="confidentialite_connect.php">Politique de confidentialité</a></li>
+                    <li><a href="contact_connect.php">Nous contacter</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4>Conditions Générales :</h4>
+                <ul>
+                    <li><a href="conditions_connect.php">Conditions d'utilisateur et de Service</a></li>
+                </ul>
+            </div>
         </div>
-        <div>
-            <h4>A propos de nous :</h4>
-            <ul>
-                <li><a href="confidentialite_connect.php">Politique de confidentialité</a></li>
-                <li><a href="contact_connect.php">Nous contacter</a></li>
-            </ul>
-        </div>
-        <div>
-            <h4>Conditions Générales :</h4>
-            <ul>
-                <li><a href="conditions_connect.php">Conditions d'utilisateur et de Service</a></li>
-            </ul>
-        </div>
-    </div>
-</footer>
+    </footer>
 </body>
 </html>
