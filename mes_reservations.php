@@ -4,7 +4,7 @@ include 'config.php'; // Inclut le fichier de connexion à la base de données
 
 // Vérifie si l'utilisateur est connecté et a le rôle de gardien (role = 0)
 if (!isset($_SESSION['user_id'])) {
-    header("Location: login.html");
+    header("Location: login.php");
     exit();
 }
 
@@ -25,7 +25,8 @@ if ($result_check->num_rows === 0) {
 
 // Requête SQL pour récupérer les réservations associées au gardien
 $sql = "
-    SELECT r.id_reservation, r.date_debut, r.date_fin, r.lieu, r.type, r.heure_debut, r.heure_fin, c.id AS proprietaire_id, c.nom, c.prenom, c.mail
+    SELECT r.id_reservation, r.date_debut, r.date_fin, r.lieu, r.type, r.heure_debut, r.heure_fin, 
+           c.id AS proprietaire_id, c.nom, c.prenom, c.mail
     FROM reservation r
     INNER JOIN creation_compte c ON r.id_utilisateur = c.id
     WHERE r.gardien_id = ?
@@ -101,18 +102,17 @@ $result = $stmt->get_result();
         }
 
         .btn-profile {
-            background-color: #28a745;
-            color: #fff;
+            display: inline-block;
             padding: 8px 12px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
+            background-color: #007bff;
+            color: #fff;
             text-decoration: none;
-            font-size: 14px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
         }
 
         .btn-profile:hover {
-            background-color: #218838;
+            background-color: #0056b3;
         }
     </style>
 </head>
@@ -158,7 +158,7 @@ $result = $stmt->get_result();
                             <td><?php echo htmlspecialchars($row['heure_debut']); ?></td>
                             <td><?php echo htmlspecialchars($row['heure_fin']); ?></td>
                             <td>
-                                <a href="profil_public.php?id=<?php echo htmlspecialchars($row['proprietaire_id']); ?>" class="btn-profile">Voir le Profil</a>
+                                <a href="profil_proprietaire.php?id=<?php echo htmlspecialchars($row['proprietaire_id']); ?>" class="btn-profile">Voir le Profil</a>
                             </td>
                         </tr>
                     <?php endwhile; ?>
