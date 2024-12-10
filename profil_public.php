@@ -11,24 +11,17 @@ include 'config.php';
 $user_id = $_SESSION['user_id'];
 
 // Récupérer les informations de l'utilisateur
-$sql_user = "SELECT nom_utilisateur FROM creation_compte WHERE id = ?";
-$stmt_user = $conn->prepare($sql_user);
-$stmt_user->bind_param("i", $user_id);
-$stmt_user->execute();
-$stmt_user->bind_result($nom_utilisateur);
-$stmt_user->fetch();
-$stmt_user->close();
-
-// Récupérer les informations des animaux
-$sql_animaux = "SELECT id, nom_animal, photo_animal FROM animaux WHERE user_id = ?";
-$stmt_animaux = $conn->prepare($sql_animaux);
-$stmt_animaux->bind_param("i", $user_id);
-$stmt_animaux->execute();
-$result_animaux = $stmt_animaux->get_result();
-$animaux = $result_animaux->fetch_all(MYSQLI_ASSOC);
-$stmt_animaux->close();
-
+$sql = "SELECT nom_utilisateur, profile_picture, type_animal, nombre_animal FROM creation_compte WHERE id = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $user_id);
+$stmt->execute();
+$stmt->bind_result($nom_utilisateur, $profile_picture, $type_animal, $nombre_animal);
+$stmt->fetch();
+$stmt->close();
 $conn->close();
+
+$message = isset($_SESSION['message']) ? $_SESSION['message'] : '';
+unset($_SESSION['message']);
 ?>
 
 <!DOCTYPE html>
@@ -36,7 +29,7 @@ $conn->close();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profil Public - Gardien des Animaux</title>
+    <title>Mon Profil Public - Gardien des Animaux</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -53,33 +46,46 @@ $conn->close();
 </header>
 
 <div class="profile-container">
-    <h2 class="profile-title">Profil Public de <?php echo htmlspecialchars($nom_utilisateur); ?> :</h2>
 
-    <div class="animal-section">
-        <h3>Nombre d'animaux : <?php echo count($animaux); ?></h3>
+    <?php if ($message): ?>
+        <div class="alert-message">
+            <?php echo htmlspecialchars($message); ?>
+        </div>
+    <?php endif; ?>
 
-        <?php foreach ($animaux as $animal): ?>
-            <div class="animal-card">
-                <div class="animal-photo">
-                    <img src="display_animal_image.php?animal_id=<?php echo $animal['id']; ?>" alt="Photo de <?php echo htmlspecialchars($animal['nom_animal']); ?>">
-                </div>
-                <div class="animal-details">
-                    <span class="animal-name"><?php echo htmlspecialchars($animal['nom_animal']); ?></span>
-                </div>
+    <h2 class="profile-title">Mon Profil Public :</h2>
 
-                <form action="upload_animal_image.php" method="POST" enctype="multipart/form-data">
-                    <input type="hidden" name="animal_id" value="<?php echo $animal['id']; ?>">
-                    <input type="file" name="animalPhoto" accept="image/*" required>
-                    <button type="submit" class="btn-photo">Changer la photo de l'animal</button>
-                </form>
+    <div class="profile-info">
+        <div class="profile-picture">
+            <img id="profile-img" src="display_image.php" alt="Photo de profil">
+        </div>
+
+        <form action="upload_image.php" method="POST" enctype="multipart/form-data" class="profile-form">
+            <input type="file" id="profile-picture-input" name="profilePicture" accept="image/*" style="display: none;" onchange="previewProfileImage(event)">
+            <button type="button" class="btn-photo" onclick="document.getElementById('profile-picture-input').click();">Changer la photo de profil</button>
+            <button type="submit" class="btn-photo">Enregistrer la nouvelle photo</button>
+        </form>
+
+        <div class="profile-details">
+            <div class="profile-item">
+                <label>Nom d'utilisateur :</label>
+                <span class="profile-value"><?php echo htmlspecialchars($nom_utilisateur); ?></span>
             </div>
-        <?php endforeach; ?>
-
+            <div class="profile-item">
+                <label>Type d'animal :</label>
+                <span class="profile-value"><?php echo htmlspecialchars($type_animal ?? 'Non renseigné'); ?></span>
+            </div>
+            <div class="profile-item">
+                <label>Nombre d'animaux :</label>
+                <span class="profile-value"><?php echo htmlspecialchars($nombre_animal ?? 'Non renseigné'); ?></span>
+            </div>
+        </div>
     </div>
 
-    <div class="profile-actions">
-        <button class="btn-action" onclick="window.location.href='profil.php'">Retour à Mon Profil</button>
-    </div>
+    <form action="profil_gardien.php" method="POST">
+        <button class="btn-action" type="submit">Modifier les informations d'animaux</button>
+    </form>
+
 </div>
 
 <footer>
@@ -106,6 +112,21 @@ $conn->close();
         </div>
     </div>
 </footer>
+
+<script>
+function previewProfileImage(event) {
+    const reader = new FileReader();
+    const imgElement = document.getElementById('profile-img');
+
+    reader.onload = function(){
+        if (reader.readyState === 2) {
+            imgElement.src = reader.result; 
+        }
+    }
+    
+    reader.readAsDataURL(event.target.files[0]);
+}
+</script>
 
 </body>
 </html>
