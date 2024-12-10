@@ -18,7 +18,6 @@ $stmt->execute();
 $stmt->bind_result($nom_utilisateur, $profile_picture, $type_animal, $nombre_animal);
 $stmt->fetch();
 $stmt->close();
-$conn->close();
 
 $message = isset($_SESSION['message']) ? $_SESSION['message'] : '';
 unset($_SESSION['message']);
@@ -66,26 +65,25 @@ unset($_SESSION['message']);
             <button type="submit" class="btn-photo">Enregistrer la nouvelle photo</button>
         </form>
 
-        <div class="profile-details">
-            <div class="profile-item">
-                <label>Nom d'utilisateur :</label>
-                <span class="profile-value"><?php echo htmlspecialchars($nom_utilisateur); ?></span>
+        <form action="update_profile_public.php" method="POST">
+            <div class="profile-details">
+                <div class="profile-item">
+                    <label>Nom d'utilisateur :</label>
+                    <span class="profile-value"><?php echo htmlspecialchars($nom_utilisateur); ?></span>
+                </div>
+                <div class="profile-item">
+                    <label for="type_animal">Type d'animal :</label>
+                    <input type="text" id="type_animal" name="type_animal" value="<?php echo htmlspecialchars($type_animal ?? ''); ?>" required>
+                </div>
+                <div class="profile-item">
+                    <label for="nombre_animal">Nombre d'animaux :</label>
+                    <input type="number" id="nombre_animal" name="nombre_animal" value="<?php echo htmlspecialchars($nombre_animal ?? ''); ?>" required>
+                </div>
             </div>
-            <div class="profile-item">
-                <label>Type d'animal :</label>
-                <span class="profile-value"><?php echo htmlspecialchars($type_animal ?? 'Non renseigné'); ?></span>
-            </div>
-            <div class="profile-item">
-                <label>Nombre d'animaux :</label>
-                <span class="profile-value"><?php echo htmlspecialchars($nombre_animal ?? 'Non renseigné'); ?></span>
-            </div>
-        </div>
+
+            <button type="submit" class="btn-action">Enregistrer les modifications</button>
+        </form>
     </div>
-
-    <form action="profil_gardien.php" method="POST">
-        <button class="btn-action" type="submit">Modifier les informations d'animaux</button>
-    </form>
-
 </div>
 
 <footer>
