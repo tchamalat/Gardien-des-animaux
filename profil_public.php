@@ -81,7 +81,7 @@ unset($_SESSION['message']);
                 </div>
             </div>
 
-            <button type="submit" class="btn-action">Enregistrer les modifications</button>
+            <button type="submit" class="btn">Enregistrer les modifications</button>
         </form>
     </div>
 </div>
