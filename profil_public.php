@@ -10,6 +10,28 @@ include 'config.php';
 
 $user_id = $_SESSION['user_id'];
 
+// Gérer l'ajout des animaux
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom_animal'])) {
+    $noms_animaux = $_POST['nom_animal'];
+    $photos_animaux = $_FILES['photo_animal'];
+
+    for ($i = 0; $i < count($noms_animaux); $i++) {
+        $nom_animal = $noms_animaux[$i];
+        if ($photos_animaux['error'][$i] === UPLOAD_ERR_OK) {
+            $photo_tmp_name = $photos_animaux['tmp_name'][$i];
+            $photo_content = file_get_contents($photo_tmp_name);
+
+            $sql = "INSERT INTO Animal (id_utilisateur, prenom_animal, url_photo) VALUES (?, ?, ?)";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("iss", $user_id, $nom_animal, $photo_content);
+            $stmt->execute();
+            $stmt->close();
+        }
+    }
+
+    $message = "Animaux ajoutés avec succès !";
+}
+
 // Récupérer les informations de l'utilisateur
 $sql_user = "SELECT nom_utilisateur, profile_picture FROM creation_compte WHERE id = ?";
 $stmt_user = $conn->prepare($sql_user);
@@ -64,8 +86,12 @@ $stmt_animaux->close();
         </div>
     </div>
 
+    <?php if (isset($message)): ?>
+        <div class="alert-message"><?php echo htmlspecialchars($message); ?></div>
+    <?php endif; ?>
+
     <h3>Ajouter des Animaux</h3>
-    <form id="animal-form" enctype="multipart/form-data">
+    <form method="POST" enctype="multipart/form-data">
         <div class="profile-item">
             <label for="nombre_animal">Nombre d'animaux :</label>
             <input type="number" id="nombre_animal" name="nombre_animal" min="1" required>
@@ -78,8 +104,6 @@ $stmt_animaux->close();
 
         <button type="submit" class="btn">Enregistrer les animaux</button>
     </form>
-
-    <div id="confirmation-message" class="alert-message" style="display: none;"></div>
 
     <h3>Mes Animaux</h3>
     <div id="animal-list" class="animal-list">
@@ -140,33 +164,6 @@ document.getElementById('nombre_animal').addEventListener('input', function() {
         `;
         container.appendChild(div);
     }
-});
-
-document.getElementById('animal-form').addEventListener('submit', function(event) {
-    event.preventDefault();
-    const formData = new FormData(this);
-
-    fetch('update_animals_ajax.php', {
-        method: 'POST',
-        body: formData
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            document.getElementById('confirmation-message').innerText = 'Animaux ajoutés avec succès !';
-            document.getElementById('confirmation-message').style.display = 'block';
-            document.getElementById('animal-list').innerHTML = data.animals_html;
-            document.getElementById('animal-form').reset();
-            document.getElementById('animal-fields').innerHTML = '';
-        } else {
-            document.getElementById('confirmation-message').innerText = 'Erreur : ' + data.message;
-            document.getElementById('confirmation-message').style.display = 'block';
-        }
-    })
-    .catch(error => {
-        document.getElementById('confirmation-message').innerText = 'Erreur : ' + error;
-        document.getElementById('confirmation-message').style.display = 'block';
-    });
 });
 </script>
 
