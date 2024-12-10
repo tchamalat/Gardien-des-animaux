@@ -139,6 +139,10 @@ $stmt_animaux->close();
     </div>
 </div>
 
+<div class="profile-actions">
+    <button class="btn-action" onclick="window.location.href='profil.php'">MON PROFIL</button>
+</div>
+
 <footer>
     <div class="footer-links">
         <div>
