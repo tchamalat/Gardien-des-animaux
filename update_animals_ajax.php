@@ -66,7 +66,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom_animal'])) {
     }
 
     echo json_encode(['success' => true, 'animals_html' => $animals_html]);
+    exit();
 } else {
     echo json_encode(['success' => false, 'message' => 'Erreur lors de l\'ajout des animaux.']);
+    exit();
 }
 ?>
