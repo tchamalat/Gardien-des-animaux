@@ -4,6 +4,11 @@ include 'config.php';
 
 header('Content-Type: application/json');
 
+// Activer l'affichage des erreurs pour le débogage
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 if (!isset($_SESSION['user_id'])) {
     echo json_encode(['success' => false, 'message' => 'Utilisateur non connecté.']);
     exit();
@@ -17,14 +22,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom_animal'])) {
 
     for ($i = 0; $i < count($noms_animaux); $i++) {
         $nom_animal = $noms_animaux[$i];
+
         if ($photos_animaux['error'][$i] === UPLOAD_ERR_OK) {
             $photo_tmp_name = $photos_animaux['tmp_name'][$i];
             $photo_content = file_get_contents($photo_tmp_name);
 
             $sql = "INSERT INTO Animal (id_utilisateur, prenom_animal, url_photo) VALUES (?, ?, ?)";
             $stmt = $conn->prepare($sql);
+            if (!$stmt) {
+                echo json_encode(['success' => false, 'message' => 'Erreur de préparation de la requête : ' . $conn->error]);
+                exit();
+            }
+
             $stmt->bind_param("iss", $user_id, $nom_animal, $photo_content);
-            $stmt->execute();
+
+            if (!$stmt->execute()) {
+                echo json_encode(['success' => false, 'message' => 'Erreur SQL : ' . $stmt->error]);
+                exit();
+            }
+        } else {
+            echo json_encode(['success' => false, 'message' => 'Erreur de téléchargement de la photo.']);
+            exit();
         }
     }
 
