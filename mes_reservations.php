@@ -158,7 +158,7 @@ $result = $stmt->get_result();
                             <td><?php echo htmlspecialchars($row['heure_debut']); ?></td>
                             <td><?php echo htmlspecialchars($row['heure_fin']); ?></td>
                             <td>
-                                <a href="profil_proprietaire.php?id=<?php echo htmlspecialchars($row['proprietaire_id']); ?>" class="btn-profile">Voir le Profil</a>
+                                <a href="profil_proprietaire.php?id=<?php echo htmlspecialchars($row['proprietaire_id']); ?>" class="btn">Voir le Profil</a>
                             </td>
                         </tr>
                     <?php endwhile; ?>
