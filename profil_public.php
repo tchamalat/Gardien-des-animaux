@@ -11,13 +11,21 @@ include 'config.php';
 $user_id = $_SESSION['user_id'];
 
 // Récupérer les informations de l'utilisateur
-$sql = "SELECT nom_utilisateur, profile_picture, type_animal, nombre_animal FROM creation_compte WHERE id = ?";
-$stmt = $conn->prepare($sql);
-$stmt->bind_param("i", $user_id);
-$stmt->execute();
-$stmt->bind_result($nom_utilisateur, $profile_picture, $type_animal, $nombre_animal);
-$stmt->fetch();
-$stmt->close();
+$sql_user = "SELECT nom_utilisateur, profile_picture FROM creation_compte WHERE id = ?";
+$stmt_user = $conn->prepare($sql_user);
+$stmt_user->bind_param("i", $user_id);
+$stmt_user->execute();
+$stmt_user->bind_result($nom_utilisateur, $profile_picture);
+$stmt_user->fetch();
+$stmt_user->close();
+
+// Récupérer les animaux de l'utilisateur
+$sql_animaux = "SELECT prenom_animal, url_photo FROM Animal WHERE id_utilisateur = ?";
+$stmt_animaux = $conn->prepare($sql_animaux);
+$stmt_animaux->bind_param("i", $user_id);
+$stmt_animaux->execute();
+$result_animaux = $stmt_animaux->get_result();
+$stmt_animaux->close();
 
 $message = isset($_SESSION['message']) ? $_SESSION['message'] : '';
 unset($_SESSION['message']);
@@ -58,30 +66,43 @@ unset($_SESSION['message']);
         <div class="profile-picture">
             <img id="profile-img" src="display_image.php" alt="Photo de profil">
         </div>
+        <div class="profile-details">
+            <div class="profile-item">
+                <label>Nom d'utilisateur :</label>
+                <span class="profile-value"><?php echo htmlspecialchars($nom_utilisateur); ?></span>
+            </div>
+        </div>
+    </div>
 
-        <form action="update_profile_public.php" method="POST">
-            <div class="profile-details">
-                <div class="profile-item">
-                    <label>Nom d'utilisateur :</label>
-                    <span class="profile-value"><?php echo htmlspecialchars($nom_utilisateur); ?></span>
-                </div>
-                <div class="profile-item">
-                    <label for="type_animal">Type d'animal :</label>
-                    <input type="text" id="type_animal" name="type_animal" value="<?= htmlspecialchars($type_animal) ?>" required>
-                </div>
-                <div class="profile-item">
-                    <label for="nombre_animal">Nombre d'animaux :</label>
-                    <input type="number" id="nombre_animal" name="nombre_animal" value="<?php echo htmlspecialchars($nombre_animal ?? ''); ?>" min="1" required>
-                </div>
-                
-                <div class="profile-item" id="animal-names-container">
-                    <label>Noms des animaux :</label>
-                    <div id="animal-names-fields"></div>
+    <h3>Ajouter des Animaux</h3>
+    <form action="update_animals.php" method="POST" enctype="multipart/form-data">
+        <div class="profile-item">
+            <label for="nombre_animal">Nombre d'animaux :</label>
+            <input type="number" id="nombre_animal" name="nombre_animal" min="1" required>
+        </div>
+        
+        <div class="profile-item" id="animal-details-container">
+            <label>Détails des animaux :</label>
+            <div id="animal-fields"></div>
+        </div>
+
+        <button type="submit" class="btn">Enregistrer les animaux</button>
+    </form>
+
+    <h3>Mes Animaux</h3>
+    <div class="animal-list">
+        <?php while ($row = $result_animaux->fetch_assoc()): ?>
+            <div class="animal-card">
+                <p><strong>Nom :</strong> <?php echo htmlspecialchars($row['prenom_animal']); ?></p>
+                <div class="animal-photo">
+                    <?php if ($row['url_photo']): ?>
+                        <img src="data:image/jpeg;base64,<?php echo base64_encode($row['url_photo']); ?>" alt="Photo de <?php echo htmlspecialchars($row['prenom_animal']); ?>">
+                    <?php else: ?>
+                        <p>Aucune photo disponible</p>
+                    <?php endif; ?>
                 </div>
             </div>
-
-            <button type="submit" class="btn">Enregistrer les modifications</button>
-        </form>
+        <?php endwhile; ?>
     </div>
 </div>
 
@@ -111,38 +132,23 @@ unset($_SESSION['message']);
 </footer>
 
 <script>
-function previewProfileImage(event) {
-    const reader = new FileReader();
-    const imgElement = document.getElementById('profile-img');
-
-    reader.onload = function(){
-        if (reader.readyState === 2) {
-            imgElement.src = reader.result; 
-        }
-    }
-    reader.readAsDataURL(event.target.files[0]);
-}
-
-// Générer dynamiquement les champs pour les noms des animaux
 document.getElementById('nombre_animal').addEventListener('input', function() {
-    const container = document.getElementById('animal-names-fields');
+    const container = document.getElementById('animal-fields');
     container.innerHTML = ''; // Effacer les champs précédents
     const count = parseInt(this.value, 10) || 0;
 
     for (let i = 1; i <= count; i++) {
-        const input = document.createElement('input');
-        input.type = 'text';
-        input.name = 'nom_animal[]';
-        input.placeholder = 'Nom de l\'animal ' + i;
-        input.required = true;
-        container.appendChild(input);
+        const div = document.createElement('div');
+        div.className = 'animal-entry';
+        
+        div.innerHTML = `
+            <label>Nom de l'animal ${i} :</label>
+            <input type="text" name="nom_animal[]" required>
+            <label>Photo de l'animal ${i} :</label>
+            <input type="file" name="photo_animal[]" accept="image/*" required>
+        `;
+        container.appendChild(div);
     }
-});
-
-// Pour charger les champs au chargement de la page si un nombre est déjà défini
-document.addEventListener('DOMContentLoaded', function() {
-    const event = new Event('input');
-    document.getElementById('nombre_animal').dispatchEvent(event);
 });
 </script>
 
