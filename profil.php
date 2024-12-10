@@ -98,6 +98,7 @@ unset($_SESSION['message']);
 
     <div class="profile-actions">
         <button class="btn-action" onclick="window.location.href='historique.php'">HISTORIQUE</button>
+        <button class="btn-action" onclick="window.location.href='profil_public.php'">MON PROFIL PUBLIC</button>
     </div>
 
     <form method="POST" action="delete_account.php">
