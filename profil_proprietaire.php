@@ -1,29 +1,42 @@
-<?php
+<?php 
 session_start();
-include 'config.php'; // Inclut le fichier de connexion à la base de données
 
-// Vérifie si l'ID du propriétaire est passé en paramètre
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit();
+}
+
+include 'config.php';
+
+// Vérifier si un ID de propriétaire est passé dans l'URL
 if (!isset($_GET['id'])) {
     echo "ID du propriétaire non spécifié.";
     exit();
 }
 
-$proprietaire_id = intval($_GET['id']);
+$proprietaire_id = $_GET['id'];
 
-// Récupère les informations du propriétaire depuis la base de données
-$sql = "SELECT nom_utilisateur, nom, prenom, mail, profile_picture FROM creation_compte WHERE id = ?";
-$stmt = $conn->prepare($sql);
-$stmt->bind_param("i", $proprietaire_id);
-$stmt->execute();
-$result = $stmt->get_result();
+// Activer le débogage
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
-if ($result->num_rows === 0) {
-    echo "Aucun utilisateur trouvé avec cet ID.";
-    exit();
-}
+// Récupérer les informations du propriétaire
+$sql_user = "SELECT nom_utilisateur, profile_picture FROM creation_compte WHERE id = ?";
+$stmt_user = $conn->prepare($sql_user);
+$stmt_user->bind_param("i", $proprietaire_id);
+$stmt_user->execute();
+$stmt_user->bind_result($nom_utilisateur, $profile_picture);
+$stmt_user->fetch();
+$stmt_user->close();
 
-$proprietaire = $result->fetch_assoc();
-$stmt->close();
+// Récupérer les animaux du propriétaire
+$sql_animaux = "SELECT prenom_animal, url_photo FROM Animal WHERE id_utilisateur = ?";
+$stmt_animaux = $conn->prepare($sql_animaux);
+$stmt_animaux->bind_param("i", $proprietaire_id);
+$stmt_animaux->execute();
+$result_animaux = $stmt_animaux->get_result();
+$stmt_animaux->close();
 ?>
 
 <!DOCTYPE html>
@@ -31,78 +44,85 @@ $stmt->close();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profil du Propriétaire</title>
+    <title>Profil Public du Propriétaire - Gardien des Animaux</title>
     <link rel="stylesheet" href="styles.css">
-    <style>
-        .profile-container {
-            width: 80%;
-            margin: 50px auto;
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        }
-        .profile-picture img {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            object-fit: cover;
-        }
-        .profile-item {
-            margin: 15px 0;
-        }
-        .profile-item label {
-            font-weight: bold;
-        }
-        .btn-back {
-            display: inline-block;
-            margin-top: 20px;
-            padding: 10px 15px;
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            text-decoration: none;
-        }
-        .btn-back:hover {
-            background-color: #0056b3;
-        }
-    </style>
 </head>
 <body>
 
-<div class="profile-container">
-    <h2>Profil du Propriétaire</h2>
+<header>
+    <div class="header-container">
+        <img src="images/logo.png" alt="Logo Gardien des Animaux">
+        <h1 class="header-slogan">Un foyer chaleureux même en votre absence</h1>
+        <div class="auth-buttons">
+            <button class="btn" onclick="window.location.href='index_connect_gardien.php'">Accueil</button>
+        </div>
+    </div>
+</header>
 
-    <div class="profile-picture">
-        <?php if ($proprietaire['profile_picture']): ?>
-            <img src="data:image/jpeg;base64,<?php echo base64_encode($proprietaire['profile_picture']); ?>" alt="Photo de profil">
+<div class="profile-container">
+    <h2 class="profile-title">Profil Public du Propriétaire</h2>
+
+    <div class="profile-info">
+        <div class="profile-picture">
+            <?php if ($profile_picture): ?>
+                <img id="profile-img" src="data:image/jpeg;base64,<?php echo base64_encode($profile_picture); ?>" alt="Photo de profil">
+            <?php else: ?>
+                <img id="profile-img" src="images/default_profile.png" alt="Photo de profil par défaut">
+            <?php endif; ?>
+        </div>
+        <div class="profile-details">
+            <div class="profile-item">
+                <label>Nom d'utilisateur :</label>
+                <span class="profile-value"><?php echo htmlspecialchars($nom_utilisateur); ?></span>
+            </div>
+        </div>
+    </div>
+
+    <h3>Animaux du Propriétaire</h3>
+    <div id="animal-list" class="animal-list">
+        <?php if ($result_animaux->num_rows > 0): ?>
+            <?php while ($row = $result_animaux->fetch_assoc()): ?>
+                <div class="animal-card">
+                    <p><strong>Nom :</strong> <?php echo htmlspecialchars($row['prenom_animal']); ?></p>
+                    <div class="animal-photo">
+                        <?php if ($row['url_photo']): ?>
+                            <img src="data:image/jpeg;base64,<?php echo base64_encode($row['url_photo']); ?>" alt="Photo de <?php echo htmlspecialchars($row['prenom_animal']); ?>">
+                        <?php else: ?>
+                            <p>Aucune photo disponible</p>
+                        <?php endif; ?>
+                    </div>
+                </div>
+            <?php endwhile; ?>
         <?php else: ?>
-            <p>Aucune photo de profil disponible.</p>
+            <p class="no-animals">Aucun animal enregistré pour ce propriétaire.</p>
         <?php endif; ?>
     </div>
+</div>
 
-    <div class="profile-details">
-        <div class="profile-item">
-            <label>Nom d'utilisateur :</label>
-            <span><?php echo htmlspecialchars($proprietaire['nom_utilisateur']); ?></span>
+<footer>
+    <div class="footer-links">
+        <div>
+            <h4>En savoir plus :</h4>
+            <ul>
+                <li><a href="securite_connect.php">Sécurité</a></li>
+                <li><a href="aide_connect.php">Centre d'aide</a></li>
+            </ul>
         </div>
-        <div class="profile-item">
-            <label>Nom :</label>
-            <span><?php echo htmlspecialchars($proprietaire['nom']); ?></span>
+        <div>
+            <h4>A propos de nous :</h4>
+            <ul>
+                <li><a href="confidentialite_connect.php">Politique de confidentialité</a></li>
+                <li><a href="contact_connect.php">Nous contacter</a></li>
+            </ul>
         </div>
-        <div class="profile-item">
-            <label>Prénom :</label>
-            <span><?php echo htmlspecialchars($proprietaire['prenom']); ?></span>
-        </div>
-        <div class="profile-item">
-            <label>Email :</label>
-            <span><?php echo htmlspecialchars($proprietaire['mail']); ?></span>
+        <div>
+            <h4>Conditions Générales :</h4>
+            <ul>
+                <li><a href="conditions_connect.php">Conditions d'utilisateur et de Service</a></li>
+            </ul>
         </div>
     </div>
-
-    <a href="mes_reservations.php" class="btn-back">Retour aux réservations</a>
-</div>
+</footer>
 
 </body>
 </html>
