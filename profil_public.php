@@ -26,9 +26,6 @@ $stmt_animaux->bind_param("i", $user_id);
 $stmt_animaux->execute();
 $result_animaux = $stmt_animaux->get_result();
 $stmt_animaux->close();
-
-$message = isset($_SESSION['message']) ? $_SESSION['message'] : '';
-unset($_SESSION['message']);
 ?>
 
 <!DOCTYPE html>
@@ -53,13 +50,6 @@ unset($_SESSION['message']);
 </header>
 
 <div class="profile-container">
-
-    <?php if ($message): ?>
-        <div class="alert-message">
-            <?php echo htmlspecialchars($message); ?>
-        </div>
-    <?php endif; ?>
-
     <h2 class="profile-title">Mon Profil Public :</h2>
 
     <div class="profile-info">
@@ -75,7 +65,7 @@ unset($_SESSION['message']);
     </div>
 
     <h3>Ajouter des Animaux</h3>
-    <form action="update_animals.php" method="POST" enctype="multipart/form-data">
+    <form id="animal-form" enctype="multipart/form-data">
         <div class="profile-item">
             <label for="nombre_animal">Nombre d'animaux :</label>
             <input type="number" id="nombre_animal" name="nombre_animal" min="1" required>
@@ -89,8 +79,10 @@ unset($_SESSION['message']);
         <button type="submit" class="btn">Enregistrer les animaux</button>
     </form>
 
+    <div id="confirmation-message" class="alert-message" style="display: none;"></div>
+
     <h3>Mes Animaux</h3>
-    <div class="animal-list">
+    <div id="animal-list" class="animal-list">
         <?php while ($row = $result_animaux->fetch_assoc()): ?>
             <div class="animal-card">
                 <p><strong>Nom :</strong> <?php echo htmlspecialchars($row['prenom_animal']); ?></p>
@@ -134,13 +126,12 @@ unset($_SESSION['message']);
 <script>
 document.getElementById('nombre_animal').addEventListener('input', function() {
     const container = document.getElementById('animal-fields');
-    container.innerHTML = ''; // Effacer les champs précédents
+    container.innerHTML = '';
     const count = parseInt(this.value, 10) || 0;
 
     for (let i = 1; i <= count; i++) {
         const div = document.createElement('div');
         div.className = 'animal-entry';
-        
         div.innerHTML = `
             <label>Nom de l'animal ${i} :</label>
             <input type="text" name="nom_animal[]" required>
@@ -149,6 +140,33 @@ document.getElementById('nombre_animal').addEventListener('input', function() {
         `;
         container.appendChild(div);
     }
+});
+
+document.getElementById('animal-form').addEventListener('submit', function(event) {
+    event.preventDefault();
+    const formData = new FormData(this);
+
+    fetch('update_animals_ajax.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            document.getElementById('confirmation-message').innerText = 'Animaux ajoutés avec succès !';
+            document.getElementById('confirmation-message').style.display = 'block';
+            document.getElementById('animal-list').innerHTML = data.animals_html;
+            document.getElementById('animal-form').reset();
+            document.getElementById('animal-fields').innerHTML = '';
+        } else {
+            document.getElementById('confirmation-message').innerText = 'Erreur : ' + data.message;
+            document.getElementById('confirmation-message').style.display = 'block';
+        }
+    })
+    .catch(error => {
+        document.getElementById('confirmation-message').innerText = 'Erreur : ' + error;
+        document.getElementById('confirmation-message').style.display = 'block';
+    });
 });
 </script>
 
