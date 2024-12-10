@@ -55,6 +55,7 @@ $stmt_animaux->close();
         <h1 class="header-slogan">Un foyer chaleureux même en votre absence</h1>
         <div class="auth-buttons">
             <button class="btn" onclick="window.location.href='index_connect_gardien.php'">Accueil</button>
+            <button class="btn" onclick="window.location.href='mes_reservations.php'">Mes réservation</button>
         </div>
     </div>
 </header>
