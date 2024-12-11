@@ -112,7 +112,7 @@ $result = $stmt->get_result();
                 <th>Lieu</th>
                 <th>Type</th>
                 <th>Gardien</th>
-                <th>Action</th> 
+                <th>Supprimer</th> 
             </tr>
             <?php while ($row = $result->fetch_assoc()): ?>
                 <tr>
