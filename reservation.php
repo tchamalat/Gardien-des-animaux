@@ -34,8 +34,10 @@ if (isset($_SESSION['selected_gardien'])) {
     $stmt->close();
 }
 
-// Traitement de la réservation
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SESSION['selected_gardien'])) {
+    echo "Traitement de la réservation en cours...<br>";
+    var_dump($_SESSION);
+
     $gardien_id = $_SESSION['selected_gardien'];
     $proprietaire_id = $_SESSION['user_id'];
     $date_debut = $_POST['date_debut'];
@@ -56,15 +58,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SESSION['selected_gardien']
     $stmt->bind_param("iissssss", $gardien_id, $proprietaire_id, $date_debut, $date_fin, $lieu, $type, $heure_debut, $heure_fin);
 
     if ($stmt->execute()) {
+        echo "Réservation réussie !<br>";
         $message_confirmation = "Votre réservation a été effectuée avec succès pour le gardien !";
         unset($_SESSION['selected_gardien']);
     } else {
+        echo "Erreur SQL : " . $stmt->error . "<br>";
         $message_confirmation = "Erreur lors de la réservation : " . $stmt->error;
     }
 
     $stmt->close();
     $conn->close();
 }
+
 ?>
 
 
