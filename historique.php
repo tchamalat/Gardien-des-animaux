@@ -112,6 +112,7 @@ $result = $stmt->get_result();
                 <th>Lieu</th>
                 <th>Type</th>
                 <th>Gardien</th>
+                <th>Action</th> 
             </tr>
             <?php while ($row = $result->fetch_assoc()): ?>
                 <tr>
@@ -123,9 +124,15 @@ $result = $stmt->get_result();
                     <td><?php echo htmlspecialchars($row['lieu']); ?></td>
                     <td><?php echo htmlspecialchars($row['type']); ?></td>
                     <td><?php echo htmlspecialchars($row['gardien']); ?></td>
+                    <td>
+                        <a href="supprimer_reservation.php?id=<?php echo $row['id_reservation']; ?>" onclick="return confirm('Voulez-vous vraiment supprimer cette réservation ?');">
+                            ❌
+                        </a>
+                    </td>
                 </tr>
             <?php endwhile; ?>
         </table>
+
     <?php else: ?>
         <p class="no-reservations">Aucune réservation trouvée.</p>
     <?php endif; ?>
