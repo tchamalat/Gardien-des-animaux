@@ -87,45 +87,6 @@ $disponibilites_array = explode(',', $disponibilites);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mon Profil de Gardien - Gardien des Animaux</title>
     <link rel="stylesheet" href="styles.css">
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const availabilityButtons = document.querySelectorAll('.btn-availability');
-            const hiddenField = document.getElementById('disponibilites');
-            let selectedDays = <?= json_encode($disponibilites_array) ?>;
-            availabilityButtons.forEach(button => {
-                if (selectedDays.includes(button.textContent)) {
-                    button.classList.add('selected');
-                }
-                button.addEventListener('click', function() {
-                    const day = this.textContent;
-                    if (this.classList.contains('selected')) {
-                        this.classList.remove('selected');
-                        selectedDays = selectedDays.filter(d => d !== day);
-                    } else {
-                        this.classList.add('selected');
-                        selectedDays.push(day);
-                    }
-                    hiddenField.value = selectedDays.join(',');
-                    console.log("Selected days: " + hiddenField.value); 
-                });
-            });
-            hiddenField.value = selectedDays.join(',');
-            console.log("Initial selected days: " + hiddenField.value); 
-        });
-    </script>
-    <script>
-        function previewProfileImage(event) {
-            const reader = new FileReader();
-            const imgElement = document.getElementById('profile-img');
-
-            reader.onload = function() {
-                if (imgElement) {
-                    imgElement.src = reader.result;
-                }
-            };
-            reader.readAsDataURL(event.target.files[0]);
-        }
-    </script>
 </head>
 <body>
 
