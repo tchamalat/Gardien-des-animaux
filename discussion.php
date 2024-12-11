@@ -161,6 +161,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
                 ?>
                 <button class="btn" onclick="window.location.href='search_page.php'">Je poste une annonce</button>
+                <button class="btn" onclick="window.location.href='index_connect.php'">Accueil</button>
             </div>
         </div>
     </header>
