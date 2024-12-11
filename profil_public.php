@@ -59,11 +59,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_animal_id'])) 
         $photo_tmp_name = $nouvelle_photo['tmp_name'];
         $photo_content = file_get_contents($photo_tmp_name);
 
-        $sql_update = "UPDATE Animal SET prenom_animal = ?, url_photo = ? WHERE id = ?";
+        $sql_update = "UPDATE Animal SET prenom_animal = ?, url_photo = ? WHERE id_animal = ?";
         $stmt_update = $conn->prepare($sql_update);
         $stmt_update->bind_param("ssi", $nouveau_nom, $photo_content, $animal_id);
     } else {
-        $sql_update = "UPDATE Animal SET prenom_animal = ? WHERE id = ?";
+        $sql_update = "UPDATE Animal SET prenom_animal = ? WHERE id_animal = ?";
         $stmt_update = $conn->prepare($sql_update);
         $stmt_update->bind_param("si", $nouveau_nom, $animal_id);
     }
