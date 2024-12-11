@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom_animal'])) {
             $photo_tmp_name = $photos_animaux['tmp_name'][$i];
             $photo_content = file_get_contents($photo_tmp_name);
 
-            $sql = "INSERT INTO Animal (id_utilisateur, prenom_animal, url_photo) VALUES (?, ?, ?)";
+            $sql = "INSERT INTO Animal (id_utilisateur, nom_animal, url_photo) VALUES (?, ?, ?)";
             $stmt = $conn->prepare($sql);
             
             if (!$stmt) {
@@ -59,11 +59,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_animal_id'])) 
         $photo_tmp_name = $nouvelle_photo['tmp_name'];
         $photo_content = file_get_contents($photo_tmp_name);
 
-        $sql_update = "UPDATE Animal SET prenom_animal = ?, url_photo = ? WHERE id_animal = ?";
+        $sql_update = "UPDATE Animal SET nom_animal = ?, url_photo = ? WHERE id_animal = ?";
         $stmt_update = $conn->prepare($sql_update);
         $stmt_update->bind_param("ssi", $nouveau_nom, $photo_content, $animal_id);
     } else {
-        $sql_update = "UPDATE Animal SET prenom_animal = ? WHERE id_animal = ?";
+        $sql_update = "UPDATE Animal SET nom_animal = ? WHERE id_animal = ?";
         $stmt_update = $conn->prepare($sql_update);
         $stmt_update->bind_param("si", $nouveau_nom, $animal_id);
     }
@@ -86,7 +86,7 @@ $stmt_user->fetch();
 $stmt_user->close();
 
 // Récupérer les animaux de l'utilisateur
-$sql_animaux = "SELECT id_animal, prenom_animal, url_photo FROM Animal WHERE id_utilisateur = ?";
+$sql_animaux = "SELECT id_animal, nom_animal, url_photo FROM Animal WHERE id_utilisateur = ?";
 $stmt_animaux = $conn->prepare($sql_animaux);
 $stmt_animaux->bind_param("i", $user_id);
 $stmt_animaux->execute();
@@ -134,94 +134,30 @@ $stmt_animaux->close();
         <div class="alert-message"><?php echo htmlspecialchars($message); ?></div>
     <?php endif; ?>
 
-    <h3>Ajouter des animaux</h3>
-    <form method="POST" enctype="multipart/form-data">
-        <div class="profile-item">
-            <label for="nombre_animal">Nombre d'animaux :</label>
-            <input type="number" id="nombre_animal" name="nombre_animal" min="1" required>
-        </div>
-        
-        <div class="profile-item" id="animal-details-container">
-            <label>Détails des animaux :</label>
-            <div id="animal-fields"></div>
-        </div>
-
-        <button type="submit" class="btn">Enregistrer les animaux</button>
-    </form>
-
     <h3>Mes Animaux</h3>
     <div id="animal-list" class="animal-list">
         <?php while ($row = $result_animaux->fetch_assoc()): ?>
             <div class="animal-card">
                 <form method="POST" enctype="multipart/form-data">
                     <p><strong>Nom :</strong>
-                        <input type="text" name="nouveau_nom_animal" value="<?php echo htmlspecialchars($row['prenom_animal']); ?>" required>
+                        <input type="text" name="nouveau_nom_animal" value="<?php echo htmlspecialchars($row['nom_animal']); ?>" required>
                     </p>
                     <div class="animal-photo">
                         <?php if ($row['url_photo']): ?>
-                            <img src="data:image/jpeg;base64,<?php echo base64_encode($row['url_photo']); ?>" alt="Photo de <?php echo htmlspecialchars($row['prenom_animal']); ?>">
+                            <img src="data:image/jpeg;base64,<?php echo base64_encode($row['url_photo']); ?>" alt="Photo de <?php echo htmlspecialchars($row['nom_animal']); ?>">
                         <?php else: ?>
                             <p>Aucune photo disponible</p>
                         <?php endif; ?>
                     </div>
                     <label for="nouvelle_photo_animal">Nouvelle photo :</label>
                     <input type="file" name="nouvelle_photo_animal" accept="image/*">
-                    <input type="hidden" name="update_animal_id" value="<?php echo $row['id']; ?>">
+                    <input type="hidden" name="update_animal_id" value="<?php echo $row['id_animal']; ?>">
                     <button type="submit" class="btn">Modifier</button>
                 </form>
             </div>
         <?php endwhile; ?>
     </div>
 </div>
-
-<div class="profile-actions">
-    <button class="btn-action" onclick="window.location.href='profil.php'">MON PROFIL</button>
-</div>
-
-<footer>
-    <div class="footer-links">
-        <div>
-            <h4>En savoir plus :</h4>
-            <ul>
-                <li><a href="securite_connect.php">Sécurité</a></li>
-                <li><a href="aide_connect.php">Centre d'aide</a></li>
-            </ul>
-        </div>
-        <div>
-            <h4>A propos de nous :</h4>
-            <ul>
-                <li><a href="confidentialite_connect.php">Politique de confidentialité</a></li>
-                <li><a href="contact_connect.php">Nous contacter</a></li>
-            </ul>
-        </div>
-        <div>
-            <h4>Conditions Générales :</h4>
-            <ul>
-                <li><a href="conditions_connect.php">Conditions d'utilisateur et de Service</a></li>
-            </ul>
-        </div>
-    </div>
-</footer>
-
-<script>
-document.getElementById('nombre_animal').addEventListener('input', function() {
-    const container = document.getElementById('animal-fields');
-    container.innerHTML = '';
-    const count = parseInt(this.value, 10) || 0;
-
-    for (let i = 1; i <= count; i++) {
-        const div = document.createElement('div');
-        div.className = 'animal-entry';
-        div.innerHTML = `
-            <label>Nom de l'animal ${i} :</label>
-            <input type="text" name="nom_animal[]" required>
-            <label>Photo de l'animal ${i} :</label>
-            <input type="file" name="photo_animal[]" accept="image/*" required>
-        `;
-        container.appendChild(div);
-    }
-});
-</script>
 
 </body>
 </html>
