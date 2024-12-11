@@ -99,7 +99,7 @@ $result = $stmt->get_result();
     </header>
 
 <div class="container">
-    <h2>Historique des Réservations</h2>
+    <h2>Historique des réservations</h2>
 
     <?php if ($result->num_rows > 0): ?>
         <table>
