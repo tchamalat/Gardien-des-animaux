@@ -82,7 +82,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 <body>
     <header class="header-container">
-        <h1>Laisser un Avis</h1>
+        <h1>Laisser un avis</h1>
         <a href="index_connect.php" class="btn">Accueil</a>
     </header>
     <main>
