@@ -77,7 +77,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_animals'])) {
 }
 
 // Récupérer les animaux de l'utilisateur
-$sql_animaux = "SELECT id, prenom_animal, url_photo FROM Animal WHERE id_utilisateur = ?";
+$sql_animaux = "SELECT id_animal, prenom_animal, url_photo FROM Animal WHERE id_utilisateur = ?";
 $stmt_animaux = $conn->prepare($sql_animaux);
 $stmt_animaux->bind_param("i", $user_id);
 $stmt_animaux->execute();
