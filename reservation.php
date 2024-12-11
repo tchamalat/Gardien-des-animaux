@@ -4,19 +4,10 @@ session_start();
 
 $message_confirmation = ''; // Variable pour stocker le message de confirmation
 
-// Vérification si un gardien est sélectionné via POST
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['gardien_id'])) {
-    $gardien_id = $_POST['gardien_id'];
+// Vérification si un gardien est sélectionné
+if (isset($_GET['gardien_id'])) {
+    $gardien_id = $_GET['gardien_id'];
     $_SESSION['selected_gardien'] = $gardien_id;
-
-    // Redirection pour éviter le resoumission du formulaire
-    header("Location: reservation.php");
-    exit();
-}
-
-// Récupération des informations du gardien depuis la session
-if (isset($_SESSION['selected_gardien'])) {
-    $gardien_id = $_SESSION['selected_gardien'];
 
     // Récupérer les informations du gardien depuis la base de données
     $sql = "SELECT nom_utilisateur, ville, service, budget_min, budget_max FROM creation_compte WHERE id = ? AND role = 0";
@@ -32,12 +23,7 @@ if (isset($_SESSION['selected_gardien'])) {
     }
 
     $stmt->close();
-}
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SESSION['selected_gardien'])) {
-    echo "Traitement de la réservation en cours...<br>";
-    var_dump($_SESSION);
-
+} elseif ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SESSION['selected_gardien'])) {
     $gardien_id = $_SESSION['selected_gardien'];
     $proprietaire_id = $_SESSION['user_id'];
     $date_debut = $_POST['date_debut'];
@@ -58,20 +44,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SESSION['selected_gardien']
     $stmt->bind_param("iissssss", $gardien_id, $proprietaire_id, $date_debut, $date_fin, $lieu, $type, $heure_debut, $heure_fin);
 
     if ($stmt->execute()) {
-        echo "Réservation réussie !<br>";
-        $message_confirmation = "Votre réservation a été effectuée avec succès pour le gardien !";
+        // Utilisation du nom du gardien dans le message de confirmation
+        $message_confirmation = "Votre réservation a été effectuée avec succès pour le gardien <strong>" 
+                                . htmlspecialchars($gardien_info['nom_utilisateur']) . "</strong> !";
         unset($_SESSION['selected_gardien']);
     } else {
-        echo "Erreur SQL : " . $stmt->error . "<br>";
         $message_confirmation = "Erreur lors de la réservation : " . $stmt->error;
     }
 
     $stmt->close();
     $conn->close();
 }
-
 ?>
-
 
 <!DOCTYPE html>
 <html lang="fr">
