@@ -49,6 +49,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom_animal'])) {
     $message = "Animaux ajoutés avec succès !";
 }
 
+// Gérer la mise à jour du profil
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_profile'])) {
+    $new_nom_utilisateur = $_POST['nom_utilisateur'];
+    $profile_picture = null;
+
+    if (!empty($_FILES['profile_picture']['tmp_name'])) {
+        $profile_picture = file_get_contents($_FILES['profile_picture']['tmp_name']);
+    }
+
+    $sql_update = "UPDATE creation_compte SET nom_utilisateur = ?" . ($profile_picture ? ", profile_picture = ?" : "") . " WHERE id = ?";
+    $stmt_update = $conn->prepare($sql_update);
+
+    if ($profile_picture) {
+        $stmt_update->bind_param("sbi", $new_nom_utilisateur, $profile_picture, $user_id);
+    } else {
+        $stmt_update->bind_param("si", $new_nom_utilisateur, $user_id);
+    }
+
+    if ($stmt_update->execute()) {
+        $message = "Profil mis à jour avec succès !";
+    } else {
+        $message = "Erreur de mise à jour : " . $stmt_update->error;
+    }
+
+    $stmt_update->close();
+    header("Location: ".$_SERVER['PHP_SELF']);
+    exit();
+}
+
 // Récupérer les informations de l'utilisateur
 $sql_user = "SELECT nom_utilisateur, profile_picture FROM creation_compte WHERE id = ?";
 $stmt_user = $conn->prepare($sql_user);
@@ -102,6 +131,19 @@ $stmt_animaux->close();
             </div>
         </div>
     </div>
+
+    <form method="POST" enctype="multipart/form-data" class="profile-edit-form">
+        <h3>Modifier le Profil</h3>
+        <div class="profile-item">
+            <label for="nom_utilisateur">Nom d'utilisateur :</label>
+            <input type="text" id="nom_utilisateur" name="nom_utilisateur" value="<?php echo htmlspecialchars($nom_utilisateur); ?>" required>
+        </div>
+        <div class="profile-item">
+            <label for="profile_picture">Photo de profil :</label>
+            <input type="file" id="profile_picture" name="profile_picture" accept="image/*">
+        </div>
+        <button type="submit" name="update_profile" class="btn">Mettre à jour le profil</button>
+    </form>
 
     <?php if (isset($message)): ?>
         <div class="alert-message"><?php echo htmlspecialchars($message); ?></div>
