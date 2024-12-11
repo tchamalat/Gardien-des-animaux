@@ -160,7 +160,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     echo '<button class="btn" onclick="window.location.href=\'login.php\'">Mon Profil</button>';
                 }
                 ?>
-                <button class="btn" onclick="window.location.href='search_page.php'">Je poste une annonce</button>
                 <button class="btn" onclick="window.location.href='index_connect_gardien.php'">Accueil</button>
             </div>
         </div>
