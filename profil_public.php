@@ -49,6 +49,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom_animal'])) {
     $message = "Animaux ajoutés avec succès !";
 }
 
+// Gérer la modification des animaux
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_animal_id'])) {
+    $animal_id = $_POST['update_animal_id'];
+    $nouveau_nom = $_POST['nouveau_nom_animal'];
+    $nouvelle_photo = $_FILES['nouvelle_photo_animal'];
+
+    if ($nouvelle_photo['error'] === UPLOAD_ERR_OK) {
+        $photo_tmp_name = $nouvelle_photo['tmp_name'];
+        $photo_content = file_get_contents($photo_tmp_name);
+
+        $sql_update = "UPDATE Animal SET prenom_animal = ?, url_photo = ? WHERE id = ?";
+        $stmt_update = $conn->prepare($sql_update);
+        $stmt_update->bind_param("ssi", $nouveau_nom, $photo_content, $animal_id);
+    } else {
+        $sql_update = "UPDATE Animal SET prenom_animal = ? WHERE id = ?";
+        $stmt_update = $conn->prepare($sql_update);
+        $stmt_update->bind_param("si", $nouveau_nom, $animal_id);
+    }
+
+    if (!$stmt_update->execute()) {
+        die("Erreur de mise à jour : " . $stmt_update->error);
+    }
+
+    $stmt_update->close();
+    $message = "Animal mis à jour avec succès !";
+}
+
 // Récupérer les informations de l'utilisateur
 $sql_user = "SELECT nom_utilisateur, profile_picture FROM creation_compte WHERE id = ?";
 $stmt_user = $conn->prepare($sql_user);
@@ -59,7 +86,7 @@ $stmt_user->fetch();
 $stmt_user->close();
 
 // Récupérer les animaux de l'utilisateur
-$sql_animaux = "SELECT prenom_animal, url_photo FROM Animal WHERE id_utilisateur = ?";
+$sql_animaux = "SELECT id, prenom_animal, url_photo FROM Animal WHERE id_utilisateur = ?";
 $stmt_animaux = $conn->prepare($sql_animaux);
 $stmt_animaux->bind_param("i", $user_id);
 $stmt_animaux->execute();
@@ -126,14 +153,22 @@ $stmt_animaux->close();
     <div id="animal-list" class="animal-list">
         <?php while ($row = $result_animaux->fetch_assoc()): ?>
             <div class="animal-card">
-                <p><strong>Nom :</strong> <?php echo htmlspecialchars($row['prenom_animal']); ?></p>
-                <div class="animal-photo">
-                    <?php if ($row['url_photo']): ?>
-                        <img src="data:image/jpeg;base64,<?php echo base64_encode($row['url_photo']); ?>" alt="Photo de <?php echo htmlspecialchars($row['prenom_animal']); ?>">
-                    <?php else: ?>
-                        <p>Aucune photo disponible</p>
-                    <?php endif; ?>
-                </div>
+                <form method="POST" enctype="multipart/form-data">
+                    <p><strong>Nom :</strong>
+                        <input type="text" name="nouveau_nom_animal" value="<?php echo htmlspecialchars($row['prenom_animal']); ?>" required>
+                    </p>
+                    <div class="animal-photo">
+                        <?php if ($row['url_photo']): ?>
+                            <img src="data:image/jpeg;base64,<?php echo base64_encode($row['url_photo']); ?>" alt="Photo de <?php echo htmlspecialchars($row['prenom_animal']); ?>">
+                        <?php else: ?>
+                            <p>Aucune photo disponible</p>
+                        <?php endif; ?>
+                    </div>
+                    <label for="nouvelle_photo_animal">Nouvelle photo :</label>
+                    <input type="file" name="nouvelle_photo_animal" accept="image/*">
+                    <input type="hidden" name="update_animal_id" value="<?php echo $row['id']; ?>">
+                    <button type="submit" class="btn">Modifier</button>
+                </form>
             </div>
         <?php endwhile; ?>
     </div>
