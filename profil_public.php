@@ -107,7 +107,7 @@ $stmt_animaux->close();
         <div class="alert-message"><?php echo htmlspecialchars($message); ?></div>
     <?php endif; ?>
 
-    <h3>Ajouter des Animaux</h3>
+    <h3>Ajouter des animaux</h3>
     <form method="POST" enctype="multipart/form-data">
         <div class="profile-item">
             <label for="nombre_animal">Nombre d'animaux :</label>
