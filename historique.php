@@ -94,6 +94,7 @@ $result = $stmt->get_result();
                     echo '<button class="btn" onclick="window.location.href=\'login.php\'">Mon Profil</button>';
                 }
                 ?>
+                <button class="btn" onclick="window.location.href='index_connect.php'">Accueil</button>
             </div>
         </div>
     </header>
