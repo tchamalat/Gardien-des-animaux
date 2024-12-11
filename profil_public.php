@@ -63,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_animal_id'])) 
         $stmt_update = $conn->prepare($sql_update);
         $stmt_update->bind_param("ssi", $nouveau_nom, $photo_content, $animal_id);
     } else {
-        $sql_update = "UPDATE Animal SET nom_animal = ? WHERE id_animal = ?";
+        $sql_update = "UPDATE Animal SET prenom_animal = ? WHERE id_animal = ?";
         $stmt_update = $conn->prepare($sql_update);
         $stmt_update->bind_param("si", $nouveau_nom, $animal_id);
     }
