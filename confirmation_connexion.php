@@ -38,7 +38,7 @@ if ($user) {
     <header>
         <div class="header-container">
             <img src="images/logo.png" alt="Logo Gardien des Animaux">
-            <h1>Connexion Réussie</h1>
+            <h1>Connexion réussie</h1>
         </div>
     </header>
 
