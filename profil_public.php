@@ -49,17 +49,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom_animal'])) {
     $message = "Animaux ajoutés avec succès !";
 }
 
-// Récupérer les informations de l'utilisateur
-$sql_user = "SELECT nom_utilisateur, profile_picture FROM creation_compte WHERE id = ?";
-$stmt_user = $conn->prepare($sql_user);
-$stmt_user->bind_param("i", $user_id);
-$stmt_user->execute();
-$stmt_user->bind_result($nom_utilisateur, $profile_picture);
-$stmt_user->fetch();
-$stmt_user->close();
+// Gérer la mise à jour des animaux
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_animal'])) {
+    $id_animal = $_POST['id_animal'];
+    $nom_animal = $_POST['nom_animal'];
+    $photo_content = null;
+
+    // Vérifier si une nouvelle photo a été téléchargée
+    if (!empty($_FILES['photo_animal']['tmp_name']) && $_FILES['photo_animal']['error'] === UPLOAD_ERR_OK) {
+        $photo_tmp_name = $_FILES['photo_animal']['tmp_name'];
+        $photo_content = file_get_contents($photo_tmp_name);
+    }
+
+    if ($photo_content) {
+        $sql_update = "UPDATE Animal SET prenom_animal = ?, url_photo = ? WHERE id_animal = ?";
+        $stmt_update = $conn->prepare($sql_update);
+        $stmt_update->bind_param("ssi", $nom_animal, $photo_content, $id_animal);
+    } else {
+        $sql_update = "UPDATE Animal SET prenom_animal = ? WHERE id_animal = ?";
+        $stmt_update = $conn->prepare($sql_update);
+        $stmt_update->bind_param("si", $nom_animal, $id_animal);
+    }
+
+    if ($stmt_update->execute()) {
+        $message = "Animal mis à jour avec succès !";
+    } else {
+        $message = "Erreur lors de la mise à jour : " . $stmt_update->error;
+    }
+
+    $stmt_update->close();
+}
 
 // Récupérer les animaux de l'utilisateur
-$sql_animaux = "SELECT prenom_animal, url_photo FROM Animal WHERE id_utilisateur = ?";
+$sql_animaux = "SELECT id_animal, prenom_animal, url_photo FROM Animal WHERE id_utilisateur = ?";
 $stmt_animaux = $conn->prepare($sql_animaux);
 $stmt_animaux->bind_param("i", $user_id);
 $stmt_animaux->execute();
@@ -91,56 +113,36 @@ $stmt_animaux->close();
 <div class="profile-container">
     <h2 class="profile-title">Mon Profil Public :</h2>
 
-    <div class="profile-info">
-        <div class="profile-picture">
-            <img id="profile-img" src="display_image.php" alt="Photo de profil">
-        </div>
-        <div class="profile-details">
-            <div class="profile-item">
-                <label>Nom d'utilisateur :</label>
-                <span class="profile-value"><?php echo htmlspecialchars($nom_utilisateur); ?></span>
-            </div>
-        </div>
-    </div>
-
     <?php if (isset($message)): ?>
         <div class="alert-message"><?php echo htmlspecialchars($message); ?></div>
     <?php endif; ?>
-
-    <h3>Ajouter des animaux</h3>
-    <form method="POST" enctype="multipart/form-data">
-        <div class="profile-item">
-            <label for="nombre_animal">Nombre d'animaux :</label>
-            <input type="number" id="nombre_animal" name="nombre_animal" min="1" required>
-        </div>
-        
-        <div class="profile-item" id="animal-details-container">
-            <label>Détails des animaux :</label>
-            <div id="animal-fields"></div>
-        </div>
-
-        <button type="submit" class="btn">Enregistrer les animaux</button>
-    </form>
 
     <h3>Mes Animaux</h3>
     <div id="animal-list" class="animal-list">
         <?php while ($row = $result_animaux->fetch_assoc()): ?>
             <div class="animal-card">
-                <p><strong>Nom :</strong> <?php echo htmlspecialchars($row['prenom_animal']); ?></p>
-                <div class="animal-photo">
-                    <?php if ($row['url_photo']): ?>
-                        <img src="data:image/jpeg;base64,<?php echo base64_encode($row['url_photo']); ?>" alt="Photo de <?php echo htmlspecialchars($row['prenom_animal']); ?>">
-                    <?php else: ?>
-                        <p>Aucune photo disponible</p>
-                    <?php endif; ?>
-                </div>
+                <form method="POST" enctype="multipart/form-data">
+                    <input type="hidden" name="id_animal" value="<?php echo $row['id_animal']; ?>">
+                    
+                    <label for="nom_animal_<?php echo $row['id_animal']; ?>">Nom :</label>
+                    <input type="text" id="nom_animal_<?php echo $row['id_animal']; ?>" name="nom_animal" value="<?php echo htmlspecialchars($row['prenom_animal']); ?>" required>
+
+                    <label for="photo_animal_<?php echo $row['id_animal']; ?>">Photo :</label>
+                    <input type="file" id="photo_animal_<?php echo $row['id_animal']; ?>" name="photo_animal" accept="image/*">
+
+                    <div class="animal-photo">
+                        <?php if ($row['url_photo']): ?>
+                            <img src="data:image/jpeg;base64,<?php echo base64_encode($row['url_photo']); ?>" alt="Photo de <?php echo htmlspecialchars($row['prenom_animal']); ?>">
+                        <?php else: ?>
+                            <p>Aucune photo disponible</p>
+                        <?php endif; ?>
+                    </div>
+
+                    <button type="submit" name="update_animal" class="btn">Modifier</button>
+                </form>
             </div>
         <?php endwhile; ?>
     </div>
-</div>
-
-<div class="profile-actions">
-    <button class="btn-action" onclick="window.location.href='profil.php'">MON PROFIL</button>
 </div>
 
 <footer>
@@ -152,41 +154,8 @@ $stmt_animaux->close();
                 <li><a href="aide_connect.php">Centre d'aide</a></li>
             </ul>
         </div>
-        <div>
-            <h4>A propos de nous :</h4>
-            <ul>
-                <li><a href="confidentialite_connect.php">Politique de confidentialité</a></li>
-                <li><a href="contact_connect.php">Nous contacter</a></li>
-            </ul>
-        </div>
-        <div>
-            <h4>Conditions Générales :</h4>
-            <ul>
-                <li><a href="conditions_connect.php">Conditions d'utilisateur et de Service</a></li>
-            </ul>
-        </div>
     </div>
 </footer>
-
-<script>
-document.getElementById('nombre_animal').addEventListener('input', function() {
-    const container = document.getElementById('animal-fields');
-    container.innerHTML = '';
-    const count = parseInt(this.value, 10) || 0;
-
-    for (let i = 1; i <= count; i++) {
-        const div = document.createElement('div');
-        div.className = 'animal-entry';
-        div.innerHTML = `
-            <label>Nom de l'animal ${i} :</label>
-            <input type="text" name="nom_animal[]" required>
-            <label>Photo de l'animal ${i} :</label>
-            <input type="file" name="photo_animal[]" accept="image/*" required>
-        `;
-        container.appendChild(div);
-    }
-});
-</script>
 
 </body>
 </html>
