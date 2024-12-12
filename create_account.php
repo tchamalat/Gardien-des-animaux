@@ -82,6 +82,11 @@
         <div id="message"></div> 
     </div>
     <script>
+        // Fonction de validation pour le numéro de téléphone
+        function validatePhoneNumber(phone) {
+            const phoneRegex = /^[0-9]{10}$/;
+            return phoneRegex.test(phone);
+        }
         // Fonction de validation pour l'email
         function validateEmail(email) {
             const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|fr)$/;
@@ -95,6 +100,12 @@
             const formData = new FormData(this);
             const email = formData.get('email');
             const emailError = document.getElementById('emailError');
+
+            const phone = formData.get('telephone');
+            if (!validatePhoneNumber(phone)) {
+                alert("Le numéro de téléphone doit contenir exactement 10 chiffres.");
+                return;
+            }
 
             // Vérification de l'email
             if (!validateEmail(email)) {
