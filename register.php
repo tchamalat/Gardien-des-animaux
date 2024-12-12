@@ -8,7 +8,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $mail = $_POST['email'];
     $mail = $_POST['email'];
     if (!preg_match('/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|fr)$/', $mail)) {
-        echo "<p style='color: red;'>L'adresse e-mail doit être au format xxx.xxx@xxx.fr ou xxx.xxx@xxx.com.</p>";
+        echo "<p style='color: red;'>L'adresse e-mail doit être au format xxx.xxx@xxx.fr ou xxx.xxx@xxx.com ou xxxxxx@xxx.fr ou xxxxxx@xxx.com.</p>";
         exit();
     }
     $numero_telephone = preg_replace('/\D/', '', $_POST['telephone']); 
