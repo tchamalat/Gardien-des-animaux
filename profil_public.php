@@ -251,15 +251,16 @@ document.getElementById('nombre_animal').addEventListener('input', function() {
     for (let i = 1; i <= count; i++) {
         const div = document.createElement('div');
         div.className = 'animal-entry';
-        div.innerHTML = 
+        div.innerHTML = `
             <label>Nom de l'animal ${i} :</label>
             <input type="text" name="nom_animal[]" required>
             <label>Photo de l'animal ${i} :</label>
             <input type="file" name="photo_animal[]" accept="image/*" required>
-        ;
+        `;
         container.appendChild(div);
     }
 });
+
 </script>
 
 </body>
