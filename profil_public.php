@@ -16,37 +16,41 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 // Gérer l'ajout des animaux
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom_animal'])) {
-    $noms_animaux = $_POST['nom_animal'];
-    $photos_animaux = $_FILES['photo_animal'];
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ajouter_animal'])) {
+    if (isset($_POST['nom_animal']) && is_array($_POST['nom_animal'])) {
+        $noms_animaux = $_POST['nom_animal'];
+        $photos_animaux = $_FILES['photo_animal'];
 
-    for ($i = 0; $i < count($noms_animaux); $i++) {
-        $nom_animal = $noms_animaux[$i];
+        for ($i = 0; $i < count($noms_animaux); $i++) {
+            $nom_animal = $noms_animaux[$i];
 
-        if ($photos_animaux['error'][$i] === UPLOAD_ERR_OK) {
-            $photo_tmp_name = $photos_animaux['tmp_name'][$i];
-            $photo_content = file_get_contents($photo_tmp_name);
+            if ($photos_animaux['error'][$i] === UPLOAD_ERR_OK) {
+                $photo_tmp_name = $photos_animaux['tmp_name'][$i];
+                $photo_content = file_get_contents($photo_tmp_name);
 
-            $sql = "INSERT INTO Animal (id_utilisateur, prenom_animal, url_photo) VALUES (?, ?, ?)";
-            $stmt = $conn->prepare($sql);
-            
-            if (!$stmt) {
-                die("Erreur de préparation de la requête : " . $conn->error);
+                $sql = "INSERT INTO Animal (id_utilisateur, prenom_animal, url_photo) VALUES (?, ?, ?)";
+                $stmt = $conn->prepare($sql);
+                
+                if (!$stmt) {
+                    die("Erreur de préparation de la requête : " . $conn->error);
+                }
+
+                $stmt->bind_param("iss", $user_id, $nom_animal, $photo_content);
+
+                if (!$stmt->execute()) {
+                    die("Erreur d'exécution de la requête : " . $stmt->error);
+                }
+
+                $stmt->close();
+            } else {
+                die("Erreur de téléchargement de la photo : " . $photos_animaux['error'][$i]);
             }
-
-            $stmt->bind_param("iss", $user_id, $nom_animal, $photo_content);
-
-            if (!$stmt->execute()) {
-                die("Erreur d'exécution de la requête : " . $stmt->error);
-            }
-
-            $stmt->close();
-        } else {
-            die("Erreur de téléchargement de la photo : " . $photos_animaux['error'][$i]);
         }
-    }
 
-    $message = "Animaux ajoutés avec succès !";
+        $message = "Animaux ajoutés avec succès !";
+    } else {
+        $message = "Erreur : Aucun animal à ajouter.";
+    }
 }
 
 // Gérer la mise à jour des animaux
@@ -95,67 +99,31 @@ $stmt_animaux->close();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mon Profil Public - Gardien des Animaux</title>
-    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-<header>
-    <div class="header-container">
-        <img src="images/logo.png" alt="Logo Gardien des Animaux">
-        <h1 class="header-slogan">Un foyer chaleureux même en votre absence</h1>
-        <div class="auth-buttons">
-            <button class="btn" onclick="window.location.href='logout.php'">Déconnexion</button> 
-            <button class="btn" onclick="window.location.href='index_connect.php'">Accueil</button>
-        </div>
-    </div>
-</header>
+<h3>Mes Animaux</h3>
+<div id="animal-list">
+    <?php while ($row = $result_animaux->fetch_assoc()): ?>
+        <form method="POST" enctype="multipart/form-data">
+            <input type="hidden" name="id_animal" value="<?php echo $row['id_animal']; ?>">
 
-<div class="profile-container">
-    <h2 class="profile-title">Mon Profil Public :</h2>
+            <label>Nom :</label>
+            <input type="text" name="nom_animal" value="<?php echo htmlspecialchars($row['prenom_animal']); ?>" required>
 
-    <?php if (isset($message)): ?>
-        <div class="alert-message"><?php echo htmlspecialchars($message); ?></div>
-    <?php endif; ?>
+            <label>Photo :</label>
+            <input type="file" name="photo_animal" accept="image/*">
 
-    <h3>Mes Animaux</h3>
-    <div id="animal-list" class="animal-list">
-        <?php while ($row = $result_animaux->fetch_assoc()): ?>
-            <div class="animal-card">
-                <form method="POST" enctype="multipart/form-data">
-                    <input type="hidden" name="id_animal" value="<?php echo $row['id_animal']; ?>">
-                    
-                    <label for="nom_animal_<?php echo $row['id_animal']; ?>">Nom :</label>
-                    <input type="text" id="nom_animal_<?php echo $row['id_animal']; ?>" name="nom_animal" value="<?php echo htmlspecialchars($row['prenom_animal']); ?>" required>
+            <?php if ($row['url_photo']): ?>
+                <div>
+                    <img src="data:image/jpeg;base64,<?php echo base64_encode($row['url_photo']); ?>" alt="Photo de l'animal">
+                </div>
+            <?php endif; ?>
 
-                    <label for="photo_animal_<?php echo $row['id_animal']; ?>">Photo :</label>
-                    <input type="file" id="photo_animal_<?php echo $row['id_animal']; ?>" name="photo_animal" accept="image/*">
-
-                    <div class="animal-photo">
-                        <?php if ($row['url_photo']): ?>
-                            <img src="data:image/jpeg;base64,<?php echo base64_encode($row['url_photo']); ?>" alt="Photo de <?php echo htmlspecialchars($row['prenom_animal']); ?>">
-                        <?php else: ?>
-                            <p>Aucune photo disponible</p>
-                        <?php endif; ?>
-                    </div>
-
-                    <button type="submit" name="update_animal" class="btn">Modifier</button>
-                </form>
-            </div>
-        <?php endwhile; ?>
-    </div>
+            <button type="submit" name="update_animal">Modifier</button>
+        </form>
+    <?php endwhile; ?>
 </div>
-
-<footer>
-    <div class="footer-links">
-        <div>
-            <h4>En savoir plus :</h4>
-            <ul>
-                <li><a href="securite_connect.php">Sécurité</a></li>
-                <li><a href="aide_connect.php">Centre d'aide</a></li>
-            </ul>
-        </div>
-    </div>
-</footer>
 
 </body>
 </html>
