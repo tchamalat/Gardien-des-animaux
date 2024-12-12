@@ -66,11 +66,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_animal'])) {
     $nom_animal = $_POST['nom_animal'];
     $photo_content = null;
 
+    // Vérifie si un fichier a été téléchargé
     if (!empty($_FILES['photo_animal']['tmp_name']) && $_FILES['photo_animal']['error'] === UPLOAD_ERR_OK) {
         $photo_tmp_name = $_FILES['photo_animal']['tmp_name'];
         $photo_content = file_get_contents($photo_tmp_name);
     }
 
+    // Mise à jour avec ou sans photo
     if ($photo_content) {
         $sql_update = "UPDATE Animal SET prenom_animal = ?, url_photo = ? WHERE id_animal = ?";
         $stmt_update = $conn->prepare($sql_update);
@@ -81,11 +83,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_animal'])) {
         $stmt_update->bind_param("si", $nom_animal, $id_animal);
     }
 
-    $stmt_update->execute();
-    $stmt_update->close();
+    if ($stmt_update->execute()) {
+        $message = "Animal mis à jour avec succès !";
+    } else {
+        $message = "Erreur lors de la mise à jour : " . $stmt_update->error;
+    }
 
-    $message = "Animal mis à jour avec succès !";
+    $stmt_update->close();
 }
+
 
 // Récupérer les informations de l'utilisateur
 $sql_user = "SELECT nom_utilisateur, profile_picture FROM creation_compte WHERE id = ?";
