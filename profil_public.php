@@ -16,7 +16,7 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 // Gérer l'ajout des animaux
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ajouter_animaux'])) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom_animal'])) {
     $noms_animaux = $_POST['nom_animal'];
     $photos_animaux = $_FILES['photo_animal'];
 
@@ -29,15 +29,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ajouter_animaux'])) {
 
             $sql = "INSERT INTO Animal (id_utilisateur, prenom_animal, url_photo) VALUES (?, ?, ?)";
             $stmt = $conn->prepare($sql);
+            
+            if (!$stmt) {
+                die("Erreur de préparation de la requête : " . $conn->error);
+            }
+
             $stmt->bind_param("iss", $user_id, $nom_animal, $photo_content);
-            $stmt->execute();
+
+            if (!$stmt->execute()) {
+                die("Erreur d'exécution de la requête : " . $stmt->error);
+            }
+
             $stmt->close();
+        } else {
+            die("Erreur de téléchargement de la photo : " . $photos_animaux['error'][$i]);
         }
     }
 
     $message = "Animaux ajoutés avec succès !";
 }
-
 // Gérer la mise à jour des animaux
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_animal'])) {
     $id_animal = $_POST['id_animal'];
@@ -64,6 +74,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_animal'])) {
 
     $message = "Animal mis à jour avec succès !";
 }
+
+// Récupérer les informations de l'utilisateur
+$sql_user = "SELECT nom_utilisateur, profile_picture FROM creation_compte WHERE id = ?";
+$stmt_user = $conn->prepare($sql_user);
+$stmt_user->bind_param("i", $user_id);
+$stmt_user->execute();
+$stmt_user->bind_result($nom_utilisateur, $profile_picture);
+$stmt_user->fetch();
+$stmt_user->close();
 
 // Récupérer les animaux de l'utilisateur
 $sql_animaux = "SELECT id_animal, prenom_animal, url_photo FROM Animal WHERE id_utilisateur = ?";
@@ -97,6 +116,18 @@ $stmt_animaux->close();
 
 <div class="profile-container">
     <h2 class="profile-title">Mon Profil Public :</h2>
+
+    <div class="profile-info">
+        <div class="profile-picture">
+            <img id="profile-img" src="display_image.php" alt="Photo de profil">
+        </div>
+        <div class="profile-details">
+            <div class="profile-item">
+                <label>Nom d'utilisateur :</label>
+                <span class="profile-value"><?php echo htmlspecialchars($nom_utilisateur); ?></span>
+            </div>
+        </div>
+    </div>
 
     <?php if (isset($message)): ?>
         <div class="alert-message"><?php echo htmlspecialchars($message); ?></div>
@@ -145,6 +176,35 @@ $stmt_animaux->close();
     </div>
 </div>
 
+<div class="profile-actions">
+    <button class="btn-action" onclick="window.location.href='profil.php'">MON PROFIL</button>
+</div>
+
+<footer>
+    <div class="footer-links">
+        <div>
+            <h4>En savoir plus :</h4>
+            <ul>
+                <li><a href="securite_connect.php">Sécurité</a></li>
+                <li><a href="aide_connect.php">Centre d'aide</a></li>
+            </ul>
+        </div>
+        <div>
+            <h4>A propos de nous :</h4>
+            <ul>
+                <li><a href="confidentialite_connect.php">Politique de confidentialité</a></li>
+                <li><a href="contact_connect.php">Nous contacter</a></li>
+            </ul>
+        </div>
+        <div>
+            <h4>Conditions Générales :</h4>
+            <ul>
+                <li><a href="conditions_connect.php">Conditions d'utilisateur et de Service</a></li>
+            </ul>
+        </div>
+    </div>
+</footer>
+    
 <script>
 document.getElementById('nombre_animal').addEventListener('input', function() {
     const container = document.getElementById('animal-fields');
