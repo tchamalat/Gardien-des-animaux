@@ -16,7 +16,7 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 // Gérer l'ajout des animaux
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom_animal'])) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ajouter_animaux']) && isset($_POST['nom_animal'])) {
     $noms_animaux = is_array($_POST['nom_animal']) ? $_POST['nom_animal'] : [$_POST['nom_animal']];
     $photos_animaux = $_FILES['photo_animal'];
 
@@ -59,6 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom_animal'])) {
 
     $message = "Animaux ajoutés avec succès !";
 }
+
 
 // Gérer la mise à jour des animaux
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_animal'])) {
