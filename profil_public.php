@@ -16,9 +16,20 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 // Gérer l'ajout des animaux
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom_animal'])) {
-    $noms_animaux = $_POST['nom_animal'];
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ajouter_animaux']) && isset($_POST['nom_animal'])) {
+    $noms_animaux = is_array($_POST['nom_animal']) ? $_POST['nom_animal'] : [$_POST['nom_animal']];
     $photos_animaux = $_FILES['photo_animal'];
+
+    // Si une seule photo est téléchargée, convertir en tableau
+    if (!is_array($photos_animaux['tmp_name'])) {
+        $photos_animaux = [
+            'name' => [$photos_animaux['name']],
+            'type' => [$photos_animaux['type']],
+            'tmp_name' => [$photos_animaux['tmp_name']],
+            'error' => [$photos_animaux['error']],
+            'size' => [$photos_animaux['size']],
+        ];
+    }
 
     for ($i = 0; $i < count($noms_animaux); $i++) {
         $nom_animal = $noms_animaux[$i];
@@ -29,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom_animal'])) {
 
             $sql = "INSERT INTO Animal (id_utilisateur, prenom_animal, url_photo) VALUES (?, ?, ?)";
             $stmt = $conn->prepare($sql);
-            
+
             if (!$stmt) {
                 die("Erreur de préparation de la requête : " . $conn->error);
             }
