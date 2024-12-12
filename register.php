@@ -6,14 +6,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nom = $_POST['nom'];
     $nom_utilisateur = $_POST['username'];
     $mail = $_POST['email'];
-
-    // Validation du format de l'email
     if (!preg_match('/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|fr)$/', $mail)) {
         echo "<p style='color: red;'>L'adresse e-mail doit être au format xxx.xxx@xxx.fr ou xxx.xxx@xxx.com.</p>";
         exit();
     }
-
     $numero_telephone = preg_replace('/\D/', '', $_POST['telephone']); 
+    if (!preg_match('/^[0-9]{10}$/', $numero_telephone)) {
+        echo "<p style='color: red;'>Le numéro de téléphone doit contenir exactement 10 chiffres.</p>";
+        exit();
+    }
     $adresse = $_POST['adresse'];
     $ville = $_POST['ville'];
     $mot_de_passe = md5($_POST['password']); 
