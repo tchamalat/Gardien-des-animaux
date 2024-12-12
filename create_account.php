@@ -99,7 +99,7 @@
             // Vérification de l'email
             if (!validateEmail(email)) {
                 emailError.style.display = 'inline';
-                emailError.textContent = "L'adresse e-mail doit être au format xxx.xxx@xxx.fr ou xxx.xxx@xxx.com.";
+                emailError.textContent = "L'adresse e-mail doit être au format xxx.xxx@xxx.fr ou xxx.xxx@xxx.com ou xxxxxx@xxx.fr ou xxxxxx@xxx.com.";
                 return;
             } else {
                 emailError.style.display = 'none';
