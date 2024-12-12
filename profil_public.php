@@ -93,6 +93,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_animal'])) {
     $stmt_update->close();
 }
 
+// Gérer la suppression des animaux
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_animal'])) {
+    $id_animal = $_POST['id_animal'];
+
+    $sql_delete = "DELETE FROM Animal WHERE id_animal = ?";
+    $stmt_delete = $conn->prepare($sql_delete);
+    $stmt_delete->bind_param("i", $id_animal);
+
+    if ($stmt_delete->execute()) {
+        $message = "Animal supprimé avec succès !";
+    } else {
+        $message = "Erreur lors de la suppression : " . $stmt_delete->error;
+    }
+
+    $stmt_delete->close();
+}
+
 
 // Récupérer les informations de l'utilisateur
 $sql_user = "SELECT nom_utilisateur, profile_picture FROM creation_compte WHERE id = ?";
@@ -189,6 +206,7 @@ $stmt_animaux->close();
                     </div>
 
                     <button type="submit" name="update_animal" class="btn">Modifier</button>
+                    <button type="submit" name="delete_animal" class="btn btn-delete" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet animal ?');">Supprimer</button>
                 </form>
             </div>
         <?php endwhile; ?>
