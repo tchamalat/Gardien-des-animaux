@@ -38,6 +38,7 @@
             <div class="form-group">
                 <label for="email">Adresse mail :</label>
                 <input type="email" id="email" name="email" required>
+                <small id="emailError" style="color: red; display: none;"></small>
             </div>
 
             <div class="form-group">
