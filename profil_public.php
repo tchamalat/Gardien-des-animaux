@@ -17,10 +17,11 @@ error_reporting(E_ALL);
 
 // Gérer l'ajout des animaux
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom_animal'])) {
-    $noms_animaux = $_POST['nom_animal'];
+    $noms_animaux = is_array($_POST['nom_animal']) ? $_POST['nom_animal'] : [$_POST['nom_animal']];
     $photos_animaux = $_FILES['photo_animal'];
 
     for ($i = 0; $i < count($noms_animaux); $i++) {
+
         $nom_animal = $noms_animaux[$i];
 
         if ($photos_animaux['error'][$i] === UPLOAD_ERR_OK) {
