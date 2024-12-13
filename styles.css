@@ -1006,3 +1006,31 @@ gardiens-container {
     background-color: #0056b3;
 }
 
+/* Appliquer Flexbox à une liste existante */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.nav-item {
+  margin: 10px;
+}
+img {
+  max-width: 100%;
+  height: auto;
+}
+body {
+  font-size: 1rem; /* Utilisez des unités comme rem, em ou % */
+}
+/* Masquer le menu de bureau et afficher un menu hamburger */
+@media screen and (max-width: 768px) {
+  .desktop-menu {
+    display: none;
+  }
+  
+  .hamburger-menu {
+    display: block;
+  }
+}
+
