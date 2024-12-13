@@ -981,6 +981,27 @@ gardiens-container {
     border-radius: 5px;
 }
 
+/* Style de base pour ordinateur de bureau */
+.container {
+  width: 80%;
+  margin: 0 auto;
+}
+
+/* Ajustement pour tablettes */
+@media screen and (max-width: 768px) {
+  .container {
+    width: 95%;
+  }
+}
+
+/* Ajustement pour mobiles */
+@media screen and (max-width: 480px) {
+  .container {
+    width: 100%;
+    padding: 0 10px;
+  }
+}
+
 .profile-edit-form .btn:hover {
     background-color: #0056b3;
 }
