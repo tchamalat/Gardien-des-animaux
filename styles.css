@@ -40,6 +40,7 @@ header img:hover {
     box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
 }
 
+/*
 .auth-buttons {
     position: absolute;
     top: 20px;
@@ -55,6 +56,47 @@ header img:hover {
     margin-left: 10px;
     cursor: pointer;
 }
+*/
+.auth-buttons {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    flex-wrap: wrap; /* Permet de passer à une nouvelle ligne si nécessaire */
+}
+
+.auth-buttons .btn {
+    background-color: orange;
+    border: none;
+    padding: 10px 15px;
+    color: white;
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+/* Médiation pour les écrans plus petits */
+@media (max-width: 768px) {
+    .auth-buttons {
+        position: static; /* Les boutons passent sous le contenu principal */
+        margin-top: 20px; /* Espacement au-dessus */
+        justify-content: center; /* Centrer les boutons horizontalement */
+    }
+    .auth-buttons .btn {
+        margin-left: 0; /* Pas d'espace entre les boutons dans un affichage vertical */
+        margin-bottom: 10px; /* Espacement vertical entre les boutons */
+        width: 100%; /* Les boutons prennent toute la largeur */
+        text-align: center; /* Centrer le contenu dans les boutons */
+    }
+}
+
+/* Médiation pour les très petits écrans */
+@media (max-width: 480px) {
+    .auth-buttons {
+        flex-direction: column; /* Les boutons s'empilent verticalement */
+    }
+}
+
+/**/
 
 .hero {
     position: relative;
