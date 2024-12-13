@@ -55,7 +55,7 @@ unset($_SESSION['message']);
     <h2 class="profile-title">Mon profil :</h2>
     <div class="profile-info">
         <div class="profile-picture">
-            <img id="profile-img" src="<?php echo htmlspecialchars($profile_picture); ?>" alt="Photo de profil">
+            <img id="profile-img" src="display_image.php" alt="Photo de profil">
         </div>
         
         <form action="upload_image.php" method="POST" enctype="multipart/form-data" class="profile-form">
@@ -97,7 +97,8 @@ unset($_SESSION['message']);
     </div>
 
     <div class="profile-actions">
-        <button class="btn-action">HISTORIQUE</button>
+        <button class="btn-action" onclick="window.location.href='historique.php'">HISTORIQUE</button>
+        <button class="btn-action" onclick="window.location.href='profil_public.php'">MON PROFIL PUBLIC</button>
     </div>
 
     <form method="POST" action="delete_account.php">
@@ -110,21 +111,21 @@ unset($_SESSION['message']);
         <div>
             <h4>En savoir plus :</h4>
             <ul>
-                <li><a href="securite.php">Sécurité</a></li>
-                <li><a href="aide.php">Centre d'aide</a></li>
+                <li><a href="securite_connect.php">Sécurité</a></li>
+                <li><a href="aide_connect.php">Centre d'aide</a></li>
             </ul>
         </div>
         <div>
             <h4>A propos de nous :</h4>
             <ul>
-                <li><a href="confidentialite.php">Politique de confidentialité</a></li>
-                <li><a href="contact.php">Nous contacter</a></li>
+                <li><a href="confidentialite_connect.php">Politique de confidentialité</a></li>
+                <li><a href="contact_connect.php">Nous contacter</a></li>
             </ul>
         </div>
         <div>
             <h4>Conditions Générales :</h4>
             <ul>
-                <li><a href="conditions.php">Conditions d'utilisateur et de Service</a></li>
+                <li><a href="conditions_connect.php">Conditions d'utilisateur et de Service</a></li>
             </ul>
         </div>
     </div>

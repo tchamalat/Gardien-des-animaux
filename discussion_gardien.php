@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once 'db.php'; // Fichier de connexion à la base de données
+require_once 'config.php'; // Fichier de connexion à la base de données
 
 // Vérifie si l'utilisateur est connecté
 if (!isset($_SESSION['user_id'])) {
@@ -8,15 +8,27 @@ if (!isset($_SESSION['user_id'])) {
     exit;
 }
 
-// Récupère l'ID de l'utilisateur connecté
 $user_id = $_SESSION['user_id'];
+
+// Gestion de la suppression du message
+if (isset($_GET['delete_id'])) {
+    $delete_id = intval($_GET['delete_id']);
+
+    $delete = $conn->prepare("DELETE FROM discussion WHERE id = ? AND (sender_id = ? OR receiver_id = ?)");
+    $delete->bind_param('iii', $delete_id, $user_id, $user_id);
+
+    if ($delete->execute()) {
+        $success_message = "Message supprimé avec succès.";
+    } else {
+        $error_message = "Erreur lors de la suppression du message.";
+    }
+}
 
 // Gestion de l'envoi du message
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $recipient_username = $_POST['recipient_username'];
     $message_content = $_POST['message'];
 
-    // Vérifie si le destinataire existe
     $stmt = $conn->prepare("SELECT id FROM creation_compte WHERE nom_utilisateur = ?");
     $stmt->bind_param('s', $recipient_username);
     $stmt->execute();
@@ -26,16 +38,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $row = $result->fetch_assoc();
         $receiver_id = $row['id'];
 
-        // Insère le message dans la table discussion
         $insert = $conn->prepare("INSERT INTO discussion (sender_id, receiver_id, message) VALUES (?, ?, ?)");
         $insert->bind_param('iis', $user_id, $receiver_id, $message_content);
         if ($insert->execute()) {
-            echo "<p style='color: green;'>Message envoyé avec succès.</p>";
+            $success_message = "Message envoyé avec succès.";
         } else {
-            echo "<p style='color: red;'>Erreur lors de l'envoi du message.</p>";
+            $error_message = "Erreur lors de l'envoi du message.";
         }
     } else {
-        echo "<p style='color: red;'>Destinataire introuvable.</p>";
+        $error_message = "Destinataire introuvable.";
     }
 }
 ?>
@@ -46,41 +57,195 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Discussion</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Assurez-vous d'avoir un fichier CSS externe -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 90%;
+            max-width: 600px;
+            margin: 40px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #555;
+        }
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical;
+        }
+        .message {
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+        }
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        .messages-list p {
+            background-color: #f1f1f1;
+            padding: 10px;
+            border-left: 4px solid #f5a623;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        .messages-list em {
+            color: #888;
+            font-size: 12px;
+        }
+        .envoyer {
+            display: block;
+            width: fit-content;
+            margin: 0 auto;
+            background-color: #f5a623;
+            color: white;
+            padding: 15px 30px; 
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.2em;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .envoyer:hover {
+            background-color: #e59420;
+            transform: translateY(-5px);
+        }
+
+    </style>
 </head>
 <body>
-    <h2>Envoyer un message</h2>
-    <form method="POST">
-        <label for="recipient_username">Nom d'utilisateur du destinataire :</label><br>
-        <input type="text" name="recipient_username" required><br><br>
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <img src="images/logo.png" alt="Logo Gardien des Animaux">
+            <div class="auth-buttons">
+                <?php
+                if (isset($_SESSION['role'])) {
+                    if ($_SESSION['role'] == 0) {
+                        echo '<button class="btn" onclick="window.location.href=\'profil_gardien.php\'">Mon Profil</button>';
+                    } elseif ($_SESSION['role'] == 1) {
+                        echo '<button class="btn" onclick="window.location.href=\'profil.php\'">Mon Profil</button>';
+                    }
+                } else {
+                    echo '<button class="btn" onclick="window.location.href=\'login.php\'">Mon Profil</button>';
+                }
+                ?>
+                <button class="btn" onclick="window.location.href='index_connect_gardien.php'">Accueil</button>
+            </div>
+        </div>
+    </header>
+    
+    <div class="container">
+        <h2>Envoyer un message</h2>
 
-        <label for="message">Message :</label><br>
-        <textarea name="message" rows="4" cols="50" required></textarea><br><br>
+        <?php if (!empty($success_message)): ?>
+            <div class="message success"><?= htmlspecialchars($success_message); ?></div>
+        <?php elseif (!empty($error_message)): ?>
+            <div class="message error"><?= htmlspecialchars($error_message); ?></div>
+        <?php endif; ?>
 
-        <input type="submit" value="Envoyer">
-    </form>
+        <form method="POST">
+            <div class="form-group">
+                <label for="recipient_username">Nom d'utilisateur du destinataire :</label>
+                <input type="text" name="recipient_username" required>
+            </div>
 
-    <h2>Messages échangés</h2>
-    <?php
-    // Récupère les messages où l'utilisateur est soit l'expéditeur, soit le destinataire
-    $messages = $conn->prepare("
-        SELECT d.*, c1.nom_utilisateur AS sender_name, c2.nom_utilisateur AS receiver_name 
-        FROM discussion d
-        JOIN creation_compte c1 ON d.sender_id = c1.id
-        JOIN creation_compte c2 ON d.receiver_id = c2.id
-        WHERE d.sender_id = ? OR d.receiver_id = ?
-        ORDER BY d.timestamp DESC
-    ");
-    $messages->bind_param('ii', $user_id, $user_id);
-    $messages->execute();
-    $result = $messages->get_result();
+            <div class="form-group">
+                <label for="message">Message :</label>
+                <textarea name="message" rows="4" required></textarea>
+            </div>
 
-    if ($result->num_rows > 0) {
-        while ($msg = $result->fetch_assoc()) {
-            echo "<p><strong>{$msg['sender_name']}</strong> à <strong>{$msg['receiver_name']}</strong> : {$msg['message']} <em>({$msg['timestamp']})</em></p>";
-        }
-    } else {
-        echo "<p>Aucun message trouvé.</p>";
-    }
-    ?>
+            <button type="submit" class="envoyer">Envoyer</button>
+        </form>
+
+        <h2>Messages échangés</h2>
+        <div class="messages-list">
+            <?php
+            $messages = $conn->prepare("
+                SELECT d.*, c1.nom_utilisateur AS sender_name, c2.nom_utilisateur AS receiver_name 
+                FROM discussion d
+                JOIN creation_compte c1 ON d.sender_id = c1.id
+                JOIN creation_compte c2 ON d.receiver_id = c2.id
+                WHERE d.sender_id = ? OR d.receiver_id = ?
+                ORDER BY d.timestamp DESC
+            ");
+            $messages->bind_param('ii', $user_id, $user_id);
+            $messages->execute();
+            $result = $messages->get_result();
+
+            if ($result->num_rows > 0) {
+                while ($msg = $result->fetch_assoc()) {
+                    echo "<p>
+                            <strong>" . htmlspecialchars($msg['sender_name']) . "</strong> à 
+                            <strong>" . htmlspecialchars($msg['receiver_name']) . "</strong> : 
+                            " . htmlspecialchars($msg['message']) . " 
+                            <em>(" . $msg['timestamp'] . ")</em>
+                            <a href='?delete_id=" . $msg['id'] . "' style='color: red; text-decoration: none; margin-left: 10px;' title='Supprimer'>
+                                &#10060;
+                            </a>
+                          </p>";
+                }
+            } else {
+                echo "<p>Aucun message trouvé.</p>";
+            }
+            ?>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+    <div class="footer-links">
+        <div>
+            <h4>En savoir plus :</h4>
+            <ul>
+                <li><a href="securite_connect.php">Sécurité</a></li>
+                <li><a href="aide_connect.php">Centre d'aide</a></li>
+            </ul>
+        </div>
+        <div>
+            <h4>A propos de nous :</h4>
+            <ul>
+                <li><a href="confidentialite_connect.php">Politique de confidentialité</a></li>
+                <li><a href="contact_connect.php">Nous contacter</a></li>
+            </ul>
+        </div>
+        <div>
+            <h4>Conditions Générales :</h4>
+            <ul>
+                <li><a href="conditions_connect.php">Conditions d'utilisateur et de Service</a></li>
+            </ul>
+        </div>
+    </div>
+</footer>
 </body>
 </html>

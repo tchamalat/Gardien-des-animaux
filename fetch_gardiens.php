@@ -15,12 +15,18 @@ if (isset($data['latitude'], $data['longitude'])) {
             id, prenom, nom_utilisateur, profile_picture, latitude, longitude,
             (6371 * ACOS(COS(RADIANS(?)) * COS(RADIANS(latitude)) * COS(RADIANS(longitude) - RADIANS(?)) + SIN(RADIANS(?)) * SIN(RADIANS(latitude)))) AS distance
         FROM creation_compte
-        WHERE role = 0
+        WHERE role = 0 AND latitude IS NOT NULL AND longitude IS NOT NULL
         HAVING distance <= ?
         ORDER BY distance ASC
     ");
+    
     $query->bind_param("dddi", $latitude, $longitude, $latitude, $radius);
-    $query->execute();
+
+    if (!$query->execute()) {
+        echo json_encode(['error' => $query->error]);
+        exit;
+    }
+
     $result = $query->get_result();
 
     $gardiens = [];
@@ -29,7 +35,7 @@ if (isset($data['latitude'], $data['longitude'])) {
             'id' => $row['id'],
             'prenom' => $row['prenom'],
             'nom_utilisateur' => $row['nom_utilisateur'],
-            'profile_picture' => $row['profile_picture'],
+            'profile_picture' => $row['profile_picture'] ?: 'default.jpg', // Image par défaut si non définie
             'distance' => $row['distance'],
         ];
     }

@@ -40,10 +40,49 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Laisser un Avis</title>
     <link rel="stylesheet" href="styles.css">
+    <style>
+        .review-container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff;
+        }
+        h1, h2 {
+            color: #2c3e50;
+            text-align: center;
+        }
+        label {
+            font-weight: bold;
+            margin-top: 10px;
+            color: #555;
+        }
+        .confirmation-message {
+            color: #27ae60;
+            font-size: 1.1em;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        .header-container h1 {
+            margin: 0;
+        }
+        .btn {
+            text-decoration: none; /* Retire le soulignement */
+        }
+    </style>
 </head>
 <body>
     <header class="header-container">
-        <h1>Laisser un Avis</h1>
+        <h1>Laisser un avis</h1>
         <a href="index_connect.php" class="btn">Accueil</a>
     </header>
     <main>

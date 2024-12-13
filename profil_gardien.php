@@ -87,6 +87,45 @@ $disponibilites_array = explode(',', $disponibilites);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mon Profil de Gardien - Gardien des Animaux</title>
     <link rel="stylesheet" href="styles.css">
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const availabilityButtons = document.querySelectorAll('.btn-availability');
+            const hiddenField = document.getElementById('disponibilites');
+            let selectedDays = <?= json_encode($disponibilites_array) ?>;
+            availabilityButtons.forEach(button => {
+                if (selectedDays.includes(button.textContent)) {
+                    button.classList.add('selected');
+                }
+                button.addEventListener('click', function() {
+                    const day = this.textContent;
+                    if (this.classList.contains('selected')) {
+                        this.classList.remove('selected');
+                        selectedDays = selectedDays.filter(d => d !== day);
+                    } else {
+                        this.classList.add('selected');
+                        selectedDays.push(day);
+                    }
+                    hiddenField.value = selectedDays.join(',');
+                    console.log("Selected days: " + hiddenField.value); 
+                });
+            });
+            hiddenField.value = selectedDays.join(',');
+            console.log("Initial selected days: " + hiddenField.value); 
+        });
+    </script>
+    <script>
+        function previewProfileImage(event) {
+            const reader = new FileReader();
+            const imgElement = document.getElementById('profile-img');
+
+            reader.onload = function() {
+                if (imgElement) {
+                    imgElement.src = reader.result;
+                }
+            };
+            reader.readAsDataURL(event.target.files[0]);
+        }
+    </script>
 </head>
 <body>
 
@@ -96,7 +135,7 @@ $disponibilites_array = explode(',', $disponibilites);
         <h1 class="header-slogan">Un foyer chaleureux même en votre absence</h1>
         <div class="auth-buttons">
             <button class="btn" onclick="window.location.href='logout.php'">Déconnexion</button>
-            <button class="btn" onclick="window.location.href='index_connect.php'">Accueil</button>
+            <button class="btn" onclick="window.location.href='index_connect_gardien.php'">Accueil</button>
         </div>
     </div>
 </header>
@@ -112,7 +151,7 @@ $disponibilites_array = explode(',', $disponibilites);
     <h2 class="profile-title">Profil du Gardien</h2>
     
     <div class="profile-picture">
-        <img id="profile-img" src="<?= !empty($profile_picture) ? "uploads/$profile_picture" : 'images/profile-placeholder.png'; ?>" alt="Photo de profil">
+        <img id="profile-img" src="display_image_gardien.php" alt="Photo de profil">
     </div>
 
     <form action="upload_image_gardien.php" method="POST" enctype="multipart/form-data" class="profile-form">
@@ -203,21 +242,21 @@ $disponibilites_array = explode(',', $disponibilites);
         <div>
             <h4>En savoir plus :</h4>
             <ul>
-                <li><a href="securite.php">Sécurité</a></li>
-                <li><a href="aide.php">Centre d'aide</a></li>
+                <li><a href="securite_connect.php">Sécurité</a></li>
+                <li><a href="aide_connect.php">Centre d'aide</a></li>
             </ul>
         </div>
         <div>
             <h4>A propos de nous :</h4>
             <ul>
-                <li><a href="confidentialite.php">Politique de confidentialité</a></li>
-                <li><a href="contact.php">Nous contacter</a></li>
+                <li><a href="confidentialite_connect.php">Politique de confidentialité</a></li>
+                <li><a href="contact_connect.php">Nous contacter</a></li>
             </ul>
         </div>
         <div>
             <h4>Conditions Générales :</h4>
             <ul>
-                <li><a href="conditions.php">Conditions d'utilisateur et de Service</a></li>
+                <li><a href="conditions_connect.php">Conditions d'utilisateur et de Service</a></li>
             </ul>
         </div>
     </div>

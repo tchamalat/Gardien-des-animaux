@@ -2,57 +2,48 @@
 session_start();
 include 'config.php';
 
+// Vérifier si l'utilisateur est connecté
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit();
+}
+
+$user_id = $_SESSION['user_id'];
+
 if (isset($_FILES['profilePicture']) && $_FILES['profilePicture']['error'] === 0) {
-    // Define the upload directory
-    $uploadDir = __DIR__ . '/images/';
+    $fileType = strtolower(pathinfo($_FILES['profilePicture']['name'], PATHINFO_EXTENSION));
+    $allowedTypes = ['jpg', 'jpeg', 'png', 'gif'];
 
-    // Create the directory if it doesn't exist
-    if (!is_dir($uploadDir)) {
-        mkdir($uploadDir, 0777, true);
-    }
-
-    // Generate a unique file name to avoid conflicts
-    $fileName = uniqid() . "_" . basename($_FILES['profilePicture']['name']);
-    $uploadFile = $uploadDir . $fileName;
-
-    // Validate the file type
-    $fileType = pathinfo($uploadFile, PATHINFO_EXTENSION);
-    $allowedTypes = array('jpg', 'png', 'jpeg', 'gif');
-
-    if (in_array(strtolower($fileType), $allowedTypes)) {
-        // Check if the temporary file exists
-        if (!file_exists($_FILES['profilePicture']['tmp_name'])) {
-            $_SESSION['message'] = "Le fichier temporaire n'existe pas.";
-            header("Location: profil.php");
-            exit();
-        }
-
-        // Move the uploaded file
-        if (move_uploaded_file($_FILES['profilePicture']['tmp_name'], $uploadFile)) {
-            // Save the file path relative to the web directory
-            $relativePath = 'images/' . $fileName;
-
-            // Update the database
-            $userId = $_SESSION['user_id'];
-            $query = "UPDATE creation_compte SET profile_picture = ? WHERE id = ?";
-            $stmt = $conn->prepare($query);
-            $stmt->bind_param("si", $relativePath, $userId);
+    // Vérifier le type de fichier
+    if (in_array($fileType, $allowedTypes)) {
+        // Lire le contenu du fichier
+        $fileContent = file_get_contents($_FILES['profilePicture']['tmp_name']);
+        
+        // Préparer la requête pour insérer l'image dans la base de données
+        $sql = "UPDATE creation_compte SET profile_picture = ? WHERE id = ?";
+        $stmt = $conn->prepare($sql);
+        if ($stmt) {
+            $null = NULL;
+            $stmt->bind_param("bi", $null, $user_id);
+            $stmt->send_long_data(0, $fileContent); // Envoie des données binaires à MySQL
 
             if ($stmt->execute()) {
                 $_SESSION['message'] = "La photo de profil a été mise à jour avec succès.";
             } else {
-                $_SESSION['message'] = "Erreur lors de la mise à jour de la base de données.";
+                $_SESSION['message'] = "Erreur lors de la mise à jour de la base de données : " . $stmt->error;
             }
+            $stmt->close();
         } else {
-            $_SESSION['message'] = "Erreur lors du téléversement du fichier. Vérifiez les permissions du dossier.";
+            $_SESSION['message'] = "Erreur de préparation de la requête : " . $conn->error;
         }
     } else {
-        $_SESSION['message'] = "Type de fichier non autorisé. Veuillez téléverser une image (jpg, jpeg, png, gif).";
+        $_SESSION['message'] = "Type de fichier non autorisé.";
     }
 } else {
-    $_SESSION['message'] = "Aucun fichier sélectionné ou erreur lors du téléversement : " . $_FILES['profilePicture']['error'];
+    $_SESSION['message'] = "Aucun fichier téléchargé ou erreur lors de l'upload.";
 }
 
+// Redirection après l'upload
 header("Location: profil.php");
 exit();
 ?>
