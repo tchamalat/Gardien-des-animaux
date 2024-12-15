@@ -988,12 +988,16 @@ gardiens-container {
 .menu-list {
     list-style-type: none;
     padding: 0;
-    text-align: center;
+    margin: 20px auto;
     display: flex;
     flex-direction: column;
-    gap: 15px;
-    max-width: 300px;
-    margin: 20px auto;
+    align-items: center; /* Centre les boutons horizontalement */
+    gap: 15px; /* Ajoute un espacement entre les boutons */
+}
+
+.menu-list li {
+    width: 100%; /* Assure que les boutons prennent toute la largeur du conteneur */
+    max-width: 300px; /* Définit une largeur maximale pour éviter que les boutons ne soient trop larges */
 }
 
 .menu-list .btn {
@@ -1007,12 +1011,13 @@ gardiens-container {
     text-align: center;
     text-decoration: none;
     transition: background-color 0.3s ease, transform 0.3s ease;
-    width: 100%;
-    display: inline-block;
+    width: 100%; /* Assure que les boutons remplissent leur conteneur */
+    display: block;
 }
 
 .menu-list .btn:hover {
     background-color: #ff7f00;
     transform: translateY(-5px);
 }
+
 
