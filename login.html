@@ -37,42 +37,6 @@
         </form>
     </div>
 
-</form>
-    </div>
-
-    <script>
-        // Fonction pour ouvrir le modal
-        function openForgotPassword() {
-            document.getElementById('forgotPasswordModal').style.display = 'block';
-        }
-
-        // Fonction pour fermer le modal
-        function closeForgotPassword() {
-            document.getElementById('forgotPasswordModal').style.display = 'none';
-        }
-
-        // Gestion du formulaire de réinitialisation
-        document.getElementById('forgotPasswordForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-            var formData = new FormData(this);
-
-            fetch('forgot_password.php', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.status === 'success') {
-                    alert('Un email de réinitialisation a été envoyé.');
-                    closeForgotPassword();
-                } else {
-                    alert('Erreur : ' + data.message);
-                }
-            })
-            .catch(error => console.error('Erreur:', error));
-        });
-    </script>
-
     <script>
         document.getElementById('loginForm').addEventListener('submit', function(event) {
             event.preventDefault(); // Empêche l'envoi par défaut du formulaire
@@ -87,7 +51,11 @@
             .then(response => response.json()) // Analyser la réponse comme JSON
             .then(data => {
                 if (data.status === 'success') { // Vérifiez si la connexion est réussie
-                    window.location.href = 'confirmation_connexion.php'; // Rediriger vers confirmation_connexion.html
+                    if (data.redirect) {
+                        window.location.href = data.redirect; // Rediriger vers admin.php si l'utilisateur est admin
+                    } else {
+                        window.location.href = 'confirmation_connexion.php'; // Rediriger vers confirmation_connexion.php pour les autres utilisateurs
+                    }
                 } else {
                     alert('Erreur lors de la connexion : ' + data.message);
                 }
@@ -96,29 +64,29 @@
         });
     </script>
 
-<footer>
-    <div class="footer-links">
-        <div>
-            <h4>En savoir plus :</h4>
-            <ul>
-                <li><a href="securite.php">Sécurité</a></li>
-                <li><a href="aide.php">Centre d'aide</a></li>
-            </ul>
+    <footer>
+        <div class="footer-links">
+            <div>
+                <h4>En savoir plus :</h4>
+                <ul>
+                    <li><a href="securite.php">Sécurité</a></li>
+                    <li><a href="aide.php">Centre d'aide</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4>A propos de nous :</h4>
+                <ul>
+                    <li><a href="confidentialite.php">Politique de confidentialité</a></li>
+                    <li><a href="contact.php">Nous contacter</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4>Conditions Générales :</h4>
+                <ul>
+                    <li><a href="conditions.php">Conditions d'utilisateur et de Service</a></li>
+                </ul>
+            </div>
         </div>
-        <div>
-            <h4>A propos de nous :</h4>
-            <ul>
-                <li><a href="confidentialite.php">Politique de confidentialité</a></li>
-                <li><a href="contact.php">Nous contacter</a></li>
-            </ul>
-        </div>
-        <div>
-            <h4>Conditions Générales :</h4>
-            <ul>
-                <li><a href="conditions.php">Conditions d'utilisateur et de Service</a></li>
-            </ul>
-        </div>
-    </div>
-</footer>
+    </footer>
 </body>
 </html>
