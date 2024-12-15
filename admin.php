@@ -2,63 +2,16 @@
 session_start();
 include 'config.php';
 
-// Fonction de connexion
-function checkAdminLogin($email, $password, $conn) {
-    $stmt = $conn->prepare("SELECT * FROM Administrateur WHERE email_admin = ? AND mot_de_passe_admin = ?");
-    $stmt->bind_param("ss", $email, $password);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    return $result->fetch_assoc();
-}
-
-// Gestion de la connexion
-if (isset($_POST['login'])) {
-    $email = $_POST['email'];
-    $password = $_POST['password'];
-    $hashed_password = md5($password); // Assurez-vous d'utiliser le même hachage que dans la base de données
-    $admin = checkAdminLogin($email, $hashed_password, $conn);
-
-    if ($admin) {
-        $_SESSION['admin'] = $admin['email_admin'];
-    } else {
-        $error = "Identifiants incorrects.";
-    }
-}
-
 // Gestion de la déconnexion
 if (isset($_GET['logout'])) {
     session_destroy();
-    header("Location: admin.php");
+    header("Location: login.html");
     exit();
 }
 
 // Protection de la page admin
 if (!isset($_SESSION['admin'])) {
-?>
-
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <title>Connexion Admin</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <h2>Connexion Administrateur</h2>
-    <form method="post" action="">
-        <label for="email">Email :</label>
-        <input type="email" name="email" required><br>
-
-        <label for="password">Mot de passe :</label>
-        <input type="password" name="password" required><br>
-
-        <button type="submit" name="login">Se Connecter</button>
-    </form>
-    <?php if (isset($error)) echo "<p style='color: red;'>$error</p>"; ?>
-</body>
-</html>
-
-<?php
+    header("Location: login.html");
     exit();
 }
 ?>
