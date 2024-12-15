@@ -8,12 +8,23 @@ if (isset($_POST['save'])) {
     $id_utilisateur = $_POST['id_utilisateur'];
     $type = $_POST['type'];
     $prenom_animal = $_POST['prenom_animal'];
-    $url_photo = $_POST['url_photo'] ?? null;
+
+    // Gestion du téléchargement de la photo
+    if (isset($_FILES['url_photo']) && $_FILES['url_photo']['error'] === UPLOAD_ERR_OK) {
+        $url_photo = file_get_contents($_FILES['url_photo']['tmp_name']);
+    } else {
+        $url_photo = null;
+    }
 
     if ($id) {
         // Mise à jour de l'animal existant
-        $stmt = $conn->prepare("UPDATE Animal SET id_utilisateur = ?, type = ?, prenom_animal = ?, url_photo = ? WHERE id_animal = ?");
-        $stmt->bind_param("isssi", $id_utilisateur, $type, $prenom_animal, $url_photo, $id);
+        if ($url_photo) {
+            $stmt = $conn->prepare("UPDATE Animal SET id_utilisateur = ?, type = ?, prenom_animal = ?, url_photo = ? WHERE id_animal = ?");
+            $stmt->bind_param("isssi", $id_utilisateur, $type, $prenom_animal, $url_photo, $id);
+        } else {
+            $stmt = $conn->prepare("UPDATE Animal SET id_utilisateur = ?, type = ?, prenom_animal = ? WHERE id_animal = ?");
+            $stmt->bind_param("issi", $id_utilisateur, $type, $prenom_animal, $id);
+        }
     } else {
         // Ajout d'un nouvel animal
         $stmt = $conn->prepare("INSERT INTO Animal (id_utilisateur, type, prenom_animal, url_photo) VALUES (?, ?, ?, ?)");
@@ -85,12 +96,12 @@ $result = $conn->query("SELECT * FROM Animal");
     <a href="admin.php">Retour au Tableau de Bord</a>
 
     <h2>Ajouter ou Modifier un Animal</h2>
-    <form method="POST" action="">
+    <form method="POST" action="" enctype="multipart/form-data">
         <input type="hidden" name="id" id="id">
         <input type="number" name="id_utilisateur" id="id_utilisateur" placeholder="ID Utilisateur" required>
         <input type="text" name="type" id="type" placeholder="Type d'Animal" required>
         <input type="text" name="prenom_animal" id="prenom_animal" placeholder="Prénom de l'Animal" required>
-        <input type="text" name="url_photo" id="url_photo" placeholder="URL de la Photo">
+        <input type="file" name="url_photo" id="url_photo" accept="image/*">
         <button type="submit" name="save">Sauvegarder</button>
     </form>
 
@@ -111,8 +122,8 @@ $result = $conn->query("SELECT * FROM Animal");
                 <td><?php echo htmlspecialchars($row['type']); ?></td>
                 <td><?php echo htmlspecialchars($row['prenom_animal']); ?></td>
                 <td>
-                    <?php if ($row['url_photo']): ?>
-                        <img src="<?php echo htmlspecialchars($row['url_photo']); ?>" alt="Photo de l'animal">
+                    <?php if (!empty($row['url_photo'])): ?>
+                        <img src="data:image/jpeg;base64,<?php echo base64_encode($row['url_photo']); ?>" alt="Photo de l'animal">
                     <?php else: ?>
                         Pas de photo
                     <?php endif; ?>
