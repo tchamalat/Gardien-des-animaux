@@ -2,11 +2,6 @@
 session_start();
 include 'config.php';
 
-// Protection de la page admin
-if (!isset($_SESSION['admin'])) {
-    header("Location: login.html");
-    exit();
-}
 
 // Gestion de l'ajout ou de la mise à jour d'un hébergement
 if (isset($_POST['save'])) {
