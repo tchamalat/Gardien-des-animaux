@@ -45,74 +45,91 @@ $result = $conn->query("SELECT * FROM Paiement");
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gérer les Paiements</title>
     <link rel="stylesheet" href="styles.css">
-    <style>
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-        }
-        table, th, td {
-            border: 1px solid #ddd;
-        }
-        th, td {
-            padding: 10px;
-            text-align: center;
-        }
-        th {
-            background-color: #f4f4f4;
-        }
-        a {
-            text-decoration: none;
-            color: red;
-        }
-        form {
-            margin-bottom: 20px;
-        }
-        input, button {
-            padding: 10px;
-            margin: 5px;
-        }
-    </style>
 </head>
 <body>
-    <h1>Gestion des Paiements</h1>
-    <a href="admin.php">Retour au Tableau de Bord</a>
+    <header>
+        <div class="header-container">
+            <img src="images/logo.png" alt="Logo Gardien des Animaux">
+            <h1 class="header-slogan">Gestion des Paiements</h1>
+            <div class="auth-buttons">
+                <button class="btn" onclick="window.location.href='admin.php'">Retour au Tableau de Bord</button>
+            </div>
+        </div>
+    </header>
 
-    <h2>Ajouter ou Modifier un Paiement</h2>
-    <form method="POST" action="">
-        <input type="hidden" name="id" id="id">
-        <input type="number" name="id_reservation" id="id_reservation" placeholder="ID Réservation" required>
-        <input type="number" step="0.01" name="prix" id="prix" placeholder="Prix" required>
-        <input type="datetime-local" name="date" id="date" placeholder="Date" required>
-        <input type="text" name="statut_du_paiement" id="statut_du_paiement" placeholder="Statut du Paiement" required>
-        <button type="submit" name="save">Sauvegarder</button>
-    </form>
+    <div class="form-container">
+        <h2>Ajouter ou Modifier un Paiement</h2>
+        <form method="POST" action="">
+            <input type="hidden" name="id" id="id">
+            <div class="form-group">
+                <input type="number" name="id_reservation" id="id_reservation" placeholder="ID Réservation" required>
+            </div>
+            <div class="form-group">
+                <input type="number" step="0.01" name="prix" id="prix" placeholder="Prix (€)" required>
+            </div>
+            <div class="form-group">
+                <input type="datetime-local" name="date" id="date" placeholder="Date" required>
+            </div>
+            <div class="form-group">
+                <input type="text" name="statut_du_paiement" id="statut_du_paiement" placeholder="Statut du Paiement" required>
+            </div>
+            <button type="submit" name="save" class="btn">Sauvegarder</button>
+        </form>
+    </div>
 
-    <h2>Liste des Paiements</h2>
-    <table>
-        <tr>
-            <th>ID Paiement</th>
-            <th>ID Réservation</th>
-            <th>Prix</th>
-            <th>Date</th>
-            <th>Statut du Paiement</th>
-            <th>Actions</th>
-        </tr>
-        <?php while ($row = $result->fetch_assoc()): ?>
+    <div class="form-container">
+        <h2>Liste des Paiements</h2>
+        <table>
             <tr>
-                <td><?php echo $row['id_paiement']; ?></td>
-                <td><?php echo $row['id_reservation']; ?></td>
-                <td><?php echo $row['prix']; ?> €</td>
-                <td><?php echo $row['date']; ?></td>
-                <td><?php echo htmlspecialchars($row['statut_du_paiement']); ?></td>
-                <td>
-                    <a href="?delete=<?php echo $row['id_paiement']; ?>" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce paiement ?');">Supprimer</a>
-                </td>
+                <th>ID Paiement</th>
+                <th>ID Réservation</th>
+                <th>Prix (€)</th>
+                <th>Date</th>
+                <th>Statut du Paiement</th>
+                <th>Actions</th>
             </tr>
-        <?php endwhile; ?>
-    </table>
+            <?php while ($row = $result->fetch_assoc()): ?>
+                <tr>
+                    <td><?php echo $row['id_paiement']; ?></td>
+                    <td><?php echo $row['id_reservation']; ?></td>
+                    <td><?php echo $row['prix']; ?> €</td>
+                    <td><?php echo $row['date']; ?></td>
+                    <td><?php echo htmlspecialchars($row['statut_du_paiement']); ?></td>
+                    <td>
+                        <button class="btn btn-delete" onclick="if(confirm('Êtes-vous sûr de vouloir supprimer ce paiement ?')) window.location.href='?delete=<?php echo $row['id_paiement']; ?>'">Supprimer</button>
+                    </td>
+                </tr>
+            <?php endwhile; ?>
+        </table>
+    </div>
+
+    <footer>
+        <div class="footer-links">
+            <div>
+                <h4>En savoir plus :</h4>
+                <ul>
+                    <li><a href="securite.php">Sécurité</a></li>
+                    <li><a href="aide.php">Centre d'aide</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4>A propos de nous :</h4>
+                <ul>
+                    <li><a href="confidentialite.php">Politique de confidentialité</a></li>
+                    <li><a href="contact.php">Nous contacter</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4>Conditions Générales :</h4>
+                <ul>
+                    <li><a href="conditions.php">Conditions d'utilisateur et de Service</a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
 </body>
 </html>
 
