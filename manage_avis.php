@@ -93,7 +93,7 @@ $result = $conn->query("SELECT * FROM avis");
                     <td><?php echo $row['rating']; ?></td>
                     <td><?php echo $row['date_created']; ?></td>
                     <td>
-                        <a href="?delete=<?php echo $row['id']; ?>" class="btn auth-buttons" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet avis ?');">Supprimer</a>
+                        <button class="btn btn-delete" onclick="if(confirm('Êtes-vous sûr de vouloir supprimer cet avis ?')) window.location.href='?delete=<?php echo $row['id']; ?>'">Supprimer</button>
                     </td>
                 </tr>
             <?php endwhile; ?>
