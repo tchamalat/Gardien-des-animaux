@@ -30,7 +30,7 @@ if (isset($_GET['logout'])) {
     </header>
 
     <div class="form-container">
-        <h2>Bienvenue, <?php echo htmlspecialchars($_SESSION['admin']); ?> !</h2>
+        <h2>Bienvenue <?php echo htmlspecialchars($_SESSION['admin']); ?> !</h2>
         <h3>Gestion des Tables Principales</h3>
         <ul class="menu-list">
             <li><a class="btn" href="manage_abonnements.php">Gérer les Abonnements</a></li>
