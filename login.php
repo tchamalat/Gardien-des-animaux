@@ -16,90 +16,69 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         $hashed_password = md5($password);
 
-        // Requête SQL pour vérifier le nom d'utilisateur ou l'email
-        $sql = "SELECT id, nom_utilisateur, mail, mot_de_passe, role FROM creation_compte WHERE nom_utilisateur = ? OR mail = ?";
+        // Vérification dans la table Administrateur
+        $sql_admin = "SELECT id_admin, email_admin, mot_de_passe_admin, permissions FROM Administrateur WHERE email_admin = ?";
         
-        if ($stmt = $conn->prepare($sql)) {
-            $stmt->bind_param("ss", $usernameOrEmail, $usernameOrEmail);
-            $stmt->execute();
-            $stmt->store_result();
+        if ($stmt_admin = $conn->prepare($sql_admin)) {
+            $stmt_admin->bind_param("s", $usernameOrEmail);
+            $stmt_admin->execute();
+            $stmt_admin->store_result();
             
-            if ($stmt->num_rows > 0) {
-                $stmt->bind_result($user_id, $nom_utilisateur, $email, $stored_password, $role);
-                $stmt->fetch();
+            if ($stmt_admin->num_rows > 0) {
+                $stmt_admin->bind_result($admin_id, $email_admin, $stored_password, $permissions);
+                $stmt_admin->fetch();
 
                 if ($hashed_password == $stored_password) {
-                    $_SESSION['user_id'] = $user_id;
-                    $_SESSION['nom_utilisateur'] = $nom_utilisateur;
-                    $_SESSION['role'] = $role;
-                    
-                    // Vérification si l'utilisateur est un administrateur
-                    if ($role == 'admin') {
-                        $response['status'] = 'success';
-                        $response['message'] = 'Connexion réussie en tant qu\'administrateur.';
-                        $response['redirect'] = 'admin.php'; // Redirection vers admin.php pour les administrateurs
-                    } else {
-                        $response['status'] = 'success';
-                        $response['message'] = 'Connexion réussie.';
-                    }
+                    $_SESSION['admin_id'] = $admin_id;
+                    $_SESSION['email_admin'] = $email_admin;
+                    $_SESSION['permissions'] = $permissions;
+
+                    $response['status'] = 'success';
+                    $response['message'] = 'Connexion réussie en tant qu\'administrateur.';
+                    $response['redirect'] = 'admin.php'; // Redirection vers admin.php pour les administrateurs
                 } else {
                     $response['status'] = 'error';
-                    $response['message'] = 'Mot de passe incorrect.';
+                    $response['message'] = 'Mot de passe incorrect pour l\'administrateur.';
                 }
+                $stmt_admin->close();
             } else {
-                $response['status'] = 'error';
-                $response['message'] = "Nom d'utilisateur ou adresse e-mail incorrect.";
-            }
+                // Vérification dans la table creation_compte si ce n'est pas un administrateur
+                $sql_user = "SELECT id, nom_utilisateur, mail, mot_de_passe, role FROM creation_compte WHERE nom_utilisateur = ? OR mail = ?";
+                
+                if ($stmt_user = $conn->prepare($sql_user)) {
+                    $stmt_user->bind_param("ss", $usernameOrEmail, $usernameOrEmail);
+                    $stmt_user->execute();
+                    $stmt_user->store_result();
 
-            $stmt->close();
+                    if ($stmt_user->num_rows > 0) {
+                        $stmt_user->bind_result($user_id, $nom_utilisateur, $email, $stored_password, $role);
+                        $stmt_user->fetch();
+
+                        if ($hashed_password == $stored_password) {
+                            $_SESSION['user_id'] = $user_id;
+                            $_SESSION['nom_utilisateur'] = $nom_utilisateur;
+                            $_SESSION['role'] = $role;
+
+                            $response['status'] = 'success';
+                            $response['message'] = 'Connexion réussie.';
+                        } else {
+                            $response['status'] = 'error';
+                            $response['message'] = 'Mot de passe incorrect.';
+                        }
+                    } else {
+                        $response['status'] = 'error';
+                        $response['message'] = "Nom d'utilisateur ou adresse e-mail incorrect.";
+                    }
+
+                    $stmt_user->close();
+                } else {
+                    $response['status'] = 'error';
+                    $response['message'] = "Erreur de connexion à la base de données.";
+                }
+            }
         } else {
             $response['status'] = 'error';
             $response['message'] = "Erreur de connexion à la base de données.";
-        }
-    } elseif (isset($_POST['reset_email'])) {
-        $reset_email = $_POST['reset_email'];
-
-        // Vérifier si l'e-mail existe
-        $sql = "SELECT id FROM creation_compte WHERE mail = ?";
-        if ($stmt = $conn->prepare($sql)) {
-            $stmt->bind_param("s", $reset_email);
-            $stmt->execute();
-            $stmt->store_result();
-
-            if ($stmt->num_rows > 0) {
-                $stmt->bind_result($user_id);
-                $stmt->fetch();
-
-                // Générer un token unique
-                $token = bin2hex(random_bytes(50));
-                $expiry = date("Y-m-d H:i:s", strtotime("+1 hour"));
-
-                // Mettre à jour la base de données avec le token
-                $update_sql = "UPDATE creation_compte SET reset_token = ?, token_expiration = ? WHERE id = ?";
-                if ($update_stmt = $conn->prepare($update_sql)) {
-                    $update_stmt->bind_param("ssi", $token, $expiry, $user_id);
-                    $update_stmt->execute();
-
-                    // Envoyer l'e-mail
-                    $reset_link = "http://example.com/reset_password.php?token=" . $token;
-                    $subject = "Réinitialisation de votre mot de passe";
-                    $message = "Cliquez sur le lien suivant pour réinitialiser votre mot de passe : " . $reset_link;
-                    $headers = "From: noreply@example.com";
-
-                    if (mail($reset_email, $subject, $message, $headers)) {
-                        $response['status'] = 'success';
-                        $response['message'] = "Un e-mail de réinitialisation a été envoyé.";
-                    } else {
-                        $response['status'] = 'error';
-                        $response['message'] = "Échec de l'envoi de l'e-mail.";
-                    }
-                }
-            } else {
-                $response['status'] = 'error';
-                $response['message'] = "Adresse e-mail introuvable.";
-            }
-
-            $stmt->close();
         }
     }
 }
