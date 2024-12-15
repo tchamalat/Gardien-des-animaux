@@ -277,8 +277,12 @@ h2 {
 }
 
 .btn {
+    display: block;
+    width: 100%;
+    max-width: 300px;
     background-color: #f5a623;
     color: white;
+    text-align: center;
     padding: 15px 30px; 
     border: none;
     border-radius: 8px;
@@ -981,3 +985,12 @@ gardiens-container {
     border-radius: 5px;
 }
 
+.menu-list {
+    list-style-type: none;
+    padding: 0;
+    text-align: center;
+}
+
+.menu-list li {
+    margin: 10px 0;
+}
