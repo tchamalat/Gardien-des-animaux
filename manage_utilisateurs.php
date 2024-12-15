@@ -127,7 +127,7 @@ $result = $conn->query("SELECT * FROM creation_compte");
                     <td><?php echo htmlspecialchars($row['ville']); ?></td>
                     <td><?php echo $row['role']; ?></td>
                     <td>
-                        <a class="auth-buttons .btn" href="?delete=<?php echo $row['id']; ?>" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?');">Supprimer</a>
+                        <a class="btn btn-delete" href="?delete=<?php echo $row['id']; ?>" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?');">Supprimer</a>
                     </td>
                 </tr>
             <?php endwhile; ?>
