@@ -9,11 +9,6 @@ if (isset($_GET['logout'])) {
     exit();
 }
 
-// Protection de la page admin
-if (!isset($_SESSION['admin'])) {
-    header("Location: login.html");
-    exit();
-}
 ?>
 
 <!DOCTYPE html>
