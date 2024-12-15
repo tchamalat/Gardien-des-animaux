@@ -32,8 +32,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $_SESSION['nom_utilisateur'] = $nom_utilisateur;
                     $_SESSION['role'] = $role;
                     
-                    $response['status'] = 'success';
-                    $response['message'] = 'Connexion réussie.';
+                    // Vérification si l'utilisateur est un administrateur
+                    if ($role == 'admin') {
+                        $response['status'] = 'success';
+                        $response['message'] = 'Connexion réussie en tant qu\'administrateur.';
+                        $response['redirect'] = 'admin.php'; // Redirection vers admin.php pour les administrateurs
+                    } else {
+                        $response['status'] = 'success';
+                        $response['message'] = 'Connexion réussie.';
+                    }
                 } else {
                     $response['status'] = 'error';
                     $response['message'] = 'Mot de passe incorrect.';
