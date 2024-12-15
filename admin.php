@@ -46,7 +46,7 @@ if (isset($_GET['logout'])) {
     </style>
 </head>
 <body>
-    <h1>Bienvenue, <?php echo htmlspecialchars($_SESSION['admin']); ?> !</h1>
+    <h1>Bienvenue <?php echo htmlspecialchars($_SESSION['admin']); ?> !</h1>
     <a href="?logout=1" class="logout">Déconnexion</a>
 
     <h2>Gestion des Tables Principales</h2>
