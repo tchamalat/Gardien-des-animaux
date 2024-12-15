@@ -11,20 +11,21 @@ $response = array();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['username'], $_POST['password'])) {
-        $username = $_POST['username'];
+        $usernameOrEmail = $_POST['username'];
         $password = $_POST['password'];
 
         $hashed_password = md5($password);
 
-        $sql = "SELECT id, nom_utilisateur, mot_de_passe, role FROM creation_compte WHERE nom_utilisateur = ?";
+        // Requête SQL pour vérifier le nom d'utilisateur ou l'email
+        $sql = "SELECT id, nom_utilisateur, mail, mot_de_passe, role FROM creation_compte WHERE nom_utilisateur = ? OR mail = ?";
         
         if ($stmt = $conn->prepare($sql)) {
-            $stmt->bind_param("s", $username);
+            $stmt->bind_param("ss", $usernameOrEmail, $usernameOrEmail);
             $stmt->execute();
             $stmt->store_result();
             
             if ($stmt->num_rows > 0) {
-                $stmt->bind_result($user_id, $nom_utilisateur, $stored_password, $role);
+                $stmt->bind_result($user_id, $nom_utilisateur, $email, $stored_password, $role);
                 $stmt->fetch();
 
                 if ($hashed_password == $stored_password) {
@@ -47,7 +48,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 }
             } else {
                 $response['status'] = 'error';
-                $response['message'] = "Nom d'utilisateur incorrect.";
+                $response['message'] = "Nom d'utilisateur ou adresse e-mail incorrect.";
             }
 
             $stmt->close();
