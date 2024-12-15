@@ -989,8 +989,30 @@ gardiens-container {
     list-style-type: none;
     padding: 0;
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    max-width: 300px;
+    margin: 20px auto;
 }
 
-.menu-list li {
-    margin: 10px 0;
+.menu-list .btn {
+    background-color: orange;
+    color: white;
+    padding: 12px 20px;
+    font-size: 1.2em;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    width: 100%;
+    display: inline-block;
 }
+
+.menu-list .btn:hover {
+    background-color: #ff7f00;
+    transform: translateY(-5px);
+}
+
