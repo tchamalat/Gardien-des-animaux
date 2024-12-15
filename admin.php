@@ -15,7 +15,8 @@ function checkAdminLogin($email, $password, $conn) {
 if (isset($_POST['login'])) {
     $email = $_POST['email'];
     $password = $_POST['password'];
-    $admin = checkAdminLogin($email, $password, $conn);
+    $hashed_password = md5($password); // Assurez-vous d'utiliser le même hachage que dans la base de données
+    $admin = checkAdminLogin($email, $hashed_password, $conn);
 
     if ($admin) {
         $_SESSION['admin'] = $admin['email_admin'];
@@ -40,6 +41,7 @@ if (!isset($_SESSION['admin'])) {
 <head>
     <meta charset="UTF-8">
     <title>Connexion Admin</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <h2>Connexion Administrateur</h2>
@@ -67,15 +69,43 @@ if (!isset($_SESSION['admin'])) {
     <meta charset="UTF-8">
     <title>Tableau de Bord Admin</title>
     <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        a {
+            text-decoration: none;
+            color: #007BFF;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            margin: 10px 0;
+        }
+        .logout {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
     <h1>Bienvenue, <?php echo htmlspecialchars($_SESSION['admin']); ?> !</h1>
-    <a href="?logout=1">Déconnexion</a>
+    <a href="?logout=1" class="logout">Déconnexion</a>
 
-    <h2>Gestion des Tables</h2>
+    <h2>Gestion des Tables Principales</h2>
     <ul>
         <li><a href="manage_abonnements.php">Gérer les Abonnements</a></li>
         <li><a href="manage_utilisateurs.php">Gérer les Utilisateurs</a></li>
+        <li><a href="manage_reservations.php">Gérer les Réservations</a></li>
         <li><a href="manage_avis.php">Gérer les Avis</a></li>
         <li><a href="manage_animaux.php">Gérer les Animaux</a></li>
         <li><a href="manage_faq.php">Gérer la FAQ</a></li>
