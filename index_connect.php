@@ -62,7 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     echo '<button class="btn" onclick="window.location.href=\'login.php\'">Mon Profil</button>';
                 }
                 ?>
-                <button class="btn" onclick="window.location.href='mes_reservations.php'">Mes réservations</button>
+                <button class="btn" onclick="window.location.href='search_page.php'">Trouver un gardien</button>
                 <button class="btn" onclick="window.location.href='discussion_gardien.php'">Discussion</button>
             </div>
 
