@@ -1060,18 +1060,20 @@ gardiens-container {
 }
 
 .animal-photo {
-    width: 250px;           /* Largeur maximale du cadre */
-    height: 250px;          /* Hauteur maximale du cadre */
-    overflow: hidden;       /* Cache les parties de l'image qui dépassent */
-    margin: 0 auto;         /* Centre le cadre horizontalement */
-    border-radius: 8px;     /* Arrondi des coins */
+    width: 250px;         
+    height: 250px;        
+    overflow: hidden;      
+    margin: 0 auto;         
+    border-radius: 8px;     
 }
 
 .animal-photo img {
-    width: 100%;            /* Prend toute la largeur du cadre */
-    height: 100%;           /* Prend toute la hauteur du cadre */
-    object-fit: cover;      /* Maintient le ratio et remplit le cadre sans déformation */
-    display: block;         /* Évite les espaces indésirables sous l'image */
-    border-radius: 8px;     /* Arrondi des coins de l'image */
+    width: 300px;         
+    height: 200px;         
+    object-fit: cover;      
+    border-radius: 8px;    
+    display: block;
+    margin: 0 auto;         
 }
+
 
