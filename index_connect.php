@@ -73,7 +73,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <button class="btn btn-hero" onclick="window.location.href='search_page.php'">Trouver un gardien</button>
             <button class="btn btn-hero" onclick="window.location.href='discussion.php'">Discussion</button>
         </div>
-    </div>
 
 
 
