@@ -59,6 +59,8 @@ include 'config.php';
             userLatitude = position.coords.latitude;
             userLongitude = position.coords.longitude;
 
+            console.log(`Latitude: ${userLatitude}, Longitude: ${userLongitude}`); // Ajout pour vérifier les coordonnées
+
             fetch('fetch_gardiens.php', {
                 method: 'POST',
                 headers: {
@@ -68,10 +70,12 @@ include 'config.php';
             })
             .then(response => response.json())
             .then(data => {
+                console.log(data); // Ajout pour vérifier la réponse du serveur
                 updateGardiensList(data);
             })
             .catch(error => console.error('Erreur lors de la récupération des gardiens:', error));
         }
+
 
         function showError(error) {
             switch (error.code) {
