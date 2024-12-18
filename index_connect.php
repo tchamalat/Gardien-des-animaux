@@ -69,11 +69,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <!-- Hero Section -->
     <section class="hero">
         <img src="images/premierplan.png" alt="Un foyer chaleureux">
-        <div class="hero-text">
-            <div class="hero-buttons">
-                <button class="btn btn-hero" onclick="window.location.href='search_page.php'">Trouver un gardien</button>
-                <button class="btn btn-hero" onclick="window.location.href='discussion.php'">Discussion</button>
-            </div>
+        <div class="hero-buttons">
+            <button class="btn btn-hero" onclick="window.location.href='search_page.php'">Trouver un gardien</button>
+            <button class="btn btn-hero" onclick="window.location.href='discussion.php'">Discussion</button>
         </div>
     </section>
 
