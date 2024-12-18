@@ -1,15 +1,14 @@
 <?php
 include 'config.php';
 
-// Récupérer les données JSON envoyées
 $data = json_decode(file_get_contents('php://input'), true);
 
 if (isset($data['latitude'], $data['longitude'])) {
     $latitude = $data['latitude'];
     $longitude = $data['longitude'];
-    $radius = 10; // Rayon en kilomètres
+    $radius = 50; // Rayon en kilomètres
 
-    // Requête SQL pour trouver les gardiens dans le rayon
+    // Requête SQL pour trouver les gardiens dans le rayon spécifié
     $query = $conn->prepare("
         SELECT 
             id, prenom, nom_utilisateur, profile_picture, latitude, longitude,
@@ -19,7 +18,7 @@ if (isset($data['latitude'], $data['longitude'])) {
         HAVING distance <= ?
         ORDER BY distance ASC
     ");
-    
+
     $query->bind_param("dddi", $latitude, $longitude, $latitude, $radius);
 
     if (!$query->execute()) {
@@ -35,7 +34,7 @@ if (isset($data['latitude'], $data['longitude'])) {
             'id' => $row['id'],
             'prenom' => $row['prenom'],
             'nom_utilisateur' => $row['nom_utilisateur'],
-            'profile_picture' => $row['profile_picture'] ?: 'default.jpg', // Image par défaut si non définie
+            'profile_picture' => $row['profile_picture'] ?: 'default.jpg',
             'distance' => $row['distance'],
         ];
     }
@@ -44,4 +43,6 @@ if (isset($data['latitude'], $data['longitude'])) {
 } else {
     echo json_encode(['error' => 'Données invalides.']);
 }
+
+$conn->close();
 ?>
