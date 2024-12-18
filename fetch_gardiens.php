@@ -8,7 +8,9 @@ if (isset($data['latitude'], $data['longitude'])) {
     $longitude = $data['longitude'];
     $radius = 50; // Rayon en kilomètres
 
-    // Requête SQL pour trouver les gardiens dans le rayon spécifié
+    // Afficher les coordonnées pour débogage
+    error_log("Latitude: $latitude, Longitude: $longitude");
+
     $query = $conn->prepare("
         SELECT 
             id, prenom, nom_utilisateur, profile_picture, latitude, longitude,
@@ -19,10 +21,15 @@ if (isset($data['latitude'], $data['longitude'])) {
         ORDER BY distance ASC
     ");
 
+    if (!$query) {
+        echo json_encode(['error' => 'Erreur de préparation de la requête : ' . $conn->error]);
+        exit;
+    }
+
     $query->bind_param("dddi", $latitude, $longitude, $latitude, $radius);
 
     if (!$query->execute()) {
-        echo json_encode(['error' => $query->error]);
+        echo json_encode(['error' => 'Erreur d\'exécution de la requête : ' . $query->error]);
         exit;
     }
 
