@@ -1030,23 +1030,27 @@ gardiens-container {
 
 .hero-buttons {
     display: flex;
-    justify-content: center;
-    gap: 20px; /* Espacement entre les boutons */
-    margin-top: 20px; /* Espacement par rapport au texte de la Hero Section */
+    justify-content: center;  /* Centre les boutons horizontalement */
+    gap: 20px;                /* Ajoute un espacement de 20px entre les boutons */
+    margin-top: 20px;         /* Espacement au-dessus des boutons */
+    flex-wrap: wrap;          /* Permet le retour à la ligne si nécessaire */
 }
 
 .hero-buttons .btn-hero {
-    padding: 15px 25px; /* Ajuster le padding pour une meilleure apparence */
+    padding: 15px 25px;       /* Ajuste le padding des boutons */
     font-size: 1.2em;
-    border-radius: 10px; /* Coins arrondis */
+    border-radius: 10px;      /* Coins arrondis */
     background-color: orange;
     color: white;
     cursor: pointer;
     transition: background-color 0.3s, transform 0.3s;
+    text-align: center;
+    width: auto;              /* Assure que la largeur s'ajuste au contenu */
 }
 
 .hero-buttons .btn-hero:hover {
     background-color: #ff7f00;
-    transform: translateY(-3px); /* Effet de levée au survol */
+    transform: translateY(-3px);
 }
+
 
