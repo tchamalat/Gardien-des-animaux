@@ -1,3 +1,51 @@
+<?php
+session_start();
+include 'config.php';
+
+// Gestion de l'ajout ou de la mise à jour d'un utilisateur
+if (isset($_POST['save'])) {
+    $id = $_POST['id'] ?? null;
+    $prenom = $_POST['prenom'];
+    $nom = $_POST['nom'];
+    $nom_utilisateur = $_POST['nom_utilisateur'];
+    $mail = $_POST['mail'];
+    $numero_telephone = $_POST['numero_telephone'];
+    $adresse = $_POST['adresse'];
+    $ville = $_POST['ville'];
+    $mot_de_passe = $_POST['mot_de_passe'];
+    $role = $_POST['role'];
+
+    if ($id) {
+        // Mise à jour de l'utilisateur existant
+        $stmt = $conn->prepare("UPDATE creation_compte SET prenom = ?, nom = ?, nom_utilisateur = ?, mail = ?, numero_telephone = ?, adresse = ?, ville = ?, mot_de_passe = ?, role = ? WHERE id = ?");
+        $stmt->bind_param("ssssssssii", $prenom, $nom, $nom_utilisateur, $mail, $numero_telephone, $adresse, $ville, $mot_de_passe, $role, $id);
+    } else {
+        // Ajout d'un nouvel utilisateur
+        $stmt = $conn->prepare("INSERT INTO creation_compte (prenom, nom, nom_utilisateur, mail, numero_telephone, adresse, ville, mot_de_passe, role) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("ssssssssi", $prenom, $nom, $nom_utilisateur, $mail, $numero_telephone, $adresse, $ville, $mot_de_passe, $role);
+    }
+    
+    $stmt->execute();
+    $stmt->close();
+    header("Location: manage_utilisateurs.php");
+    exit();
+}
+
+// Gestion de la suppression d'un utilisateur
+if (isset($_GET['delete'])) {
+    $id = $_GET['delete'];
+    $stmt = $conn->prepare("DELETE FROM creation_compte WHERE id = ?");
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+    $stmt->close();
+    header("Location: manage_utilisateurs.php");
+    exit();
+}
+
+// Récupération des utilisateurs
+$result = $conn->query("SELECT * FROM creation_compte");
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -5,87 +53,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gérer les Utilisateurs</title>
     <link rel="stylesheet" href="styles.css">
-    <style>
-        /* Styles pour une table élégante */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-
-        table th, table td {
-            text-align: left;
-            padding: 10px;
-            border: 1px solid #ddd;
-        }
-
-        table th {
-            background-color: #f5a623;
-            color: white;
-        }
-
-        table tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
-
-        table tr:hover {
-            background-color: #f5f5f5;
-        }
-
-        /* Styles pour le bouton supprimer */
-        .btn-delete {
-            background-color: #e74c3c;
-            color: white;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 5px;
-            cursor: pointer;
-            text-decoration: none;
-            font-size: 0.9em;
-        }
-
-        .btn-delete:hover {
-            background-color: #c0392b;
-        }
-
-        /* Formulaire amélioré */
-        .form-container form {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-
-        .form-container .form-group {
-            flex: 1 1 calc(50% - 10px); /* 50% de la largeur moins les espaces */
-            display: flex;
-            flex-direction: column;
-        }
-
-        .form-container input {
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            width: 100%;
-            font-size: 1em;
-        }
-
-        /* Boutons */
-        .form-container button, .auth-buttons .btn {
-            padding: 10px 20px;
-            font-size: 1em;
-            color: white;
-            background-color: orange;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.3s ease;
-        }
-
-        .form-container button:hover, .auth-buttons .btn:hover {
-            background-color: #ff7f00;
-            transform: translateY(-3px);
-        }
-    </style>
 </head>
 <body>
     <header>
@@ -103,42 +70,33 @@
         <form method="POST" action="">
             <input type="hidden" name="id" id="id">
             <div class="form-group">
-                <label for="prenom">Prénom</label>
                 <input type="text" name="prenom" id="prenom" placeholder="Prénom" required>
             </div>
             <div class="form-group">
-                <label for="nom">Nom</label>
                 <input type="text" name="nom" id="nom" placeholder="Nom" required>
             </div>
             <div class="form-group">
-                <label for="nom_utilisateur">Nom d'utilisateur</label>
                 <input type="text" name="nom_utilisateur" id="nom_utilisateur" placeholder="Nom d'utilisateur" required>
             </div>
             <div class="form-group">
-                <label for="mail">Email</label>
                 <input type="email" name="mail" id="mail" placeholder="Email" required>
             </div>
             <div class="form-group">
-                <label for="numero_telephone">Téléphone</label>
                 <input type="text" name="numero_telephone" id="numero_telephone" placeholder="Téléphone" required>
             </div>
             <div class="form-group">
-                <label for="adresse">Adresse</label>
                 <input type="text" name="adresse" id="adresse" placeholder="Adresse" required>
             </div>
             <div class="form-group">
-                <label for="ville">Ville</label>
                 <input type="text" name="ville" id="ville" placeholder="Ville" required>
             </div>
             <div class="form-group">
-                <label for="mot_de_passe">Mot de Passe</label>
                 <input type="password" name="mot_de_passe" id="mot_de_passe" placeholder="Mot de passe" required>
             </div>
             <div class="form-group">
-                <label for="role">Rôle</label>
                 <input type="number" name="role" id="role" placeholder="Rôle (1=Admin, 2=User)" required>
             </div>
-            <button type="submit" name="save">Sauvegarder</button>
+            <button type="submit" class="btn" name="save">Sauvegarder</button>
         </form>
     </div>
 
@@ -149,7 +107,7 @@
                 <th>ID</th>
                 <th>Prénom</th>
                 <th>Nom</th>
-                <th>Nom d'utilisateur</th>
+                <th>Nom d'Utilisateur</th>
                 <th>Email</th>
                 <th>Téléphone</th>
                 <th>Adresse</th>
@@ -169,7 +127,7 @@
                     <td><?php echo htmlspecialchars($row['ville']); ?></td>
                     <td><?php echo $row['role']; ?></td>
                     <td>
-                        <a class="btn-delete" href="?delete=<?php echo $row['id']; ?>" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?');">Supprimer</a>
+                        <a class="btn" href="?delete=<?php echo $row['id']; ?>" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?');">Supprimer</a>
                     </td>
                 </tr>
             <?php endwhile; ?>
@@ -202,3 +160,5 @@
     </footer>
 </body>
 </html>
+
+<?php $conn->close(); ?>
