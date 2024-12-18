@@ -1028,4 +1028,25 @@ gardiens-container {
     transform: translateY(-5px);
 }
 
+.hero-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px; /* Espacement entre les boutons */
+    margin-top: 20px; /* Espacement par rapport au texte de la Hero Section */
+}
+
+.hero-buttons .btn-hero {
+    padding: 15px 25px; /* Ajuster le padding pour une meilleure apparence */
+    font-size: 1.2em;
+    border-radius: 10px; /* Coins arrondis */
+    background-color: orange;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.hero-buttons .btn-hero:hover {
+    background-color: #ff7f00;
+    transform: translateY(-3px); /* Effet de levée au survol */
+}
 
