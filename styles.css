@@ -1058,3 +1058,12 @@ gardiens-container {
     background-color: #ff7f00;
     transform: translateY(-3px);
 }
+
+.animal-photo img {
+    width: 100%;          /* L'image prend 100% de la largeur du conteneur */
+    height: 200px;        /* Fixe une hauteur uniforme pour toutes les images */
+    object-fit: cover;    /* Maintient les proportions tout en couvrant le cadre */
+    border-radius: 8px;   /* Arrondit les bords des images */
+    display: block;
+    margin: 0 auto;       /* Centre l'image horizontalement si le conteneur est plus large */
+}
