@@ -1027,31 +1027,3 @@ gardiens-container {
     background-color: #ff7f00;
     transform: translateY(-5px);
 }
-
-.hero-buttons {
-    display: flex;
-    justify-content: center;     /* Centre les boutons horizontalement */
-    gap: 20px;                   /* Espace de 20px entre les boutons */
-    position: absolute;          /* Position absolue pour fixer l'emplacement */
-    bottom: 20px;                /* Place les boutons à 20px du bas de la section hero */
-    left: 50%;                   /* Centre les boutons par rapport à la largeur */
-    transform: translateX(-50%); /* Ajuste pour centrer parfaitement */
-}
-
-.hero-buttons .btn-hero {
-    padding: 15px 25px;          /* Ajuste le padding des boutons */
-    font-size: 1.2em;
-    border-radius: 10px;
-    background-color: orange;
-    color: white;
-    cursor: pointer;
-    transition: background-color 0.3s, transform 0.3s;
-    text-align: center;
-}
-
-.hero-buttons .btn-hero:hover {
-    background-color: #ff7f00;
-    transform: translateY(-3px);
-}
-
-
