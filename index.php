@@ -20,37 +20,42 @@ include 'config.php';
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background-color: transparent; /* Fond transparent */
+            background: none; /* Retirer tout fond */
         }
+
         .header-container {
             width: 100%;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background-color: transparent; /* Supprime le fond beige */
+            background: none; /* Retirer tout fond */
         }
+
         body {
             margin: 0;
             padding: 0;
-            background-image: url('images/premierplan.jpg'); /* Chemin vers votre image */
+            min-height: 100vh;
+            background: url('images/premierplan.jpg') no-repeat center center fixed; 
             background-size: cover;
-            background-attachment: fixed;
-            background-position: center;
             color: #fff;
-            min-height: 100vh; /* Assure que le body prend toute la hauteur */
         }
+
         .hero {
             position: relative;
             width: 100%;
-            height: 100vh; /* Prend toute la hauteur de l'écran */
+            height: 100vh; /* Hauteur complète de l'écran */
+            display: flex;
+            justify-content: center;
+            align-items: center;
             overflow: hidden;
-        }
+        }    
 
         .hero img {
             width: 100%;
-            height: 100%;
-            object-fit: cover; /* L'image couvre toute la section */
+            height: 100vh;
+        object-fit: cover;
         }
+
         footer {
             background-color: transparent;
             color: #fff;
@@ -65,6 +70,43 @@ include 'config.php';
             font-size: 0.9em;
             color: #555;
         }
+        header img {
+            height: 100px; /* Ajuster la taille si nécessaire */
+            max-width: 200px;
+            display: block;
+            background: none; /* Pas de fond pour le logo */
+            padding: 0;
+            border-radius: 0;
+            box-shadow: none;
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .auth-buttons .btn {
+            background-color: orange;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .auth-buttons .btn:hover {
+            background-color: #ff7f00;
+            transform: translateY(-3px);
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
     </style>
     <script>
         let userLatitude, userLongitude;
