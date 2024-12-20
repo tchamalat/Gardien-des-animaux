@@ -10,6 +10,53 @@ include 'config.php';
     <title>Gardien des Animaux</title>
     <link rel="stylesheet" href="styles.css">
     <style>
+        header {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 10;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: transparent; /* Fond transparent */
+        }
+        .header-container {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: transparent; /* Supprime le fond beige */
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            background-image: url('images/premierplan.jpg'); /* Chemin vers votre image */
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
+            color: #fff;
+            min-height: 100vh; /* Assure que le body prend toute la hauteur */
+        }
+        .hero {
+            position: relative;
+            width: 100%;
+            height: 100vh; /* Prend toute la hauteur de l'écran */
+            overflow: hidden;
+        }
+
+        .hero img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* L'image couvre toute la section */
+        }
+        footer {
+            background-color: transparent;
+            color: #fff;
+        }
+
+
         .gardien p {
             margin: 5px 0;
         }
