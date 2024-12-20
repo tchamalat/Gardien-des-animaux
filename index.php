@@ -1,4 +1,4 @@
-<?php
+z<?php
 include 'config.php'; 
 ?>
 
@@ -10,31 +10,6 @@ include 'config.php';
     <title>Gardien des Animaux</title>
     <link rel="stylesheet" href="styles.css">
     <style>
-        #gardiens-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            justify-content: center;
-            margin-top: 20px;
-        }
-
-        .gardien {
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            width: 200px;
-            padding: 15px;
-            text-align: center;
-            background-color: #f9f9f9;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        .gardien img {
-            width: 100%;
-            height: auto;
-            border-radius: 50%;
-            margin-bottom: 10px;
-        }
-
         .gardien p {
             margin: 5px 0;
         }
