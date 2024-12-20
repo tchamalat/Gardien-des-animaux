@@ -12,7 +12,9 @@ body {
     background-attachment: fixed;
     background-position: center;
     color: #fff; 
+    min-height: 100vh; /* S'assurer que le fond prend toute la hauteur */
 }
+
 
 header {
     background-color: transparent;
@@ -20,8 +22,13 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: none; /* Retire l'ombre si elle existe */
+    position: absolute;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 10; 
 }
+
 
 header h1 {
     color: #f5a623; 
@@ -34,16 +41,24 @@ header img {
     max-width: 300px; 
     margin: 0 auto;
     display: block;
-    background: linear-gradient(135deg, #ff7f00, #ffd700); 
-    padding: 15px;
-    border-radius: 50%; 
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3); 
-    transition: transform 0.4s ease-in-out, box-shadow 0.4s ease-in-out; 
+    padding: 0; /* Retire le padding pour éviter le fond coloré */
+    border-radius: 0; /* Retire le bord arrondi si nécessaire */
+    box-shadow: none; /* Retire l'ombre si elle existe */
+    background: none; /* Supprime le fond dégradé */
 }
+
 
 header img:hover {
     transform: scale(1.1) rotate(5deg); 
     box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+}
+
+.header-container {
+    background-color: transparent; 
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .auth-buttons {
@@ -72,14 +87,15 @@ header img:hover {
 
 .hero {
     position: relative;
-    text-align: center;
-    color: white;
+    width: 100%;
+    height: 100vh; /* Prend toute la hauteur de l'écran */
+    overflow: hidden; /* Évite les débordements */
 }
 
 .hero img {
     width: 100%;
-    height: auto;
-    opacity: 0.8; 
+    height: 100%;
+    object-fit: cover; /* S'assure que l'image couvre toute la section */
 }
 
 .hero-text {
