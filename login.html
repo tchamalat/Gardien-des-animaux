@@ -5,6 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Connexion - Gardien des Animaux</title>
     <link rel="stylesheet" href="styles.css">
+    <style>
+        .password-container {
+            position: relative;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+        }
+
+        .toggle-password img {
+            width: 20px;
+            height: 20px;
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -21,12 +39,15 @@
         <h2>Je me connecte :</h2>
         <form id="loginForm" method="POST">
             <div class="form-group">
-                <label for="username">Identifiant ou Email :</label>
+                <label for="username">Identifiant :</label>
                 <input type="text" id="username" name="username" required>
             </div>
-            <div class="form-group">
+            <div class="form-group password-container">
                 <label for="password">Mot de passe :</label>
                 <input type="password" id="password" name="password" required>
+                <span class="toggle-password" onclick="togglePasswordVisibility()">
+                    <img src="images/eye.png" alt="Afficher/Masquer mot de passe" id="eyeIcon">
+                </span>
             </div>
             <div class="form-group">
                 <p class="forgot-password">
@@ -38,55 +59,43 @@
     </div>
 
     <script>
-        document.getElementById('loginForm').addEventListener('submit', function(event) {
-            event.preventDefault(); // Empêche l'envoi par défaut du formulaire
+        function togglePasswordVisibility() {
+            const passwordInput = document.getElementById('password');
+            const eyeIcon = document.getElementById('eyeIcon');
 
-            var formData = new FormData(this);
-
-            // Envoi des données à login.php via AJAX
-            fetch('login.php', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.json()) // Analyser la réponse comme JSON
-            .then(data => {
-                if (data.status === 'success') { // Vérifiez si la connexion est réussie
-                    if (data.redirect) {
-                        window.location.href = data.redirect; // Rediriger vers admin.php si l'utilisateur est admin
-                    } else {
-                        window.location.href = 'confirmation_connexion.php'; // Rediriger vers confirmation_connexion.php pour les autres utilisateurs
-                    }
-                } else {
-                    alert('Erreur lors de la connexion : ' + data.message);
-                }
-            })
-            .catch(error => console.error('Erreur:', error));
-        });
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                eyeIcon.src = 'images/oeilferme.png'; 
+            } else {
+                passwordInput.type = 'password';
+                eyeIcon.src = 'images/oeilouvert.png'; 
+            }
+        }
     </script>
 
-    <footer>
-        <div class="footer-links">
-            <div>
-                <h4>En savoir plus :</h4>
-                <ul>
-                    <li><a href="securite.php">Sécurité</a></li>
-                    <li><a href="aide.php">Centre d'aide</a></li>
-                </ul>
-            </div>
-            <div>
-                <h4>A propos de nous :</h4>
-                <ul>
-                    <li><a href="confidentialite.php">Politique de confidentialité</a></li>
-                    <li><a href="contact.php">Nous contacter</a></li>
-                </ul>
-            </div>
-            <div>
-                <h4>Conditions Générales :</h4>
-                <ul>
-                    <li><a href="conditions.php">Conditions d'utilisateur et de Service</a></li>
-                </ul>
-            </div>
+<footer>
+    <div class="footer-links">
+        <div>
+            <h4>En savoir plus :</h4>
+            <ul>
+                <li><a href="securite.php">Sécurité</a></li>
+                <li><a href="aide.php">Centre d'aide</a></li>
+            </ul>
         </div>
-    </footer>
+        <div>
+            <h4>A propos de nous :</h4>
+            <ul>
+                <li><a href="confidentialite.php">Politique de confidentialité</a></li>
+                <li><a href="contact.php">Nous contacter</a></li>
+            </ul>
+        </div>
+        <div>
+            <h4>Conditions Générales :</h4>
+            <ul>
+                <li><a href="conditions.php">Conditions d'utilisateur et de Service</a></li>
+            </ul>
+        </div>
+    </div>
+</footer>
 </body>
 </html>
