@@ -5,16 +5,22 @@
 }
 
 body {
-    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-image: url('images/premierplan.jpg'); 
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+    color: #fff; 
 }
 
 header {
-    background-color: #ded3c0; 
+    background-color: transparent;
     padding: 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    box-shadow: none; /* Retire l'ombre si elle existe */
 }
 
 header h1 {
@@ -67,11 +73,13 @@ header img:hover {
 .hero {
     position: relative;
     text-align: center;
+    color: white;
 }
 
 .hero img {
     width: 100%;
     height: auto;
+    opacity: 0.8; 
 }
 
 .hero-text {
@@ -123,9 +131,15 @@ header img:hover {
 
 
 .gardiens {
-    text-align: center;
-    padding: 50px 0;
-    background-color: #f9f9f9;
+    background-color: transparent;
+    padding: 50px 20px;
+    color: #fff;
+}
+
+.gardien {
+    background-color: rgba(0, 0, 0, 0.6); /* Fond semi-transparent pour le contraste */
+    border: none;
+    color: #fff;
 }
 
 .gardien-list {
@@ -146,9 +160,8 @@ header img:hover {
 }
 
 .avis-section {
-    padding: 50px;
-    background-color: white;
-    text-align: center;
+    background-color: transparent;
+    padding: 50px 20px;
 }
 
 .avis-list {
@@ -206,10 +219,16 @@ header img:hover {
 
 
 footer {
-    background-color: #ded3c0;
+    background-color: transparent;
     padding: 20px;
-    color: white;
+    color: #fff;
 }
+
+footer a {
+    color: #fff;
+    text-decoration: none;
+}
+
 
 footer h4 {
     margin-bottom: 10px;
@@ -221,6 +240,11 @@ footer ul {
 
 footer ul li {
     margin-bottom: 5px;
+}
+
+footer a:hover {
+    color: orange;
+    text-decoration: underline;
 }
 
 .form-container {
