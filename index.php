@@ -157,8 +157,24 @@ include 'config.php';
             height: 100px;
             align-items: center;
             font-size: 1.2em;
-	        gap: 20px;
+	    gap: 20px;
         }
+	.voir-plus {
+	    background-color: #f5a623;
+    	    color: white;
+    	    padding: 15px 30px;
+	    border: none;
+    	    border-radius: 8px;
+    	    cursor: pointer;
+    	    font-size: 1.2em;
+    	    transition: background-color 0.3s ease, transform 0.3s ease;
+    	    margin-top: 30px;
+	}
+	.voir-plus:hover {
+    	    background-color: #ff7f00;
+    	    transform: translateY(-5px);
+	}
+
     </style>
 </head>
 <body>
