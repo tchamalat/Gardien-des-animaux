@@ -134,6 +134,31 @@ include 'config.php';
         .footer-links a:hover {
             color: orange;
         }
+        .avis-section {
+            background-color: transparent;
+            padding: 50px 20px;
+        }
+
+        .avis-list {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+	        align-items: center;
+        }
+
+        .avis {
+            background-color: #f3e3cd;
+            border-radius: 20px;
+            padding: 30px;
+            border: 3px solid #f5a623;
+            display: flex;
+            justify-content: space-between;
+             width: 500px;
+            height: 100px;
+            align-items: center;
+            font-size: 1.2em;
+	        gap: 20px;
+        }
     </style>
 </head>
 <body>
