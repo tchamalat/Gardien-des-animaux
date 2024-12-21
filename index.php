@@ -105,10 +105,10 @@ include 'config.php';
             transform: translateY(-3px);
         }
 
-        .gardiens {
-            background: rgba(0, 0, 0, 0.5);
-            color: #fff;
-        }
+	.gardiens {
+    	    background: transparent; 
+    	    color: #fff;
+	}
 
         footer {
             padding: 20px;
@@ -143,22 +143,19 @@ include 'config.php';
             display: flex;
             flex-direction: column;
             gap: 30px;
-	        align-items: center;
+	    align-items: center;
         }
 
-        .avis {
-            background-color: #f3e3cd;
-            border-radius: 20px;
-            padding: 30px;
-            border: 3px solid #f5a623;
-            display: flex;
-            justify-content: space-between;
-             width: 500px;
-            height: 100px;
-            align-items: center;
-            font-size: 1.2em;
-	    gap: 20px;
-        }
+	.avis {
+    	    background-color: #f3e3cd;
+    	    border-radius: 20px;
+    	    padding: 20px;
+    	    border: 3px solid #f5a623;
+    	    display: flex;
+    	    justify-content: space-between;
+    	    align-items: center;
+    	    gap: 20px;
+	}
 	.voir-plus {
 	    background-color: #f5a623;
     	    color: white;
@@ -174,7 +171,28 @@ include 'config.php';
     	    background-color: #ff7f00;
     	    transform: translateY(-5px);
 	}
+	.avis img {
+    	    height: 50px; /* Réduction de la taille de l'étoile */
+    	    width: 50px;
+    	    border-radius: 50%; /* Ajout d'un cercle autour de l'étoile */
+    	    background-color: white; /* Fond blanc pour le cercle */
+    	    padding: 5px; /* Ajout d'un espace autour de l'étoile */
+    	    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+	}
+	
+	.avis span {
+            font-size: 1em;
+    	    color: #333;
+    	    display: flex;
+    	    align-items: center;
+    	    gap: 10px; /* Espacement entre l'étoile et la note */
+	}
 
+	.avis span p {
+    	    margin: 0; /* Suppression des marges inutiles */
+    	    font-weight: bold;
+    	    font-size: 1.2em; /* Taille de la note */
+	}
     </style>
 </head>
 <body>
