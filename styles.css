@@ -1,52 +1,7 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    margin: 0;
-    padding: 0;
-    background-image: url('images/premierplan.jpg'); /* Chemin vers votre image */
-    background-size: cover;
-    background-attachment: fixed;
-    background-position: center;
-    color: #fff;
-    min-height: 100vh; /* Assure que le body prend toute la hauteur */
-}
-
-
-
-header {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 10;
-    padding: 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: transparent; /* Fond transparent */
-}
-
-
-
 header h1 {
     color: #f5a623; 
     font-size: 2em;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); 
-}
-
-header img {
-    height: 150px; 
-    max-width: 300px; 
-    margin: 0 auto;
-    display: block;
-    padding: 0; /* Retire le padding pour éviter le fond coloré */
-    border-radius: 0; /* Retire le bord arrondi si nécessaire */
-    box-shadow: none; /* Retire l'ombre si elle existe */
-    background: none; /* Supprime le fond dégradé */
 }
 
 
@@ -64,36 +19,6 @@ header img:hover {
 }
 
 
-.auth-buttons {
-    display: flex;
-    gap: 15px; /* Espacement entre les boutons */
-    position: absolute;
-    top: 20px;
-    right: 20px;
-}
-.auth-buttons .btn {
-    background-color: orange;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 8px;
-    font-size: 1em;
-    cursor: pointer;
-    text-decoration: none;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-}
-
-.auth-buttons .btn:hover {
-    background-color: #ff7f00;
-    transform: translateY(-3px);
-}
-
-.hero {
-    position: relative;
-    width: 100%;
-    height: 100vh; /* Prend toute la hauteur de l'écran */
-    overflow: hidden;
-}
 
 .hero img {
     width: 100%;
@@ -150,11 +75,7 @@ header img:hover {
 }
 
 
-.gardiens {
-    background-color: transparent;
-    padding: 50px 20px;
-    color: #fff;
-}
+
 
 .gardien {
     background-color: rgba(0, 0, 0, 0.6); /* Fond semi-transparent pour le contraste */
@@ -238,10 +159,6 @@ header img:hover {
 
 
 
-footer {
-    background-color: transparent;
-    color: #fff;
-}
 
 
 footer a {
@@ -595,32 +512,7 @@ input[type="email"], input[type="text"], input[type="password"], input[type="tel
     background-color: #ff5733;
 }
 
-.footer-links {
-    background-color: #ded3c0;
-    padding: 20px;
-    color: white;
-    display: flex;
-    justify-content: space-around;
-    text-align: left;
-}
 
-.footer-links h4 {
-    margin-bottom: 10px;
-}
-
-.footer-links ul {
-    list-style: none;
-    padding: 0;
-}
-
-.footer-links ul li {
-    margin-bottom: 5px;
-    cursor: pointer;
-}
-
-.footer-links ul li:hover {
-    text-decoration: underline;
-}
 
 .profile-item {
     display: flex;
@@ -1072,10 +964,6 @@ gardiens-container {
     transform: translateY(-5px);
 }
 
-.hero {
-    position: relative;      /* Assure que les enfants positionnés absolus sont relatifs à .hero */
-    text-align: center;      /* Centre le contenu horizontalement */
-}
 
 .hero-buttons {
     position: absolute;      /* Positionne les boutons par rapport à .hero */
