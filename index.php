@@ -1,4 +1,4 @@
-z<?php
+<?php
 include 'config.php'; 
 ?>
 
