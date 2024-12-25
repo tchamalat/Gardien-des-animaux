@@ -222,6 +222,44 @@ include 'config.php';
             <p>Chargement des gardiens en cours... Merci de patienter.</p>
         </div>
     </section>
+    <script>
+        async function fetchGardiens() {
+            const gardiensContainer = document.getElementById('gardiens-container');
+
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(async (position) => {
+                    const { latitude, longitude } = position.coords;
+
+                    // Appel à l'API fetch_gardiens.php
+                    const response = await fetch('fetch_gardiens.php', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ latitude, longitude })
+                    });
+
+                    const data = await response.json();
+
+                    if (data.error) {
+                        gardiensContainer.innerHTML = `<p>Erreur : ${data.error}</p>`;
+                    } else {
+                        gardiensContainer.innerHTML = data.map(gardien => `
+                            <div class="gardien">
+                                <img src="images/${gardien.profile_picture || 'default.jpg'}" alt="${gardien.prenom}">
+                                <p>${gardien.prenom} (${gardien.nom_utilisateur}) - ${gardien.distance.toFixed(2)} km</p>
+                            </div>
+                        `).join('');
+                    }
+                }, (error) => {
+                    gardiensContainer.innerHTML = `<p>Erreur de géolocalisation : ${error.message}</p>`;
+                });
+            } else {
+                gardiensContainer.innerHTML = `<p>La géolocalisation n'est pas prise en charge par votre navigateur.</p>`;
+            }
+        }
+
+        // Charger les gardiens dès que la page est prête
+        document.addEventListener('DOMContentLoaded', fetchGardiens);
+    </script>
 
     <!-- Avis Section -->
     <section class="avis-section">
@@ -315,38 +353,8 @@ include 'config.php';
                     alert("Une erreur inconnue est survenue.");
                     break;
             }
-	function fetchGardiens() {
-    		const gardiensContainer = document.getElementById('gardiens-container');
-
-    		navigator.geolocation.getCurrentPosition(async (position) => {
-        		const response = await fetch('fetch_gardiens.php', {
-            			method: 'POST',
-            			headers: { 'Content-Type': 'application/json' },
-            			body: JSON.stringify({
-                			latitude: position.coords.latitude,
-                			longitude: position.coords.longitude
-            			})
-        		});
-
-        		const data = await response.json();
-
-        		if (data.error) {
-            			gardiensContainer.innerHTML = `<p>Erreur : ${data.error}</p>`;
-        		} else {
-            			gardiensContainer.innerHTML = data.map(gardien => `
-                			<div class="gardien">
-                    				<img src="images/${gardien.profile_picture}" alt="${gardien.prenom}">
-                    				<p>${gardien.prenom} (${gardien.nom_utilisateur}) - ${gardien.distance.toFixed(2)} km</p>
-                			</div>
-            			`).join('');
-        		}
-    		}, (error) => {
-        		gardiensContainer.innerHTML = `<p>Erreur de géolocalisation : ${error.message}</p>`;
-    		});
-	}
 
         }
-	document.addEventListener('DOMContentLoaded', fetchGardiens);
         document.addEventListener('DOMContentLoaded', getLocation);
     </script>
 
