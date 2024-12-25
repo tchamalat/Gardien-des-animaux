@@ -50,9 +50,13 @@
             max-width: 150px;
         }
 
-        .auth-buttons {
-            display: flex;
-            gap: 15px;
+        .header-slogan {
+            font-size: 1.2em;
+            color: #fff;
+            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            flex: 1;
+            margin: 0 20px;
         }
 
         .auth-buttons .btn {
@@ -73,7 +77,10 @@
         }
 
         .form-container {
-            margin: 120px auto; /* Décalage pour ne pas être masqué par le header */
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
             width: 90%;
             max-width: 400px;
             background: rgba(255, 255, 255, 0.9);
@@ -87,6 +94,7 @@
             text-align: center;
             margin-bottom: 20px;
             color: orange;
+            font-size: 1.5em;
         }
 
         .form-group {
