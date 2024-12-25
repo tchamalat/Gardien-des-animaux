@@ -7,8 +7,6 @@ session_start();
 
 include 'config.php';
 
-$response = array(); 
-
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['username'], $_POST['password'])) {
         $usernameOrEmail = $_POST['username'];
@@ -33,12 +31,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $_SESSION['email_admin'] = $email_admin;
                     $_SESSION['permissions'] = $permissions;
 
-                    $response['status'] = 'success';
-                    $response['message'] = 'Connexion réussie en tant qu\'administrateur.';
-                    $response['redirect'] = 'admin.php'; // Redirection vers admin.php pour les administrateurs
+                    // Rediriger vers admin.php
+                    header('Location: admin.php');
+                    exit();
                 } else {
-                    $response['status'] = 'error';
-                    $response['message'] = 'Mot de passe incorrect pour l\'administrateur.';
+                    $error_message = 'Mot de passe incorrect pour l\'administrateur.';
                 }
                 $stmt_admin->close();
             } else {
@@ -59,32 +56,31 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             $_SESSION['nom_utilisateur'] = $nom_utilisateur;
                             $_SESSION['role'] = $role;
 
-                            $response['status'] = 'success';
-                            $response['message'] = 'Connexion réussie.';
+                            // Rediriger vers confirmation_connexion.php
+                            header('Location: confirmation_connexion.php');
+                            exit();
                         } else {
-                            $response['status'] = 'error';
-                            $response['message'] = 'Mot de passe incorrect.';
+                            $error_message = 'Mot de passe incorrect.';
                         }
                     } else {
-                        $response['status'] = 'error';
-                        $response['message'] = "Nom d'utilisateur ou adresse e-mail incorrect.";
+                        $error_message = "Nom d'utilisateur ou adresse e-mail incorrect.";
                     }
 
                     $stmt_user->close();
                 } else {
-                    $response['status'] = 'error';
-                    $response['message'] = "Erreur de connexion à la base de données.";
+                    $error_message = "Erreur de connexion à la base de données.";
                 }
             }
         } else {
-            $response['status'] = 'error';
-            $response['message'] = "Erreur de connexion à la base de données.";
+            $error_message = "Erreur de connexion à la base de données.";
         }
     }
 }
 
-header('Content-Type: application/json');
-echo json_encode($response);
+// Si une erreur survient, afficher un message d'erreur
+if (isset($error_message)) {
+    echo "<script>alert('$error_message'); window.location.href = 'login.html';</script>";
+}
 
 $conn->close();
 ?>
