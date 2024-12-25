@@ -1,6 +1,7 @@
 <?php
-include 'config.php';
+include 'config.php'; 
 
+// Récupérer les données envoyées via POST
 $data = json_decode(file_get_contents('php://input'), true);
 
 if (isset($data['latitude'], $data['longitude'])) {
@@ -8,9 +9,7 @@ if (isset($data['latitude'], $data['longitude'])) {
     $longitude = $data['longitude'];
     $radius = 50; // Rayon en kilomètres
 
-    // Afficher les coordonnées pour débogage
-    error_log("Latitude: $latitude, Longitude: $longitude");
-
+    // Requête pour trouver les gardiens proches (role = 0)
     $query = $conn->prepare("
         SELECT 
             id, prenom, nom_utilisateur, profile_picture, latitude, longitude,
@@ -34,8 +33,8 @@ if (isset($data['latitude'], $data['longitude'])) {
     }
 
     $result = $query->get_result();
-
     $gardiens = [];
+
     while ($row = $result->fetch_assoc()) {
         $gardiens[] = [
             'id' => $row['id'],
@@ -48,7 +47,7 @@ if (isset($data['latitude'], $data['longitude'])) {
 
     echo json_encode($gardiens);
 } else {
-    echo json_encode(['error' => 'Données invalides.']);
+    echo json_encode(['error' => 'Données invalides. Latitude et longitude manquantes.']);
 }
 
 $conn->close();
