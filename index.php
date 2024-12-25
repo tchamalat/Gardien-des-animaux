@@ -50,8 +50,8 @@ include 'config.php';
         }
 
         header img {
-            height: 80px;
-            max-width: 150px;
+            height: 120px;
+            max-width: 200px;
         }
 
         .auth-buttons {
