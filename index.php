@@ -109,6 +109,39 @@ include 'config.php';
             background: transparent; /* Suppression de la bande noire */
             color: #fff;
         }
+        .gardiens-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .gardien-card {
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+            border-radius: 8px;
+            padding: 20px;
+            width: 250px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .gardien-card img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .gardien-card h3 {
+            margin: 10px 0;
+            font-size: 18px;
+        }
+
+        .gardien-card p {
+            margin: 5px 0;
+        }
         footer {
             padding: 20px;
             background: rgba(0, 0, 0, 0.8);
