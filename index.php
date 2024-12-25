@@ -218,7 +218,7 @@ include 'config.php';
     <section class="gardiens">
         <h2>Découvrez nos gardiens disponibles :</h2>
         <p>Ils sont prêts à offrir amour, soins et attention à vos animaux.</p>
-        <div id="gardiens-container">
+        <div id="gardiens-container" class="gardiens-container">
             <p>Chargement des gardiens en cours... Merci de patienter.</p>
         </div>
     </section>
