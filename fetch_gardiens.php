@@ -1,18 +1,17 @@
 <?php
-include 'config.php'; 
+include 'config.php';
 
-// Récupérer les données envoyées via POST
 $data = json_decode(file_get_contents('php://input'), true);
 
 if (isset($data['latitude'], $data['longitude'])) {
     $latitude = $data['latitude'];
     $longitude = $data['longitude'];
-    $radius = 50; // Rayon en kilomètres
+    $radius = 10; // Rayon en kilomètres
 
-    // Requête pour trouver les gardiens proches (role = 0)
+    // Préparer la requête SQL
     $query = $conn->prepare("
         SELECT 
-            id, prenom, nom_utilisateur, profile_picture, latitude, longitude,
+            id, nom_utilisateur, profile_picture, latitude, longitude,
             (6371 * ACOS(COS(RADIANS(?)) * COS(RADIANS(latitude)) * COS(RADIANS(longitude) - RADIANS(?)) + SIN(RADIANS(?)) * SIN(RADIANS(latitude)))) AS distance
         FROM creation_compte
         WHERE role = 0 AND latitude IS NOT NULL AND longitude IS NOT NULL
@@ -38,7 +37,6 @@ if (isset($data['latitude'], $data['longitude'])) {
     while ($row = $result->fetch_assoc()) {
         $gardiens[] = [
             'id' => $row['id'],
-            'prenom' => $row['prenom'],
             'nom_utilisateur' => $row['nom_utilisateur'],
             'profile_picture' => $row['profile_picture'] ?: 'default.jpg',
             'distance' => $row['distance'],
