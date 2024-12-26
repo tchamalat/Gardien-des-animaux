@@ -1,41 +1,8 @@
-<?php  
+<?php
 include 'config.php'; 
 session_start();
-
-// Gestion des requêtes AJAX pour la discussion et les gardiens
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $input = json_decode(file_get_contents('php://input'), true);
-
-    if (isset($input['latitude']) && isset($input['longitude']) && isset($_SESSION['role']) && $_SESSION['role'] == 1) { 
-        $user_latitude = floatval($input['latitude']);
-        $user_longitude = floatval($input['longitude']);
-        $radius = 10;
-
-        $gardiens_query = $conn->prepare("
-            SELECT 
-                id, prenom, nom_utilisateur, profile_picture, latitude, longitude,
-                (6371 * ACOS(COS(RADIANS(?)) * COS(RADIANS(latitude)) * COS(RADIANS(longitude) - RADIANS(?)) + SIN(RADIANS(?)) * SIN(RADIANS(latitude)))) AS distance
-            FROM creation_compte
-            WHERE role = 0
-            HAVING distance <= ?
-            ORDER BY distance ASC
-        ");
-        $gardiens_query->bind_param("dddi", $user_latitude, $user_longitude, $user_latitude, $radius);
-        $gardiens_query->execute();
-        $gardiens_result = $gardiens_query->get_result();
-
-        while ($gardien = $gardiens_result->fetch_assoc()) {
-            echo '<div class="gardien-card">';
-            echo '<img src="images/' . htmlspecialchars($gardien['profile_picture'] ?? 'default.jpg') . '" alt="' . htmlspecialchars($gardien['prenom']) . '">';
-            echo '<h3>' . htmlspecialchars($gardien['prenom']) . '</h3>';
-            echo '<p>' . htmlspecialchars($gardien['nom_utilisateur']) . '</p>';
-            echo '<p class="distance">Distance : ' . round($gardien['distance'], 2) . ' km</p>';
-            echo '</div>';
-        }
-        exit;
-    }
-}
 ?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -50,12 +17,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         body {
+            margin: 0;
+            padding: 0;
             font-family: Arial, sans-serif;
             color: #fff;
-            background: url('images/premierplan.png') no-repeat center center fixed;
-            background-size: cover;
             min-height: 100vh;
             overflow-x: hidden;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('images/premierplan.png') no-repeat center center fixed;
+            background-size: cover;
+            z-index: -1;
         }
 
         header {
@@ -72,7 +51,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         header img {
-            height: 60px;
+            height: 120px;
+            max-width: 200px;
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 15px;
         }
 
         .auth-buttons .btn {
@@ -81,35 +66,83 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             padding: 10px 20px;
             border: none;
             border-radius: 8px;
+            font-size: 1em;
             cursor: pointer;
             text-decoration: none;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .auth-buttons .btn:hover {
+            background-color: #ff7f00;
+            transform: translateY(-3px);
+        }
+
+        section {
+            padding: 100px 20px;
+            text-align: center;
         }
 
         .hero {
             height: 100vh;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
         }
 
-        .hero img {
-            width: 100%;
-            max-height: 300px;
-            object-fit: cover;
+        .hero button {
+            background-color: orange;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .hero button:hover {
+            background-color: #ff7f00;
+            transform: translateY(-3px);
         }
 
         .gardiens {
+            background: transparent;
+            color: #fff;
+        }
+
+        .gardiens-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
             padding: 20px;
         }
 
         .gardien-card {
             background: rgba(255, 255, 255, 0.9);
-            padding: 15px;
-            border-radius: 10px;
-            margin: 10px 0;
             color: #333;
+            border-radius: 8px;
+            padding: 20px;
+            width: 250px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             text-align: center;
+        }
+
+        .gardien-card img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .gardien-card h3 {
+            margin: 10px 0;
+            font-size: 18px;
+        }
+
+        .gardien-card p {
+            margin: 5px 0;
         }
 
         footer {
@@ -128,8 +161,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         .footer-links a {
-            color: white;
+            color: #fff;
             text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: orange;
+        }
+
+        .texte {
+            color: orange;
         }
     </style>
 </head>
@@ -137,41 +179,84 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <!-- Header -->
     <header>
-        <img src="images/logo.png" alt="Logo">
-        <div class="auth-buttons">
-            <?php
-            if (isset($_SESSION['role'])) {
-                if ($_SESSION['role'] == 0) {
-                    echo '<button class="btn" onclick="window.location.href=\'profil_gardien.php\'">Mon Profil</button>';
-                } elseif ($_SESSION['role'] == 1) {
-                    echo '<button class="btn" onclick="window.location.href=\'profil.php\'">Mon Profil</button>';
+        <div class="header-container">
+            <img src="images/logo.png" alt="Logo Gardien des Animaux">
+            <div class="auth-buttons">
+                <?php
+                if (isset($_SESSION['role'])) {
+                    if ($_SESSION['role'] == 0) {
+                        echo '<button class="btn" onclick="window.location.href=\'profil_gardien.php\'">Mon Profil</button>';
+                    } elseif ($_SESSION['role'] == 1) {
+                        echo '<button class="btn" onclick="window.location.href=\'profil.php\'">Mon Profil</button>';
+                    }
                 }
-            }
-            ?>
+                ?>
+                <button class="btn" onclick="window.location.href='logout.php'">Se déconnecter</button>
+            </div>
         </div>
     </header>
 
     <!-- Hero Section -->
     <section class="hero">
-        <img src="images/premierplan.png" alt="Un foyer chaleureux">
+        <h1 class="texte">Bienvenue sur Gardien des Animaux</h1>
+        <?php if ($_SESSION['role'] == 1): ?>
+            <button onclick="redirectToSearch()">Trouver un gardien</button>
+        <?php else: ?>
+            <p class="texte">Découvrez vos prochaines missions.</p>
+        <?php endif; ?>
     </section>
 
     <!-- Section Gardien -->
-    <?php if (isset($_SESSION['role']) && $_SESSION['role'] == 1): ?>
+    <?php if ($_SESSION['role'] == 1): ?>
     <section class="gardiens">
-        <h2>Gardiens près de chez vous :</h2>
-        <div class="gardien-list">
-            <p>Chargement des gardiens en fonction de votre position...</p>
+        <h2 class="texte">Découvrez nos gardiens disponibles :</h2>
+        <div id="gardiens-container" class="gardiens-container">
+            <p class="texte">Chargement des gardiens en cours... Merci de patienter.</p>
         </div>
     </section>
+    <script>
+        async function fetchGardiens() {
+            const gardiensContainer = document.getElementById('gardiens-container');
+
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(async (position) => {
+                    const { latitude, longitude } = position.coords;
+
+                    const response = await fetch('fetch_gardiens.php', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ latitude, longitude })
+                    });
+
+                    const data = await response.json();
+
+                    if (data.error) {
+                        gardiensContainer.innerHTML = `<p>Erreur : ${data.error}</p>`;
+                    } else {
+                        gardiensContainer.innerHTML = data.map(gardien => `
+                            <div class="gardien-card">
+                                <img src="images/${gardien.profile_picture || 'default.jpg'}" alt="${gardien.prenom}">
+                                <h3>${gardien.prenom}</h3>
+                                <p>${gardien.nom_utilisateur}</p>
+                                <p>Distance : ${gardien.distance.toFixed(2)} km</p>
+                            </div>
+                        `).join('');
+                    }
+                });
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', fetchGardiens);
+    </script>
     <?php endif; ?>
 
     <!-- Avis Section -->
     <section class="avis-section">
-        <h2>Avis</h2>
+        <h2 class="texte">Ce que disent nos utilisateurs</h2>
+        <p class="texte">Vos retours sont précieux et aident à améliorer nos services.</p>
         <div class="avis-list">
             <?php
-            $query = "SELECT avis.review, avis.rating, avis.date_created, creation_compte.nom_utilisateur 
+            $query = "SELECT avis.review, avis.rating, creation_compte.nom_utilisateur 
                       FROM avis 
                       JOIN creation_compte ON avis.user_id = creation_compte.id 
                       ORDER BY avis.date_created DESC LIMIT 3";
@@ -213,30 +298,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
         </div>
     </footer>
-
-    <script>
-        function fetchGardiens() {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(position => {
-                    fetch('index_connect.php', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            latitude: position.coords.latitude,
-                            longitude: position.coords.longitude
-                        })
-                    })
-                    .then(response => response.text())
-                    .then(data => {
-                        document.querySelector('.gardien-list').innerHTML = data;
-                    });
-                });
-            }
-        }
-
-        document.addEventListener('DOMContentLoaded', fetchGardiens);
-    </script>
 </body>
 </html>
