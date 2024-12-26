@@ -4,180 +4,232 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Créer un compte - Gardien des Animaux</title>
-    <link rel="stylesheet" href="styles.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('images/premierplan.png') no-repeat center center fixed;
+            background-size: cover;
+            z-index: -1;
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 10;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: none;
+        }
+
+        header img {
+            height: 60px;
+            max-width: 120px;
+        }
+
+        .header-slogan {
+            font-size: 1.2em;
+            color: #fff;
+            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            flex: 1;
+            margin: 0 20px;
+        }
+
+        .auth-buttons .btn {
+            background-color: orange;
+            color: white;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.9em;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .auth-buttons .btn:hover {
+            background-color: #ff7f00;
+            transform: translateY(-3px);
+        }
+
+        .form-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%;
+            max-width: 400px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            color: #333;
+        }
+
+        .form-container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: orange;
+            font-size: 1.5em;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+
+        .form-group input[type="radio"] {
+            display: inline-block;
+            width: auto;
+            margin-right: 10px;
+        }
+
+        .form-group small {
+            color: red;
+            display: none;
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            background-color: orange;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.2em;
+            cursor: pointer;
+            text-align: center;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #ff7f00;
+            transform: translateY(-3px);
+        }
+
+        footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            color: #fff;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links a {
+            color: #fff;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: orange;
+        }
+    </style>
 </head>
 <body>
     <header>
         <div class="header-container">
             <img src="images/logo.png" alt="Logo Gardien des Animaux">
             <h1 class="header-slogan">Un foyer chaleureux même en votre absence</h1>
-        <div class="auth-buttons">
-            <button class="btn" onclick="window.location.href='index.php'">Accueil</button>
-        </div>
+            <div class="auth-buttons">
+                <button class="btn" onclick="window.location.href='index.php'">Accueil</button>
+            </div>
         </div>
     </header>
+
     <div class="form-container">
         <h2>Création de compte :</h2>
-
-        <form id="registerForm" method="POST" novalidate>
+        <form id="registerForm" method="POST" action="register.php" novalidate>
             <div class="form-group">
                 <label for="prenom">Prénom :</label>
                 <input type="text" id="prenom" name="prenom" required>
             </div>
-
             <div class="form-group">
                 <label for="nom">Nom :</label>
                 <input type="text" id="nom" name="nom" required>
             </div>
-
             <div class="form-group">
                 <label for="username">Nom d'utilisateur :</label>
                 <input type="text" id="username" name="username" required>
             </div>
-
             <div class="form-group">
                 <label for="email">Adresse mail :</label>
                 <input type="email" id="email" name="email" required>
-                <small id="emailError" style="color: red; display: none;"></small>
+                <small id="emailError">Adresse e-mail invalide.</small>
             </div>
-
             <div class="form-group">
                 <label for="telephone">Numéro de téléphone :</label>
                 <input type="tel" id="telephone" name="telephone" pattern="[0-9]{10}" required>
             </div>
-
-            <div class="form-group">
-                <label for="adresse">Adresse :</label>
-                <input type="text" id="adresse" name="adresse" required>
-            </div>
-
-            <div class="form-group">
-                <label for="ville">Ville :</label>
-                <input type="text" id="ville" name="ville" required>
-            </div>
-
             <div class="form-group">
                 <label for="password">Mot de passe :</label>
                 <input type="password" id="password" name="password" required>
             </div>
-
             <div class="form-group">
                 <label for="confirm_password">Confirmation du mot de passe :</label>
                 <input type="password" id="confirm_password" name="confirm_password" required>
-                <small id="passwordError" style="color: red; display: none;">Les mots de passe ne correspondent pas.</small>
+                <small id="passwordError">Les mots de passe ne correspondent pas.</small>
             </div>
-
             <div class="form-group">
                 <label>Rôle :</label>
-                <input type="radio" id="role" name="role" value="0" required>
+                <input type="radio" id="gardien" name="role" value="0" required>
                 <label for="gardien">Gardien</label>
-
-                <input type="radio" id="role" name="role" value="1" required>
+                <input type="radio" id="proprietaire" name="role" value="1" required>
                 <label for="proprietaire">Propriétaire</label>
             </div>
-
             <button type="submit" class="btn">Créer un compte</button>
         </form>
-
-        <div id="message"></div> 
     </div>
-    <script>
-        // Fonction de validation pour le numéro de téléphone
-        function validatePhoneNumber(phone) {
-            const phoneRegex = /^[0-9]{10}$/;
-            return phoneRegex.test(phone);
-        }
-        // Fonction de validation pour l'email
-        function validateEmail(email) {
-            const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|fr)$/;
-            return emailRegex.test(email);
-        }
-
-        // Écouteur d'événements pour le formulaire d'inscription
-        document.getElementById('registerForm').addEventListener('submit', function(event) {
-            event.preventDefault(); // Empêche le rechargement de la page
-
-            const formData = new FormData(this);
-            const email = formData.get('email');
-            const emailError = document.getElementById('emailError');
-
-            const phone = formData.get('telephone');
-            if (!validatePhoneNumber(phone)) {
-                alert("Le numéro de téléphone doit contenir exactement 10 chiffres.");
-                return;
-            }
-
-            // Vérification de l'email
-            if (!validateEmail(email)) {
-                emailError.style.display = 'inline';
-                emailError.textContent = "L'adresse e-mail doit être au format xxx.xxx@xxx.fr ou xxx.xxx@xxx.com ou xxxxxx@xxx.fr ou xxxxxx@xxx.com.";
-                return;
-            } else {
-                emailError.style.display = 'none';
-            }
-
-            // Vérification des mots de passe
-            const password = formData.get('password');
-            const confirmPassword = formData.get('confirm_password');
-            const passwordError = document.getElementById('passwordError');
-
-            if (password !== confirmPassword) {
-                passwordError.style.display = 'inline';
-                return;
-            } else {
-                passwordError.style.display = 'none';
-            }
-
-            // Envoi de la requête AJAX
-            fetch('register.php', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.text())
-            .then(data => {
-                if (data.trim() === "success") {
-                    window.location.href = "confirmation.php";
-                } else {
-                    document.getElementById('message').innerHTML = data;
-                }
-            })
-            .catch(error => console.error('Erreur:', error));
-        });
-    </script>
-    <script>
-        document.getElementById('registerForm').addEventListener('submit', function(event) {
-            event.preventDefault(); // Empêche le rechargement de la page
-
-            const formData = new FormData(this);
-
-            // Vérification des mots de passe
-            const password = formData.get('password');
-            const confirmPassword = formData.get('confirm_password');
-            const passwordError = document.getElementById('passwordError');
-
-            if (password !== confirmPassword) {
-                passwordError.style.display = 'inline'; // Affiche un message si les mots de passe ne correspondent pas
-                return;
-            } else {
-                passwordError.style.display = 'none';
-            }
-
-            // Envoi de la requête AJAX
-            fetch('register.php', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.text())
-            .then(data => {
-                if (data.trim() === "success") {
-                    window.location.href = "confirmation.php"; // Redirection vers la page de confirmation
-                } else {
-                    document.getElementById('message').innerHTML = data; // Affiche uniquement le message d'erreur
-                }
-            })
-            .catch(error => console.error('Erreur:', error));
-        });
-    </script>
 
     <footer>
         <div class="footer-links">
