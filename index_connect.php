@@ -1,12 +1,11 @@
 <?php  
-include 'config.php'; // Connexion à la base de données
+include 'config.php'; 
 session_start();
 
 // Gestion des requêtes AJAX pour la discussion et les gardiens
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $input = json_decode(file_get_contents('php://input'), true);
 
-    // Garder la logique pour récupérer les gardiens
     if (isset($input['latitude']) && isset($input['longitude']) && isset($_SESSION['role']) && $_SESSION['role'] == 1) { 
         $user_latitude = floatval($input['latitude']);
         $user_longitude = floatval($input['longitude']);
@@ -26,9 +25,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $gardiens_result = $gardiens_query->get_result();
 
         while ($gardien = $gardiens_result->fetch_assoc()) {
-            echo '<div class="gardien">';
-            echo '<img src="images/' . htmlspecialchars($gardien['profile_picture']) . '" alt="' . htmlspecialchars($gardien['prenom']) . '">';
-            echo '<p><strong>' . htmlspecialchars($gardien['prenom']) . '</strong> (' . htmlspecialchars($gardien['nom_utilisateur']) . ')</p>';
+            echo '<div class="gardien-card">';
+            echo '<img src="images/' . htmlspecialchars($gardien['profile_picture'] ?? 'default.jpg') . '" alt="' . htmlspecialchars($gardien['prenom']) . '">';
+            echo '<h3>' . htmlspecialchars($gardien['prenom']) . '</h3>';
+            echo '<p>' . htmlspecialchars($gardien['nom_utilisateur']) . '</p>';
             echo '<p class="distance">Distance : ' . round($gardien['distance'], 2) . ' km</p>';
             echo '</div>';
         }
@@ -42,30 +42,112 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gardien des Animaux - Connecté</title>
-    <link rel="stylesheet" href="styles.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            color: #fff;
+            background: url('images/premierplan.png') no-repeat center center fixed;
+            background-size: cover;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 10;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: none;
+        }
+
+        header img {
+            height: 60px;
+        }
+
+        .auth-buttons .btn {
+            background-color: orange;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .hero {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .hero img {
+            width: 100%;
+            max-height: 300px;
+            object-fit: cover;
+        }
+
+        .gardiens {
+            padding: 20px;
+        }
+
+        .gardien-card {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 10px 0;
+            color: #333;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        footer {
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            color: #fff;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+        }
+    </style>
 </head>
 <body>
 
     <!-- Header -->
     <header>
-        <div class="header-container">
-            <img src="images/logo.png" alt="Logo Gardien des Animaux">
-            <div class="auth-buttons">
-                <?php
-                if (isset($_SESSION['role'])) {
-                    if ($_SESSION['role'] == 0) {
-                        echo '<button class="btn" onclick="window.location.href=\'profil_gardien.php\'">Mon Profil</button>';
-                    } elseif ($_SESSION['role'] == 1) {
-                        echo '<button class="btn" onclick="window.location.href=\'profil.php\'">Mon Profil</button>';
-                    }
-                } else {
-                    echo '<button class="btn" onclick="window.location.href=\'login.php\'">Mon Profil</button>';
+        <img src="images/logo.png" alt="Logo">
+        <div class="auth-buttons">
+            <?php
+            if (isset($_SESSION['role'])) {
+                if ($_SESSION['role'] == 0) {
+                    echo '<button class="btn" onclick="window.location.href=\'profil_gardien.php\'">Mon Profil</button>';
+                } elseif ($_SESSION['role'] == 1) {
+                    echo '<button class="btn" onclick="window.location.href=\'profil.php\'">Mon Profil</button>';
                 }
-                ?>
-                <button class="btn" onclick="window.location.href='search_page.php'">Trouver un gardien</button>
-                <button class="btn" onclick="window.location.href='discussion_gardien.php'">Discussion</button>
-            </div>
-
+            }
+            ?>
         </div>
     </header>
 
@@ -86,7 +168,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <!-- Avis Section -->
     <section class="avis-section">
-        <h3>Avis</h3>
+        <h2>Avis</h2>
         <div class="avis-list">
             <?php
             $query = "SELECT avis.review, avis.rating, avis.date_created, creation_compte.nom_utilisateur 
@@ -96,127 +178,65 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $result = $conn->query($query);
 
             while ($row = $result->fetch_assoc()) {
-                echo "<div class='avis'>";
-                echo "<p>" . htmlspecialchars($row['nom_utilisateur']) . " :</p>";
-                echo "<p>" . htmlspecialchars($row['review']) . "</p>";
-                echo "<span>" . htmlspecialchars($row['rating']) . " / 5 <img src='images/star.png' alt='étoile'></span>";
+                echo "<div class='gardien-card'>";
+                echo "<p><strong>" . htmlspecialchars($row['nom_utilisateur']) . "</strong> : " . htmlspecialchars($row['review']) . "</p>";
+                echo "<p>Note : " . htmlspecialchars($row['rating']) . " / 5</p>";
                 echo "</div>";
             }
             ?>
         </div>
-        <button class="voir-plus" onclick="window.location.href='leave_review.php'">Laisser un avis</button>
+        <button class="btn" onclick="window.location.href='leave_review.php'">Laisser un avis</button>
     </section>
 
     <!-- Footer -->
     <footer>
-    <div class="footer-links">
-        <div>
-            <h4>En savoir plus :</h4>
-            <ul>
-                <li><a href="securite_connect.php">Sécurité</a></li>
-                <li><a href="aide_connect.php">Centre d'aide</a></li>
-            </ul>
+        <div class="footer-links">
+            <div>
+                <h4>En savoir plus :</h4>
+                <ul>
+                    <li><a href="securite_connect.php">Sécurité</a></li>
+                    <li><a href="aide_connect.php">Centre d'aide</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4>A propos de nous :</h4>
+                <ul>
+                    <li><a href="confidentialite_connect.php">Politique de confidentialité</a></li>
+                    <li><a href="contact_connect.php">Nous contacter</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4>Conditions Générales :</h4>
+                <ul>
+                    <li><a href="conditions_connect.php">Conditions d'utilisateur et de Service</a></li>
+                </ul>
+            </div>
         </div>
-        <div>
-            <h4>A propos de nous :</h4>
-            <ul>
-                <li><a href="confidentialite_connect.php">Politique de confidentialité</a></li>
-                <li><a href="contact_connect.php">Nous contacter</a></li>
-            </ul>
-        </div>
-        <div>
-            <h4>Conditions Générales :</h4>
-            <ul>
-                <li><a href="conditions_connect.php">Conditions d'utilisateur et de Service</a></li>
-            </ul>
-        </div>
-    </div>
-</footer>
+    </footer>
 
     <script>
-        // Gestion de l'affichage/masquage de la fenêtre de chat
-        document.getElementById('chatButton').addEventListener('click', function () {
-            const chatWindow = document.getElementById('chatWindow');
-            if (chatWindow.style.display === 'none' || chatWindow.style.display === '') {
-                chatWindow.style.display = 'flex'; // Affiche la fenêtre
-            } else {
-                chatWindow.style.display = 'none'; // Masque la fenêtre
-            }
-        });
-
-        // Récupération des gardiens en fonction de la localisation
-        function getLocationAndFetchGardiens() {
+        function fetchGardiens() {
             if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(
-                    (position) => {
-                        fetch('index_connect.php', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                            },
-                            body: JSON.stringify({
-                                latitude: position.coords.latitude,
-                                longitude: position.coords.longitude,
-                            }),
+                navigator.geolocation.getCurrentPosition(position => {
+                    fetch('index_connect.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            latitude: position.coords.latitude,
+                            longitude: position.coords.longitude
                         })
-                            .then(response => response.text())
-                            .then(data => {
-                                document.querySelector('.gardien-list').innerHTML = data;
-                            })
-                            .catch(error => console.error('Erreur :', error));
-                    },
-                    (error) => {
-                        alert("Impossible de récupérer votre position. Vérifiez les autorisations de votre navigateur.");
-                    }
-                );
-            } else {
-                alert("La géolocalisation n'est pas supportée par votre navigateur.");
+                    })
+                    .then(response => response.text())
+                    .then(data => {
+                        document.querySelector('.gardien-list').innerHTML = data;
+                    });
+                });
             }
         }
 
-        document.addEventListener('DOMContentLoaded', function() {
-            <?php if (isset($_SESSION['role']) && $_SESSION['role'] == 1): ?>
-            getLocationAndFetchGardiens();
-            <?php endif; ?>
-        });
+        document.addEventListener('DOMContentLoaded', fetchGardiens);
     </script>
 </body>
 </html>
-
-<script>
-function getUserLocation() {
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function (position) {
-            const latitude = position.coords.latitude;
-            const longitude = position.coords.longitude;
-
-            // Envoyer les coordonnées au serveur
-            fetch('save_location.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ latitude: latitude, longitude: longitude })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.status === 'success') {
-                    console.log('Location saved successfully:', data.message);
-                } else {
-                    console.error('Error saving location:', data.message);
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
-        }, function (error) {
-            console.error('Error retrieving location:', error.message);
-        });
-    } else {
-        console.error('Geolocation is not supported by this browser.');
-    }
-}
-
-// Appeler la fonction après que l'utilisateur se connecte
-window.onload = getUserLocation;
-</script>
