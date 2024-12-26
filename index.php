@@ -299,8 +299,8 @@ include 'config.php';
 
     <!-- Avis Section -->
     <section class="avis-section">
-        <h2>Ce que disent nos utilisateurs</h2>
-        <p>Vos retours sont précieux et aident à améliorer nos services.</p>
+        <h2 class="texte">Ce que disent nos utilisateurs</h2>
+        <p class="texte">Vos retours sont précieux et aident à améliorer nos services.</p>
         <div class="avis-list">
             <?php
             $query = "SELECT avis.review, avis.rating, avis.date_created, creation_compte.nom_utilisateur 
