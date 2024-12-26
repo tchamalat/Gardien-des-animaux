@@ -1,30 +1,3 @@
-<?php
-session_start();
-include 'config.php';
-
-// Vérifiez si l'utilisateur est connecté
-if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php");
-    exit();
-}
-
-$user_id = $_SESSION['user_id'];
-
-// Récupérez le rôle de l'utilisateur à partir de la base de données
-$sql = "SELECT role FROM creation_compte WHERE id = ?";
-$stmt = $conn->prepare($sql);
-$stmt->bind_param("i", $user_id);
-$stmt->execute();
-$result = $stmt->get_result();
-$user = $result->fetch_assoc();
-
-if ($user) {
-    $role = $user['role'];
-} else {
-    header("Location: login.php");
-    exit();
-}
-?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -47,6 +20,8 @@ if ($user) {
             background-size: cover;
             min-height: 100vh;
             overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
         }
 
         header {
@@ -76,7 +51,8 @@ if ($user) {
         }
 
         .form-container {
-            margin: 150px auto 50px; /* Centrer visuellement entre header et footer */
+            margin: auto; /* Centrer verticalement */
+            text-align: center;
             width: 90%;
             max-width: 400px;
             background: rgba(255, 255, 255, 0.9);
@@ -84,7 +60,6 @@ if ($user) {
             border-radius: 10px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             color: #333;
-            text-align: center;
         }
 
         .form-container h2 {
@@ -117,6 +92,7 @@ if ($user) {
         }
 
         footer {
+            margin-top: auto; /* Pousse le footer vers le bas */
             padding: 20px;
             background: rgba(0, 0, 0, 0.8);
             color: #fff;
