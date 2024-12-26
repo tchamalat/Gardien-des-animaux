@@ -52,7 +52,7 @@
 
         .form-container {
             position: relative;
-            top: 30%; /* Ajuste la hauteur pour abaisser le message */
+            top: 40%; /* Ajuste la hauteur pour abaisser le message */
             margin: 0 auto; /* Centrer horizontalement */
             text-align: center;
             width: 90%;
