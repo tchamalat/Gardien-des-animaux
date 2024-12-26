@@ -211,10 +211,10 @@ include 'config.php';
             font-size: 1.2em; /* Taille de la note */
         }
 	    .voir-plus {
-	        background-color: #f5a623;
+	    background-color: #f5a623;
     	    color: white;
     	    padding: 15px 30px;
-	        border: none;
+	    border: none;
     	    border-radius: 8px;
     	    cursor: pointer;
     	    font-size: 1.2em;
@@ -252,10 +252,10 @@ include 'config.php';
 
     <!-- Section Gardien -->
     <section class="gardiens">
-        <h2>Découvrez nos gardiens disponibles :</h2>
-        <p>Ils sont prêts à offrir amour, soins et attention à vos animaux.</p>
+        <h2 class="texte">Découvrez nos gardiens disponibles :</h2>
+        <p class="texte">Ils sont prêts à offrir amour, soins et attention à vos animaux.</p>
         <div id="gardiens-container" class="gardiens-container">
-            <p>Chargement des gardiens en cours... Merci de patienter.</p>
+            <p class="texte">Chargement des gardiens en cours... Merci de patienter.</p>
         </div>
     </section>
     <script>
