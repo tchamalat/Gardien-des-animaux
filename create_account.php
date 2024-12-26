@@ -85,7 +85,7 @@
             width: 90%;
             max-width: 400px;
             background: rgba(255, 255, 255, 0.9);
-            padding: 20px;
+            padding: 30px;
             border-radius: 10px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             color: #333;
@@ -99,13 +99,14 @@
         }
 
         .form-group {
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
 
         .form-group label {
             display: block;
             margin-bottom: 5px;
             font-weight: bold;
+            font-size: 0.9em;
         }
 
         .form-group input, .form-group select {
