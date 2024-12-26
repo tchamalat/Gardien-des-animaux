@@ -246,7 +246,7 @@ include 'config.php';
 
     <!-- Hero Section -->
     <section class="hero">
-        <h1 class="texte-noir">Bienvenue sur Gardien des Animaux</h1>
+        <h1 class="texte">Bienvenue sur Gardien des Animaux</h1>
         <button onclick="redirectToSearch()">Trouver un gardien</button>
     </section>
 
