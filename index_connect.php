@@ -43,6 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gardien des Animaux - Connecté</title>
     <style>
+        /* Styles globaux */
         * {
             margin: 0;
             padding: 0;
@@ -50,26 +51,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         body {
-            margin: 0;
-            padding: 0;
             font-family: Arial, sans-serif;
             color: #fff;
+            background: url('images/premierplan.png') no-repeat center center fixed;
+            background-size: cover;
             min-height: 100vh;
             overflow-x: hidden;
         }
 
-        body::before {
-            content: "";
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: url('images/premierplan.png') no-repeat center center fixed;
-            background-size: cover;
-            z-index: -1;
-        }
-
+        /* Header */
         header {
             position: fixed;
             top: 0;
@@ -110,20 +100,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             transform: translateY(-3px);
         }
 
-        section {
-            padding: 100px 20px;
-            text-align: center;
-        }
-
+        /* Hero Section */
         .hero {
             height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            text-align: center;
+        }
+
+        .hero h1 {
+            color: orange;
+            font-size: 2em;
         }
 
         .hero button {
+            margin-top: 20px;
             background-color: orange;
             color: white;
             padding: 15px 30px;
@@ -139,9 +132,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             transform: translateY(-3px);
         }
 
+        /* Section Gardiens */
         .gardiens {
             background: transparent;
-            color: #fff;
+            padding: 50px 20px;
+            text-align: center;
+        }
+
+        .gardiens h2 {
+            color: orange;
+            margin-bottom: 20px;
         }
 
         .gardiens-container {
@@ -149,7 +149,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             flex-wrap: wrap;
             gap: 20px;
             justify-content: center;
-            padding: 20px;
         }
 
         .gardien-card {
@@ -178,6 +177,48 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             margin: 5px 0;
         }
 
+        /* Avis Section */
+        .avis-section {
+            background-color: transparent;
+            padding: 50px 20px;
+            text-align: center;
+        }
+
+        .avis-section h2 {
+            color: orange;
+            margin-bottom: 20px;
+        }
+
+        .avis {
+            background-color: #f3e3cd;
+            border-radius: 20px;
+            padding: 20px;
+            border: 3px solid #f5a623;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .avis img {
+            height: 50px;
+            width: 50px;
+            border-radius: 50%;
+            background-color: white;
+            padding: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .avis span {
+            font-size: 1em;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Footer */
         footer {
             padding: 20px;
             background: rgba(0, 0, 0, 0.8);
@@ -202,56 +243,47 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         .footer-links a:hover {
             color: orange;
         }
-
-        .texte {
-            color: orange;
-        }
     </style>
 </head>
 <body>
 
     <!-- Header -->
     <header>
-        <div class="header-container">
-            <img src="images/logo.png" alt="Logo Gardien des Animaux">
-            <div class="auth-buttons">
-                <button class="btn" onclick="window.location.href='search_page.php'">Trouver un gardien</button>
-                <button class="btn" onclick="window.location.href='discussion_gardien.php'">Discussion</button>
-                <?php
-                if (isset($_SESSION['role'])) {
-                    if ($_SESSION['role'] == 0) {
-                        echo '<button class="btn" onclick="window.location.href=\'profil_gardien.php\'">Mon Profil</button>';
-                    } elseif ($_SESSION['role'] == 1) {
-                        echo '<button class="btn" onclick="window.location.href=\'profil.php\'">Mon Profil</button>';
-                    }
+        <img src="images/logo.png" alt="Logo Gardien des Animaux">
+        <div class="auth-buttons">
+            <button class="btn" onclick="window.location.href='search_page.php'">Trouver un gardien</button>
+            <button class="btn" onclick="window.location.href='discussion_gardien.php'">Discussion</button>
+            <?php
+            if (isset($_SESSION['role'])) {
+                if ($_SESSION['role'] == 0) {
+                    echo '<button class="btn" onclick="window.location.href=\'profil_gardien.php\'">Mon Profil</button>';
+                } elseif ($_SESSION['role'] == 1) {
+                    echo '<button class="btn" onclick="window.location.href=\'profil.php\'">Mon Profil</button>';
                 }
-                ?>
-                <button class="btn" onclick="window.location.href='logout.php'">Se déconnecter</button>
-            </div>
+            }
+            ?>
         </div>
     </header>
 
     <!-- Hero Section -->
     <section class="hero">
-        <h1 class="texte">Bienvenue sur Gardien des Animaux</h1>
+        <h1>Bienvenue sur Gardien des Animaux</h1>
     </section>
 
     <!-- Section Gardien -->
     <?php if ($_SESSION['role'] == 1): ?>
     <section class="gardiens">
-        <h2 class="texte">Découvrez nos gardiens disponibles :</h2>
+        <h2>Découvrez nos gardiens disponibles :</h2>
         <div id="gardiens-container" class="gardiens-container">
-            <p class="texte">Chargement des gardiens en cours... Merci de patienter.</p>
+            <p>Chargement des gardiens en cours... Merci de patienter.</p>
         </div>
     </section>
     <script>
         async function fetchGardiens() {
             const gardiensContainer = document.getElementById('gardiens-container');
-
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(async (position) => {
                     const { latitude, longitude } = position.coords;
-
                     const response = await fetch('fetch_gardiens.php', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
@@ -259,7 +291,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     });
 
                     const data = await response.json();
-
                     if (data.error) {
                         gardiensContainer.innerHTML = `<p>Erreur : ${data.error}</p>`;
                     } else {
@@ -275,10 +306,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 });
             }
         }
-
         document.addEventListener('DOMContentLoaded', fetchGardiens);
     </script>
     <?php endif; ?>
+
+    <!-- Avis Section -->
+    <section class="avis-section">
+        <h2>Ce que disent nos utilisateurs</h2>
+        <div class="avis-list">
+            <?php
+            $query = "SELECT avis.review, avis.rating, avis.date_created, creation_compte.nom_utilisateur 
+                      FROM avis 
+                      JOIN creation_compte ON avis.user_id = creation_compte.id 
+                      ORDER BY avis.date_created DESC LIMIT 3";
+            $result = $conn->query($query);
+
+            while ($row = $result->fetch_assoc()) {
+                echo "<div class='avis'>";
+                echo "<span>" . htmlspecialchars($row['nom_utilisateur']) . "</span>";
+                echo "<p>" . htmlspecialchars($row['review']) . "</p>";
+                echo "<span>Note : " . htmlspecialchars($row['rating']) . " / 5</span>";
+                echo "</div>";
+            }
+            ?>
+        </div>
+    </section>
 
     <!-- Footer -->
     <footer>
