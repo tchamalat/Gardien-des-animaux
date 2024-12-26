@@ -16,21 +16,10 @@
             padding: 0;
             font-family: Arial, sans-serif;
             color: #fff;
-            min-height: 100vh;
-            overflow-x: hidden;
-            position: relative;
-        }
-
-        body::before {
-            content: "";
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
             background: url('images/premierplan.png') no-repeat center center fixed;
             background-size: cover;
-            z-index: -1;
+            min-height: 100vh;
+            overflow-x: hidden;
         }
 
         header {
@@ -78,10 +67,7 @@
         }
 
         .form-container {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+            margin: 150px auto 50px; /* Ajustement pour centrer */
             width: 90%;
             max-width: 400px;
             background: rgba(255, 255, 255, 0.9);
@@ -109,7 +95,7 @@
             font-size: 0.9em;
         }
 
-        .form-group input, .form-group select {
+        .form-group input {
             width: 100%;
             padding: 10px;
             border: 1px solid #ccc;
@@ -148,13 +134,10 @@
         }
 
         footer {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
             padding: 20px;
             background: rgba(0, 0, 0, 0.8);
             color: #fff;
+            text-align: center;
         }
 
         .footer-links {
