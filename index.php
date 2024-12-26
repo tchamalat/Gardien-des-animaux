@@ -225,8 +225,8 @@ include 'config.php';
     	    background-color: #ff7f00;
     	    transform: translateY(-5px);
 	}
-        .texte-noir {
-            color: #000; 
+        .texte {
+            color: orange; 
         }
 
     </style>
