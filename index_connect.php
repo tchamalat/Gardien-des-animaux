@@ -1,8 +1,41 @@
-<?php
+<?php  
 include 'config.php'; 
 session_start();
-?>
 
+// Gestion des requêtes AJAX pour les gardiens
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $input = json_decode(file_get_contents('php://input'), true);
+
+    if (isset($input['latitude'], $input['longitude'], $_SESSION['role']) && $_SESSION['role'] == 1) { 
+        $user_latitude = floatval($input['latitude']);
+        $user_longitude = floatval($input['longitude']);
+        $radius = 10;
+
+        $gardiens_query = $conn->prepare("
+            SELECT 
+                id, prenom, nom_utilisateur, profile_picture, latitude, longitude,
+                (6371 * ACOS(COS(RADIANS(?)) * COS(RADIANS(latitude)) * COS(RADIANS(longitude) - RADIANS(?)) + SIN(RADIANS(?)) * SIN(RADIANS(latitude)))) AS distance
+            FROM creation_compte
+            WHERE role = 0
+            HAVING distance <= ?
+            ORDER BY distance ASC
+        ");
+        $gardiens_query->bind_param("dddi", $user_latitude, $user_longitude, $user_latitude, $radius);
+        $gardiens_query->execute();
+        $gardiens_result = $gardiens_query->get_result();
+
+        while ($gardien = $gardiens_result->fetch_assoc()) {
+            echo '<div class="gardien-card">';
+            echo '<img src="images/' . htmlspecialchars($gardien['profile_picture'] ?? 'default.jpg') . '" alt="' . htmlspecialchars($gardien['prenom']) . '">';
+            echo '<h3>' . htmlspecialchars($gardien['prenom']) . '</h3>';
+            echo '<p>' . htmlspecialchars($gardien['nom_utilisateur']) . '</p>';
+            echo '<p class="distance">Distance : ' . round($gardien['distance'], 2) . ' km</p>';
+            echo '</div>';
+        }
+        exit;
+    }
+}
+?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -182,6 +215,8 @@ session_start();
         <div class="header-container">
             <img src="images/logo.png" alt="Logo Gardien des Animaux">
             <div class="auth-buttons">
+                <button class="btn" onclick="window.location.href='search_page.php'">Trouver un gardien</button>
+                <button class="btn" onclick="window.location.href='discussion_gardien.php'">Discussion</button>
                 <?php
                 if (isset($_SESSION['role'])) {
                     if ($_SESSION['role'] == 0) {
@@ -199,11 +234,6 @@ session_start();
     <!-- Hero Section -->
     <section class="hero">
         <h1 class="texte">Bienvenue sur Gardien des Animaux</h1>
-        <?php if ($_SESSION['role'] == 1): ?>
-            <button onclick="redirectToSearch()">Trouver un gardien</button>
-        <?php else: ?>
-            <p class="texte">Découvrez vos prochaines missions.</p>
-        <?php endif; ?>
     </section>
 
     <!-- Section Gardien -->
@@ -249,29 +279,6 @@ session_start();
         document.addEventListener('DOMContentLoaded', fetchGardiens);
     </script>
     <?php endif; ?>
-
-    <!-- Avis Section -->
-    <section class="avis-section">
-        <h2 class="texte">Ce que disent nos utilisateurs</h2>
-        <p class="texte">Vos retours sont précieux et aident à améliorer nos services.</p>
-        <div class="avis-list">
-            <?php
-            $query = "SELECT avis.review, avis.rating, creation_compte.nom_utilisateur 
-                      FROM avis 
-                      JOIN creation_compte ON avis.user_id = creation_compte.id 
-                      ORDER BY avis.date_created DESC LIMIT 3";
-            $result = $conn->query($query);
-
-            while ($row = $result->fetch_assoc()) {
-                echo "<div class='gardien-card'>";
-                echo "<p><strong>" . htmlspecialchars($row['nom_utilisateur']) . "</strong> : " . htmlspecialchars($row['review']) . "</p>";
-                echo "<p>Note : " . htmlspecialchars($row['rating']) . " / 5</p>";
-                echo "</div>";
-            }
-            ?>
-        </div>
-        <button class="btn" onclick="window.location.href='leave_review.php'">Laisser un avis</button>
-    </section>
 
     <!-- Footer -->
     <footer>
