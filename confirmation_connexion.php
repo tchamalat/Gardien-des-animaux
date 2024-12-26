@@ -51,9 +51,7 @@
         }
 
         .form-container {
-            position: relative;
-            top: 70%; /* Ajuste la hauteur pour abaisser le message */
-            margin: 0 auto; /* Centrer horizontalement */
+            margin: auto; 
             text-align: center;
             width: 90%;
             max-width: 400px;
