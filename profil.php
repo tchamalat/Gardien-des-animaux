@@ -31,8 +31,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: rgba(255, 255, 255, 0.8);
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            background: none;
         }
 
         header img {
@@ -58,11 +57,12 @@
         }
 
         .profile-container {
-            margin: 150px auto 50px auto;
-            max-width: 800px;
+            margin: 150px auto;
+            max-width: 900px;
+            background: rgba(255, 255, 255, 0.85);
             border-radius: 15px;
             padding: 30px;
-            color: #333;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
             text-align: center;
         }
 
@@ -81,13 +81,13 @@
         }
 
         .profile-picture button {
-            background-color: #f5a623;
+            background-color: orange;
             color: white;
             padding: 10px 20px;
             border: none;
             border-radius: 8px;
             font-size: 1em;
-            margin-top: 10px;
+            margin: 10px 5px;
             cursor: pointer;
             transition: background-color 0.3s ease, transform 0.3s ease;
         }
@@ -105,7 +105,7 @@
         }
 
         .profile-details .profile-item {
-            background: rgba(255, 255, 255, 0.85);
+            background: rgba(255, 255, 255, 0.9);
             border-radius: 10px;
             padding: 15px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -137,7 +137,6 @@
             font-size: 1em;
             font-weight: bold;
             cursor: pointer;
-            text-align: center;
             margin: 10px;
             text-decoration: none;
             transition: background-color 0.3s ease, transform 0.3s ease;
