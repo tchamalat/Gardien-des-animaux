@@ -1,35 +1,3 @@
-<?php 
-session_start(); 
-
-if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php");
-    exit();
-}
-
-include 'config.php';
-
-$user_id = $_SESSION['user_id'];
-
-$sql = "SELECT nom_utilisateur, nom, prenom, mail, numero_telephone, adresse, ville, profile_picture FROM creation_compte WHERE id = ?";
-$stmt = $conn->prepare($sql);
-$stmt->bind_param("i", $user_id);
-$stmt->execute();
-$result = $stmt->get_result();
-
-if ($result->num_rows > 0) {
-    $user = $result->fetch_assoc();
-} else {
-    echo "Utilisateur non trouvé.";
-    exit();
-}
-
-$stmt->close();
-$conn->close();
-
-$message = isset($_SESSION['message']) ? $_SESSION['message'] : '';
-unset($_SESSION['message']); 
-?>
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -46,7 +14,7 @@ unset($_SESSION['message']);
 
         body {
             font-family: Arial, sans-serif;
-            color: #fff;
+            color: #333;
             background: url('images/premierplan.png') no-repeat center center fixed;
             background-size: cover;
             min-height: 100vh;
@@ -63,11 +31,12 @@ unset($_SESSION['message']);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: none;
+            background: rgba(255, 255, 255, 0.8);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
         header img {
-            height: 100px; /* Agrandissement du logo */
+            height: 100px;
         }
 
         header .auth-buttons .btn {
@@ -79,60 +48,91 @@ unset($_SESSION['message']);
             font-size: 1em;
             cursor: pointer;
             text-decoration: none;
+            margin-left: 10px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
         }
 
         header .auth-buttons .btn:hover {
             background-color: #ff7f00;
+            transform: translateY(-3px);
         }
 
         .profile-container {
             margin: 150px auto 50px auto;
-            max-width: 600px;
-            background: rgba(255, 255, 255, 0.9);
-            border-radius: 10px;
-            padding: 20px;
+            max-width: 800px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 30px;
             color: #333;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+            text-align: center;
         }
 
         .profile-container h2 {
             color: orange;
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .profile-info {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 20px;
+            margin-bottom: 30px;
         }
 
         .profile-picture img {
-            width: 120px;
-            height: 120px;
+            width: 150px;
+            height: 150px;
             border-radius: 50%;
             object-fit: cover;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 15px;
+        }
+
+        .profile-picture button {
+            background-color: #f5a623;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            margin-top: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .profile-picture button:hover {
+            background-color: #ff7f00;
+            transform: translateY(-3px);
         }
 
         .profile-details {
-            width: 100%;
+            margin-top: 20px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            text-align: left;
         }
 
-        .profile-item {
+        .profile-details .profile-item {
+            background: #f9f9f9;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             display: flex;
-            justify-content: space-between;
-            margin-bottom: 10px;
+            flex-direction: column;
         }
 
-        .profile-item label {
+        .profile-details .profile-item label {
             font-weight: bold;
             color: #555;
+            margin-bottom: 5px;
         }
 
-        .btn-modern {
-            display: inline-block;
-            background-color: #f5a623;
+        .profile-details .profile-item span {
+            font-size: 1.1em;
+            color: #333;
+        }
+
+        .profile-actions {
+            margin-top: 30px;
+        }
+
+        .profile-actions .btn {
+            background-color: orange;
             color: white;
             padding: 12px 25px;
             border: none;
@@ -141,39 +141,38 @@ unset($_SESSION['message']);
             font-weight: bold;
             cursor: pointer;
             text-align: center;
+            margin: 10px;
             text-decoration: none;
             transition: background-color 0.3s ease, transform 0.3s ease;
         }
 
-        .btn-modern:hover {
+        .profile-actions .btn:hover {
             background-color: #ff7f00;
             transform: translateY(-3px);
-        }
-
-        .profile-actions {
-            text-align: center;
-            margin-top: 20px;
         }
 
         .btn-delete-account {
             background-color: red;
             color: white;
-            padding: 10px 20px;
+            padding: 12px 25px;
             border: none;
-            border-radius: 8px;
-            display: block;
-            margin: 20px auto;
+            border-radius: 10px;
+            font-size: 1em;
             cursor: pointer;
+            margin-top: 20px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
         }
 
         .btn-delete-account:hover {
             background-color: darkred;
+            transform: translateY(-3px);
         }
 
         footer {
             padding: 20px;
             background: rgba(0, 0, 0, 0.8);
             color: #fff;
+            margin-top: 50px;
         }
 
         .footer-links {
@@ -206,36 +205,50 @@ unset($_SESSION['message']);
 </header>
 
 <div class="profile-container">
-    <?php if ($message): ?>
-        <div class="alert-message"><?php echo htmlspecialchars($message); ?></div>
-    <?php endif; ?>
-
     <h2>Mon profil</h2>
-
-    <div class="profile-info">
-        <div class="profile-picture">
-            <img id="profile-img" src="display_image.php" alt="Photo de profil">
-        </div>
-        <form action="upload_image.php" method="POST" enctype="multipart/form-data" class="profile-form">
+    <div class="profile-picture">
+        <img id="profile-img" src="display_image.php" alt="Photo de profil">
+        <form action="upload_image.php" method="POST" enctype="multipart/form-data">
             <input type="file" id="profile-picture-input" name="profilePicture" accept="image/*" style="display: none;" onchange="previewProfileImage(event)">
-            <button type="button" class="btn-modern" onclick="document.getElementById('profile-picture-input').click();">Changer la photo</button>
-            <button type="submit" class="btn-modern">Enregistrer</button>
+            <button type="button" onclick="document.getElementById('profile-picture-input').click();">Changer la photo</button>
+            <button type="submit">Enregistrer</button>
         </form>
     </div>
 
     <div class="profile-details">
-        <div class="profile-item"><label>Nom d'utilisateur :</label><span><?php echo htmlspecialchars($user['nom_utilisateur']); ?></span></div>
-        <div class="profile-item"><label>Nom :</label><span><?php echo htmlspecialchars($user['nom']); ?></span></div>
-        <div class="profile-item"><label>Prénom :</label><span><?php echo htmlspecialchars($user['prenom']); ?></span></div>
-        <div class="profile-item"><label>Adresse mail :</label><span><?php echo htmlspecialchars($user['mail']); ?></span></div>
-        <div class="profile-item"><label>Numéro de téléphone :</label><span><?php echo htmlspecialchars($user['numero_telephone']); ?></span></div>
-        <div class="profile-item"><label>Adresse :</label><span><?php echo htmlspecialchars($user['adresse']); ?></span></div>
-        <div class="profile-item"><label>Ville :</label><span><?php echo htmlspecialchars($user['ville']); ?></span></div>
+        <div class="profile-item">
+            <label>Nom d'utilisateur :</label>
+            <span><?php echo htmlspecialchars($user['nom_utilisateur']); ?></span>
+        </div>
+        <div class="profile-item">
+            <label>Nom :</label>
+            <span><?php echo htmlspecialchars($user['nom']); ?></span>
+        </div>
+        <div class="profile-item">
+            <label>Prénom :</label>
+            <span><?php echo htmlspecialchars($user['prenom']); ?></span>
+        </div>
+        <div class="profile-item">
+            <label>Adresse mail :</label>
+            <span><?php echo htmlspecialchars($user['mail']); ?></span>
+        </div>
+        <div class="profile-item">
+            <label>Numéro de téléphone :</label>
+            <span><?php echo htmlspecialchars($user['numero_telephone']); ?></span>
+        </div>
+        <div class="profile-item">
+            <label>Adresse :</label>
+            <span><?php echo htmlspecialchars($user['adresse']); ?></span>
+        </div>
+        <div class="profile-item">
+            <label>Ville :</label>
+            <span><?php echo htmlspecialchars($user['ville']); ?></span>
+        </div>
     </div>
 
     <div class="profile-actions">
-        <button class="btn-modern" onclick="window.location.href='historique.php'">HISTORIQUE</button>
-        <button class="btn-modern" onclick="window.location.href='profil_public.php'">MON PROFIL PUBLIC</button>
+        <a href="historique.php" class="btn">Historique</a>
+        <a href="profil_public.php" class="btn">Mon Profil Public</a>
     </div>
 
     <form method="POST" action="delete_account.php">
@@ -281,5 +294,6 @@ function previewProfileImage(event) {
     reader.readAsDataURL(event.target.files[0]);
 }
 </script>
+
 </body>
 </html>
