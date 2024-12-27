@@ -77,7 +77,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: none;
         }
 
         header img {
@@ -93,25 +92,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             cursor: pointer;
             font-size: 1em;
             margin-left: 10px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
         }
 
         .auth-buttons .btn:hover {
             background-color: #ff7f00;
+            transform: translateY(-3px);
         }
 
         .container {
-            margin: 150px auto 30px;
-            max-width: 900px;
+            margin: 150px auto;
+            max-width: 600px;
             background: rgba(255, 255, 255, 0.85);
-            padding: 30px;
+            padding: 20px;
             border-radius: 15px;
             box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
-            text-align: center;
         }
 
         h2 {
             color: orange;
             margin-bottom: 20px;
+            text-align: center;
         }
 
         .form-group {
@@ -132,38 +133,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             border: 1px solid #ccc;
             border-radius: 8px;
             font-size: 1em;
-            margin-bottom: 10px;
         }
 
         textarea {
             resize: none;
         }
 
-        .message.success {
-            background: #d4edda;
-            color: #155724;
-            padding: 15px;
-            margin-bottom: 20px;
-            border-radius: 8px;
-        }
-
-        .message.error {
-            background: #f8d7da;
-            color: #721c24;
-            padding: 15px;
-            margin-bottom: 20px;
-            border-radius: 8px;
-        }
-
         .envoyer {
             background-color: orange;
             color: white;
-            padding: 12px 25px;
+            padding: 10px 20px;
             border: none;
             border-radius: 8px;
-            font-size: 1.2em;
+            font-size: 1em;
             cursor: pointer;
             transition: background-color 0.3s ease, transform 0.3s ease;
+            margin-top: 10px;
         }
 
         .envoyer:hover {
@@ -205,6 +190,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         .footer-links a {
             color: #fff;
             text-decoration: none;
+            transition: color 0.3s ease;
         }
 
         .footer-links a:hover {
@@ -213,6 +199,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </style>
 </head>
 <body>
+    <!-- Header -->
     <header>
         <img src="images/logo.png" alt="Logo">
         <div class="auth-buttons">
@@ -235,10 +222,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <label for="recipient_username">Nom d'utilisateur du destinataire :</label>
                 <input type="text" name="recipient_username" required>
             </div>
+
             <div class="form-group">
                 <label for="message">Message :</label>
                 <textarea name="message" rows="4" required></textarea>
             </div>
+
             <button type="submit" class="envoyer">Envoyer</button>
         </form>
 
