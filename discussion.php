@@ -57,115 +57,170 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Discussion</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Assurez-vous d'avoir un fichier CSS externe -->
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
+            color: #fff;
+            background: url('images/premierplan.png') no-repeat center center fixed;
+            background-size: cover;
+            min-height: 100vh;
+            overflow-x: hidden;
         }
-        .container {
-            width: 90%;
-            max-width: 600px;
-            margin: 40px auto;
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-        h2 {
-            text-align: center;
-            color: #333;
-        }
-        .form-group {
-            margin-bottom: 20px;
-        }
-        label {
-            display: block;
-            font-weight: bold;
-            margin-bottom: 5px;
-            color: #555;
-        }
-        input[type="text"], textarea {
+
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            font-size: 16px;
+            z-index: 10;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: none;
         }
-        textarea {
-            resize: vertical;
+
+        header img {
+            height: 100px;
         }
-        .message {
-            padding: 10px;
-            border-radius: 4px;
-            margin-bottom: 15px;
-        }
-        .success {
-            background-color: #d4edda;
-            color: #155724;
-        }
-        .error {
-            background-color: #f8d7da;
-            color: #721c24;
-        }
-        .messages-list p {
-            background-color: #f1f1f1;
-            padding: 10px;
-            border-left: 4px solid #f5a623;
-            margin-bottom: 10px;
-            border-radius: 4px;
-            font-size: 14px;
-        }
-        .messages-list em {
-            color: #888;
-            font-size: 12px;
-        }
-        .envoyer {
-            display: block;
-            width: fit-content;
-            margin: 0 auto;
-            background-color: #f5a623;
+
+        .auth-buttons .btn {
+            background-color: orange;
             color: white;
-            padding: 15px 30px; 
+            padding: 10px 20px;
             border: none;
             border-radius: 8px;
             cursor: pointer;
+            font-size: 1em;
+            margin-left: 10px;
+        }
+
+        .auth-buttons .btn:hover {
+            background-color: #ff7f00;
+        }
+
+        .container {
+            margin: 150px auto 30px;
+            max-width: 900px;
+            background: rgba(255, 255, 255, 0.85);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        h2 {
+            color: orange;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        label {
+            font-weight: bold;
+            color: #333;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 1em;
+            margin-bottom: 10px;
+        }
+
+        textarea {
+            resize: none;
+        }
+
+        .message.success {
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+        }
+
+        .message.error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+        }
+
+        .envoyer {
+            background-color: orange;
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
             font-size: 1.2em;
+            cursor: pointer;
             transition: background-color 0.3s ease, transform 0.3s ease;
         }
 
         .envoyer:hover {
-            background-color: #e59420;
-            transform: translateY(-5px);
+            background-color: #ff7f00;
+            transform: translateY(-3px);
         }
 
+        .messages-list p {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 15px;
+            border-left: 4px solid orange;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            font-size: 1em;
+            text-align: left;
+        }
+
+        .messages-list em {
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        footer {
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            margin-top: 30px;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .footer-links a:hover {
+            color: orange;
+        }
     </style>
 </head>
 <body>
-    <!-- Header -->
     <header>
-        <div class="header-container">
-            <img src="images/logo.png" alt="Logo Gardien des Animaux">
-            <div class="auth-buttons">
-                <?php
-                if (isset($_SESSION['role'])) {
-                    if ($_SESSION['role'] == 0) {
-                        echo '<button class="btn" onclick="window.location.href=\'profil_gardien.php\'">Mon Profil</button>';
-                    } elseif ($_SESSION['role'] == 1) {
-                        echo '<button class="btn" onclick="window.location.href=\'profil.php\'">Mon Profil</button>';
-                    }
-                } else {
-                    echo '<button class="btn" onclick="window.location.href=\'login.php\'">Mon Profil</button>';
-                }
-                ?>
-                <button class="btn" onclick="window.location.href='search_page.php'">Je poste une annonce</button>
-                <button class="btn" onclick="window.location.href='index_connect.php'">Accueil</button>
-            </div>
+        <img src="images/logo.png" alt="Logo">
+        <div class="auth-buttons">
+            <button class="btn" onclick="window.location.href='index_connect.php'">Accueil</button>
+            <button class="btn" onclick="window.location.href='profil.php'">Mon Profil</button>
         </div>
     </header>
-    
+
     <div class="container">
         <h2>Envoyer un message</h2>
 
@@ -180,12 +235,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <label for="recipient_username">Nom d'utilisateur du destinataire :</label>
                 <input type="text" name="recipient_username" required>
             </div>
-
             <div class="form-group">
                 <label for="message">Message :</label>
                 <textarea name="message" rows="4" required></textarea>
             </div>
-
             <button type="submit" class="envoyer">Envoyer</button>
         </form>
 
@@ -211,9 +264,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <strong>" . htmlspecialchars($msg['receiver_name']) . "</strong> : 
                             " . htmlspecialchars($msg['message']) . " 
                             <em>(" . $msg['timestamp'] . ")</em>
-                            <a href='?delete_id=" . $msg['id'] . "' style='color: red; text-decoration: none; margin-left: 10px;' title='Supprimer'>
-                                &#10060;
-                            </a>
+                            <a href='?delete_id=" . $msg['id'] . "' style='color: red; float: right;' title='Supprimer'>&#10060;</a>
                           </p>";
                 }
             } else {
@@ -223,30 +274,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
     </div>
 
-    <!-- Footer -->
     <footer>
-    <div class="footer-links">
-        <div>
-            <h4>En savoir plus :</h4>
-            <ul>
-                <li><a href="securite_connect.php">Sécurité</a></li>
-                <li><a href="aide_connect.php">Centre d'aide</a></li>
-            </ul>
+        <div class="footer-links">
+            <div>
+                <h4>En savoir plus :</h4>
+                <ul>
+                    <li><a href="securite_connect.php">Sécurité</a></li>
+                    <li><a href="aide_connect.php">Centre d'aide</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4>A propos de nous :</h4>
+                <ul>
+                    <li><a href="confidentialite_connect.php">Politique de confidentialité</a></li>
+                    <li><a href="contact_connect.php">Nous contacter</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4>Conditions Générales :</h4>
+                <ul>
+                    <li><a href="conditions_connect.php">Conditions d'utilisateur et de Service</a></li>
+                </ul>
+            </div>
         </div>
-        <div>
-            <h4>A propos de nous :</h4>
-            <ul>
-                <li><a href="confidentialite_connect.php">Politique de confidentialité</a></li>
-                <li><a href="contact_connect.php">Nous contacter</a></li>
-            </ul>
-        </div>
-        <div>
-            <h4>Conditions Générales :</h4>
-            <ul>
-                <li><a href="conditions_connect.php">Conditions d'utilisateur et de Service</a></li>
-            </ul>
-        </div>
-    </div>
-</footer>
+    </footer>
 </body>
 </html>
