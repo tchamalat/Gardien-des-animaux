@@ -268,6 +268,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <!-- Hero Section -->
     <section class="hero">
         <h1>Bienvenue sur Gardien des Animaux</h1>
+        <button onclick="redirectToSearch()">Trouver un gardien</button>
     </section>
 
     <!-- Section Gardien -->
