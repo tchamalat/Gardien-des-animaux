@@ -95,6 +95,7 @@
 
         .profile-item label {
             font-weight: bold;
+            color: #555;
         }
 
         .btn-modern {
@@ -194,8 +195,8 @@
         <div class="profile-item"><label>Nom d'utilisateur :</label><span><?php echo htmlspecialchars($nom_utilisateur); ?></span></div>
         <div class="profile-item"><label>Nom :</label><span><?php echo htmlspecialchars($nom); ?></span></div>
         <div class="profile-item"><label>Prénom :</label><span><?php echo htmlspecialchars($prenom); ?></span></div>
-        <div class="profile-item"><label>Mail :</label><span><?php echo htmlspecialchars($mail); ?></span></div>
-        <div class="profile-item"><label>Téléphone :</label><span><?php echo htmlspecialchars($numero_telephone); ?></span></div>
+        <div class="profile-item"><label>Adresse mail :</label><span><?php echo htmlspecialchars($mail); ?></span></div>
+        <div class="profile-item"><label>Numéro de téléphone :</label><span><?php echo htmlspecialchars($numero_telephone); ?></span></div>
         <div class="profile-item"><label>Adresse :</label><span><?php echo htmlspecialchars($adresse); ?></span></div>
         <div class="profile-item"><label>Ville :</label><span><?php echo htmlspecialchars($ville); ?></span></div>
     </div>
