@@ -43,7 +43,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gardien des Animaux - Connecté</title>
     <style>
-        /* Styles globaux */
         * {
             margin: 0;
             padding: 0;
@@ -51,15 +50,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         body {
+            margin: 0;
+            padding: 0;
             font-family: Arial, sans-serif;
             color: #fff;
-            background: url('images/premierplan.png') no-repeat center center fixed;
-            background-size: cover;
             min-height: 100vh;
             overflow-x: hidden;
         }
 
-        /* Header */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('images/premierplan.png') no-repeat center center fixed;
+            background-size: cover;
+            z-index: -1;
+        }
+
         header {
             position: fixed;
             top: 0;
@@ -100,23 +110,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             transform: translateY(-3px);
         }
 
-        /* Hero Section */
+        section {
+            padding: 100px 20px;
+            text-align: center;
+        }
+
         .hero {
             height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            text-align: center;
-        }
-
-        .hero h1 {
-            color: orange;
-            font-size: 2em;
         }
 
         .hero button {
-            margin-top: 20px;
             background-color: orange;
             color: white;
             padding: 15px 30px;
@@ -132,23 +139,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             transform: translateY(-3px);
         }
 
-        /* Section Gardiens */
         .gardiens {
-            background: transparent;
-            padding: 50px 20px;
-            text-align: center;
+            background: transparent; /* Suppression de la bande noire */
+            color: #fff;
         }
-
-        .gardiens h2 {
-            color: orange;
-            margin-bottom: 20px;
-        }
-
         .gardiens-container {
             display: flex;
             flex-wrap: wrap;
             gap: 20px;
             justify-content: center;
+            padding: 20px;
         }
 
         .gardien-card {
@@ -176,49 +176,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         .gardien-card p {
             margin: 5px 0;
         }
-
-        /* Avis Section */
-        .avis-section {
-            background-color: transparent;
-            padding: 50px 20px;
-            text-align: center;
-        }
-
-        .avis-section h2 {
-            color: orange;
-            margin-bottom: 20px;
-        }
-
-        .avis {
-            background-color: #f3e3cd;
-            border-radius: 20px;
-            padding: 20px;
-            border: 3px solid #f5a623;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 20px;
-            margin-bottom: 20px;
-        }
-
-        .avis img {
-            height: 50px;
-            width: 50px;
-            border-radius: 50%;
-            background-color: white;
-            padding: 5px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .avis span {
-            font-size: 1em;
-            color: #333;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        /* Footer */
         footer {
             padding: 20px;
             background: rgba(0, 0, 0, 0.8);
@@ -242,6 +199,68 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         .footer-links a:hover {
             color: orange;
+        }
+        .avis-section {
+            background-color: transparent;
+            padding: 50px 20px;
+        }
+
+        .avis-list {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+	        align-items: center;
+        }
+
+        .avis {
+            background-color: #f3e3cd;
+            border-radius: 20px;
+            padding: 20px;
+            border: 3px solid #f5a623;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+        }
+        .avis img {
+            height: 50px; /* Réduction de la taille de l'étoile */
+            width: 50px;
+            border-radius: 50%; /* Ajout d'un cercle autour de l'étoile */
+            background-color: white; /* Fond blanc pour le cercle */
+            padding: 5px; /* Ajout d'un espace autour de l'étoile */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .avis span {
+            font-size: 1em;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 10px; /* Espacement entre l'étoile et la note */
+        }
+
+        .avis span p {
+            margin: 0; /* Suppression des marges inutiles */
+            font-weight: bold;
+            font-size: 1.2em; /* Taille de la note */
+        }
+	    .voir-plus {
+	        background-color: #f5a623;
+    	    color: white;
+    	    padding: 15px 30px;
+	        border: none;
+    	    border-radius: 8px;
+    	    cursor: pointer;
+    	    font-size: 1.2em;
+    	    transition: background-color 0.3s ease, transform 0.3s ease;
+    	    margin-top: 30px;
+	    }
+	    .voir-plus:hover {
+    	    background-color: #ff7f00;
+    	    transform: translateY(-5px);
+	    }
+        .texte {
+            color: orange; 
         }
     </style>
 </head>
