@@ -60,11 +60,9 @@
         .profile-container {
             margin: 150px auto 50px auto;
             max-width: 800px;
-            background: rgba(255, 255, 255, 0.95);
             border-radius: 15px;
             padding: 30px;
             color: #333;
-            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
             text-align: center;
         }
 
@@ -104,11 +102,10 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 20px;
-            text-align: left;
         }
 
         .profile-details .profile-item {
-            background: #f9f9f9;
+            background: rgba(255, 255, 255, 0.85);
             border-radius: 10px;
             padding: 15px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -148,23 +145,6 @@
 
         .profile-actions .btn:hover {
             background-color: #ff7f00;
-            transform: translateY(-3px);
-        }
-
-        .btn-delete-account {
-            background-color: red;
-            color: white;
-            padding: 12px 25px;
-            border: none;
-            border-radius: 10px;
-            font-size: 1em;
-            cursor: pointer;
-            margin-top: 20px;
-            transition: background-color 0.3s ease, transform 0.3s ease;
-        }
-
-        .btn-delete-account:hover {
-            background-color: darkred;
             transform: translateY(-3px);
         }
 
@@ -218,31 +198,31 @@
     <div class="profile-details">
         <div class="profile-item">
             <label>Nom d'utilisateur :</label>
-            <span><?php echo htmlspecialchars($user['nom_utilisateur']); ?></span>
+            <span><?php echo htmlspecialchars($nom_utilisateur); ?></span>
         </div>
         <div class="profile-item">
             <label>Nom :</label>
-            <span><?php echo htmlspecialchars($user['nom']); ?></span>
+            <span><?php echo htmlspecialchars($nom); ?></span>
         </div>
         <div class="profile-item">
             <label>Prénom :</label>
-            <span><?php echo htmlspecialchars($user['prenom']); ?></span>
+            <span><?php echo htmlspecialchars($prenom); ?></span>
         </div>
         <div class="profile-item">
             <label>Adresse mail :</label>
-            <span><?php echo htmlspecialchars($user['mail']); ?></span>
+            <span><?php echo htmlspecialchars($mail); ?></span>
         </div>
         <div class="profile-item">
             <label>Numéro de téléphone :</label>
-            <span><?php echo htmlspecialchars($user['numero_telephone']); ?></span>
+            <span><?php echo htmlspecialchars($numero_telephone); ?></span>
         </div>
         <div class="profile-item">
             <label>Adresse :</label>
-            <span><?php echo htmlspecialchars($user['adresse']); ?></span>
+            <span><?php echo htmlspecialchars($adresse); ?></span>
         </div>
         <div class="profile-item">
             <label>Ville :</label>
-            <span><?php echo htmlspecialchars($user['ville']); ?></span>
+            <span><?php echo htmlspecialchars($ville); ?></span>
         </div>
     </div>
 
@@ -250,10 +230,6 @@
         <a href="historique.php" class="btn">Historique</a>
         <a href="profil_public.php" class="btn">Mon Profil Public</a>
     </div>
-
-    <form method="POST" action="delete_account.php">
-        <button class="btn-delete-account" type="submit" name="delete_account">Supprimer mon compte</button>
-    </form>
 </div>
 
 <footer>
