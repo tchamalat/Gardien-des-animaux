@@ -285,16 +285,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <!-- Hero Section -->
     <section class="hero">
-        <h1>Bienvenue sur Gardien des Animaux</h1>
+        <h1 class="texte">Bienvenue sur Gardien des Animaux</h1>
         <button onclick="redirectToSearch()">Trouver un gardien</button>
     </section>
 
     <!-- Section Gardien -->
     <?php if ($_SESSION['role'] == 1): ?>
     <section class="gardiens">
-        <h2>Découvrez nos gardiens disponibles :</h2>
+        <h2 class="texte">Découvrez nos gardiens disponibles :</h2>
         <div id="gardiens-container" class="gardiens-container">
-            <p>Chargement des gardiens en cours... Merci de patienter.</p>
+            <p class="texte">Chargement des gardiens en cours... Merci de patienter.</p>
         </div>
     </section>
     <script>
@@ -331,7 +331,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <!-- Avis Section -->
     <section class="avis-section">
-        <h2>Ce que disent nos utilisateurs</h2>
+        <h2 class="texte">Ce que disent nos utilisateurs</h2>
         <div class="avis-list">
             <?php
             $query = "SELECT avis.review, avis.rating, avis.date_created, creation_compte.nom_utilisateur 
