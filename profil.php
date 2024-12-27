@@ -1,3 +1,35 @@
+<?php 
+session_start(); 
+
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit();
+}
+
+include 'config.php';
+
+$user_id = $_SESSION['user_id'];
+
+$sql = "SELECT nom_utilisateur, nom, prenom, mail, numero_telephone, adresse, ville, profile_picture FROM creation_compte WHERE id = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $user_id);
+$stmt->execute();
+$result = $stmt->get_result();
+
+if ($result->num_rows > 0) {
+    $user = $result->fetch_assoc();
+} else {
+    echo "Utilisateur non trouvé.";
+    exit();
+}
+
+$stmt->close();
+$conn->close();
+
+$message = isset($_SESSION['message']) ? $_SESSION['message'] : '';
+unset($_SESSION['message']); 
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -192,13 +224,13 @@
     </div>
 
     <div class="profile-details">
-        <div class="profile-item"><label>Nom d'utilisateur :</label><span><?php echo htmlspecialchars($nom_utilisateur); ?></span></div>
-        <div class="profile-item"><label>Nom :</label><span><?php echo htmlspecialchars($nom); ?></span></div>
-        <div class="profile-item"><label>Prénom :</label><span><?php echo htmlspecialchars($prenom); ?></span></div>
-        <div class="profile-item"><label>Adresse mail :</label><span><?php echo htmlspecialchars($mail); ?></span></div>
-        <div class="profile-item"><label>Numéro de téléphone :</label><span><?php echo htmlspecialchars($numero_telephone); ?></span></div>
-        <div class="profile-item"><label>Adresse :</label><span><?php echo htmlspecialchars($adresse); ?></span></div>
-        <div class="profile-item"><label>Ville :</label><span><?php echo htmlspecialchars($ville); ?></span></div>
+        <div class="profile-item"><label>Nom d'utilisateur :</label><span><?php echo htmlspecialchars($user['nom_utilisateur']); ?></span></div>
+        <div class="profile-item"><label>Nom :</label><span><?php echo htmlspecialchars($user['nom']); ?></span></div>
+        <div class="profile-item"><label>Prénom :</label><span><?php echo htmlspecialchars($user['prenom']); ?></span></div>
+        <div class="profile-item"><label>Adresse mail :</label><span><?php echo htmlspecialchars($user['mail']); ?></span></div>
+        <div class="profile-item"><label>Numéro de téléphone :</label><span><?php echo htmlspecialchars($user['numero_telephone']); ?></span></div>
+        <div class="profile-item"><label>Adresse :</label><span><?php echo htmlspecialchars($user['adresse']); ?></span></div>
+        <div class="profile-item"><label>Ville :</label><span><?php echo htmlspecialchars($user['ville']); ?></span></div>
     </div>
 
     <div class="profile-actions">
