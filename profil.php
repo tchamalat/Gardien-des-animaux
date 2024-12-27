@@ -1,28 +1,3 @@
-<?php 
-session_start(); 
-
-if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php");
-    exit();
-}
-
-include 'config.php';
-
-$user_id = $_SESSION['user_id'];
-
-$sql = "SELECT nom_utilisateur, nom, prenom, mail, numero_telephone, adresse, ville, profile_picture FROM creation_compte WHERE id = ?";
-$stmt = $conn->prepare($sql);
-$stmt->bind_param("i", $user_id);
-$stmt->execute();
-$stmt->bind_result($nom_utilisateur, $nom, $prenom, $mail, $numero_telephone, $adresse, $ville, $profile_picture);
-$stmt->fetch();
-$stmt->close();
-$conn->close();
-
-$message = isset($_SESSION['message']) ? $_SESSION['message'] : '';
-unset($_SESSION['message']); 
-?>
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -60,7 +35,7 @@ unset($_SESSION['message']);
         }
 
         header img {
-            height: 60px;
+            height: 100px; /* Agrandissement du logo */
         }
 
         header .auth-buttons .btn {
@@ -122,24 +97,29 @@ unset($_SESSION['message']);
             font-weight: bold;
         }
 
+        .btn-modern {
+            display: inline-block;
+            background-color: #f5a623;
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .btn-modern:hover {
+            background-color: #ff7f00;
+            transform: translateY(-3px);
+        }
+
         .profile-actions {
             text-align: center;
             margin-top: 20px;
-        }
-
-        .profile-actions .btn-action {
-            background-color: orange;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 8px;
-            margin: 10px;
-            cursor: pointer;
-            text-decoration: none;
-        }
-
-        .profile-actions .btn-action:hover {
-            background-color: #ff7f00;
         }
 
         .btn-delete-account {
@@ -205,8 +185,8 @@ unset($_SESSION['message']);
         </div>
         <form action="upload_image.php" method="POST" enctype="multipart/form-data" class="profile-form">
             <input type="file" id="profile-picture-input" name="profilePicture" accept="image/*" style="display: none;" onchange="previewProfileImage(event)">
-            <button type="button" class="btn-action" onclick="document.getElementById('profile-picture-input').click();">Changer la photo</button>
-            <button type="submit" class="btn-action">Enregistrer</button>
+            <button type="button" class="btn-modern" onclick="document.getElementById('profile-picture-input').click();">Changer la photo</button>
+            <button type="submit" class="btn-modern">Enregistrer</button>
         </form>
     </div>
 
@@ -221,8 +201,8 @@ unset($_SESSION['message']);
     </div>
 
     <div class="profile-actions">
-        <button class="btn-action" onclick="window.location.href='historique.php'">HISTORIQUE</button>
-        <button class="btn-action" onclick="window.location.href='profil_public.php'">MON PROFIL PUBLIC</button>
+        <button class="btn-modern" onclick="window.location.href='historique.php'">HISTORIQUE</button>
+        <button class="btn-modern" onclick="window.location.href='profil_public.php'">MON PROFIL PUBLIC</button>
     </div>
 
     <form method="POST" action="delete_account.php">
