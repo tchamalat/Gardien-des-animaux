@@ -210,7 +210,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         .messages-list em {
             font-size: 12px;
-            color: black;
+            color: #888;
         }
 
         footer {
