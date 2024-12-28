@@ -208,6 +208,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         .messages-list p {
             background-color: #f1f1f1;
+            color : black
             padding: 10px;
             border-left: 4px solid #f5a623;
             margin-bottom: 10px;
