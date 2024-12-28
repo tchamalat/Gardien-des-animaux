@@ -104,70 +104,105 @@ $stmt_animaux->close();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mon Profil Public - Gardien des Animaux</title>
     <style>
-        /* Style repris du nouveau code fourni */
-        /* Styles globaux et spécifiques */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
         body {
             font-family: Arial, sans-serif;
             color: #333;
             background: url('images/premierplan.png') no-repeat center center fixed;
             background-size: cover;
-            min-height: 100vh;
-            overflow-x: hidden;
+            margin: 0;
+            padding: 0;
         }
         header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            z-index: 10;
-            padding: 20px;
+            background: rgba(255, 255, 255, 0.85);
+            padding: 15px 30px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: none;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
         }
         header img {
-            height: 100px;
+            height: 60px;
         }
         header .auth-buttons .btn {
             background-color: orange;
             color: white;
-            padding: 10px 20px;
+            padding: 10px 15px;
             border: none;
             border-radius: 8px;
-            font-size: 1em;
+            font-size: 0.9em;
             cursor: pointer;
-            text-decoration: none;
-            margin-left: 10px;
-            transition: background-color 0.3s ease, transform 0.3s ease;
+            transition: all 0.3s ease;
         }
         header .auth-buttons .btn:hover {
             background-color: #ff7f00;
-            transform: translateY(-3px);
         }
         .profile-container {
-            margin: 150px auto;
             max-width: 900px;
-            background: rgba(255, 255, 255, 0.85);
-            border-radius: 15px;
-            padding: 30px;
-            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+            margin: 50px auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 10px;
+            padding: 20px 30px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
             text-align: center;
         }
-        .profile-container h2 {
-            color: orange;
-            margin-bottom: 30px;
+        .profile-picture img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 4px solid orange;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
         }
         .animal-list {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 20px;
-            margin-top: 20px;
+            margin-top: 30px;
+        }
+        .animal-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .animal-card img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+        .animal-card button {
+            margin: 10px 5px;
+            padding: 10px 15px;
+            font-size: 0.85em;
+            background: orange;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .animal-card button:hover {
+            background: #ff7f00;
+        }
+        .animal-card .btn-delete {
+            background: red;
+        }
+        .animal-card .btn-delete:hover {
+            background: darkred;
+        }
+        footer {
+            background: rgba(0, 0, 0, 0.85);
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+            margin-top: 50px;
+        }
+        footer a {
+            color: orange;
+            text-decoration: none;
         }
     </style>
 </head>
