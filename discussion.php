@@ -200,7 +200,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         .messages-list p {
-            background-color: black;
+            background-color: #f1f1f1;
             padding: 10px;
             border-left: 4px solid #f5a623;
             margin-bottom: 10px;
@@ -210,7 +210,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         .messages-list em {
             font-size: 12px;
-            color: #888;
+            color: black;
         }
 
         footer {
