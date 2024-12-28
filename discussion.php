@@ -61,7 +61,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         .messages-list {
             margin-top: 20px;
         }
-
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+        }
         .message-item {
             background: rgba(255, 255, 255, 0.9);
             border: 1px solid #ddd;
