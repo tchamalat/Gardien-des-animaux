@@ -253,7 +253,11 @@ unset($_SESSION['message']);
     <div class="profile-actions">
         <a href="historique.php" class="btn">Historique</a>
         <a href="profil_public.php" class="btn">Mon Profil Public</a>
+        <form method="POST" action="delete_account.php" style="display: inline;">
+            <button class="btn" type="submit" name="delete_account" style="background-color: red;">Supprimer le compte</button>
+        </form>
     </div>
+
 </div>
 
 <footer>
