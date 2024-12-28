@@ -58,6 +58,47 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Discussion</title>
     <style>
+        .messages-list {
+            margin-top: 20px;
+        }
+
+        .message-item {
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .message-details {
+            max-width: 80%;
+        }
+
+        .message-details strong {
+            color: orange;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .message-details em {
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .message-delete {
+            color: red;
+            font-size: 1.2em;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .message-delete:hover {
+            color: darkred;
+        }
         body {
             font-family: Arial, sans-serif;
             color: #fff;
