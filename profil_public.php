@@ -1,3 +1,134 @@
+<?php 
+session_start(); 
+
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit();
+}
+
+include 'config.php';
+
+$user_id = $_SESSION['user_id'];
+
+// Activer le débogage
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+// Gérer l'ajout des animaux
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ajouter_animaux']) && isset($_POST['nom_animal'])) {
+    $noms_animaux = is_array($_POST['nom_animal']) ? $_POST['nom_animal'] : [$_POST['nom_animal']];
+    $photos_animaux = $_FILES['photo_animal'];
+
+    // Si une seule photo est téléchargée, convertir en tableau
+    if (!is_array($photos_animaux['tmp_name'])) {
+        $photos_animaux = [
+            'name' => [$photos_animaux['name']],
+            'type' => [$photos_animaux['type']],
+            'tmp_name' => [$photos_animaux['tmp_name']],
+            'error' => [$photos_animaux['error']],
+            'size' => [$photos_animaux['size']],
+        ];
+    }
+
+    for ($i = 0; $i < count($noms_animaux); $i++) {
+        $nom_animal = $noms_animaux[$i];
+
+        if ($photos_animaux['error'][$i] === UPLOAD_ERR_OK) {
+            $photo_tmp_name = $photos_animaux['tmp_name'][$i];
+            $photo_content = file_get_contents($photo_tmp_name);
+
+            $sql = "INSERT INTO Animal (id_utilisateur, prenom_animal, url_photo) VALUES (?, ?, ?)";
+            $stmt = $conn->prepare($sql);
+
+            if (!$stmt) {
+                die("Erreur de préparation de la requête : " . $conn->error);
+            }
+
+            $stmt->bind_param("iss", $user_id, $nom_animal, $photo_content);
+
+            if (!$stmt->execute()) {
+                die("Erreur d'exécution de la requête : " . $stmt->error);
+            }
+
+            $stmt->close();
+        } else {
+            die("Erreur de téléchargement de la photo : " . $photos_animaux['error'][$i]);
+        }
+    }
+
+    $message = "Animaux ajoutés avec succès !";
+}
+
+
+// Gérer la mise à jour des animaux
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_animal'])) {
+    $id_animal = $_POST['id_animal'];
+    $nom_animal = $_POST['nom_animal'];
+    $photo_content = null;
+
+    // Vérifie si un fichier a été téléchargé
+    if (!empty($_FILES['photo_animal']['tmp_name']) && $_FILES['photo_animal']['error'] === UPLOAD_ERR_OK) {
+        $photo_tmp_name = $_FILES['photo_animal']['tmp_name'];
+        $photo_content = file_get_contents($photo_tmp_name);
+    }
+
+    // Mise à jour avec ou sans photo
+    if ($photo_content) {
+        $sql_update = "UPDATE Animal SET prenom_animal = ?, url_photo = ? WHERE id_animal = ?";
+        $stmt_update = $conn->prepare($sql_update);
+        $stmt_update->bind_param("ssi", $nom_animal, $photo_content, $id_animal);
+    } else {
+        $sql_update = "UPDATE Animal SET prenom_animal = ? WHERE id_animal = ?";
+        $stmt_update = $conn->prepare($sql_update);
+        $stmt_update->bind_param("si", $nom_animal, $id_animal);
+    }
+
+    if ($stmt_update->execute()) {
+        $message = "Animal mis à jour avec succès !";
+    } else {
+        $message = "Erreur lors de la mise à jour : " . $stmt_update->error;
+    }
+
+    $stmt_update->close();
+}
+
+// Gérer la suppression des animaux
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_animal'])) {
+    $id_animal = $_POST['id_animal'];
+
+    $sql_delete = "DELETE FROM Animal WHERE id_animal = ?";
+    $stmt_delete = $conn->prepare($sql_delete);
+    $stmt_delete->bind_param("i", $id_animal);
+
+    if ($stmt_delete->execute()) {
+        $message = "Animal supprimé avec succès !";
+    } else {
+        $message = "Erreur lors de la suppression : " . $stmt_delete->error;
+    }
+
+    $stmt_delete->close();
+}
+
+
+// Récupérer les informations de l'utilisateur
+$sql_user = "SELECT nom_utilisateur, profile_picture FROM creation_compte WHERE id = ?";
+$stmt_user = $conn->prepare($sql_user);
+$stmt_user->bind_param("i", $user_id);
+$stmt_user->execute();
+$stmt_user->bind_result($nom_utilisateur, $profile_picture);
+$stmt_user->fetch();
+$stmt_user->close();
+
+// Récupérer les animaux de l'utilisateur
+$sql_animaux = "SELECT id_animal, prenom_animal, url_photo FROM Animal WHERE id_utilisateur = ?";
+$stmt_animaux = $conn->prepare($sql_animaux);
+$stmt_animaux->bind_param("i", $user_id);
+$stmt_animaux->execute();
+$result_animaux = $stmt_animaux->get_result();
+$stmt_animaux->close();
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
