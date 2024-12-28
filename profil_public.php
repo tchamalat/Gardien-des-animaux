@@ -113,7 +113,7 @@ $stmt_animaux->close();
             padding: 0;
         }
         header {
-            background: rgba(255, 255, 255, 0.85);
+            background: none; /* Aucun fond */
             padding: 15px 30px;
             display: flex;
             justify-content: space-between;
@@ -122,6 +122,7 @@ $stmt_animaux->close();
             top: 0;
             z-index: 1000;
         }
+
         header img {
             height: 60px;
         }
