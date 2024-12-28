@@ -181,15 +181,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         .envoyer {
-            background-color: orange;
+            display: block;
+            width: fit-content;
+            margin: 0 auto;
+            background-color: #f5a623;
             color: white;
-            padding: 10px 20px;
+            padding: 15px 30px; 
             border: none;
             border-radius: 8px;
-            font-size: 1em;
             cursor: pointer;
+            font-size: 1.2em;
             transition: background-color 0.3s ease, transform 0.3s ease;
-            margin-top: 10px;
         }
 
         .envoyer:hover {
@@ -198,18 +200,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         .messages-list p {
-            background: rgba(255, 255, 255, 0.9);
-            padding: 15px;
-            border-left: 4px solid orange;
-            margin-bottom: 15px;
-            border-radius: 8px;
-            font-size: 1em;
-            text-align: left;
+            background-color: #f1f1f1;
+            padding: 10px;
+            border-left: 4px solid #f5a623;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            font-size: 14px;
         }
 
         .messages-list em {
-            font-size: 0.9em;
-            color: #666;
+            font-size: 12px;
+            color: #888;
         }
 
         footer {
@@ -246,6 +247,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="auth-buttons">
             <button class="btn" onclick="window.location.href='index_connect.php'">Accueil</button>
             <button class="btn" onclick="window.location.href='profil.php'">Mon Profil</button>
+            <button class="btn" onclick="window.location.href='search_page.php'">Je poste une annonce</button>
         </div>
     </header>
 
