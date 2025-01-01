@@ -58,6 +58,7 @@
             transition: background-color 0.3s ease, transform 0.3s ease;
         }
 
+
         .auth-buttons .btn:hover {
             background-color: #ff7f00;
             transform: translateY(-3px);
