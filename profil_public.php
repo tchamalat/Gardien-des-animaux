@@ -124,7 +124,7 @@ $stmt_animaux->close();
         }
 
         header img {
-            height: 60px;
+            height: 100px;
         }
         header .auth-buttons .btn {
             background-color: orange;
