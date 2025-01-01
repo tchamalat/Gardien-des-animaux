@@ -33,7 +33,7 @@
         }
 
         header img {
-            height: 80px;
+            height: 100px;
         }
 
         header .header-slogan {
