@@ -232,7 +232,57 @@ include 'config.php';
     </style>
 </head>
 <body>
+    <script>
+        let userLatitude, userLongitude;
 
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(savePosition, showError);
+            } else {
+                alert("La géolocalisation n'est pas prise en charge par votre navigateur.");
+            }
+        }
+
+        function savePosition(position) {
+            userLatitude = position.coords.latitude;
+            userLongitude = position.coords.longitude;
+            console.log(Latitude: ${userLatitude}, Longitude: ${userLongitude});
+        }
+
+        function redirectToSearch() {
+            if (userLatitude && userLongitude) {
+                window.location.href = search_page_index.php?latitude=${userLatitude}&longitude=${userLongitude};
+            } else {
+                alert("La localisation n'est pas disponible.");
+            }
+        }
+
+        function showError(error) {
+            switch (error.code) {
+                case error.PERMISSION_DENIED:
+                    alert("Vous avez refusé la demande de géolocalisation.");
+                    break;
+                case error.POSITION_UNAVAILABLE:
+                    alert("Les informations de localisation ne sont pas disponibles.");
+                    break;
+                case error.TIMEOUT:
+                    alert("La demande de géolocalisation a expiré.");
+                    break;
+                default:
+                    alert("Une erreur inconnue est survenue.");
+                    break;
+            }
+
+        }
+        function redirectToSearch() {
+            if (userLatitude && userLongitude) {
+                window.location.href = `search_page_index.php?latitude=${userLatitude}&longitude=${userLongitude}`;
+            } else {
+                alert("La localisation n'est pas disponible. Veuillez activer la géolocalisation.");
+            }
+        }
+        document.addEventListener('DOMContentLoaded', getLocation);
+    </script>
     <!-- Header -->
     <header>
         <div class="header-container">
@@ -348,58 +398,6 @@ include 'config.php';
             </div>
         </div>
     </footer>
-
-    <script>
-        let userLatitude, userLongitude;
-
-        function getLocation() {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(savePosition, showError);
-            } else {
-                alert("La géolocalisation n'est pas prise en charge par votre navigateur.");
-            }
-        }
-
-        function savePosition(position) {
-            userLatitude = position.coords.latitude;
-            userLongitude = position.coords.longitude;
-            console.log(Latitude: ${userLatitude}, Longitude: ${userLongitude});
-        }
-
-        function redirectToSearch() {
-            if (userLatitude && userLongitude) {
-                window.location.href = search_page_index.php?latitude=${userLatitude}&longitude=${userLongitude};
-            } else {
-                alert("La localisation n'est pas disponible.");
-            }
-        }
-
-        function showError(error) {
-            switch (error.code) {
-                case error.PERMISSION_DENIED:
-                    alert("Vous avez refusé la demande de géolocalisation.");
-                    break;
-                case error.POSITION_UNAVAILABLE:
-                    alert("Les informations de localisation ne sont pas disponibles.");
-                    break;
-                case error.TIMEOUT:
-                    alert("La demande de géolocalisation a expiré.");
-                    break;
-                default:
-                    alert("Une erreur inconnue est survenue.");
-                    break;
-            }
-
-        }
-        function redirectToSearch() {
-            if (userLatitude && userLongitude) {
-                window.location.href = `search_page_index.php?latitude=${userLatitude}&longitude=${userLongitude}`;
-            } else {
-                alert("La localisation n'est pas disponible. Veuillez activer la géolocalisation.");
-            }
-        }
-        document.addEventListener('DOMContentLoaded', getLocation);
-    </script>
 
 </body>
 </html>
