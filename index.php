@@ -391,6 +391,13 @@ include 'config.php';
             }
 
         }
+        function redirectToSearch() {
+            if (userLatitude && userLongitude) {
+                window.location.href = `search_page_index.php?latitude=${userLatitude}&longitude=${userLongitude}`;
+            } else {
+                alert("La localisation n'est pas disponible. Veuillez activer la géolocalisation.");
+            }
+        }
         document.addEventListener('DOMContentLoaded', getLocation);
     </script>
 
