@@ -194,17 +194,49 @@ $stmt_animaux->close();
         .animal-card .btn-delete:hover {
             background: darkred;
         }
-        footer {
-            background: rgba(0, 0, 0, 0.85);
-            color: #fff;
+        .footer {
             padding: 20px;
-            text-align: center;
+            background: rgba(0, 0, 0, 0.8); /* Fond sombre */
+            color: #fff; /* Texte blanc */
             margin-top: 50px;
         }
-        footer a {
-            color: orange;
-            text-decoration: none;
+
+        .footer-links {
+            display: flex;
+            justify-content: space-around; /* Espace égal entre les sections */
+            flex-wrap: wrap; /* Adaptation pour les écrans étroits */
         }
+
+        .footer-links div {
+            margin: 10px; /* Marges entre les sections */
+            text-align: left; /* Alignement à gauche */
+        }
+
+        .footer-links h4 {
+            font-size: 1.2em;
+            margin-bottom: 10px; /* Espace sous le titre */
+            color: orange; /* Couleur orange pour les titres */
+        }
+
+        .footer-links ul {
+            list-style: none; /* Supprime les puces */
+            padding: 0; /* Supprime le padding par défaut */
+        }
+
+        .footer-links li {
+            margin-bottom: 5px; /* Espace entre les éléments */
+        }
+
+        .footer-links a {
+            color: #fff; /* Lien en blanc */
+            text-decoration: none; /* Pas de soulignement */
+            transition: color 0.3s ease; /* Effet de transition au survol */
+        }
+
+        .footer-links a:hover {
+            color: orange; /* Couleur orange au survol */
+        }
+
     </style>
 </head>
 <body>
