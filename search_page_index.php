@@ -40,9 +40,11 @@
         }
 
         .auth-buttons {
+            margin-left: auto; /* Déplace les boutons à droite */
             display: flex;
             gap: 15px;
         }
+
 
         .auth-buttons .btn {
             background-color: orange;
