@@ -235,6 +235,7 @@ include 'config.php';
     <script>
         let userLatitude, userLongitude;
 
+        // Fonction pour obtenir la position de l'utilisateur
         function getLocation() {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(savePosition, showError);
@@ -243,20 +244,14 @@ include 'config.php';
             }
         }
 
+        // Sauvegarde de la position
         function savePosition(position) {
             userLatitude = position.coords.latitude;
             userLongitude = position.coords.longitude;
-            console.log(Latitude: ${userLatitude}, Longitude: ${userLongitude});
+            console.log(`Latitude: ${userLatitude}, Longitude: ${userLongitude}`);
         }
 
-        function redirectToSearch() {
-            if (userLatitude && userLongitude) {
-                window.location.href = search_page_index.php?latitude=${userLatitude}&longitude=${userLongitude};
-            } else {
-                alert("La localisation n'est pas disponible.");
-            }
-        }
-
+        // Gestion des erreurs de géolocalisation
         function showError(error) {
             switch (error.code) {
                 case error.PERMISSION_DENIED:
@@ -272,17 +267,21 @@ include 'config.php';
                     alert("Une erreur inconnue est survenue.");
                     break;
             }
-
         }
+
+        // Redirection vers la page de recherche
         function redirectToSearch() {
-            if (userLatitude && userLongitude) {
+            if (userLatitude !== undefined && userLongitude !== undefined) {
                 window.location.href = `search_page_index.php?latitude=${userLatitude}&longitude=${userLongitude}`;
             } else {
                 alert("La localisation n'est pas disponible. Veuillez activer la géolocalisation.");
             }
         }
+
+        // Appeler la fonction pour obtenir la localisation dès que la page est chargée
         document.addEventListener('DOMContentLoaded', getLocation);
     </script>
+
     <!-- Header -->
     <header>
         <div class="header-container">
