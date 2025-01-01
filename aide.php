@@ -20,12 +20,16 @@
         }
 
         header {
-            background-color: rgba(255, 255, 255, 0.9);
-            padding: 20px 50px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 10;
+            padding: 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            background: none;
         }
 
         header img {
