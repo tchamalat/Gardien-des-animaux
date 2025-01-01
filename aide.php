@@ -25,30 +25,30 @@
             left: 0;
             width: 100%;
             z-index: 10;
-            padding: 20px;
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            background: none;
+            justify-content: space-between;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
+
         header img {
             height: 80px;
         }
 
         header .header-slogan {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
             font-size: 1.5em;
             color: orange;
             font-weight: bold;
             text-align: center;
-            z-index: 11; /* Toujours au-dessus */
-            background-color: rgba(255, 255, 255, 0.85);
-            padding: 10px 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            flex: 1;
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        header.scrolled .header-slogan {
+            opacity: 0;
+            transform: translateY(-20px);
         }
 
         header .auth-buttons {
@@ -170,6 +170,16 @@
             color: orange;
         }
     </style>
+    <script>
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+    </script>
 </head>
 <body>
 
