@@ -1,25 +1,173 @@
-<?php
-include 'config.php'; // Connexion à la base de données
-?>
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Centre d'aide - Gardien des Animaux</title>
-    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Styles globaux */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            color: #333;
+            background: url('images/premierplan.png') no-repeat center center fixed;
+            background-size: cover;
+        }
+
+        header {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 20px 50px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header img {
+            height: 80px;
+        }
+
+        header .header-slogan {
+            font-size: 1.5em;
+            color: orange;
+            font-weight: bold;
+            flex: 1;
+            text-align: center;
+        }
+
+        header .auth-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        header .auth-buttons .btn {
+            background-color: orange;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        header .auth-buttons .btn:hover {
+            background-color: #ff7f00;
+            transform: translateY(-3px);
+        }
+
+        .help-center-container {
+            max-width: 800px;
+            margin: 50px auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .help-center-container h2 {
+            font-size: 1.8em;
+            color: orange;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .help-center-container p, .help-center-container li {
+            font-size: 1.1em;
+            line-height: 1.6;
+            color: #555;
+        }
+
+        .faq h3 {
+            font-size: 1.4em;
+            color: #333;
+            margin-top: 20px;
+        }
+
+        .faq p {
+            margin-top: 10px;
+            font-size: 1.1em;
+        }
+
+        .faq a {
+            color: orange;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .faq a:hover {
+            color: #ff7f00;
+        }
+
+        ul {
+            margin-top: 20px;
+            padding-left: 20px;
+            list-style: none;
+        }
+
+        ul li {
+            position: relative;
+            padding-left: 25px;
+            margin-bottom: 10px;
+        }
+
+        ul li:before {
+            content: '✔';
+            position: absolute;
+            left: 0;
+            top: 0;
+            color: orange;
+            font-weight: bold;
+        }
+
+        footer {
+            background: rgba(0, 0, 0, 0.85);
+            color: #fff;
+            padding: 20px;
+            margin-top: 50px;
+        }
+
+        footer .footer-links {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+        }
+
+        footer .footer-links h4 {
+            color: orange;
+            margin-bottom: 10px;
+        }
+
+        footer .footer-links ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        footer .footer-links a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        footer .footer-links a:hover {
+            color: orange;
+        }
+    </style>
 </head>
 <body>
 
 <!-- Header -->
 <header>
-    <div class="header-container">
-        <img src="images/logo.png" alt="Logo Gardien des Animaux">
-        <h1 class="header-slogan">Besoin d'aide ? Nous sommes là pour vous.</h1>
-        <div class="auth-buttons">
-            <button class="btn" onclick="window.location.href='index.php'">Accueil</button>
-        </div>
+    <img src="images/logo.png" alt="Logo Gardien des Animaux">
+    <h1 class="header-slogan">Besoin d'aide ? Nous sommes là pour vous.</h1>
+    <div class="auth-buttons">
+        <button class="btn" onclick="window.location.href='index.php'">Accueil</button>
     </div>
 </header>
 
