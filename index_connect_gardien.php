@@ -111,12 +111,61 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
         }
 
+        .gardiens-section {
+            max-width: 1200px;
+            margin: 50px auto;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .gardiens-section h2 {
+            font-size: 1.8em;
+            color: orange;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .gardiens-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .gardien-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 250px;
+        }
+
+        .gardien-card img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .gardien-card p {
+            margin: 10px 0;
+            font-size: 1em;
+        }
+
+        .gardien-card .distance {
+            font-weight: bold;
+            color: orange;
+        }
+
         .avis-section {
             max-width: 800px;
             margin: 50px auto;
+            padding: 30px;
             background: rgba(255, 255, 255, 0.9);
             border-radius: 15px;
-            padding: 30px;
             box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
         }
 
@@ -143,6 +192,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         .avis p {
             margin: 5px 0;
+            font-size: 1em;
         }
 
         .avis span {
@@ -221,7 +271,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 <body>
 
-<!-- Header -->
 <header>
     <img src="images/logo.png" alt="Logo Gardien des Animaux">
     <div class="auth-buttons">
@@ -231,12 +280,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
 </header>
 
-<!-- Hero Section -->
 <section class="hero">
     <h1>Bienvenue, Gardien</h1>
 </section>
 
-<!-- Avis Section -->
+<section class="gardiens-section">
+    <h2>Gardiens Disponibles</h2>
+    <div class="gardiens-list">
+        <!-- Les gardiens seront ajoutés dynamiquement ici -->
+    </div>
+</section>
+
 <section class="avis-section">
     <h3>Avis</h3>
     <div class="avis-list">
@@ -259,7 +313,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <a class="voir-plus" href="leave_review.php">Laisser un avis</a>
 </section>
 
-<!-- Footer -->
 <footer>
     <div class="footer-links">
         <div>
@@ -285,84 +338,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
 </footer>
 
-<!-- Chat Button -->
 <button id="chatButton">💬</button>
-    <script>
-        // Récupération des gardiens en fonction de la localisation
-        function getLocationAndFetchGardiens() {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(
-                    (position) => {
-                        fetch('index_connect.php', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                            },
-                            body: JSON.stringify({
-                                latitude: position.coords.latitude,
-                                longitude: position.coords.longitude,
-                            }),
-                        })
-                            .then(response => response.text())
-                            .then(data => {
-                                document.querySelector('.gardien-list').innerHTML = data;
-                            })
-                            .catch(error => console.error('Erreur :', error));
-                    },
-                    (error) => {
-                        alert("Impossible de récupérer votre position. Vérifiez les autorisations de votre navigateur.");
-                    }
-                );
-            } else {
-                alert("La géolocalisation n'est pas supportée par votre navigateur.");
-            }
-        }
-
-        document.addEventListener('DOMContentLoaded', function() {
-            <?php if (isset($_SESSION['role']) && $_SESSION['role'] == 1): ?>
-            getLocationAndFetchGardiens();
-            <?php endif; ?>
-        });
-    </script>
-
-    <script>
-</body>
-</html>
 
 <script>
-function getUserLocation() {
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function (position) {
-            const latitude = position.coords.latitude;
-            const longitude = position.coords.longitude;
-
-            // Envoyer les coordonnées au serveur
-            fetch('save_location.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ latitude: latitude, longitude: longitude })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.status === 'success') {
-                    console.log('Location saved successfully:', data.message);
-                } else {
-                    console.error('Error saving location:', data.message);
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
+    function fetchGardiens() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition((position) => {
+                fetch('index_connect_gardien.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        latitude: position.coords.latitude,
+                        longitude: position.coords.longitude,
+                    }),
+                })
+                .then(response => response.text())
+                .then(data => {
+                    document.querySelector('.gardiens-list').innerHTML = data;
+                })
+                .catch(error => console.error('Erreur:', error));
+            }, (error) => {
+                console.error('Erreur de géolocalisation:', error.message);
             });
-        }, function (error) {
-            console.error('Error retrieving location:', error.message);
-        });
-    } else {
-        console.error('Geolocation is not supported by this browser.');
+        }
     }
-}
 
-// Appeler la fonction après que l'utilisateur se connecte
-window.onload = getUserLocation;
+    document.addEventListener('DOMContentLoaded', fetchGardiens);
 </script>
+
+</body>
+</html>
