@@ -138,29 +138,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <img src="images/premierplan.png" alt="Un foyer chaleureux">
     </section>
 
-    <!-- Avis Section -->
-    <section class="avis-section">
-        <h3>Avis</h3>
-        <div class="avis-list">
-            <?php
-            $query = "SELECT avis.review, avis.rating, avis.date_created, creation_compte.nom_utilisateur 
-                      FROM avis 
-                      JOIN creation_compte ON avis.user_id = creation_compte.id 
-                      ORDER BY avis.date_created DESC LIMIT 3";
-            $result = $conn->query($query);
-
-            while ($row = $result->fetch_assoc()) {
-                echo "<div class='avis'>";
-                echo "<p>" . htmlspecialchars($row['nom_utilisateur']) . " :</p>";
-                echo "<p>" . htmlspecialchars($row['review']) . "</p>";
-                echo "<span>" . htmlspecialchars($row['rating']) . " / 5 <img src='images/star.png' alt='étoile'></span>";
-                echo "</div>";
-            }
-            ?>
-        </div>
-        <button class="voir-plus" onclick="window.location.href='leave_review.php'">Laisser un avis</button>
-    </section>
-
     <!-- Footer -->
     <footer>
     <div class="footer-links">
