@@ -146,15 +146,14 @@
 <body>
     <!-- Header -->
     <header>
-        <div class="header-container">
-            <img src="images/logo.png" alt="Logo Gardien des Animaux">
-            <div class="auth-buttons">
-                <button class="btn" onclick="window.location.href='create_account.php'">Créer un compte</button>
-                <button class="btn" onclick="window.location.href='login.html'">Je me connecte</button>
-                <button class="btn" onclick="window.location.href='index.php'">Accueil</button>
-            </div>
+        <img src="images/logo.png" alt="Logo Gardien des Animaux">
+        <div class="auth-buttons">
+            <button class="btn" onclick="window.location.href='create_account.php'">Créer un compte</button>
+            <button class="btn" onclick="window.location.href='login.html'">Je me connecte</button>
+            <button class="btn" onclick="window.location.href='index.php'">Accueil</button>
         </div>
     </header>
+
 
     <!-- Conteneur principal de la recherche -->
     <div class="search-container">
