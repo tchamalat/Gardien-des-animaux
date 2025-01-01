@@ -29,10 +29,8 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background-color: rgba(255, 255, 255, 0.9);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background: none;
         }
-
         header img {
             height: 80px;
         }
