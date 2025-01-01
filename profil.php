@@ -205,6 +205,7 @@ unset($_SESSION['message']);
     <img src="images/logo.png" alt="Logo Gardien des Animaux">
     <div class="auth-buttons">
         <button class="btn" onclick="window.location.href='index_connect.php'">Accueil</button>
+        <button class="btn" onclick="window.location.href='logout.php'">Déconnexion</button> 
     </div>
 </header>
 
