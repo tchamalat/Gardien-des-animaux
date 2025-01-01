@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once 'config.php'; // Fichier de connexion à la base de données
+require_once 'config.php';
 
 // Vérifie si l'utilisateur est connecté et s'il a le rôle de propriétaire (role = 1)
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] != 1) {
@@ -31,74 +31,159 @@ $result = $stmt->get_result();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Historique des Réservations</title>
-    <link rel="stylesheet" href="styles.css">
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            color: #333;
+            background: url('images/premierplan.png') no-repeat center center fixed;
+            background-size: cover;
             margin: 0;
             padding: 0;
+            overflow-x: hidden;
         }
-        .container {
-            width: 90%;
-            max-width: 800px;
-            margin: 40px auto;
-            background-color: #fff;
+
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 10;
             padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: none;
+        }
+
+        header img {
+            height: 100px;
+        }
+
+        header .auth-buttons .btn {
+            background-color: orange;
+            color: white;
+            padding: 10px 20px;
+            border: none;
             border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            font-size: 1em;
+            cursor: pointer;
+            text-decoration: none;
+            margin-left: 10px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
         }
-        h2 {
+
+        header .auth-buttons .btn:hover {
+            background-color: #ff7f00;
+            transform: translateY(-3px);
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 150px auto 50px auto;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
             text-align: center;
-            color: #333;
         }
+
+        h2 {
+            color: orange;
+            margin-bottom: 20px;
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
         }
+
         th, td {
             border: 1px solid #ddd;
             padding: 10px;
             text-align: center;
         }
+
         th {
-            background-color: #f5a623;
-            color: #fff;
+            background-color: orange;
+            color: white;
         }
+
         tr:nth-child(even) {
             background-color: #f9f9f9;
         }
+
         .no-reservations {
             text-align: center;
             color: #888;
             margin-top: 20px;
         }
+
+        footer {
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            color: #fff;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+        }
+
+        .footer-links div {
+            margin: 10px;
+            text-align: left;
+        }
+
+        .footer-links h4 {
+            font-size: 1.2em;
+            margin-bottom: 10px;
+            color: orange;
+        }
+
+        .footer-links ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-links li {
+            margin-bottom: 5px;
+        }
+
+        .footer-links a {
+            color: #fff;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: orange;
+        }
     </style>
 </head>
 <body>
 
-    <!-- Header -->
-    <header>
-        <div class="header-container">
-            <img src="images/logo.png" alt="Logo Gardien des Animaux">
-            <div class="auth-buttons">
-                <?php
-                if (isset($_SESSION['role'])) {
-                    if ($_SESSION['role'] == 0) {
-                        echo '<button class="btn" onclick="window.location.href=\'profil_gardien.php\'">Mon Profil</button>';
-                    } elseif ($_SESSION['role'] == 1) {
-                        echo '<button class="btn" onclick="window.location.href=\'profil.php\'">Mon Profil</button>';
-                    }
-                } else {
-                    echo '<button class="btn" onclick="window.location.href=\'login.php\'">Mon Profil</button>';
-                }
-                ?>
-                <button class="btn" onclick="window.location.href='index_connect.php'">Accueil</button>
-            </div>
-        </div>
-    </header>
+<!-- Header -->
+<header>
+    <img src="images/logo.png" alt="Logo Gardien des Animaux">
+    <div class="auth-buttons">
+        <?php
+        if (isset($_SESSION['role'])) {
+            if ($_SESSION['role'] == 0) {
+                echo '<button class="btn" onclick="window.location.href=\'profil_gardien.php\'">Mon Profil</button>';
+            } elseif ($_SESSION['role'] == 1) {
+                echo '<button class="btn" onclick="window.location.href=\'profil.php\'">Mon Profil</button>';
+            }
+        } else {
+            echo '<button class="btn" onclick="window.location.href=\'login.php\'">Mon Profil</button>';
+        }
+        ?>
+        <button class="btn" onclick="window.location.href='index_connect.php'">Accueil</button>
+    </div>
+</header>
 
+<!-- Container -->
 <div class="container">
     <h2>Historique des réservations</h2>
 
@@ -133,14 +218,13 @@ $result = $stmt->get_result();
                 </tr>
             <?php endwhile; ?>
         </table>
-
     <?php else: ?>
         <p class="no-reservations">Aucune réservation trouvée.</p>
     <?php endif; ?>
 </div>
 
-    <!-- Footer -->
-    <footer>
+<!-- Footer -->
+<footer>
     <div class="footer-links">
         <div>
             <h4>En savoir plus :</h4>
