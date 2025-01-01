@@ -1,3 +1,62 @@
+<?php
+include 'config.php';
+session_start();
+
+$message_confirmation = ''; // Variable pour stocker le message de confirmation
+
+// Vérification si un gardien est sélectionné
+if (isset($_GET['gardien_id'])) {
+    $gardien_id = $_GET['gardien_id'];
+    $_SESSION['selected_gardien'] = $gardien_id;
+
+    // Récupérer les informations du gardien depuis la base de données
+    $sql = "SELECT nom_utilisateur, ville, service, budget_min, budget_max FROM creation_compte WHERE id = ? AND role = 0";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $gardien_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows > 0) {
+        $gardien_info = $result->fetch_assoc();
+    } else {
+        die("Gardien introuvable ou non valide !");
+    }
+
+    $stmt->close();
+} elseif ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SESSION['selected_gardien'])) {
+    $gardien_id = $_SESSION['selected_gardien'];
+    $proprietaire_id = $_SESSION['user_id'];
+    $date_debut = $_POST['date_debut'];
+    $date_fin = $_POST['date_fin'];
+    $heure_debut = $_POST['heure_debut'];
+    $heure_fin = $_POST['heure_fin'];
+    $lieu = $_POST['lieu'];
+    $type = $_POST['type'];
+
+    if (!$date_debut || !$date_fin || !$heure_debut || !$heure_fin || !$lieu || !$type) {
+        die("Tous les champs doivent être renseignés !");
+    }
+
+    $sql = "INSERT INTO reservation (gardien_id, id_utilisateur, date_debut, date_fin, lieu, type, heure_debut, heure_fin) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("iissssss", $gardien_id, $proprietaire_id, $date_debut, $date_fin, $lieu, $type, $heure_debut, $heure_fin);
+
+    if ($stmt->execute()) {
+        // Utilisation du nom du gardien dans le message de confirmation
+        $message_confirmation = "Votre réservation a été effectuée avec succès pour le gardien <strong>" 
+                                . htmlspecialchars($gardien_info['nom_utilisateur']) . "</strong> !";
+        unset($_SESSION['selected_gardien']);
+    } else {
+        $message_confirmation = "Erreur lors de la réservation : " . $stmt->error;
+    }
+
+    $stmt->close();
+    $conn->close();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
