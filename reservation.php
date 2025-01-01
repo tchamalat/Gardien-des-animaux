@@ -35,7 +35,7 @@
         }
 
         header h1 {
-            color: #fff;
+            color: orange; /* "Réservation" en orange */
             font-size: 2em;
         }
 
@@ -147,13 +147,18 @@
             margin-top: 20px;
         }
 
+        .footer-links div h4 {
+            color: orange; /* "En savoir plus", "À propos de nous", etc. en orange */
+            margin-bottom: 10px;
+        }
+
         .footer-links ul {
             list-style: none;
             text-align: left;
         }
 
         .footer-links a {
-            color: orange;
+            color: white; /* Liens en blanc */
             text-decoration: none;
             transition: color 0.3s ease;
         }
