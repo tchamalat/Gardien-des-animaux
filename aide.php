@@ -29,8 +29,8 @@
             align-items: center;
             justify-content: space-between;
             padding: 20px;
-            background-color: rgba(255, 255, 255, 0.9);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background: transparent; /* Supprime le fond blanc */
+            box-shadow: none; /* Supprime l'ombre */
         }
 
         header img {
@@ -44,6 +44,7 @@
             text-align: center;
             flex: 1;
             transition: opacity 0.5s ease, transform 0.5s ease;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8); /* Ombre pour une meilleure lisibilité */
         }
 
         header.scrolled .header-slogan {
