@@ -29,19 +29,28 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: none;
+            background-color: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
         header img {
-            height: 100px;
+            height: 80px;
         }
 
         header .header-slogan {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
             font-size: 1.5em;
             color: orange;
             font-weight: bold;
-            flex: 1;
             text-align: center;
+            z-index: 11; /* Toujours au-dessus */
+            background-color: rgba(255, 255, 255, 0.85);
+            padding: 10px 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
 
         header .auth-buttons {
@@ -68,7 +77,7 @@
 
         .help-center-container {
             max-width: 800px;
-            margin: 50px auto;
+            margin: 150px auto; /* Laisser de l'espace sous l'en-tête fixe */
             background: rgba(255, 255, 255, 0.95);
             border-radius: 15px;
             padding: 30px;
