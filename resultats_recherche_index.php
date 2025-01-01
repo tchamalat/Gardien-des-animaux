@@ -2,7 +2,6 @@
 include 'config.php';
 session_start();
 
-
 // Récupération des paramètres de recherche
 $latitude_user = isset($_GET['latitude']) ? floatval($_GET['latitude']) : 0;
 $longitude_user = isset($_GET['longitude']) ? floatval($_GET['longitude']) : 0;
@@ -52,12 +51,157 @@ $conn->close();
     <meta charset='UTF-8'>
     <meta name='viewport' content='width=device-width, initial-scale=1.0'>
     <title>Résultats de la recherche</title>
-    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Styles globaux */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            color: #fff;
+            background: url('images/premierplan.png') no-repeat center center fixed;
+            background-size: cover;
+            min-height: 100vh;
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 10;
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header img {
+            height: 120px;
+            max-width: 200px;
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .auth-buttons .btn {
+            background-color: orange;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .auth-buttons .btn:hover {
+            background-color: #ff7f00;
+            transform: translateY(-3px);
+        }
+
+        .resultats-container {
+            max-width: 900px;
+            margin: 150px auto;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+            color: #333;
+        }
+
+        h2 {
+            color: orange;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .results-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .result-card {
+            background: rgba(255, 255, 255, 0.85);
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .result-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .gardien-name {
+            font-size: 1.5em;
+            color: #555;
+        }
+
+        .service-type {
+            background: orange;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.9em;
+        }
+
+        .result-details p {
+            margin: 10px 0;
+            font-size: 1em;
+        }
+
+        .no-results {
+            text-align: center;
+            font-size: 1.2em;
+            color: #555;
+            margin-top: 30px;
+        }
+
+        footer {
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            margin-top: 50px;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links a {
+            color: #fff;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: orange;
+        }
+    </style>
 </head>
 <body>
     <header>
-        <h1>Résultats de la recherche</h1>
-        <button class="btn" onclick="window.location.href='search_page_index.php'">Nouvelle recherche</button>
+        <div class="header-container">
+            <img src="images/logo.png" alt="Logo Gardien des Animaux">
+            <div class="auth-buttons">
+                <button class="btn" onclick="window.location.href='search_page_index.php'">Nouvelle recherche</button>
+            </div>
+        </div>
     </header>
 
     <div class="resultats-container">
@@ -68,14 +212,14 @@ $conn->close();
                     <li class="result-card">
                         <div class="result-header">
                             <h3 class="gardien-name"><?php echo htmlspecialchars($gardien['nom']); ?></h3>
-                            <span class="service-type badge"><?php echo htmlspecialchars($gardien['service']); ?></span>
+                            <span class="service-type"><?php echo htmlspecialchars($gardien['service']); ?></span>
                         </div>
                         <div class="result-details">
-                            <p><span class="icon">🐾</span><strong>Type d'animal:</strong> <?php echo htmlspecialchars($gardien['animal']); ?></p>
-                            <p><span class="icon">📍</span><strong>Ville:</strong> <?php echo htmlspecialchars($gardien['ville']); ?></p>
-                            <p><span class="icon">💰</span><strong>Budget:</strong> <?php echo htmlspecialchars($gardien['budget_min']); ?>€ - <?php echo htmlspecialchars($gardien['budget_max']); ?>€</p>
-                            <p><span class="icon">🐕</span><strong>Nombre d'animaux:</strong> <?php echo htmlspecialchars($gardien['nombre_animaux']); ?></p>
-                            <p><span class="icon">🌍</span><strong>Distance:</strong> <?php echo round($gardien['distance'], 2); ?> km</p>
+                            <p><strong>Type d'animal:</strong> <?php echo htmlspecialchars($gardien['animal']); ?></p>
+                            <p><strong>Ville:</strong> <?php echo htmlspecialchars($gardien['ville']); ?></p>
+                            <p><strong>Budget:</strong> <?php echo htmlspecialchars($gardien['budget_min']); ?>€ - <?php echo htmlspecialchars($gardien['budget_max']); ?>€</p>
+                            <p><strong>Nombre d'animaux:</strong> <?php echo htmlspecialchars($gardien['nombre_animaux']); ?></p>
+                            <p><strong>Distance:</strong> <?php echo round($gardien['distance'], 2); ?> km</p>
                         </div>
                     </li>
                 <?php endforeach; ?>
@@ -84,29 +228,30 @@ $conn->close();
             <p class="no-results">Aucun gardien trouvé pour ces critères de recherche.</p>
         <?php endif; ?>
     </div>
+
     <footer>
-    <div class="footer-links">
-        <div>
-            <h4>En savoir plus :</h4>
-            <ul>
-                <li><a href="securite.php">Sécurité</a></li>
-                <li><a href="aide.php">Centre d'aide</a></li>
-            </ul>
+        <div class="footer-links">
+            <div>
+                <h4>En savoir plus :</h4>
+                <ul>
+                    <li><a href="securite.php">Sécurité</a></li>
+                    <li><a href="aide.php">Centre d'aide</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4>A propos de nous :</h4>
+                <ul>
+                    <li><a href="confidentialite.php">Politique de confidentialité</a></li>
+                    <li><a href="contact.php">Nous contacter</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4>Conditions Générales :</h4>
+                <ul>
+                    <li><a href="conditions.php">Conditions d'utilisateur et de Service</a></li>
+                </ul>
+            </div>
         </div>
-        <div>
-            <h4>A propos de nous :</h4>
-            <ul>
-                <li><a href="confidentialite.php">Politique de confidentialité</a></li>
-                <li><a href="contact.php">Nous contacter</a></li>
-            </ul>
-        </div>
-        <div>
-            <h4>Conditions Générales :</h4>
-            <ul>
-                <li><a href="conditions.php">Conditions d'utilisateur et de Service</a></li>
-            </ul>
-        </div>
-    </div>
-</footer>
+    </footer>
 </body>
 </html>
