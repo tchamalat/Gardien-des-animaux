@@ -284,6 +284,7 @@ $stmt_animaux->close();
         </div>
     </div>
 </footer>
+
 <script>
     document.getElementById('nombre_animal').addEventListener('input', function() {
         const container = document.getElementById('animal-fields');
