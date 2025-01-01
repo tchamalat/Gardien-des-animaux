@@ -125,6 +125,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            background: none;
         }
 
         header img {
