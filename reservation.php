@@ -1,82 +1,78 @@
-<?php
-include 'config.php';
-session_start();
-
-$message_confirmation = ''; // Variable pour stocker le message de confirmation
-
-// Vérification si un gardien est sélectionné
-if (isset($_GET['gardien_id'])) {
-    $gardien_id = $_GET['gardien_id'];
-    $_SESSION['selected_gardien'] = $gardien_id;
-
-    // Récupérer les informations du gardien depuis la base de données
-    $sql = "SELECT nom_utilisateur, ville, service, budget_min, budget_max FROM creation_compte WHERE id = ? AND role = 0";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("i", $gardien_id);
-    $stmt->execute();
-    $result = $stmt->get_result();
-
-    if ($result->num_rows > 0) {
-        $gardien_info = $result->fetch_assoc();
-    } else {
-        die("Gardien introuvable ou non valide !");
-    }
-
-    $stmt->close();
-} elseif ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SESSION['selected_gardien'])) {
-    $gardien_id = $_SESSION['selected_gardien'];
-    $proprietaire_id = $_SESSION['user_id'];
-    $date_debut = $_POST['date_debut'];
-    $date_fin = $_POST['date_fin'];
-    $heure_debut = $_POST['heure_debut'];
-    $heure_fin = $_POST['heure_fin'];
-    $lieu = $_POST['lieu'];
-    $type = $_POST['type'];
-
-    if (!$date_debut || !$date_fin || !$heure_debut || !$heure_fin || !$lieu || !$type) {
-        die("Tous les champs doivent être renseignés !");
-    }
-
-    $sql = "INSERT INTO reservation (gardien_id, id_utilisateur, date_debut, date_fin, lieu, type, heure_debut, heure_fin) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("iissssss", $gardien_id, $proprietaire_id, $date_debut, $date_fin, $lieu, $type, $heure_debut, $heure_fin);
-
-    if ($stmt->execute()) {
-        // Utilisation du nom du gardien dans le message de confirmation
-        $message_confirmation = "Votre réservation a été effectuée avec succès pour le gardien <strong>" 
-                                . htmlspecialchars($gardien_info['nom_utilisateur']) . "</strong> !";
-        unset($_SESSION['selected_gardien']);
-    } else {
-        $message_confirmation = "Erreur lors de la réservation : " . $stmt->error;
-    }
-
-    $stmt->close();
-    $conn->close();
-}
-?>
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Réservation</title>
-    <link rel="stylesheet" href="styles.css">
     <style>
+        /* Styles globaux */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: url('images/premierplan.png') no-repeat center center fixed;
+            background-size: cover;
+            color: #333;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 10;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: none;
+        }
+
+        header h1 {
+            color: #fff;
+            font-size: 2em;
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .auth-buttons .btn {
+            background-color: orange;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .auth-buttons .btn:hover {
+            background-color: #ff7f00;
+            transform: translateY(-3px);
+        }
+
         .reservation-container {
-            background-color: #f9f9f9;
-            padding: 30px;
-            border-radius: 15px;
             max-width: 600px;
-            margin: 50px auto;
+            margin: 150px auto;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            padding: 30px;
             box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
         }
 
         .reservation-container h1, .reservation-container h2 {
             text-align: center;
-            color: #f5a623;
+            color: orange;
             margin-bottom: 20px;
         }
 
@@ -106,10 +102,11 @@ if (isset($_GET['gardien_id'])) {
             border: 1px solid #ddd;
             border-radius: 5px;
             font-size: 1em;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
         .reservation-form button {
-            background-color: #f5a623;
+            background-color: orange;
             color: white;
             border: none;
             padding: 15px;
@@ -122,7 +119,7 @@ if (isset($_GET['gardien_id'])) {
 
         .reservation-form button:hover {
             background-color: #ff7f00;
-            transform: scale(1.05);
+            transform: translateY(-3px);
         }
 
         .confirmation-message {
@@ -134,6 +131,35 @@ if (isset($_GET['gardien_id'])) {
             margin: 20px auto;
             text-align: center;
             font-size: 1.2em;
+        }
+
+        footer {
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.85);
+            color: #fff;
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+
+        .footer-links ul {
+            list-style: none;
+            text-align: left;
+        }
+
+        .footer-links a {
+            color: orange;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: #ff7f00;
         }
     </style>
 </head>
