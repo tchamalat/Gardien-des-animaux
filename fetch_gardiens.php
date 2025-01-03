@@ -6,7 +6,7 @@ $data = json_decode(file_get_contents('php://input'), true);
 if (isset($data['latitude'], $data['longitude'])) {
     $latitude = $data['latitude'];
     $longitude = $data['longitude'];
-    $radius = 10; // Rayon en kilomètres
+    $radius = $data['radius'] ?? 10; // Rayon en kilomètres, valeur par défaut : 10
 
     // Préparer la requête SQL
     $query = $conn->prepare("
@@ -38,12 +38,16 @@ if (isset($data['latitude'], $data['longitude'])) {
         $gardiens[] = [
             'id' => $row['id'],
             'nom_utilisateur' => $row['nom_utilisateur'],
-            'profile_picture' => $row['profile_picture'] ?: 'default.jpg',
-            'distance' => $row['distance'],
+            'profile_picture' => $row['profile_picture'] ? "images/{$row['profile_picture']}" : 'images/default.jpg',
+            'distance' => round($row['distance'], 2), // Distance arrondie à 2 décimales
         ];
     }
 
-    echo json_encode($gardiens);
+    if (empty($gardiens)) {
+        echo json_encode(['error' => 'Aucun gardien trouvé dans ce rayon.']);
+    } else {
+        echo json_encode($gardiens);
+    }
 } else {
     echo json_encode(['error' => 'Données invalides. Latitude et longitude manquantes.']);
 }
