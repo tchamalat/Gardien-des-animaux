@@ -173,6 +173,7 @@
 
     <div class="form-container">
         <h2>Création de compte :</h2>
+        <div id="error-message" style="color: red; display: none;"></div>
         <form id="registerForm" method="POST" action="register.php" novalidate>
             <div class="form-group">
                 <label for="prenom">Prénom :</label>
