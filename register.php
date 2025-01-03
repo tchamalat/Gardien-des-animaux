@@ -6,73 +6,55 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nom = $_POST['nom'];
     $nom_utilisateur = $_POST['username'];
     $mail = $_POST['email'];
-    $errorMessage = '';
-
     if (!preg_match('/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|fr)$/', $mail)) {
-        $errorMessage = "L'adresse e-mail doit être au format xxx.xxx@xxx.fr ou xxx.xxx@xxx.com.";
+        echo "<p style='color: red;'>L'adresse e-mail doit être au format xxx.xxx@xxx.fr ou xxx.xxx@xxx.com.</p>";
+        exit();
     }
-
     $numero_telephone = preg_replace('/\D/', '', $_POST['telephone']); 
-    if (!$errorMessage && !preg_match('/^[0-9]{10}$/', $numero_telephone)) {
-        $errorMessage = "Le numéro de téléphone doit contenir exactement 10 chiffres.";
+    if (!preg_match('/^[0-9]{10}$/', $numero_telephone)) {
+        echo "<p style='color: red;'>Le numéro de téléphone doit contenir exactement 10 chiffres.</p>";
+        exit();
     }
-
     $adresse = $_POST['adresse'];
     $ville = $_POST['ville'];
-    $mot_de_passe = $_POST['password'];
+    $mot_de_passe = md5($_POST['password']); 
+    $role = $_POST['role'];
 
-    if (!$errorMessage && (strlen($mot_de_passe) < 8 || 
-        !preg_match('/[A-Z]/', $mot_de_passe) || 
-        !preg_match('/[a-z]/', $mot_de_passe) || 
-        !preg_match('/[0-9]/', $mot_de_passe) || 
-        !preg_match('/[!@#$%^&*()_+=\-\[\]{};:,.<>?]/', $mot_de_passe))) {
-        $errorMessage = "Le mot de passe doit contenir au moins 8 caractères, une lettre majuscule, une lettre minuscule, un chiffre et un caractère spécial.";
-    }
+    // Vérification de l'unicité de l'email, du numéro de téléphone et du nom d'utilisateur
+    $stmt = $conn->prepare("SELECT mail, numero_telephone, nom_utilisateur FROM creation_compte WHERE mail = ? OR REPLACE(REPLACE(REPLACE(numero_telephone, ' ', ''), '-', ''), '.', '') = ? OR nom_utilisateur = ?");
+    $stmt->bind_param("sss", $mail, $numero_telephone, $nom_utilisateur);
+    $stmt->execute();
+    $stmt->store_result();
 
-    if (!$errorMessage) {
-        $mot_de_passe = md5($mot_de_passe); 
-        $role = $_POST['role'];
-
-        $stmt = $conn->prepare("SELECT mail, numero_telephone, nom_utilisateur FROM creation_compte WHERE mail = ? OR REPLACE(REPLACE(REPLACE(numero_telephone, ' ', ''), '-', ''), '.', '') = ? OR nom_utilisateur = ?");
-        $stmt->bind_param("sss", $mail, $numero_telephone, $nom_utilisateur);
-        $stmt->execute();
-        $stmt->store_result();
-
-        if ($stmt->num_rows > 0) {
-            $stmt->bind_result($existing_mail, $existing_phone, $existing_username);
-            while ($stmt->fetch()) {
-                if ($existing_mail === $mail) {
-                    $errorMessage = "L'adresse e-mail est déjà utilisée.";
-                    break;
-                }
-                if ($existing_phone === $numero_telephone) {
-                    $errorMessage = "Le numéro de téléphone est déjà utilisé.";
-                    break;
-                }
-                if ($existing_username === $nom_utilisateur) {
-                    $errorMessage = "Le nom d'utilisateur est déjà pris.";
-                    break;
-                }
+    if ($stmt->num_rows > 0) {
+        $stmt->bind_result($existing_mail, $existing_phone, $existing_username);
+        while ($stmt->fetch()) {
+            if ($existing_mail === $mail) {
+                echo "<p style='color: red;'>L'adresse e-mail est déjà utilisée.</p>";
+                exit();
+            }
+            if ($existing_phone === $numero_telephone) {
+                echo "<p style='color: red;'>Le numéro de téléphone est déjà utilisé.</p>";
+                exit();
+            }
+            if ($existing_username === $nom_utilisateur) {
+                echo "<p style='color: red;'>Le nom d'utilisateur est déjà pris.</p>";
+                exit();
             }
         }
-
-        if (!$errorMessage) {
-            $stmt = $conn->prepare("INSERT INTO creation_compte (prenom, nom, nom_utilisateur, mail, numero_telephone, adresse, ville, mot_de_passe, role) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
-            $stmt->bind_param("ssssssssi", $prenom, $nom, $nom_utilisateur, $mail, $numero_telephone, $adresse, $ville, $mot_de_passe, $role);
-
-            if (!$stmt->execute()) {
-                $errorMessage = "Erreur lors de la création du compte. Veuillez réessayer.";
-            }
-        }
-
-        $stmt->close();
     }
 
-    if ($errorMessage) {
-        echo "<script>document.addEventListener('DOMContentLoaded', function() { document.getElementById('error-message').innerText = '$errorMessage'; document.getElementById('error-message').style.display = 'block'; });</script>";
+    // Création du compte si l'email, le numéro de téléphone et le nom d'utilisateur sont uniques
+    $stmt = $conn->prepare("INSERT INTO creation_compte (prenom, nom, nom_utilisateur, mail, numero_telephone, adresse, ville, mot_de_passe, role) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    $stmt->bind_param("ssssssssi", $prenom, $nom, $nom_utilisateur, $mail, $numero_telephone, $adresse, $ville, $mot_de_passe, $role);
+
+    if ($stmt->execute()) {
+        echo "success"; // Réponse de succès pour la redirection
     } else {
-        echo "<script>document.addEventListener('DOMContentLoaded', function() { alert('Compte créé avec succès !'); window.location.href = 'index.php'; });</script>";
+        echo "<p style='color: red;'>Erreur lors de la création du compte. Veuillez réessayer.</p>";
     }
+
+    $stmt->close();
 }
 $conn->close();
 ?>
