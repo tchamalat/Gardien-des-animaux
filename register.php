@@ -17,7 +17,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     $adresse = $_POST['adresse'];
     $ville = $_POST['ville'];
-    $mot_de_passe = md5($_POST['password']); 
+    $mot_de_passe = $_POST['password'];
+
+    // Vérification des critères de mot de passe sécurisé
+    if (strlen($mot_de_passe) < 8 || 
+        !preg_match('/[A-Z]/', $mot_de_passe) || 
+        !preg_match('/[a-z]/', $mot_de_passe) || 
+        !preg_match('/[0-9]/', $mot_de_passe) || 
+        !preg_match('/[!@#$%^&*()_+=\-\[\]{};:,.<>?]/', $mot_de_passe)) {
+        echo "<p style='color: red;'>Le mot de passe doit contenir au moins 8 caractères, une lettre majuscule, une lettre minuscule, un chiffre et un caractère spécial.</p>";
+        exit();
+    }
+
+    $mot_de_passe = md5($mot_de_passe); 
     $role = $_POST['role'];
 
     // Vérification de l'unicité de l'email, du numéro de téléphone et du nom d'utilisateur
