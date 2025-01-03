@@ -7,12 +7,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nom_utilisateur = $_POST['username'];
     $mail = $_POST['email'];
     if (!preg_match('/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|fr)$/', $mail)) {
-        echo "<p style='color: red;'>L'adresse e-mail doit être au format xxx.xxx@xxx.fr ou xxx.xxx@xxx.com.</p>";
+        echo "<p id='emailError' style='color: red;'>L'adresse e-mail doit être au format xxx.xxx@xxx.fr ou xxx.xxx@xxx.com.</p>";
         exit();
     }
     $numero_telephone = preg_replace('/\D/', '', $_POST['telephone']); 
     if (!preg_match('/^[0-9]{10}$/', $numero_telephone)) {
-        echo "<p style='color: red;'>Le numéro de téléphone doit contenir exactement 10 chiffres.</p>";
+        echo "<p id='phoneError' style='color: red;'>Le numéro de téléphone doit contenir exactement 10 chiffres.</p>";
         exit();
     }
     $adresse = $_POST['adresse'];
@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         !preg_match('/[a-z]/', $mot_de_passe) || 
         !preg_match('/[0-9]/', $mot_de_passe) || 
         !preg_match('/[!@#$%^&*()_+=\-\[\]{};:,.<>?]/', $mot_de_passe)) {
-        echo "<p style='color: red;'>Le mot de passe doit contenir au moins 8 caractères, une lettre majuscule, une lettre minuscule, un chiffre et un caractère spécial.</p>";
+        echo "<p id='passwordError' style='color: red;'>Le mot de passe doit contenir au moins 8 caractères, une lettre majuscule, une lettre minuscule, un chiffre et un caractère spécial.</p>";
         exit();
     }
 
@@ -42,15 +42,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->bind_result($existing_mail, $existing_phone, $existing_username);
         while ($stmt->fetch()) {
             if ($existing_mail === $mail) {
-                echo "<p style='color: red;'>L'adresse e-mail est déjà utilisée.</p>";
+                echo "<p id='emailUsedError' style='color: red;'>L'adresse e-mail est déjà utilisée.</p>";
                 exit();
             }
             if ($existing_phone === $numero_telephone) {
-                echo "<p style='color: red;'>Le numéro de téléphone est déjà utilisé.</p>";
+                echo "<p id='phoneUsedError' style='color: red;'>Le numéro de téléphone est déjà utilisé.</p>";
                 exit();
             }
             if ($existing_username === $nom_utilisateur) {
-                echo "<p style='color: red;'>Le nom d'utilisateur est déjà pris.</p>";
+                echo "<p id='usernameUsedError' style='color: red;'>Le nom d'utilisateur est déjà pris.</p>";
                 exit();
             }
         }
@@ -63,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($stmt->execute()) {
         echo "success"; // Réponse de succès pour la redirection
     } else {
-        echo "<p style='color: red;'>Erreur lors de la création du compte. Veuillez réessayer.</p>";
+        echo "<p id='creationError' style='color: red;'>Erreur lors de la création du compte. Veuillez réessayer.</p>";
     }
 
     $stmt->close();
