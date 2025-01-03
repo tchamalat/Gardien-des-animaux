@@ -7,26 +7,12 @@ session_start();
 
 include 'config.php';
 
-function isPasswordSecure($password) {
-    // Vérifie les conditions de sécurité du mot de passe
-    $pattern = "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/";
-    return preg_match($pattern, $password);
-}
-
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['username'], $_POST['password'])) {
         $usernameOrEmail = $_POST['username'];
         $password = $_POST['password'];
 
-        // Vérification des critères de sécurité du mot de passe
-        if (!isPasswordSecure($password)) {
-            $error_message = "Le mot de passe doit contenir au moins 8 caractères, une lettre majuscule, une lettre minuscule, un chiffre et un caractère spécial.";
-            echo "<script>alert('$error_message'); window.location.href = 'login.html';</script>";
-            exit();
-        }
-
-        // Hasher le mot de passe avec un algorithme plus sécurisé
-        $hashed_password = hash('sha256', $password);
+        $hashed_password = md5($password);
 
         // Vérification dans la table Administrateur
         $sql_admin = "SELECT id_admin, email_admin, mot_de_passe_admin, permissions FROM Administrateur WHERE email_admin = ?";
@@ -40,7 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $stmt_admin->bind_result($admin_id, $email_admin, $stored_password, $permissions);
                 $stmt_admin->fetch();
 
-                if ($hashed_password === $stored_password) {
+                if ($hashed_password == $stored_password) {
                     $_SESSION['admin_id'] = $admin_id;
                     $_SESSION['email_admin'] = $email_admin;
                     $_SESSION['permissions'] = $permissions;
@@ -65,7 +51,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         $stmt_user->bind_result($user_id, $nom_utilisateur, $email, $stored_password, $role);
                         $stmt_user->fetch();
 
-                        if ($hashed_password === $stored_password) {
+                        if ($hashed_password == $stored_password) {
                             $_SESSION['user_id'] = $user_id;
                             $_SESSION['nom_utilisateur'] = $nom_utilisateur;
                             $_SESSION['role'] = $role;
