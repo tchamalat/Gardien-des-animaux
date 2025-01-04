@@ -46,12 +46,14 @@ $result = $stmt->get_result();
 
 $proprietaires = [];
 while ($row = $result->fetch_assoc()) {
+    $imageData = !empty($row['profile_picture']) ? base64_encode($row['profile_picture']) : null;
     $proprietaires[] = [
         'id' => $row['id'],
         'nom_utilisateur' => $row['nom_utilisateur'],
         'prenom' => $row['prenom'],
         'ville' => $row['ville'],
         'distance' => $row['distance'],
+        'profile_picture' => $imageData, // Inclure les données de l'image encodée en base64
     ];
 }
 
