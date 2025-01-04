@@ -14,59 +14,59 @@ $message = isset($_SESSION['message']) ? $_SESSION['message'] : '';
 unset($_SESSION['message']);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    error_log("POST disponibilites: " . $_POST['disponibilites']);
-    
     $type_animal = $_POST['type_animal'];
     $nombre_animal = $_POST['nombre_animal'];
     $budget_min = $_POST['budget_min'];
     $budget_max = $_POST['budget_max'];
 
-// Ensure budget_min and budget_max are not negative
-if ($budget_min < 0 || $budget_max < 0) {
-    $_SESSION['message'] = 'Les budgets minimum et maximum ne peuvent pas être négatifs.';
-    header('Location: profil_gardien.php');
-    exit();
-}
+    // Validation des budgets
+    if ($budget_min < 0 || $budget_max < 0) {
+        $_SESSION['message'] = 'Les budgets minimum et maximum ne peuvent pas être négatifs.';
+        header('Location: profil_gardien.php');
+        exit();
+    }
 
-// Ensure budget_min is not greater than budget_max
-if ($budget_min > $budget_max) {
-    $_SESSION['message'] = 'Le budget minimum ne peut pas être supérieur au budget maximum.';
-    header('Location: profil_gardien.php');
-    exit();
-}
+    if ($budget_min > $budget_max) {
+        $_SESSION['message'] = 'Le budget minimum ne peut pas être supérieur au budget maximum.';
+        header('Location: profil_gardien.php');
+        exit();
+    }
 
     $service = $_POST['service'];
-    $disponibilites = $_POST['disponibilites']; 
 
-    // Validate service to be either 'garde' or 'promenade'
+    // Validation du type de service
     if ($service !== 'garde' && $service !== 'promenade') {
         $_SESSION['message'] = 'Le type de service doit être soit garde, soit promenade.';
         header('Location: profil_gardien.php');
         exit();
     }
 
-    if (empty($disponibilites)) {
-        $_SESSION['message'] = 'Veuillez sélectionner vos disponibilités.';
+    $sql_update = "UPDATE creation_compte SET type_animal = ?, nombre_animal = ?, budget_min = ?, budget_max = ?, service = ? WHERE id = ?";
+    $stmt_update = $conn->prepare($sql_update);
+    $stmt_update->bind_param("siddsi", $type_animal, $nombre_animal, $budget_min, $budget_max, $service, $user_id);
+
+    if ($stmt_update->execute()) {
+        $_SESSION['message'] = 'Modifications enregistrées avec succès !';
         header('Location: profil_gardien.php');
         exit();
     } else {
-        $sql_update = "UPDATE creation_compte SET type_animal = ?, nombre_animal = ?, budget_min = ?, budget_max = ?, service = ?, disponibilites = ? WHERE id = ?";
-        $stmt_update = $conn->prepare($sql_update);
-        $stmt_update->bind_param("siddssi", $type_animal, $nombre_animal, $budget_min, $budget_max, $service, $disponibilites, $user_id);
-
-        if ($stmt_update->execute()) {
-            $_SESSION['message'] = 'Modifications enregistrées avec succès !';
-            header('Location: profil_gardien.php');
-            exit();
-        } else {
-            $_SESSION['message'] = 'Erreur lors de l\'enregistrement des modifications.';
-            header('Location: profil_gardien.php');
-            exit();
-        }
-
-        $stmt_update->close();
+        $_SESSION['message'] = 'Erreur lors de l\'enregistrement des modifications.';
+        header('Location: profil_gardien.php');
+        exit();
     }
+
+    $stmt_update->close();
 }
+
+$sql = "SELECT nom_utilisateur, nom, prenom, mail, numero_telephone, adresse, ville, profile_picture, type_animal, nombre_animal, budget_min, budget_max, service FROM creation_compte WHERE id = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $user_id);
+$stmt->execute();
+$stmt->bind_result($nom_utilisateur, $nom, $prenom, $mail, $numero_telephone, $adresse, $ville, $profile_picture, $type_animal, $nombre_animal, $budget_min, $budget_max, $service);
+$stmt->fetch();
+$stmt->close();
+$conn->close();
+?>
 
 $sql = "SELECT nom_utilisateur, nom, prenom, mail, numero_telephone, adresse, ville, profile_picture, type_animal, nombre_animal, budget_min, budget_max, service, disponibilites FROM creation_compte WHERE id = ?";
 $stmt = $conn->prepare($sql);
