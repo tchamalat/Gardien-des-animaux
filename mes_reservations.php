@@ -51,11 +51,17 @@ $result = $stmt->get_result();
             box-sizing: border-box;
         }
 
-        body {
+        html, body {
+            height: 100%;
             font-family: Arial, sans-serif;
             background: url('images/premierplan.png') no-repeat center center fixed;
             background-size: cover;
             color: #333;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
         }
 
         header {
@@ -99,6 +105,7 @@ $result = $stmt->get_result();
         }
 
         .container {
+            flex: 1;
             max-width: 1200px;
             margin: 120px auto 50px;
             background: rgba(255, 255, 255, 0.95);
