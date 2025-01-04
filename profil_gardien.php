@@ -107,12 +107,12 @@ $disponibilites_array = explode(',', $disponibilites);
             left: 0;
             width: 100%;
             z-index: 10;
-            padding: 20px;
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            background: rgba(255, 255, 255, 0.9);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            justify-content: space-between;
+            padding: 20px;
+            background: none; /* Supprimez la couleur de fond */
+            box-shadow: none; /* Supprimez l'ombre */
         }
 
         header img {
