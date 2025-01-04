@@ -39,10 +39,10 @@
             left: 0;
             width: 100%;
             z-index: 10;
-            padding: 20px;
             display: flex;
-            justify-content: space-between;
             align-items: center;
+            justify-content: space-between;
+            padding: 20px 40px;
             background: none;
         }
 
@@ -60,13 +60,19 @@
             margin: 0 20px;
         }
 
+        .auth-buttons {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+
         .auth-buttons .btn {
             background-color: orange;
             color: white;
-            padding: 8px 15px; /* Taille réduite */
+            padding: 8px 15px;
             border: none;
             border-radius: 8px;
-            font-size: 0.9em; /* Taille de police réduite */
+            font-size: 0.9em;
             cursor: pointer;
             text-decoration: none;
             transition: background-color 0.3s ease, transform 0.3s ease;
@@ -193,12 +199,10 @@
 </head>
 <body>
     <header>
-        <div class="header-container">
-            <img src="images/logo.png" alt="Logo Gardien des Animaux">
-            <h1 class="header-slogan">Un foyer chaleureux même en votre absence</h1>
-            <div class="auth-buttons">
-                <button class="btn" onclick="window.location.href='index.php'">Accueil</button>
-            </div>
+        <img src="images/logo.png" alt="Logo Gardien des Animaux">
+        <h1 class="header-slogan">Un foyer chaleureux même en votre absence</h1>
+        <div class="auth-buttons">
+            <button class="btn" onclick="window.location.href='index.php'">Accueil</button>
         </div>
     </header>
 
