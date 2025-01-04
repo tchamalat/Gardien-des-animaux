@@ -195,7 +195,7 @@
     <img src="images/logo.png" alt="Logo Gardien des Animaux">
     <h1 class="header-slogan">Une question ? Contactez-nous !</h1>
     <div class="auth-buttons">
-        <button class="btn" onclick="window.location.href='index.php'">Accueil</button>
+        <button class="btn" onclick="window.location.href='index_connect.php'">Accueil</button>
     </div>
 </header>
 
