@@ -230,7 +230,7 @@
                                     <p><strong>${proprietaire.prenom}</strong> (${proprietaire.nom_utilisateur})</p>
                                     <p>${proprietaire.ville}</p>
                                     <p class="distance">Distance : ${proprietaire.distance.toFixed(2)} km</p>
-                                    <button class="contact-btn" onclick="window.location.href='message.php?user_id=${proprietaire.id}'">Contacter</button>
+                                    <button class="contact-btn" onclick="window.location.href='discussion_gardien.php?user_id=${proprietaire.id}'">Contacter</button>
                                 </div>
                             `).join('');
                         }
