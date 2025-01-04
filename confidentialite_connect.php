@@ -1,25 +1,174 @@
-<?php
-include 'config.php'; // Connexion à la base de données
-?>
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Politique de Confidentialité - Gardien des Animaux</title>
-    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Styles globaux */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            color: #333;
+            background: url('images/premierplan.png') no-repeat center center fixed;
+            background-size: cover;
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px;
+            background: transparent;
+            box-shadow: none;
+        }
+
+        header img {
+            height: 80px;
+        }
+
+        header .header-slogan {
+            font-size: 1.5em;
+            color: orange;
+            font-weight: bold;
+            text-align: center;
+            flex: 1;
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+        }
+
+        header.scrolled .header-slogan {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+
+        header .auth-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        header .auth-buttons .btn {
+            background-color: orange;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        header .auth-buttons .btn:hover {
+            background-color: #ff7f00;
+            transform: translateY(-3px);
+        }
+
+        .privacy-container {
+            max-width: 800px;
+            margin: 150px auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .privacy-container h2 {
+            font-size: 1.8em;
+            color: orange;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .privacy-container p, .privacy-container li {
+            font-size: 1.1em;
+            line-height: 1.6;
+            color: #555;
+        }
+
+        ul {
+            margin-top: 20px;
+            padding-left: 20px;
+            list-style: none;
+        }
+
+        ul li {
+            position: relative;
+            padding-left: 25px;
+            margin-bottom: 10px;
+        }
+
+        ul li:before {
+            content: '✔';
+            position: absolute;
+            left: 0;
+            top: 0;
+            color: orange;
+            font-weight: bold;
+        }
+
+        footer {
+            background: rgba(0, 0, 0, 0.85);
+            color: #fff;
+            padding: 20px;
+            margin-top: 50px;
+        }
+
+        footer .footer-links {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+        }
+
+        footer .footer-links h4 {
+            color: orange;
+            margin-bottom: 10px;
+        }
+
+        footer .footer-links ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        footer .footer-links a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        footer .footer-links a:hover {
+            color: orange;
+        }
+    </style>
+    <script>
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+    </script>
 </head>
 <body>
 
 <!-- Header -->
 <header>
-    <div class="header-container">
-        <img src="images/logo.png" alt="Logo Gardien des Animaux">
-        <h1 class="header-slogan">Votre vie privée, notre priorité</h1>
-        <div class="auth-buttons">
-            <button class="btn" onclick="window.location.href='index_connect.php'">Accueil</button>
-        </div>
+    <img src="images/logo.png" alt="Logo Gardien des Animaux">
+    <h1 class="header-slogan">Votre vie privée, notre priorité</h1>
+    <div class="auth-buttons">
+        <button class="btn" onclick="window.location.href='index.php'">Accueil</button>
     </div>
 </header>
 
@@ -62,7 +211,7 @@ include 'config.php'; // Connexion à la base de données
 
     <h2>4. Conservation des données</h2>
     <p>
-        Vos informations personnelles sont conservées uniquement pendant la durée nécessaire à la réalisation des services pour lesquels elles ont été collectées, sauf si une durée de conservation plus longue est requise ou permise par la loi.
+        Vos informations personnelles sont conservées uniquement pendant la durée nécessaire à la réalisation des services pour lesquels elles ont été collectées.
     </p>
 
     <h2>5. Vos droits</h2>
@@ -70,22 +219,20 @@ include 'config.php'; // Connexion à la base de données
         Conformément au RGPD, vous disposez des droits suivants concernant vos données personnelles :
     </p>
     <ul>
-        <li><strong>Droit d'accès :</strong> Vous pouvez demander une copie de vos données personnelles.</li>
-        <li><strong>Droit de rectification :</strong> Vous pouvez demander la correction de données incorrectes ou incomplètes.</li>
-        <li><strong>Droit de suppression :</strong> Vous pouvez demander la suppression de vos données, sauf si leur conservation est nécessaire pour des raisons légales.</li>
-        <li><strong>Droit d'opposition :</strong> Vous pouvez refuser l’utilisation de vos données à des fins de marketing.</li>
-        <li><strong>Droit à la portabilité :</strong> Vous pouvez demander que vos données soient transférées à un autre prestataire.</li>
+        <li><strong>Droit d'accès :</strong> Demander une copie de vos données personnelles.</li>
+        <li><strong>Droit de rectification :</strong> Demander la correction de données incorrectes ou incomplètes.</li>
+        <li><strong>Droit de suppression :</strong> Demander la suppression de vos données.</li>
+        <li><strong>Droit d'opposition :</strong> Refuser l’utilisation de vos données à des fins de marketing.</li>
     </ul>
 
     <h2>6. Sécurité de vos informations</h2>
     <p>
-        Nous mettons en œuvre des mesures de sécurité techniques et organisationnelles pour protéger vos données contre tout accès non autorisé, perte ou divulgation. 
-        Cependant, aucune méthode de transmission ou de stockage des données n’est totalement sécurisée, et nous ne pouvons garantir une sécurité absolue.
+        Nous mettons en œuvre des mesures de sécurité techniques et organisationnelles pour protéger vos données.
     </p>
 
     <h2>7. Cookies</h2>
     <p>
-        Notre site utilise des cookies pour améliorer votre expérience. Vous pouvez gérer vos préférences de cookies dans les paramètres de votre navigateur.
+        Notre site utilise des cookies pour améliorer votre expérience. Vous pouvez gérer vos préférences dans les paramètres de votre navigateur.
     </p>
 
     <h2>8. Contact</h2>
@@ -96,10 +243,8 @@ include 'config.php'; // Connexion à la base de données
         <li><strong>Email :</strong> <a href="mailto:contact@gardien-des-animaux.fr">contact@gardien-des-animaux.fr</a></li>
         <li><strong>Téléphone :</strong> +33 1 23 45 67 89 (du lundi au vendredi, de 9h à 18h).</li>
     </ul>
-    <p>
-        Nous nous engageons à répondre à vos demandes dans les meilleurs délais.
-    </p>
 </div>
+
 
 <!-- Footer -->
 <footer>
