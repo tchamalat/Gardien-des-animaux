@@ -131,12 +131,13 @@ $conn->close();
 
         .profile-container {
             max-width: 900px;
-            margin: 150px auto 50px;
+            margin: 200px auto 50px; /* Augmentez la valeur de margin-top */
             background: rgba(255, 255, 255, 0.95);
             border-radius: 15px;
             padding: 30px;
             box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
         }
+
 
         .profile-title {
             font-size: 2.5em;
