@@ -1,26 +1,175 @@
-<?php 
-// Inclure la configuration si nécessaire
-include 'config.php'; 
-?>
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Conditions Générales - Gardien des Animaux</title>
-    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Styles globaux */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            color: #333;
+            background: url('images/premierplan.png') no-repeat center center fixed;
+            background-size: cover;
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px;
+            background: transparent;
+            box-shadow: none;
+        }
+
+        header img {
+            height: 80px;
+        }
+
+        header .header-slogan {
+            font-size: 1.5em;
+            color: orange;
+            font-weight: bold;
+            text-align: center;
+            flex: 1;
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+        }
+
+        header.scrolled .header-slogan {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+
+        header .auth-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        header .auth-buttons .btn {
+            background-color: orange;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        header .auth-buttons .btn:hover {
+            background-color: #ff7f00;
+            transform: translateY(-3px);
+        }
+
+        .terms-container {
+            max-width: 800px;
+            margin: 150px auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .terms-container h2 {
+            font-size: 1.8em;
+            color: orange;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .terms-container p,
+        .terms-container ul {
+            font-size: 1.1em;
+            line-height: 1.6;
+            color: #555;
+            margin-bottom: 20px;
+        }
+
+        .terms-container ul {
+            padding-left: 20px;
+            list-style: none;
+        }
+
+        .terms-container ul li {
+            position: relative;
+            padding-left: 25px;
+            margin-bottom: 10px;
+        }
+
+        .terms-container ul li:before {
+            content: '✔';
+            position: absolute;
+            left: 0;
+            top: 0;
+            color: orange;
+            font-weight: bold;
+        }
+
+        footer {
+            background: rgba(0, 0, 0, 0.85);
+            color: #fff;
+            padding: 20px;
+            margin-top: 50px;
+        }
+
+        footer .footer-links {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+        }
+
+        footer .footer-links h4 {
+            color: orange;
+            margin-bottom: 10px;
+        }
+
+        footer .footer-links ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        footer .footer-links a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        footer .footer-links a:hover {
+            color: orange;
+        }
+    </style>
+    <script>
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+    </script>
 </head>
 <body>
 
 <!-- Header -->
 <header>
-    <div class="header-container">
-        <img src="images/logo.png" alt="Logo Gardien des Animaux">
-        <h1 class="header-slogan">Un foyer chaleureux même en votre absence</h1>
-        <div class="auth-buttons">
-            <button class="btn" onclick="window.location.href='index.php'">Accueil</button>
-        </div>
+    <img src="images/logo.png" alt="Logo Gardien des Animaux">
+    <h1 class="header-slogan">Un foyer chaleureux même en votre absence</h1>
+    <div class="auth-buttons">
+        <button class="btn" onclick="window.location.href='index.php'">Accueil</button>
     </div>
 </header>
 
@@ -29,158 +178,34 @@ include 'config.php';
     <h2>Conditions Générales d'Utilisation et de Service</h2>
     <p>Bienvenue sur <strong>Gardien-des-animaux.fr</strong>. Ces conditions générales régissent l'utilisation de notre plateforme et de nos services. En utilisant notre site, vous acceptez de respecter ces conditions.</p>
     
+    <!-- Sections détaillées -->
     <h2>1. Objet</h2>
     <p>
-        <strong>Gardien-des-animaux.fr</strong> est une plateforme dédiée à la mise en relation entre les propriétaires d’animaux de compagnie et des gardiens qualifiés proposant divers services adaptés à leurs besoins. 
-        Que ce soit pour des absences de courte ou longue durée, les propriétaires peuvent trouver des solutions fiables et personnalisées pour assurer le bien-être de leurs animaux.
-    </p>
-    <p>
-        La plateforme offre un espace sécurisé où :
-        <ul>
-            <li>Les propriétaires peuvent consulter les profils des gardiens, visualiser leurs avis, et comparer leurs services (garde à domicile, promenade, pension, etc.).</li>
-            <li>Les gardiens peuvent proposer leurs services, définir leurs tarifs, et gérer leurs disponibilités en toute simplicité.</li>
-        </ul>
-    </p>
-    <p>
-        <strong>Gardien-des-animaux.fr</strong> a pour mission de faciliter la recherche de gardiens de confiance tout en garantissant une expérience transparente et agréable pour les deux parties.
+        <strong>Gardien-des-animaux.fr</strong> est une plateforme dédiée à la mise en relation entre les propriétaires d’animaux et des gardiens qualifiés. Nos services visent à garantir le bien-être des animaux et à offrir une expérience fiable et personnalisée.
     </p>
 
     <h2>2. Inscription et Utilisation</h2>
-    <p>
-        L’utilisation de la plateforme <strong>Gardien-des-animaux.fr</strong> nécessite la création d’un compte et le respect des conditions suivantes :
-    </p>
     <ul>
-        <li>
-            <strong>Exactitude des informations :</strong> Tous les utilisateurs doivent fournir des informations personnelles exactes, complètes et à jour lors de leur inscription. Toute fausse déclaration peut entraîner la suspension ou la suppression du compte.
-        </li>
-        <li>
-            <strong>Respect des engagements :</strong> Les utilisateurs (propriétaires et gardiens) s’engagent à respecter les termes des services convenus entre les parties. Cela inclut la ponctualité, la communication claire et le respect mutuel.
-        </li>
-        <li>
-            <strong>Pour les propriétaires :</strong> Ils doivent fournir des informations précises sur leurs animaux, y compris :
-            <ul>
-                <li>Leur état de santé général.</li>
-                <li>Leur comportement (par exemple : sociabilité, agressivité éventuelle).</li>
-                <li>Leurs besoins spécifiques (alimentation, soins, médicaments).</li>
-            </ul>
-        </li>
-        <li>
-            <strong>Pour les gardiens :</strong> Ils doivent :
-            <ul>
-                <li>Assurer le bien-être et la sécurité des animaux confiés.</li>
-                <li>Respecter les instructions fournies par les propriétaires concernant les soins et les besoins des animaux.</li>
-                <li>Maintenir leur profil à jour, y compris leurs disponibilités et tarifs.</li>
-            </ul>
-        </li>
+        <li>Les utilisateurs doivent fournir des informations exactes et à jour lors de leur inscription.</li>
+        <li>Les propriétaires doivent partager des détails sur leurs animaux, y compris leur état de santé et leurs besoins spécifiques.</li>
+        <li>Les gardiens s'engagent à respecter les instructions fournies et à assurer le bien-être des animaux confiés.</li>
     </ul>
-    <p>
-        L’équipe de <strong>Gardien-des-animaux.fr</strong> se réserve le droit de vérifier les informations fournies par les utilisateurs et d’intervenir en cas de non-respect des présentes conditions.
-    </p>
-
 
     <h2>3. Paiements et Annulations</h2>
     <p>
-        La gestion des paiements et des annulations sur <strong>Gardien-des-animaux.fr</strong> est conçue pour garantir une transparence et une sécurité maximales, tout en offrant une flexibilité adaptée aux besoins des utilisateurs.
+        Tous les paiements effectués via notre plateforme sont sécurisés. Les politiques d'annulation visent à protéger à la fois les propriétaires et les gardiens. En cas de litige, notre équipe intervient comme médiateur.
     </p>
-    <h3>Paiements</h3>
-    <ul>
-        <li>
-            <strong>Méthodes de paiement :</strong> Les paiements peuvent être effectués directement via la plateforme à l’aide de moyens sécurisés (carte bancaire, services en ligne), ou selon des accords privés conclus entre le propriétaire et le gardien.
-        </li>
-        <li>
-            <strong>Frais de service :</strong> La plateforme peut appliquer des frais de service pour couvrir les coûts opérationnels. Ces frais sont clairement affichés avant toute confirmation de paiement.
-        </li>
-        <li>
-            <strong>Transparence :</strong> Les gardiens doivent indiquer leurs tarifs de manière claire et sans frais cachés. Tout supplément éventuel doit être discuté et accepté par le propriétaire avant la réservation.
-        </li>
-        <li>
-            <strong>Confirmation :</strong> Un reçu est fourni à chaque utilisateur après un paiement validé, pour des raisons de transparence et de suivi.
-        </li>
-    </ul>
-
-    <h3>Annulations</h3>
-    <ul>
-        <li>
-            <strong>Politique d'annulation :</strong> Toute annulation doit être notifiée dans les meilleurs délais via la plateforme ou directement entre les utilisateurs concernés.
-        </li>
-        <li>
-            <strong>Annulation par le propriétaire :</strong> Si le propriétaire annule après confirmation de la réservation :
-            <ul>
-                <li>Une annulation effectuée suffisamment tôt (délai à définir dans les conditions de service) peut donner lieu à un remboursement complet.</li>
-                <li>Une annulation tardive peut entraîner des frais, qui seront partiellement ou totalement conservés par le gardien.</li>
-            </ul>
-        </li>
-        <li>
-            <strong>Annulation par le gardien :</strong> Les gardiens doivent éviter toute annulation injustifiée. En cas d’imprévu, ils doivent :
-            <ul>
-                <li>Notifier immédiatement le propriétaire.</li>
-                <li>Proposer une solution alternative, comme un autre gardien disponible ou un remboursement intégral.</li>
-            </ul>
-        </li>
-        <li>
-            <strong>Litiges :</strong> En cas de désaccord sur une annulation ou un remboursement, les utilisateurs peuvent contacter l’équipe de <strong>Gardien-des-animaux.fr</strong>, qui agira en tant que médiateur.
-        </li>
-    </ul>
-    <p>
-        Les politiques de paiement et d’annulation sont conçues pour protéger à la fois les propriétaires et les gardiens, tout en promouvant une expérience équitable pour tous.
-    </p>
-
 
     <h2>4. Responsabilité</h2>
     <p>
-        <strong>Gardien-des-animaux.fr</strong> agit exclusivement en tant qu’intermédiaire, permettant la mise en relation entre propriétaires et gardiens. 
-        En conséquence, la plateforme décline toute responsabilité concernant :
-    </p>
-    <ul>
-        <li>
-            Les accords ou ententes conclus entre utilisateurs, qu’ils soient financiers, contractuels ou organisationnels.
-        </li>
-        <li>
-            Les dommages causés aux animaux, aux biens ou aux personnes pendant la prestation des services.
-        </li>
-        <li>
-            Les comportements des utilisateurs, y compris les propriétaires et les gardiens.
-        </li>
-    </ul>
-    <p>
-        Chaque utilisateur est responsable de ses propres actions, y compris :
-    </p>
-    <ul>
-        <li>
-            Les propriétaires, qui doivent fournir des informations exactes et complètes sur leurs animaux (santé, comportement, besoins).
-        </li>
-        <li>
-            Les gardiens, qui doivent assurer une garde attentive et conforme aux instructions du propriétaire.
-        </li>
-    </ul>
-    <p>
-        <strong>Gardien-des-animaux.fr</strong> met tout en œuvre pour garantir un environnement sécurisé et de confiance, notamment par la vérification des profils et des avis. Cependant, la plateforme ne peut garantir l'absence totale de risques.
+        <strong>Gardien-des-animaux.fr</strong> agit uniquement comme intermédiaire. Les utilisateurs sont responsables de leurs engagements et de leurs actions.
     </p>
 
     <h2>5. Confidentialité</h2>
-<p>
-    Votre vie privée est une priorité pour <strong>Gardien-des-animaux.fr</strong>. Nous collectons et utilisons vos données personnelles conformément à notre <a href="confidentialite.php">Politique de Confidentialité</a>, qui décrit en détail :
-</p>
-<ul>
-    <li>
-        Les types de données collectées (nom, email, informations sur les animaux, etc.).
-    </li>
-    <li>
-        L’utilisation de vos données, notamment pour la gestion de votre compte, la mise en relation et l’amélioration des services.
-    </li>
-    <li>
-        Vos droits, incluant l’accès, la rectification et la suppression de vos données.
-    </li>
-    <li>
-        Les mesures de sécurité mises en place pour protéger vos informations contre les accès non autorisés.
-    </li>
-</ul>
-<p>
-    Nous ne partageons jamais vos données personnelles avec des tiers sans votre consentement explicite, sauf si la loi l’exige.
-</p>
-<p>
-    Pour toute question ou demande concernant vos données personnelles, vous pouvez nous contacter à l’adresse suivante : <strong>contact@gardien-des-animaux.fr</strong>.
-</p>
+    <p>
+        Vos données personnelles sont protégées conformément à notre <a href="confidentialite.php">Politique de Confidentialité</a>.
+    </p>
+</div>
 
 <!-- Footer -->
 <footer>
