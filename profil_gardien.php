@@ -68,18 +68,6 @@ $stmt->close();
 $conn->close();
 ?>
 
-$sql = "SELECT nom_utilisateur, nom, prenom, mail, numero_telephone, adresse, ville, profile_picture, type_animal, nombre_animal, budget_min, budget_max, service, disponibilites FROM creation_compte WHERE id = ?";
-$stmt = $conn->prepare($sql);
-$stmt->bind_param("i", $user_id);
-$stmt->execute();
-$stmt->bind_result($nom_utilisateur, $nom, $prenom, $mail, $numero_telephone, $adresse, $ville, $profile_picture, $type_animal, $nombre_animal, $budget_min, $budget_max, $service, $disponibilites);
-$stmt->fetch();
-$stmt->close();
-$conn->close();
-
-$disponibilites_array = explode(',', $disponibilites);
-?>
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -107,13 +95,14 @@ $disponibilites_array = explode(',', $disponibilites);
             left: 0;
             width: 100%;
             z-index: 10;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
             padding: 20px;
-            background: none; /* Supprimez la couleur de fond */
-            box-shadow: none; /* Supprimez l'ombre */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
+
         header img {
             height: 80px;
         }
