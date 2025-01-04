@@ -75,7 +75,6 @@ $conn->close();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mon Profil de Gardien - Gardien des Animaux</title>
     <style>
-        /* Styles globaux */
         * {
             margin: 0;
             padding: 0;
@@ -131,7 +130,7 @@ $conn->close();
 
         .profile-container {
             max-width: 900px;
-            margin: 200px auto 50px; /* Augmentez la valeur de margin-top */
+            margin: 200px auto 50px; 
             background: rgba(255, 255, 255, 0.95);
             border-radius: 15px;
             padding: 30px;
