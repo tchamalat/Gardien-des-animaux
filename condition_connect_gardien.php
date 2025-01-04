@@ -152,13 +152,15 @@
         }
     </style>
     <script>
-        window.addEventListener('scroll', () => {
+        document.addEventListener('DOMContentLoaded', () => {
             const header = document.querySelector('header');
-            if (window.scrollY > 50) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
-            }
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+            });
         });
     </script>
 </head>
@@ -203,7 +205,7 @@
 
     <h2>5. Confidentialité</h2>
     <p>
-        Vos données personnelles sont protégées conformément à notre <a href="confidentialite.php">Politique de Confidentialité</a>.
+        Vos données personnelles sont protégées conformément à notre <a href="confidentialite_connect_gardien.php">Politique de Confidentialité</a>.
     </p>
 </div>
 
