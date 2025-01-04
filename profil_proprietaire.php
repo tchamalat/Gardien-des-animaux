@@ -45,57 +45,150 @@ $stmt_animaux->close();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profil Public du Propriétaire - Gardien des Animaux</title>
-    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            color: #333;
+            background: url('images/premierplan.png') no-repeat center center fixed;
+            background-size: cover;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background: none;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        header img {
+            height: 100px;
+        }
+
+        header .auth-buttons .btn {
+            background-color: orange;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.9em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        header .auth-buttons .btn:hover {
+            background-color: #ff7f00;
+        }
+
+        .profile-container {
+            max-width: 900px;
+            margin: 50px auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 10px;
+            padding: 20px 30px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .profile-picture img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 4px solid orange;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .animal-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .animal-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .animal-card img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        footer {
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            margin-top: 50px;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links a {
+            color: #fff;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: orange;
+        }
+    </style>
 </head>
 <body>
-
 <header>
-    <div class="header-container">
-        <img src="images/logo.png" alt="Logo Gardien des Animaux">
-        <h1 class="header-slogan">Un foyer chaleureux même en votre absence</h1>
-        <div class="auth-buttons">
-            <button class="btn" onclick="window.location.href='index_connect_gardien.php'">Accueil</button>
-            <button class="btn" onclick="window.location.href='mes_reservations.php'">Mes réservation</button>
-        </div>
+    <img src="images/logo.png" alt="Logo Gardien des Animaux">
+    <div class="auth-buttons">
+        <button class="btn" onclick="window.location.href='index_connect_gardien.php'">Accueil</button>
+        <button class="btn" onclick="window.location.href='mes_reservations.php'">Mes Réservations</button>
     </div>
 </header>
 
 <div class="profile-container">
-    <h2 class="profile-title">Profil Public du Propriétaire</h2>
-
-    <div class="profile-info">
-        <div class="profile-picture">
-            <?php if ($profile_picture): ?>
-                <img id="profile-img" src="data:image/jpeg;base64,<?php echo base64_encode($profile_picture); ?>" alt="Photo de profil">
-            <?php else: ?>
-                <img id="profile-img" src="images/default_profile.png" alt="Photo de profil par défaut">
-            <?php endif; ?>
-        </div>
-        <div class="profile-details">
-            <div class="profile-item">
-                <label>Nom d'utilisateur :</label>
-                <span class="profile-value"><?php echo htmlspecialchars($nom_utilisateur); ?></span>
-            </div>
-        </div>
+    <h2>Profil Public du Propriétaire</h2>
+    <div class="profile-picture">
+        <?php if ($profile_picture): ?>
+            <img src="data:image/jpeg;base64,<?php echo base64_encode($profile_picture); ?>" alt="Photo de profil">
+        <?php else: ?>
+            <img src="images/default_profile.png" alt="Photo de profil par défaut">
+        <?php endif; ?>
+    </div>
+    <div class="profile-details">
+        <p><strong>Nom d'utilisateur :</strong> <?php echo htmlspecialchars($nom_utilisateur); ?></p>
     </div>
 
     <h3>Animaux du Propriétaire</h3>
-    <div id="animal-list" class="animal-list">
+    <div class="animal-list">
         <?php if ($result_animaux->num_rows > 0): ?>
             <?php while ($row = $result_animaux->fetch_assoc()): ?>
                 <div class="animal-card">
                     <p><strong>Nom :</strong> <?php echo htmlspecialchars($row['prenom_animal']); ?></p>
-                    <div class="animal-photo">
-                        <?php if ($row['url_photo']): ?>
-                            <img src="data:image/jpeg;base64,<?php echo base64_encode($row['url_photo']); ?>" alt="Photo de <?php echo htmlspecialchars($row['prenom_animal']); ?>">
-                        <?php else: ?>
-                            <p>Aucune photo disponible</p>
-                        <?php endif; ?>
-                    </div>
+                    <?php if ($row['url_photo']): ?>
+                        <img src="data:image/jpeg;base64,<?php echo base64_encode($row['url_photo']); ?>" alt="Photo de <?php echo htmlspecialchars($row['prenom_animal']); ?>">
+                    <?php else: ?>
+                        <p>Aucune photo disponible</p>
+                    <?php endif; ?>
                 </div>
             <?php endwhile; ?>
         <?php else: ?>
-            <p class="no-animals">Aucun animal enregistré pour ce propriétaire.</p>
+            <p>Aucun animal enregistré pour ce propriétaire.</p>
         <?php endif; ?>
     </div>
 </div>
@@ -124,6 +217,5 @@ $stmt_animaux->close();
         </div>
     </div>
 </footer>
-
 </body>
 </html>
