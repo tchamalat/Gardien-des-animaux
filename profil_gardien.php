@@ -1,85 +1,3 @@
-<?php 
-session_start();
-
-if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php");
-    exit();
-}
-
-include 'config.php';
-
-$user_id = $_SESSION['user_id'];
-
-$message = isset($_SESSION['message']) ? $_SESSION['message'] : '';
-unset($_SESSION['message']);
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    error_log("POST disponibilites: " . $_POST['disponibilites']);
-    
-    $type_animal = $_POST['type_animal'];
-    $nombre_animal = $_POST['nombre_animal'];
-    $budget_min = $_POST['budget_min'];
-    $budget_max = $_POST['budget_max'];
-
-// Ensure budget_min and budget_max are not negative
-if ($budget_min < 0 || $budget_max < 0) {
-    $_SESSION['message'] = 'Les budgets minimum et maximum ne peuvent pas être négatifs.';
-    header('Location: profil_gardien.php');
-    exit();
-}
-
-// Ensure budget_min is not greater than budget_max
-if ($budget_min > $budget_max) {
-    $_SESSION['message'] = 'Le budget minimum ne peut pas être supérieur au budget maximum.';
-    header('Location: profil_gardien.php');
-    exit();
-}
-
-    $service = $_POST['service'];
-    $disponibilites = $_POST['disponibilites']; 
-
-    // Validate service to be either 'garde' or 'promenade'
-    if ($service !== 'garde' && $service !== 'promenade') {
-        $_SESSION['message'] = 'Le type de service doit être soit garde, soit promenade.';
-        header('Location: profil_gardien.php');
-        exit();
-    }
-
-    if (empty($disponibilites)) {
-        $_SESSION['message'] = 'Veuillez sélectionner vos disponibilités.';
-        header('Location: profil_gardien.php');
-        exit();
-    } else {
-        $sql_update = "UPDATE creation_compte SET type_animal = ?, nombre_animal = ?, budget_min = ?, budget_max = ?, service = ?, disponibilites = ? WHERE id = ?";
-        $stmt_update = $conn->prepare($sql_update);
-        $stmt_update->bind_param("siddssi", $type_animal, $nombre_animal, $budget_min, $budget_max, $service, $disponibilites, $user_id);
-
-        if ($stmt_update->execute()) {
-            $_SESSION['message'] = 'Modifications enregistrées avec succès !';
-            header('Location: profil_gardien.php');
-            exit();
-        } else {
-            $_SESSION['message'] = 'Erreur lors de l\'enregistrement des modifications.';
-            header('Location: profil_gardien.php');
-            exit();
-        }
-
-        $stmt_update->close();
-    }
-}
-
-$sql = "SELECT nom_utilisateur, nom, prenom, mail, numero_telephone, adresse, ville, profile_picture, type_animal, nombre_animal, budget_min, budget_max, service, disponibilites FROM creation_compte WHERE id = ?";
-$stmt = $conn->prepare($sql);
-$stmt->bind_param("i", $user_id);
-$stmt->execute();
-$stmt->bind_result($nom_utilisateur, $nom, $prenom, $mail, $numero_telephone, $adresse, $ville, $profile_picture, $type_animal, $nombre_animal, $budget_min, $budget_max, $service, $disponibilites);
-$stmt->fetch();
-$stmt->close();
-$conn->close();
-
-$disponibilites_array = explode(',', $disponibilites);
-?>
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -107,12 +25,12 @@ $disponibilites_array = explode(',', $disponibilites);
             left: 0;
             width: 100%;
             z-index: 10;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
             padding: 20px;
-            background: none; /* Supprimez la couleur de fond */
-            box-shadow: none; /* Supprimez l'ombre */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
         header img {
@@ -142,8 +60,8 @@ $disponibilites_array = explode(',', $disponibilites);
         }
 
         .profile-container {
-            max-width: 800px;
-            margin: 120px auto 50px;
+            max-width: 900px;
+            margin: 150px auto 50px;
             background: rgba(255, 255, 255, 0.95);
             border-radius: 15px;
             padding: 30px;
@@ -151,15 +69,15 @@ $disponibilites_array = explode(',', $disponibilites);
         }
 
         .profile-title {
-            font-size: 2em;
+            font-size: 2.5em;
             color: orange;
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
         }
 
         .profile-picture {
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
         }
 
         .profile-picture img {
@@ -192,26 +110,53 @@ $disponibilites_array = explode(',', $disponibilites);
             transform: translateY(-3px);
         }
 
-        .profile-details {
-            margin-bottom: 20px;
+        .info-section {
+            margin-bottom: 30px;
         }
 
-        .profile-item {
+        .info-section h3 {
+            font-size: 1.8em;
+            color: orange;
             margin-bottom: 15px;
         }
 
-        .profile-item label {
+        .info-section .info-card {
+            background: #f9f9f9;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .info-section .info-card label {
             font-weight: bold;
             display: block;
             margin-bottom: 5px;
         }
 
-        .profile-item input,
-        .profile-item select {
+        .info-section .info-card span {
+            display: block;
+            font-size: 1.1em;
+            color: #555;
+        }
+
+        .form-section {
+            margin-top: 30px;
+        }
+
+        .form-section label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .form-section input,
+        .form-section select {
             width: 100%;
             padding: 10px;
             border: 1px solid #ddd;
             border-radius: 5px;
+            margin-bottom: 15px;
             font-size: 1em;
         }
 
@@ -241,34 +186,6 @@ $disponibilites_array = explode(',', $disponibilites);
 
         .btn-delete-account:hover {
             background-color: #c0392b;
-        }
-
-        .availability-buttons {
-            margin-top: 30px;
-            text-align: center;
-        }
-
-        .availability-buttons h3 {
-            font-size: 1.5em;
-            color: orange;
-            margin-bottom: 10px;
-        }
-
-        .btn-availability {
-            background-color: #ddd;
-            color: #333;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 8px;
-            margin: 5px;
-            font-size: 1em;
-            cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.3s ease;
-        }
-
-        .btn-availability.selected {
-            background-color: orange;
-            color: white;
         }
 
         footer {
@@ -312,45 +229,6 @@ $disponibilites_array = explode(',', $disponibilites);
             border-radius: 5px;
         }
     </style>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const availabilityButtons = document.querySelectorAll('.btn-availability');
-            const hiddenField = document.getElementById('disponibilites');
-            let selectedDays = <?= json_encode($disponibilites_array) ?>;
-            availabilityButtons.forEach(button => {
-                if (selectedDays.includes(button.textContent)) {
-                    button.classList.add('selected');
-                }
-                button.addEventListener('click', function() {
-                    const day = this.textContent;
-                    if (this.classList.contains('selected')) {
-                        this.classList.remove('selected');
-                        selectedDays = selectedDays.filter(d => d !== day);
-                    } else {
-                        this.classList.add('selected');
-                        selectedDays.push(day);
-                    }
-                    hiddenField.value = selectedDays.join(',');
-                    console.log("Selected days: " + hiddenField.value); 
-                });
-            });
-            hiddenField.value = selectedDays.join(',');
-            console.log("Initial selected days: " + hiddenField.value); 
-        });
-    </script>
-    <script>
-        function previewProfileImage(event) {
-            const reader = new FileReader();
-            const imgElement = document.getElementById('profile-img');
-
-            reader.onload = function() {
-                if (imgElement) {
-                    imgElement.src = reader.result;
-                }
-            };
-            reader.readAsDataURL(event.target.files[0]);
-        }
-    </script>
 </head>
 <body>
 
@@ -366,7 +244,6 @@ $disponibilites_array = explode(',', $disponibilites);
 </header>
 
 <section class="profile-container">
-    
     <?php if ($message): ?>
         <div class="alert-message">
             <?php echo htmlspecialchars($message); ?>
@@ -385,63 +262,49 @@ $disponibilites_array = explode(',', $disponibilites);
         <button type="submit" class="btn-photo">Enregistrer la nouvelle photo</button>
     </form>
 
-    <form action="profil_gardien.php" method="POST">
-        <div class="profile-details">
-            <div class="profile-item">
-                <label>Nom d'utilisateur :</label>
-                <span class="profile-value"><?= htmlspecialchars($nom_utilisateur) ?></span>
-            </div>
-            <div class="profile-item">
-                <label>Nom :</label>
-                <span class="profile-value"><?= htmlspecialchars($nom) ?></span>
-            </div>
-            <div class="profile-item">
-                <label>Prénom :</label>
-                <span class="profile-value"><?= htmlspecialchars($prenom) ?></span>
-            </div>
-            <div class="profile-item">
-                <label>Adresse mail :</label>
-                <span class="profile-value"><?= htmlspecialchars($mail) ?></span>
-            </div>
-            <div class="profile-item">
-                <label>Numéro de téléphone :</label>
-                <span class="profile-value"><?= htmlspecialchars($numero_telephone) ?></span>
-            </div>
-            <div class="profile-item">
-                <label>Adresse :</label>
-                <span class="profile-value"><?= htmlspecialchars($adresse) ?></span>
-            </div>
-            <div class="profile-item">
-                <label>Ville :</label>
-                <span class="profile-value"><?= htmlspecialchars($ville) ?></span>
-            </div>
-
-            <div class="profile-item">
-                <label for="type_animal">Type d'animal :</label>
-                <input type="text" id="type_animal" name="type_animal" value="<?= htmlspecialchars($type_animal) ?>" required>
-            </div>
-            <div class="profile-item">
-                <label for="nombre_animal">Nombre d'animaux :</label>
-                <input type="number" id="nombre_animal" name="nombre_animal" value="<?= htmlspecialchars($nombre_animal) ?>" required>
-            </div>
-            <div class="profile-item">
-                <label for="budget_min">Budget minimum (en €) :</label>
-                <input type="number" step="0.01" id="budget_min" name="budget_min" value="<?= htmlspecialchars($budget_min) ?>" required>
-            </div>
-            <div class="profile-item">
-                <label for="budget_max">Budget maximum (en €) :</label>
-                <input type="number" step="0.01" id="budget_max" name="budget_max" value="<?= htmlspecialchars($budget_max) ?>" required>
-            </div>
-            <div class="profile-item">
-                <label for="service">Type de service :</label>
-                <select id="service" name="service" required>
-                    <option value="garde" <?= $service === "garde" ? "selected" : "" ?>>Garde</option>
-                    <option value="promenade" <?= $service === "promenade" ? "selected" : "" ?>>Promenade</option>
-                </select>
-            </div>
-
-            <input type="hidden" name="disponibilites" id="disponibilites" value="">
+    <div class="info-section">
+        <h3>Informations personnelles</h3>
+        <div class="info-card">
+            <label>Nom d'utilisateur :</label>
+            <span><?= htmlspecialchars($nom_utilisateur) ?></span>
         </div>
+        <div class="info-card">
+            <label>Nom :</label>
+            <span><?= htmlspecialchars($nom) ?></span>
+        </div>
+        <div class="info-card">
+            <label>Prénom :</label>
+            <span><?= htmlspecialchars($prenom) ?></span>
+        </div>
+        <div class="info-card">
+            <label>Email :</label>
+            <span><?= htmlspecialchars($mail) ?></span>
+        </div>
+        <div class="info-card">
+            <label>Adresse :</label>
+            <span><?= htmlspecialchars($adresse) . ', ' . htmlspecialchars($ville) ?></span>
+        </div>
+    </div>
+
+    <form action="profil_gardien.php" method="POST" class="form-section">
+        <h3>Modifier mes préférences</h3>
+        <label for="type_animal">Type d'animal :</label>
+        <input type="text" id="type_animal" name="type_animal" value="<?= htmlspecialchars($type_animal) ?>" required>
+
+        <label for="nombre_animal">Nombre d'animaux :</label>
+        <input type="number" id="nombre_animal" name="nombre_animal" value="<?= htmlspecialchars($nombre_animal) ?>" required>
+
+        <label for="budget_min">Budget minimum (en €) :</label>
+        <input type="number" id="budget_min" name="budget_min" value="<?= htmlspecialchars($budget_min) ?>" required>
+
+        <label for="budget_max">Budget maximum (en €) :</label>
+        <input type="number" id="budget_max" name="budget_max" value="<?= htmlspecialchars($budget_max) ?>" required>
+
+        <label for="service">Type de service :</label>
+        <select id="service" name="service" required>
+            <option value="garde" <?= $service === 'garde' ? 'selected' : '' ?>>Garde</option>
+            <option value="promenade" <?= $service === 'promenade' ? 'selected' : '' ?>>Promenade</option>
+        </select>
 
         <button type="submit" class="btn">Enregistrer les modifications</button>
     </form>
@@ -449,17 +312,6 @@ $disponibilites_array = explode(',', $disponibilites);
     <form method="POST" action="delete_account.php">
         <button class="btn-delete-account" type="submit" name="delete_account">Supprimer mon compte</button>
     </form>
-    
-    <div class="availability-buttons">
-        <h3>Disponibilités :</h3>
-        <button class="btn-availability">Lu</button>
-        <button class="btn-availability">Ma</button>
-        <button class="btn-availability">Me</button>
-        <button class="btn-availability">Je</button>
-        <button class="btn-availability">Ve</button>
-        <button class="btn-availability">Sa</button>
-        <button class="btn-availability">Di</button>
-    </div>
 </section>
 
 <footer>
@@ -486,6 +338,5 @@ $disponibilites_array = explode(',', $disponibilites);
         </div>
     </div>
 </footer>
-
 </body>
 </html>
