@@ -104,13 +104,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         .container {
-            margin: 150px auto;
-            max-width: 800px; /* Augmentez la largeur maximale */
-            background: rgba(255, 255, 255, 0.85);
-            padding: 30px; /* Ajoutez plus d'espace à l'intérieur */
+            margin: 100px auto;
+            max-width: 800px; /* Augmentation de la largeur maximale */
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
             border-radius: 15px;
             box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
-            flex: 1;
         }
 
 
@@ -162,6 +161,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             background-color: #ff7f00;
             transform: translateY(-3px);
         }
+        .messages-list {
+            margin-top: 20px;
+            max-height: 400px; 
+            overflow-y: auto; 
+        }
 
         .messages-list p {
             background-color: #f1f1f1;
@@ -205,17 +209,41 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         .message-item {
-            background: rgba(255, 255, 255, 0.9);
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            padding: 15px;
-            margin-bottom: 15px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             display: flex;
             justify-content: space-between;
             align-items: center;
+            margin-bottom: 15px;
+            background: #f9f9f9;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }        
+        .message-item .message-details {
+            flex-grow: 1;
+            margin-right: 10px;
         }
 
+        .message-item .message-details strong {
+            color: orange;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .message-item .message-details em {
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .message-item .message-delete {
+            color: red;
+            font-size: 1.2em;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .message-item .message-delete:hover {
+            color: darkred;
+        }
         .message-details {
             max-width: 80%;
         }
