@@ -105,13 +105,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         .container {
             margin: 150px auto;
-            max-width: 600px;
+            max-width: 800px; /* Augmentez la largeur maximale */
             background: rgba(255, 255, 255, 0.85);
-            padding: 20px;
+            padding: 30px; /* Ajoutez plus d'espace à l'intérieur */
             border-radius: 15px;
             box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
             flex: 1;
         }
+
 
         h2 {
             color: orange;
