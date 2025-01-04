@@ -109,7 +109,11 @@ $conn->close();
         header .auth-buttons {
             display: flex;
             gap: 15px;
+            position: absolute;
+            top: 20px;
+            right: 20px; /* Positionner à droite */
         }
+
 
         header .auth-buttons .btn {
             background-color: orange;
