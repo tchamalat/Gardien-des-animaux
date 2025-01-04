@@ -1,17 +1,16 @@
 <?php
 session_start();
-include 'config.php'; // Inclut le fichier de connexion à la base de données
+include 'config.php';
 
-// Vérifie si l'utilisateur est connecté et a le rôle de gardien (role = 0)
+// Vérifie si l'utilisateur est connecté
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
     exit();
 }
 
-// Récupère l'ID de l'utilisateur connecté
 $user_id = $_SESSION['user_id'];
 
-// Vérifie si l'utilisateur est un gardien en consultant la base de données
+// Vérifie si l'utilisateur est un gardien
 $sql_check_role = "SELECT id FROM creation_compte WHERE id = ? AND role = 0";
 $stmt_check = $conn->prepare($sql_check_role);
 $stmt_check->bind_param("i", $user_id);
@@ -23,7 +22,7 @@ if ($result_check->num_rows === 0) {
     exit();
 }
 
-// Requête SQL pour récupérer les réservations associées au gardien
+// Récupère les réservations associées au gardien
 $sql = "
     SELECT r.id_reservation, r.date_debut, r.date_fin, r.lieu, r.type, r.heure_debut, r.heure_fin, 
            c.id AS proprietaire_id, c.nom, c.prenom, c.mail
@@ -32,7 +31,6 @@ $sql = "
     WHERE r.gardien_id = ?
     ORDER BY r.date_debut ASC
 ";
-
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $user_id);
 $stmt->execute();
@@ -43,29 +41,76 @@ $result = $stmt->get_result();
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mes Réservations</title>
-    <link rel="stylesheet" href="styles.css">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+        /* Styles globaux */
+        * {
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: url('images/premierplan.png') no-repeat center center fixed;
+            background-size: cover;
+            color: #333;
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px;
+            background: none;
+            box-shadow: none;
+        }
+
+        header img {
+            height: 60px;
+        }
+
+        header .auth-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        header .auth-buttons .btn {
+            background-color: orange;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        header .auth-buttons .btn:hover {
+            background-color: #ff7f00;
+            transform: translateY(-3px);
         }
 
         .container {
-            width: 90%;
-            max-width: 1100px;
-            margin: 50px auto;
-            background: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            max-width: 1200px;
+            margin: 120px auto 50px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
         }
 
         h1 {
+            font-size: 2.5em;
+            color: orange;
             text-align: center;
-            color: #444;
             margin-bottom: 30px;
         }
 
@@ -76,14 +121,14 @@ $result = $stmt->get_result();
         }
 
         table th, table td {
-            padding: 12px;
+            padding: 15px;
             text-align: center;
             border: 1px solid #ddd;
         }
 
         table th {
-            background-color: #f5a623;
-            color: #fff;
+            background-color: orange;
+            color: white;
             font-weight: bold;
         }
 
@@ -97,37 +142,71 @@ $result = $stmt->get_result();
 
         .no-reservation {
             text-align: center;
-            font-size: 18px;
+            font-size: 1.2em;
             color: #888;
+            margin: 20px 0;
         }
 
         .btn-profile {
             display: inline-block;
-            padding: 8px 12px;
-            background-color: #f5a623;
-            color: #fff;
+            padding: 10px 15px;
+            background-color: orange;
+            color: white;
             text-decoration: none;
-            border-radius: 5px;
+            border-radius: 8px;
+            font-size: 1em;
             cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.3s ease; 
+            transition: background-color 0.3s ease, transform 0.3s ease;
         }
 
         .btn-profile:hover {
             background-color: #ff7f00;
-            transform: translateY(-5px);
+            transform: translateY(-3px);
+        }
+
+        footer {
+            background: rgba(0, 0, 0, 0.85);
+            color: #fff;
+            padding: 20px;
+        }
+
+        footer .footer-links {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+        }
+
+        footer .footer-links h4 {
+            color: orange;
+            margin-bottom: 10px;
+        }
+
+        footer .footer-links ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        footer .footer-links a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        footer .footer-links a:hover {
+            color: orange;
         }
     </style>
 </head>
 <body>
     <!-- Header -->
     <header>
-        <div class="header-container">
-            <img src="images/logo.png" alt="Logo Gardien des Animaux">
-            <div class="auth-buttons">
-                <button class="btn" onclick="window.location.href='index_connect_gardien.php'">Accueil</button>
-            </div>
+        <img src="images/logo.png" alt="Logo Gardien des Animaux">
+        <div class="auth-buttons">
+            <button class="btn" onclick="window.location.href='index_connect_gardien.php'">Accueil</button>
         </div>
     </header>
+
+    <!-- Réservations -->
     <div class="container">
         <h1>Mes Réservations</h1>
 
@@ -135,7 +214,7 @@ $result = $stmt->get_result();
             <table>
                 <thead>
                     <tr>
-                        <th>ID Réservation</th>
+                        <th>ID</th>
                         <th>Nom Utilisateur</th>
                         <th>Email</th>
                         <th>Date Début</th>
@@ -160,7 +239,7 @@ $result = $stmt->get_result();
                             <td><?php echo htmlspecialchars($row['heure_debut']); ?></td>
                             <td><?php echo htmlspecialchars($row['heure_fin']); ?></td>
                             <td>
-                                <a href="profil_proprietaire.php?id=<?php echo htmlspecialchars($row['proprietaire_id']); ?>" class="btn-profile">Voir le Profil</a>
+                                <a href="profil_proprietaire.php?id=<?php echo htmlspecialchars($row['proprietaire_id']); ?>" class="btn-profile">Voir</a>
                             </td>
                         </tr>
                     <?php endwhile; ?>
@@ -170,6 +249,7 @@ $result = $stmt->get_result();
             <p class="no-reservation">Aucune réservation trouvée.</p>
         <?php endif; ?>
     </div>
+
     <!-- Footer -->
     <footer>
         <div class="footer-links">
