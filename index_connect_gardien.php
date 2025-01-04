@@ -29,9 +29,10 @@
             align-items: center;
             justify-content: space-between;
             padding: 20px;
-            background: rgba(255, 255, 255, 0.95);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background: none; /* Supprimez la couleur de fond */
+            box-shadow: none; /* Supprimez l'ombre */
         }
+
 
         header img {
             height: 60px;
