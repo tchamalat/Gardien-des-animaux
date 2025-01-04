@@ -65,13 +65,14 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background: rgba(0, 0, 0, 0.5);
+            background: none;
         }
 
         .hero h1 {
             color: orange;
             font-size: 2.5em;
             text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+            background: none;
         }
 
         .proprietaires-section {
