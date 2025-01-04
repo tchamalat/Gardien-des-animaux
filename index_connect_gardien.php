@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gardien des Animaux - Propriétaires</title>
+    <title>Gardien des Animaux - Connecté</title>
     <style>
         /* Styles globaux */
         * {
@@ -17,7 +17,6 @@
             color: #333;
             background: url('images/premierplan.png') no-repeat center center fixed;
             background-size: cover;
-            overflow-x: hidden;
         }
 
         header {
@@ -27,15 +26,15 @@
             width: 100%;
             z-index: 10;
             display: flex;
-            justify-content: space-between;
             align-items: center;
+            justify-content: space-between;
             padding: 20px;
             background: rgba(255, 255, 255, 0.95);
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
         header img {
-            height: 80px;
+            height: 60px;
         }
 
         header .auth-buttons {
@@ -65,22 +64,20 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background: url('images/premierplan.png') no-repeat center center;
-            background-size: cover;
+            background: rgba(0, 0, 0, 0.5);
         }
 
         .hero h1 {
             color: orange;
             font-size: 2.5em;
             text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
-            text-align: center;
         }
 
         .proprietaires-section {
             max-width: 1200px;
-            margin: 50px auto;
-            padding: 30px;
-            background: rgba(255, 255, 255, 0.9);
+            margin: 40px auto;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.95);
             border-radius: 15px;
             box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
         }
@@ -93,36 +90,51 @@
         }
 
         .proprietaires-list {
-            display: flex;
-            flex-wrap: wrap;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 20px;
-            justify-content: center;
         }
 
         .proprietaire-card {
-            background: rgba(255, 255, 255, 0.95);
+            background: #f9f9f9;
             border-radius: 10px;
             padding: 20px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             text-align: center;
-            width: 250px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
         .proprietaire-card img {
-            width: 100px;
-            height: 100px;
+            width: 80px;
+            height: 80px;
             border-radius: 50%;
             object-fit: cover;
+            margin-bottom: 10px;
         }
 
         .proprietaire-card p {
-            margin: 10px 0;
-            font-size: 1em;
+            margin: 5px 0;
         }
 
         .proprietaire-card .distance {
-            font-weight: bold;
-            color: orange;
+            font-size: 0.9em;
+            color: gray;
+        }
+
+        .contact-btn {
+            margin-top: 10px;
+            background-color: orange;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .contact-btn:hover {
+            background-color: #ff7f00;
+            transform: translateY(-3px);
         }
 
         footer {
@@ -157,25 +169,11 @@
         footer .footer-links a:hover {
             color: orange;
         }
-
-        #chatButton {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background-color: orange;
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 60px;
-            height: 60px;
-            font-size: 24px;
-            cursor: pointer;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        }
     </style>
 </head>
 <body>
 
+<!-- Header -->
 <header>
     <img src="images/logo.png" alt="Logo Gardien des Animaux">
     <div class="auth-buttons">
@@ -185,17 +183,71 @@
     </div>
 </header>
 
+<!-- Hero Section -->
 <section class="hero">
     <h1>Bienvenue, Gardien</h1>
 </section>
 
+<!-- Section Propriétaires Disponibles -->
 <section class="proprietaires-section">
     <h2>Propriétaires Disponibles</h2>
     <div class="proprietaires-list">
-        <!-- Les propriétaires seront ajoutés dynamiquement ici -->
+        <p>Chargement des propriétaires en cours...</p>
     </div>
 </section>
 
+<script>
+    // Fonction pour récupérer les propriétaires disponibles
+    function fetchProprietaires() {
+        const proprietairesList = document.querySelector('.proprietaires-list');
+        proprietairesList.innerHTML = '<p>Chargement des propriétaires en cours...</p>';
+
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(async (position) => {
+                const { latitude, longitude } = position.coords;
+
+                try {
+                    const response = await fetch('fetch_proprietaires.php', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ latitude, longitude })
+                    });
+
+                    const data = await response.json();
+
+                    if (data.error) {
+                        proprietairesList.innerHTML = `<p>Erreur : ${data.error}</p>`;
+                    } else {
+                        if (data.length === 0) {
+                            proprietairesList.innerHTML = '<p>Aucun propriétaire trouvé près de chez vous.</p>';
+                        } else {
+                            proprietairesList.innerHTML = data.map(proprietaire => `
+                                <div class="proprietaire-card">
+                                    <img src="images/${proprietaire.profile_picture || 'default.jpg'}" alt="${proprietaire.prenom}">
+                                    <p><strong>${proprietaire.prenom}</strong> (${proprietaire.nom_utilisateur})</p>
+                                    <p>${proprietaire.ville}</p>
+                                    <p class="distance">Distance : ${proprietaire.distance.toFixed(2)} km</p>
+                                    <button class="contact-btn" onclick="window.location.href='message.php?user_id=${proprietaire.id}'">Contacter</button>
+                                </div>
+                            `).join('');
+                        }
+                    }
+                } catch (error) {
+                    console.error('Erreur lors de la récupération des propriétaires :', error);
+                    proprietairesList.innerHTML = '<p>Erreur lors du chargement des propriétaires. Veuillez réessayer plus tard.</p>';
+                }
+            }, (error) => {
+                proprietairesList.innerHTML = `<p>Erreur de géolocalisation : ${error.message}</p>`;
+            });
+        } else {
+            proprietairesList.innerHTML = '<p>La géolocalisation n\'est pas prise en charge par votre navigateur.</p>';
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', fetchProprietaires);
+</script>
+
+<!-- Footer -->
 <footer>
     <div class="footer-links">
         <div>
@@ -220,32 +272,6 @@
         </div>
     </div>
 </footer>
-
-<script>
-    function fetchProprietaires() {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition((position) => {
-                fetch('index_connect_gardien.php', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        latitude: position.coords.latitude,
-                        longitude: position.coords.longitude,
-                    }),
-                })
-                .then(response => response.text())
-                .then(data => {
-                    document.querySelector('.proprietaires-list').innerHTML = data;
-                })
-                .catch(error => console.error('Erreur:', error));
-            }, (error) => {
-                console.error('Erreur de géolocalisation:', error.message);
-            });
-        }
-    }
-
-    document.addEventListener('DOMContentLoaded', fetchProprietaires);
-</script>
 
 </body>
 </html>
