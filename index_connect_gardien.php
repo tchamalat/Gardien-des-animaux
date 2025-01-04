@@ -33,7 +33,6 @@
             box-shadow: none; /* Supprimez l'ombre */
         }
 
-
         header img {
             height: 60px;
         }
@@ -146,7 +145,6 @@
             margin-top: 50px;
         }
 
-
         footer .footer-links {
             display: flex;
             justify-content: space-around;
@@ -201,7 +199,7 @@
 
 <script>
     // Fonction pour récupérer les propriétaires disponibles
-    function fetchProprietaires() {
+    async function fetchProprietaires() {
         const proprietairesList = document.querySelector('.proprietaires-list');
         proprietairesList.innerHTML = '<p>Chargement des propriétaires en cours...</p>';
 
@@ -226,7 +224,7 @@
                         } else {
                             proprietairesList.innerHTML = data.map(proprietaire => `
                                 <div class="proprietaire-card">
-                                    <img src="images/${proprietaire.profile_picture || 'default.jpg'}" alt="${proprietaire.prenom}">
+                                    <img src="display_image.php?id=${proprietaire.id}" alt="${proprietaire.prenom}">
                                     <p><strong>${proprietaire.prenom}</strong> (${proprietaire.nom_utilisateur})</p>
                                     <p>${proprietaire.ville}</p>
                                     <p class="distance">Distance : ${proprietaire.distance.toFixed(2)} km</p>
