@@ -88,6 +88,232 @@ $disponibilites_array = explode(',', $disponibilites);
     <title>Mon Profil de Gardien - Gardien des Animaux</title>
     <link rel="stylesheet" href="styles.css">
     <script>
+    <style>
+        /* Styles globaux */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: url('images/premierplan.png') no-repeat center center fixed;
+            background-size: cover;
+            color: #333;
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 10;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        header img {
+            height: 80px;
+        }
+
+        header .auth-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        header .auth-buttons .btn {
+            background-color: orange;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        header .auth-buttons .btn:hover {
+            background-color: #ff7f00;
+            transform: translateY(-3px);
+        }
+
+        .profile-container {
+            max-width: 800px;
+            margin: 120px auto 50px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .profile-title {
+            font-size: 2em;
+            color: orange;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .profile-picture {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .profile-picture img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid orange;
+        }
+
+        .profile-form {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .btn-photo {
+            background-color: orange;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            cursor: pointer;
+            margin: 5px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .btn-photo:hover {
+            background-color: #ff7f00;
+            transform: translateY(-3px);
+        }
+
+        .profile-details {
+            margin-bottom: 20px;
+        }
+
+        .profile-item {
+            margin-bottom: 15px;
+        }
+
+        .profile-item label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .profile-item input,
+        .profile-item select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            background-color: orange;
+            color: white;
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.2em;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #ff7f00;
+            transform: translateY(-3px);
+        }
+
+        .btn-delete-account {
+            background-color: #e74c3c;
+            color: white;
+        }
+
+        .btn-delete-account:hover {
+            background-color: #c0392b;
+        }
+
+        .availability-buttons {
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .availability-buttons h3 {
+            font-size: 1.5em;
+            color: orange;
+            margin-bottom: 10px;
+        }
+
+        .btn-availability {
+            background-color: #ddd;
+            color: #333;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            margin: 5px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .btn-availability.selected {
+            background-color: orange;
+            color: white;
+        }
+
+        footer {
+            background: rgba(0, 0, 0, 0.85);
+            color: #fff;
+            padding: 20px;
+        }
+
+        footer .footer-links {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+        }
+
+        footer .footer-links h4 {
+            color: orange;
+            margin-bottom: 10px;
+        }
+
+        footer .footer-links ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        footer .footer-links a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        footer .footer-links a:hover {
+            color: orange;
+        }
+
+        .alert-message {
+            background-color: #f9f9f9;
+            color: #333;
+            border-left: 5px solid orange;
+            padding: 10px 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+    </style>
         document.addEventListener('DOMContentLoaded', function() {
             const availabilityButtons = document.querySelectorAll('.btn-availability');
             const hiddenField = document.getElementById('disponibilites');
