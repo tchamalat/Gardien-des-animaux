@@ -139,11 +139,12 @@
         }
 
         footer {
-            background: rgba(0, 0, 0, 0.85);
+            background: none; /* Suppression du fond noir */
             color: #fff;
             padding: 20px;
             margin-top: 50px;
         }
+
 
         footer .footer-links {
             display: flex;
