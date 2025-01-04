@@ -1,40 +1,61 @@
 <?php
-include 'config.php';
-header('Content-Type: application/json');
 session_start();
+include 'config.php'; // Connexion à la base de données
 
-$input = json_decode(file_get_contents('php://input'), true);
+header('Content-Type: application/json');
 
-if (!isset($input['latitude'], $input['longitude'])) {
-    echo json_encode(['error' => 'Coordonnées non fournies']);
+// Récupère les données envoyées par fetchProprietaires()
+$data = json_decode(file_get_contents('php://input'), true);
+
+if (!isset($data['latitude'], $data['longitude'])) {
+    echo json_encode(['error' => 'Coordonnées non fournies.']);
     exit;
 }
 
-$latitude = floatval($input['latitude']);
-$longitude = floatval($input['longitude']);
-$radius = 10;
+$latitude = $data['latitude'];
+$longitude = $data['longitude'];
 
-try {
-    $stmt = $conn->prepare("
-        SELECT 
-            id, prenom, nom_utilisateur, profile_picture, ville, latitude, longitude,
-            (6371 * ACOS(COS(RADIANS(?)) * COS(RADIANS(latitude)) * COS(RADIANS(longitude) - RADIANS(?)) + SIN(RADIANS(?)) * SIN(RADIANS(latitude)))) AS distance
-        FROM creation_compte
-        WHERE role = 1
-        HAVING distance <= ?
-        ORDER BY distance ASC
-    ");
-    $stmt->bind_param("dddi", $latitude, $longitude, $latitude, $radius);
-    $stmt->execute();
-    $result = $stmt->get_result();
+// Requête SQL pour récupérer les propriétaires disponibles
+$sql = "
+    SELECT id, nom_utilisateur, prenom, ville, profile_picture,
+    (6371 * acos(
+        cos(radians(?)) * cos(radians(latitude)) *
+        cos(radians(longitude) - radians(?)) +
+        sin(radians(?)) * sin(radians(latitude))
+    )) AS distance
+    FROM creation_compte
+    WHERE role = 1 /* Propriétaires */
+    HAVING distance < 50 /* Propriétaires dans un rayon de 50 km */
+    ORDER BY distance ASC
+";
 
-    $proprietaires = [];
-    while ($row = $result->fetch_assoc()) {
-        $proprietaires[] = $row;
-    }
-
-    echo json_encode($proprietaires);
-} catch (Exception $e) {
-    echo json_encode(['error' => 'Erreur lors de la récupération des données : ' . $e->getMessage()]);
+$stmt = $conn->prepare($sql);
+if (!$stmt) {
+    echo json_encode(['error' => 'Erreur lors de la préparation de la requête : ' . $conn->error]);
+    exit;
 }
-?>
+
+$stmt->bind_param('ddd', $latitude, $longitude, $latitude);
+
+if (!$stmt->execute()) {
+    echo json_encode(['error' => 'Erreur lors de l\'exécution de la requête : ' . $stmt->error]);
+    exit;
+}
+
+$result = $stmt->get_result();
+
+$proprietaires = [];
+while ($row = $result->fetch_assoc()) {
+    $proprietaires[] = [
+        'id' => $row['id'],
+        'nom_utilisateur' => $row['nom_utilisateur'],
+        'prenom' => $row['prenom'],
+        'ville' => $row['ville'],
+        'distance' => $row['distance'],
+    ];
+}
+
+$stmt->close();
+$conn->close();
+
+echo json_encode($proprietaires);
