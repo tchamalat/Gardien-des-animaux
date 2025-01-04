@@ -86,8 +86,6 @@ $disponibilites_array = explode(',', $disponibilites);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mon Profil de Gardien - Gardien des Animaux</title>
-    <link rel="stylesheet" href="styles.css">
-    <script>
     <style>
         /* Styles globaux */
         * {
@@ -314,6 +312,7 @@ $disponibilites_array = explode(',', $disponibilites);
             border-radius: 5px;
         }
     </style>
+    <script>
         document.addEventListener('DOMContentLoaded', function() {
             const availabilityButtons = document.querySelectorAll('.btn-availability');
             const hiddenField = document.getElementById('disponibilites');
