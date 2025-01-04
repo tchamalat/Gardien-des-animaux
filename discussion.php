@@ -58,54 +58,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Discussion</title>
     <style>
-        .messages-list {
-            margin-top: 20px;
-        }
-        .error {
-            background-color: #f8d7da;
-            color: #721c24;
-        }
-        .success {
-            background-color: #d4edda;
-            color: #155724;
-        }
-        .message-item {
-            background: rgba(255, 255, 255, 0.9);
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            padding: 15px;
-            margin-bottom: 15px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .message-details {
-            max-width: 80%;
-        }
-
-        .message-details strong {
-            color: orange;
-            display: block;
-            margin-bottom: 5px;
-        }
-
-        .message-details em {
-            font-size: 0.9em;
-            color: #666;
-        }
-
-        .message-delete {
-            color: red;
-            font-size: 1.2em;
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-
-        .message-delete:hover {
-            color: darkred;
-        }
         body {
             font-family: Arial, sans-serif;
             color: #fff;
@@ -113,6 +65,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             background-size: cover;
             min-height: 100vh;
             overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
         }
 
         header {
@@ -156,6 +110,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             padding: 20px;
             border-radius: 15px;
             box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+            flex: 1;
         }
 
         h2 {
@@ -194,7 +149,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             margin: 0 auto;
             background-color: #f5a623;
             color: white;
-            padding: 15px 30px; 
+            padding: 15px 30px;
             border: none;
             border-radius: 8px;
             cursor: pointer;
@@ -226,12 +181,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             padding: 20px;
             background: rgba(0, 0, 0, 0.8);
             color: #fff;
-            margin-top: 30px;
         }
 
         .footer-links {
             display: flex;
             justify-content: space-around;
+            flex-wrap: wrap;
         }
 
         .footer-links ul {
@@ -247,6 +202,44 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         .footer-links a:hover {
             color: orange;
         }
+
+        .message-item {
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .message-details {
+            max-width: 80%;
+        }
+
+        .message-details strong {
+            color: orange;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .message-details em {
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .message-delete {
+            color: red;
+            font-size: 1.2em;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .message-delete:hover {
+            color: darkred;
+        }
     </style>
 </head>
 <body>
@@ -254,9 +247,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <header>
         <img src="images/logo.png" alt="Logo">
         <div class="auth-buttons">
-            <button class="btn" onclick="window.location.href='index_connect.php'">Accueil</button>
-            <button class="btn" onclick="window.location.href='profil.php'">Mon Profil</button>
-            <button class="btn" onclick="window.location.href='search_page.php'">Je poste une annonce</button>
+            <button class="btn" onclick="window.location.href='index_connect_gardien.php'">Accueil</button>
+            <button class="btn" onclick="window.location.href='profil_gardien.php'">Mon Profil</button>
         </div>
     </header>
 
@@ -300,13 +292,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             if ($result->num_rows > 0) {
                 while ($msg = $result->fetch_assoc()) {
-                    echo "<p>
-                            <strong>" . htmlspecialchars($msg['sender_name']) . "</strong> à 
-                            <strong>" . htmlspecialchars($msg['receiver_name']) . "</strong> : 
-                            " . htmlspecialchars($msg['message']) . " 
-                            <em>(" . $msg['timestamp'] . ")</em>
-                            <a href='?delete_id=" . $msg['id'] . "' style='color: red; float: right;' title='Supprimer'>&#10060;</a>
-                          </p>";
+                    echo "<div class='message-item'>
+                            <div class='message-details'>
+                                <strong>" . htmlspecialchars($msg['sender_name']) . "</strong> à 
+                                <strong>" . htmlspecialchars($msg['receiver_name']) . "</strong> : 
+                                <span>" . htmlspecialchars($msg['message']) . "</span>
+                                <em>(" . $msg['timestamp'] . ")</em>
+                            </div>
+                            <a href='?delete_id=" . $msg['id'] . "' class='message-delete' title='Supprimer'>&#10060;</a>
+                          </div>";
                 }
             } else {
                 echo "<p>Aucun message trouvé.</p>";
@@ -341,3 +335,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </footer>
 </body>
 </html>
+
