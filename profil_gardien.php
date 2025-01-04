@@ -250,13 +250,27 @@ $conn->close();
         }
 
         .btn-delete-account {
-            background-color: #e74c3c;
+            display: block;
+            width: 100%;
+            background: linear-gradient(90deg, #ff6b6b, #e74c3c);
             color: white;
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.2em;
+            cursor: pointer;
+            margin-top: 20px;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
         }
 
         .btn-delete-account:hover {
-            background-color: #c0392b;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3);
+            background: linear-gradient(90deg, #e74c3c, #c0392b);
         }
+
 
         footer {
             background: rgba(0, 0, 0, 0.85);
