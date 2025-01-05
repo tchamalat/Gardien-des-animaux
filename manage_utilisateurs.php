@@ -109,14 +109,14 @@ $result = $conn->query("SELECT * FROM creation_compte");
         }
 
         .form-container {
-            max-width: 900px;
+            max-width: 1200px; /* Largeur augmentée */
             margin: 150px auto;
             background: rgba(255, 255, 255, 0.95);
             border-radius: 15px;
             padding: 30px;
             box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
         }
-
         .form-container h2 {
             font-size: 1.8em;
             color: orange;
@@ -138,6 +138,10 @@ $result = $conn->query("SELECT * FROM creation_compte");
         table {
             width: 100%;
             border-collapse: collapse;
+            margin-top: 10px;
+        }
+        .table-container {
+            overflow-x: auto; /* Ajoute un défilement horizontal si nécessaire */
             margin-top: 20px;
         }
 
@@ -145,13 +149,13 @@ $result = $conn->query("SELECT * FROM creation_compte");
             padding: 10px;
             text-align: left;
             border: 1px solid #ddd;
+            white-space: nowrap; /* Empêche le texte de dépasser */
         }
 
         table th {
             background-color: orange;
             color: white;
         }
-
         .btn {
             display: inline-block;
             background-color: orange;
