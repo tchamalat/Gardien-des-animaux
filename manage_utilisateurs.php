@@ -109,7 +109,7 @@ $result = $conn->query("SELECT * FROM creation_compte");
         }
 
         .form-container {
-            max-width: 1200px; /* Largeur augmentée */
+            max-width: 95%; /* Prend 95% de la largeur de la page */
             margin: 150px auto;
             background: rgba(255, 255, 255, 0.95);
             border-radius: 15px;
@@ -136,15 +136,15 @@ $result = $conn->query("SELECT * FROM creation_compte");
         }
 
         table {
-            width: 100%;
+            width: 100%; /* Prend toute la largeur du conteneur */
             border-collapse: collapse;
             margin-top: 10px;
+            table-layout: auto; /* Colonnes ajustées automatiquement */
         }
         .table-container {
-            overflow-x: auto; /* Ajoute un défilement horizontal si nécessaire */
-            margin-top: 20px;
+            overflow-x: auto; /* Active le défilement horizontal si nécessaire */
+            width: 100%;
         }
-
         table th, table td {
             padding: 10px;
             text-align: left;
