@@ -309,14 +309,19 @@ include 'config.php';
     		$query = "SELECT id, prenom, nom_utilisateur FROM creation_compte WHERE role = 2"; // 2 pour les gardiens
     		$result = $conn->query($query);
 
-    		while ($row = $result->fetch_assoc()) {
+		while ($row = $result->fetch_assoc()) {
+        		$prenom = htmlspecialchars($row['prenom'] ?? 'Inconnu'); // Gérer les valeurs nulles
+        		$nom_utilisateur = htmlspecialchars($row['nom_utilisateur'] ?? 'Utilisateur');
+        		$id = intval($row['id']);
+
         		echo "<div class='gardien-card'>";
-        		echo "<img src='display_image.php?id=" . htmlspecialchars($row['id']) . "' alt='" . htmlspecialchars($row['prenom']) . "'>";
-        		echo "<h3>" . htmlspecialchars($row['prenom']) . " (" . htmlspecialchars($row['nom_utilisateur']) . ")</h3>";
+        		echo "<img src='display_image.php?id=$id' alt='$prenom'>";
+        		echo "<h3>$prenom ($nom_utilisateur)</h3>";
         		echo "</div>";
     		}
     		?>
 	</div>
+
 
     </section>
     <script>
