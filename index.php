@@ -303,9 +303,21 @@ include 'config.php';
     <section class="gardiens">
         <h2 class="texte">Découvrez nos gardiens disponibles :</h2>
         <p class="texte">Ils sont prêts à offrir amour, soins et attention à vos animaux.</p>
-        <div id="gardiens-container" class="gardiens-container">
-            <p class="texte">Chargement des gardiens en cours... Merci de patienter.</p>
-        </div>
+	<div id="gardiens-container" class="gardiens-container">
+    		<?php
+    		// Récupérez les gardiens depuis la base de données
+    		$query = "SELECT id, prenom, nom_utilisateur FROM creation_compte WHERE role = 2"; // 2 pour les gardiens
+    		$result = $conn->query($query);
+
+    		while ($row = $result->fetch_assoc()) {
+        		echo "<div class='gardien-card'>";
+        		echo "<img src='display_image.php?id=" . htmlspecialchars($row['id']) . "' alt='" . htmlspecialchars($row['prenom']) . "'>";
+        		echo "<h3>" . htmlspecialchars($row['prenom']) . " (" . htmlspecialchars($row['nom_utilisateur']) . ")</h3>";
+        		echo "</div>";
+    		}
+    		?>
+	</div>
+
     </section>
     <script>
         async function fetchGardiens() {
