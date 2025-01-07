@@ -98,12 +98,21 @@ $conn->close();
             align-items: center;
             justify-content: space-between;
             padding: 20px;
-            background: none; /* Supprimez la couleur de fond */
-            box-shadow: none; /* Supprimez l'ombre */
+            background: none;
+            box-shadow: none;
+        }
+        .header-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
         }
 
         header img {
             height: 80px;
+            position: absolute;
+            left: 20px; /* Placez le logo à gauche */
+            top: 20px;
         }
 
         header .auth-buttons {
