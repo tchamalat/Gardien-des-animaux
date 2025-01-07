@@ -1,22 +1,23 @@
 <?php
+session_start();
 include 'config.php';
 
-// Vérifiez si un ID utilisateur est passé dans l'URL
-if (!isset($_GET['id'])) {
-    header("HTTP/1.1 400 Bad Request");
-    exit("ID de propriétaire manquant.");
+if (!isset($_SESSION['user_id'])) {
+    header("HTTP/1.1 403 Forbidden");
+    exit();
 }
 
-$proprietaire_id = intval($_GET['id']);
+$user_id = $_SESSION['user_id'];
 
 // Récupérer les données de l'image depuis la base de données
-$sql = "SELECT profile_picture FROM creation_compte WHERE id = ? AND role = 3"; // 3 pour les propriétaires
+$sql = "SELECT profile_picture FROM creation_compte WHERE id = ?";
 $stmt = $conn->prepare($sql);
-$stmt->bind_param("i", $proprietaire_id);
+$stmt->bind_param("i", $user_id);
 $stmt->execute();
 $stmt->bind_result($profile_picture);
 $stmt->fetch();
 $stmt->close();
+$conn->close();
 
 // Vérifier si une image existe
 if ($profile_picture) {
@@ -25,8 +26,6 @@ if ($profile_picture) {
 } else {
     // Si aucune image n'est définie, afficher une image par défaut
     header("Content-Type: image/png");
-    readfile("images/default_owner.png"); // Remplacez par l'image par défaut pour les propriétaires
+    readfile("images/default_profile.png"); // Remplacez par votre image par défaut
 }
-
-$conn->close();
 ?>
