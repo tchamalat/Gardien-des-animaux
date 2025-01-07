@@ -1,63 +1,60 @@
 <?php
-session_start();
-include 'config.php'; // Connexion à la base de données
+include 'config.php';
 
 header('Content-Type: application/json');
 
-// Récupère les données envoyées par fetchProprietaires()
 $data = json_decode(file_get_contents('php://input'), true);
 
-if (!isset($data['latitude'], $data['longitude'])) {
-    echo json_encode(['error' => 'Coordonnées non fournies.']);
-    exit;
+if (isset($data['latitude'], $data['longitude'])) {
+    $latitude = $data['latitude'];
+    $longitude = $data['longitude'];
+    $radius = $data['radius'] ?? 50; // Rayon en kilomètres, valeur par défaut : 50 km
+
+    // Préparer la requête SQL
+    $query = $conn->prepare("
+        SELECT 
+            id, nom_utilisateur, prenom, ville, profile_picture, latitude, longitude,
+            (6371 * ACOS(COS(RADIANS(?)) * COS(RADIANS(latitude)) * COS(RADIANS(longitude) - RADIANS(?)) + SIN(RADIANS(?)) * SIN(RADIANS(latitude)))) AS distance
+        FROM creation_compte
+        WHERE role = 1 AND latitude IS NOT NULL AND longitude IS NOT NULL
+        HAVING distance <= ?
+        ORDER BY distance ASC
+    ");
+
+    if (!$query) {
+        echo json_encode(['error' => 'Erreur de préparation de la requête : ' . $conn->error]);
+        exit;
+    }
+
+    $query->bind_param("dddi", $latitude, $longitude, $latitude, $radius);
+
+    if (!$query->execute()) {
+        echo json_encode(['error' => 'Erreur d\'exécution de la requête : ' . $query->error]);
+        exit;
+    }
+
+    $result = $query->get_result();
+    $proprietaires = [];
+
+    while ($row = $result->fetch_assoc()) {
+        $proprietaires[] = [
+            'id' => $row['id'],
+            'nom_utilisateur' => $row['nom_utilisateur'],
+            'prenom' => $row['prenom'],
+            'ville' => $row['ville'],
+            'profile_picture' => $row['profile_picture'] ? "display_image_proprietaire.php?id={$row['id']}" : 'images/default_owner.png',
+            'distance' => round($row['distance'], 2), // Distance arrondie à 2 décimales
+        ];
+    }
+
+    if (empty($proprietaires)) {
+        echo json_encode(['error' => 'Aucun propriétaire trouvé dans ce rayon.']);
+    } else {
+        echo json_encode($proprietaires);
+    }
+} else {
+    echo json_encode(['error' => 'Données invalides. Latitude et longitude manquantes.']);
 }
 
-$latitude = $data['latitude'];
-$longitude = $data['longitude'];
-
-// Requête SQL pour récupérer les propriétaires disponibles
-$sql = "
-    SELECT id, nom_utilisateur, prenom, ville, profile_picture,
-    (6371 * acos(
-        cos(radians(?)) * cos(radians(latitude)) *
-        cos(radians(longitude) - radians(?)) +
-        sin(radians(?)) * sin(radians(latitude))
-    )) AS distance
-    FROM creation_compte
-    WHERE role = 1 /* Propriétaires */
-    HAVING distance < 50 /* Propriétaires dans un rayon de 50 km */
-    ORDER BY distance ASC
-";
-
-$stmt = $conn->prepare($sql);
-if (!$stmt) {
-    echo json_encode(['error' => 'Erreur lors de la préparation de la requête : ' . $conn->error]);
-    exit;
-}
-
-$stmt->bind_param('ddd', $latitude, $longitude, $latitude);
-
-if (!$stmt->execute()) {
-    echo json_encode(['error' => 'Erreur lors de l\'exécution de la requête : ' . $stmt->error]);
-    exit;
-}
-
-$result = $stmt->get_result();
-
-$proprietaires = [];
-while ($row = $result->fetch_assoc()) {
-    $imageData = !empty($row['profile_picture']) ? base64_encode($row['profile_picture']) : null;
-    $proprietaires[] = [
-        'id' => $row['id'],
-        'nom_utilisateur' => $row['nom_utilisateur'],
-        'prenom' => $row['prenom'],
-        'ville' => $row['ville'],
-        'distance' => $row['distance'],
-        'profile_picture' => $imageData, // Inclure les données de l'image encodée en base64
-    ];
-}
-
-$stmt->close();
 $conn->close();
-
-echo json_encode($proprietaires);
+?>
