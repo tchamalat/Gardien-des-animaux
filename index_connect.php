@@ -79,16 +79,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             align-items: center;
             background: none;
         }
+	.header-container {
+    	    display: flex;
+            justify-content: space-between; /* Place le logo à gauche et les boutons à droite */
+            align-items: center;
+            width: 100%;
+	}
+
 
         header img {
             height: 120px;
             max-width: 200px;
         }
 
-        .auth-buttons {
-            display: flex;
-            gap: 15px;
-        }
+	.auth-buttons {
+            position: absolute; /* Place les boutons en position absolue */
+            top: 20px; /* Distance depuis le haut */
+            right: 20px; /* Distance depuis la droite */
+            display: flex; /* Active l'affichage flex */
+            gap: 15px; /* Espacement entre les boutons */
+            z-index: 100; /* Assure que les boutons sont au-dessus des autres éléments */
+	}
+
 
         .auth-buttons .btn {
             background-color: orange;
