@@ -39,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gardien des Animaux - Connecté</title>
-        <style>
+    <style>
         * {
             margin: 0;
             padding: 0;
@@ -275,20 +275,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 <body>
     <!-- Header -->
+    <!-- Header -->
     <header>
         <div class="header-container">
             <img src="images/logo.png" alt="Logo Gardien des Animaux">
             <div class="auth-buttons">
                 <button class="btn" onclick="window.location.href='discussion.php'">Discussion</button>
-                <?php
-                if (isset($_SESSION['role'])) {
-                    if ($_SESSION['role'] == 0) {
-                        echo '<button class="btn" onclick="window.location.href=\'profil_gardien.php\'">Mon Profil</button>';
-                    } elseif ($_SESSION['role'] == 1) {
-                        echo '<button class="btn" onclick="window.location.href=\'profil.php\'">Mon Profil</button>';
-                    }
-                }
-                ?>
+                <?php if (isset($_SESSION['role'])): ?>
+                    <?php if ($_SESSION['role'] == 0): ?>
+                        <button class="btn" onclick="window.location.href='profil_gardien.php'">Mon Profil</button>
+                    <?php elseif ($_SESSION['role'] == 1): ?>
+                        <button class="btn" onclick="window.location.href='profil.php'">Mon Profil</button>
+                    <?php endif; ?>
+                <?php endif; ?>
             </div>
         </div>
     </header>
@@ -296,11 +295,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <!-- Hero Section -->
     <section class="hero">
         <h1 class="texte">Bienvenue sur Gardien des Animaux</h1>
-	<button onclick="window.location.href='search_page.php'">Trouver un gardien</button>
+        <button onclick="window.location.href='search_page.php'">Trouver un gardien</button>
     </section>
 
     <!-- Section Gardien -->
-    <?php if ($_SESSION['role'] == 1): ?>
+    <?php if (isset($_SESSION['role']) && $_SESSION['role'] == 1): ?>
     <section class="gardiens">
         <h2 class="texte">Découvrez nos gardiens disponibles :</h2>
         <div id="gardiens-container" class="gardiens-container">
@@ -308,49 +307,52 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
     </section>
     <script>
-	async function fetchGardiens() {
-    		const gardiensContainer = document.getElementById('gardiens-container');
+        async function fetchGardiens() {
+            const gardiensContainer = document.getElementById('gardiens-container');
+            gardiensContainer.innerHTML = '<p class="texte">Chargement des gardiens en cours...</p>';
 
-    		if (navigator.geolocation) {
-        		navigator.geolocation.getCurrentPosition(async (position) => {
-            			const { latitude, longitude } = position.coords;
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(async (position) => {
+                    const { latitude, longitude } = position.coords;
 
-            			try {
-                			const response = await fetch('fetch_gardiens.php', {
-                    				method: 'POST',
-                    				headers: { 'Content-Type': 'application/json' },
-                    				body: JSON.stringify({ latitude, longitude })
-                			});
+                    try {
+                        const response = await fetch('fetch_gardiens.php', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ latitude, longitude })
+                        });
 
-                			const data = await response.json();
+                        const data = await response.json();
 
-                			if (data.error) {
-                    				gardiensContainer.innerHTML = `<p class="texte">${data.error}</p>`;
-                			} else {
-                    				gardiensContainer.innerHTML = data.map(gardien => `
-                        				<div class="gardien-card">
-                            					<img src="${gardien.profile_picture}" alt="${gardien.prenom}">
-                           					<h3>${gardien.prenom}</h3>
-                            					<p>${gardien.nom_utilisateur}</p>
-                            					<p>Distance : ${gardien.distance} km</p>
-                        				</div>
-                    				`).join('');
-                			}
-            			} catch (error) {
-                			console.error('Erreur lors de la récupération des gardiens:', error);
-                			gardiensContainer.innerHTML = `<p class="texte">Une erreur est survenue. Veuillez réessayer plus tard.</p>`;
-            			}
-        		}, (error) => {
-            			gardiensContainer.innerHTML = `<p class="texte">Erreur de géolocalisation : ${error.message}</p>`;
-        		});
-    		} else {
-        		gardiensContainer.innerHTML = `<p class="texte">La géolocalisation n'est pas prise en charge par votre navigateur.</p>`;
-    		}
-	}
+                        if (data.error) {
+                            gardiensContainer.innerHTML = `<p class="texte">${data.error}</p>`;
+                        } else {
+                            if (data.length === 0) {
+                                gardiensContainer.innerHTML = '<p class="texte">Aucun gardien trouvé près de chez vous.</p>';
+                            } else {
+                                gardiensContainer.innerHTML = data.map(gardien => `
+                                    <div class="gardien-card">
+                                        <img src="${gardien.profile_picture}" alt="${gardien.prenom}">
+                                        <h3>${gardien.prenom}</h3>
+                                        <p>${gardien.nom_utilisateur}</p>
+                                        <p>Distance : ${gardien.distance.toFixed(2)} km</p>
+                                    </div>
+                                `).join('');
+                            }
+                        }
+                    } catch (error) {
+                        console.error('Erreur lors de la récupération des gardiens:', error);
+                        gardiensContainer.innerHTML = `<p class="texte">Une erreur est survenue. Veuillez réessayer plus tard.</p>`;
+                    }
+                }, (error) => {
+                    gardiensContainer.innerHTML = `<p class="texte">Erreur de géolocalisation : ${error.message}</p>`;
+                });
+            } else {
+                gardiensContainer.innerHTML = '<p class="texte">La géolocalisation n\'est pas prise en charge par votre navigateur.</p>';
+            }
+        }
 
-	// Charger les gardiens dès que la page est prête
-	document.addEventListener('DOMContentLoaded', fetchGardiens);
-
+        document.addEventListener('DOMContentLoaded', fetchGardiens);
     </script>
     <?php endif; ?>
 
