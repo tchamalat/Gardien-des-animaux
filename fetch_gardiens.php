@@ -6,12 +6,11 @@ $data = json_decode(file_get_contents('php://input'), true);
 if (isset($data['latitude'], $data['longitude'])) {
     $latitude = $data['latitude'];
     $longitude = $data['longitude'];
-    $radius = $data['radius'] ?? 10; // Rayon en kilomètres, valeur par défaut : 10
+    $radius = $data['radius'] ?? 10; // Rayon en kilomètres, par défaut : 10
 
-    // Préparer la requête SQL
     $query = $conn->prepare("
         SELECT 
-            id, nom_utilisateur, profile_picture, latitude, longitude,
+            id, prenom, nom_utilisateur, profile_picture, latitude, longitude,
             (6371 * ACOS(COS(RADIANS(?)) * COS(RADIANS(latitude)) * COS(RADIANS(longitude) - RADIANS(?)) + SIN(RADIANS(?)) * SIN(RADIANS(latitude)))) AS distance
         FROM creation_compte
         WHERE role = 0 AND latitude IS NOT NULL AND longitude IS NOT NULL
@@ -37,17 +36,14 @@ if (isset($data['latitude'], $data['longitude'])) {
     while ($row = $result->fetch_assoc()) {
         $gardiens[] = [
             'id' => $row['id'],
+            'prenom' => $row['prenom'],
             'nom_utilisateur' => $row['nom_utilisateur'],
             'profile_picture' => $row['profile_picture'] ? "display_image.php?id={$row['id']}" : 'images/default.jpg',
             'distance' => round($row['distance'], 2), // Distance arrondie à 2 décimales
         ];
     }
 
-    if (empty($gardiens)) {
-        echo json_encode(['error' => 'Aucun gardien trouvé dans ce rayon.']);
-    } else {
-        echo json_encode($gardiens);
-    }
+    echo json_encode($gardiens);
 } else {
     echo json_encode(['error' => 'Données invalides. Latitude et longitude manquantes.']);
 }
