@@ -280,7 +280,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <img src="images/logo.png" alt="Logo Gardien des Animaux">
             <div class="auth-buttons">
                 <button class="btn" onclick="window.location.href='search_page.php'">Trouver un gardien</button>
-                <button class="btn" onclick="window.location.href='discussion_gardien.php'">Discussion</button>
+                <button class="btn" onclick="window.location.href='discussion.php'">Discussion</button>
                 <?php
                 if (isset($_SESSION['role'])) {
                     if ($_SESSION['role'] == 0) {
