@@ -254,10 +254,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             font-size: 1.2em; /* Taille de la note */
         }
 	    .voir-plus {
-	        background-color: #f5a623;
+	    background-color: #f5a623;
     	    color: white;
     	    padding: 15px 30px;
-	        border: none;
+	    border: none;
     	    border-radius: 8px;
     	    cursor: pointer;
     	    font-size: 1.2em;
@@ -279,7 +279,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="header-container">
             <img src="images/logo.png" alt="Logo Gardien des Animaux">
             <div class="auth-buttons">
-                <button class="btn" onclick="window.location.href='search_page.php'">Trouver un gardien</button>
                 <button class="btn" onclick="window.location.href='discussion.php'">Discussion</button>
                 <?php
                 if (isset($_SESSION['role'])) {
@@ -297,6 +296,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <!-- Hero Section -->
     <section class="hero">
         <h1 class="texte">Bienvenue sur Gardien des Animaux</h1>
+	<button onclick="window.location.href='search_page.php'">Trouver un gardien</button>
     </section>
 
     <!-- Section Gardien -->
