@@ -291,12 +291,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </section>
 
     <!-- Section Gardien -->
-    <?php if ($_SESSION['role'] == 1): ?>
     <section class="gardiens">
         <h2 class="texte">Découvrez nos gardiens disponibles :</h2>
-        <div id="gardiens-container" class="gardiens-container">
-            <p class="texte">Chargement des gardiens en cours... Merci de patienter.</p>
-        </div>
+        <p class="texte">Ils sont prêts à offrir amour, soins et attention à vos animaux.</p>
+	<div id="gardiens-container" class="gardiens-container">
+    		<?php
+    		// Récupérez les gardiens depuis la base de données
+    		$query = "SELECT id, prenom, nom_utilisateur FROM creation_compte WHERE role = 0"; 
+    		$result = $conn->query($query);
+
+		while ($row = $result->fetch_assoc()) {
+        		$prenom = htmlspecialchars($row['prenom'] ?? 'Inconnu'); // Gérer les valeurs nulles
+        		$nom_utilisateur = htmlspecialchars($row['nom_utilisateur'] ?? 'Utilisateur');
+        		$id = intval($row['id']);
+
+        		echo "<div class='gardien-card'>";
+        		echo "<img src='display_image.php?id=$id' alt='$prenom'>";
+        		echo "<h3>$prenom ($nom_utilisateur)</h3>";
+        		echo "</div>";
+    		}
+    		?>
+	</div>
     </section>
     <script>
         async function fetchGardiens() {
