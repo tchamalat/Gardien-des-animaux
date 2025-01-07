@@ -308,40 +308,49 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
     </section>
     <script>
-        async function fetchGardiens() {
-            const gardiensContainer = document.getElementById('gardiens-container');
+	async function fetchGardiens() {
+    		const gardiensContainer = document.getElementById('gardiens-container');
 
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(async (position) => {
-                    const { latitude, longitude } = position.coords;
+    		if (navigator.geolocation) {
+        		navigator.geolocation.getCurrentPosition(async (position) => {
+            			const { latitude, longitude } = position.coords;
 
-                    const response = await fetch('index_connect.php', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ latitude, longitude })
-                    });
+            			try {
+                			const response = await fetch('fetch_gardiens.php', {
+                    				method: 'POST',
+                    				headers: { 'Content-Type': 'application/json' },
+                    				body: JSON.stringify({ latitude, longitude })
+                			});
 
-                    const gardiens = await response.json();
+                			const data = await response.json();
 
-                    if (gardiens.length > 0) {
-                        gardiensContainer.innerHTML = gardiens.map(gardien => `
-                            <div class="gardien-card">
-                                <img src="images/${gardien.profile_picture || 'default.jpg'}" alt="${gardien.prenom}">
-                                <h3>${gardien.prenom}</h3>
-                                <p>${gardien.nom_utilisateur}</p>
-                                <p>Distance : ${gardien.distance.toFixed(2)} km</p>
-                            </div>
-                        `).join('');
-                    } else {
-                        gardiensContainer.innerHTML = `<p class="texte">Aucun gardien trouvé près de chez vous.</p>`;
-                    }
-                });
-            } else {
-                gardiensContainer.innerHTML = `<p class="texte">La géolocalisation n'est pas prise en charge par votre navigateur.</p>`;
-            }
-        }
+                			if (data.error) {
+                    				gardiensContainer.innerHTML = `<p class="texte">${data.error}</p>`;
+                			} else {
+                    				gardiensContainer.innerHTML = data.map(gardien => `
+                        				<div class="gardien-card">
+                            					<img src="${gardien.profile_picture}" alt="${gardien.prenom}">
+                           					<h3>${gardien.prenom}</h3>
+                            					<p>${gardien.nom_utilisateur}</p>
+                            					<p>Distance : ${gardien.distance} km</p>
+                        				</div>
+                    				`).join('');
+                			}
+            			} catch (error) {
+                			console.error('Erreur lors de la récupération des gardiens:', error);
+                			gardiensContainer.innerHTML = `<p class="texte">Une erreur est survenue. Veuillez réessayer plus tard.</p>`;
+            			}
+        		}, (error) => {
+            			gardiensContainer.innerHTML = `<p class="texte">Erreur de géolocalisation : ${error.message}</p>`;
+        		});
+    		} else {
+        		gardiensContainer.innerHTML = `<p class="texte">La géolocalisation n'est pas prise en charge par votre navigateur.</p>`;
+    		}
+	}
 
-        document.addEventListener('DOMContentLoaded', fetchGardiens);
+	// Charger les gardiens dès que la page est prête
+	document.addEventListener('DOMContentLoaded', fetchGardiens);
+
     </script>
     <?php endif; ?>
 
