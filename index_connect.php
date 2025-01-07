@@ -2,22 +2,6 @@
 include 'config.php'; 
 session_start();
 
-// Récupérez les gardiens depuis la base de données
-$query = "SELECT id, prenom, nom_utilisateur FROM creation_compte WHERE role = 0"; 
-$result = $conn->query($query);
-
-while ($row = $result->fetch_assoc()) {
-    $prenom = htmlspecialchars($row['prenom'] ?? 'Inconnu'); // Gérer les valeurs nulles
-    $nom_utilisateur = htmlspecialchars($row['nom_utilisateur'] ?? 'Utilisateur');
-    $id = intval($row['id']);
-
-    echo "<div class='gardien-card'>";
-    echo "<img src='display_image.php?id=$id' alt='$prenom'>";
-    echo "<h3>$prenom ($nom_utilisateur)</h3>";
-    echo "</div>";
-}
-
-
 // Gestion des requêtes AJAX pour les gardiens
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $input = json_decode(file_get_contents('php://input'), true);
@@ -332,12 +316,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <script>
         async function fetchGardiens() {
             const gardiensContainer = document.getElementById('gardiens-container');
-
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(async (position) => {
                     const { latitude, longitude } = position.coords;
-
-                    // Appel à l'API fetch_gardiens.php
                     const response = await fetch('fetch_gardiens.php', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
@@ -345,27 +326,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     });
 
                     const data = await response.json();
-
                     if (data.error) {
                         gardiensContainer.innerHTML = `<p>Erreur : ${data.error}</p>`;
                     } else {
                         gardiensContainer.innerHTML = data.map(gardien => `
                             <div class="gardien-card">
-                                <img src="${gardien.profile_picture}" alt="${gardien.prenom}">
-                                <h3>${gardien.prenom} (${gardien.nom_utilisateur})</h3>
-				<p>${gardien.distance} km</p>
+                                <img src="images/${gardien.profile_picture || 'default.jpg'}" alt="${gardien.prenom}">
+                                <h3>${gardien.prenom}</h3>
+                                <p>${gardien.nom_utilisateur}</p>
+                                <p>Distance : ${gardien.distance.toFixed(2)} km</p>
                             </div>
                         `).join('');
                     }
-                }, (error) => {
-                    gardiensContainer.innerHTML = `<p>Erreur de géolocalisation : ${error.message}</p>`;
                 });
-            } else {
-                gardiensContainer.innerHTML = `<p>La géolocalisation n'est pas prise en charge par votre navigateur.</p>`;
             }
         }
-
-        // Charger les gardiens dès que la page est prête
         document.addEventListener('DOMContentLoaded', fetchGardiens);
     </script>
     <?php endif; ?>
