@@ -332,9 +332,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <script>
         async function fetchGardiens() {
             const gardiensContainer = document.getElementById('gardiens-container');
+
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(async (position) => {
                     const { latitude, longitude } = position.coords;
+
+                    // Appel à l'API fetch_gardiens.php
                     const response = await fetch('fetch_gardiens.php', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
@@ -342,21 +345,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     });
 
                     const data = await response.json();
+
                     if (data.error) {
                         gardiensContainer.innerHTML = `<p>Erreur : ${data.error}</p>`;
                     } else {
                         gardiensContainer.innerHTML = data.map(gardien => `
                             <div class="gardien-card">
-                                <img src="images/${gardien.profile_picture || 'default.jpg'}" alt="${gardien.prenom}">
-                                <h3>${gardien.prenom}</h3>
-                                <p>${gardien.nom_utilisateur}</p>
-                                <p>Distance : ${gardien.distance.toFixed(2)} km</p>
+                                <img src="${gardien.profile_picture}" alt="${gardien.prenom}">
+                                <h3>${gardien.prenom} (${gardien.nom_utilisateur})</h3>
+				<p>${gardien.distance} km</p>
                             </div>
                         `).join('');
                     }
+                }, (error) => {
+                    gardiensContainer.innerHTML = `<p>Erreur de géolocalisation : ${error.message}</p>`;
                 });
+            } else {
+                gardiensContainer.innerHTML = `<p>La géolocalisation n'est pas prise en charge par votre navigateur.</p>`;
             }
         }
+
+        // Charger les gardiens dès que la page est prête
         document.addEventListener('DOMContentLoaded', fetchGardiens);
     </script>
     <?php endif; ?>
