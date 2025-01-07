@@ -54,10 +54,15 @@ include 'config.php';
             max-width: 200px;
         }
 
-        .auth-buttons {
+	.auth-buttons {
+	    position: absolute;
+            top: 20px; /* Ajustez la valeur si nécessaire */
+            right: 20px; /* Ajustez la valeur si nécessaire */
             display: flex;
             gap: 15px;
-        }
+            z-index: 100; /* Assurez-vous que les boutons sont au-dessus d'autres éléments */
+	}
+
 
         .auth-buttons .btn {
             background-color: orange;
