@@ -212,7 +212,7 @@ unset($_SESSION['message']);
 <div class="profile-container">
     <h2>Mon profil</h2>
     <div class="profile-picture">
-        <img id="profile-img" src="display_image.php" alt="Photo de profil">
+        <img id="profile-img" src="display_image.php?id=<?php echo $user_id; ?>" alt="Photo de profil">
         <form action="upload_image.php" method="POST" enctype="multipart/form-data">
             <input type="file" id="profile-picture-input" name="profilePicture" accept="image/*" style="display: none;" onchange="previewProfileImage(event)">
             <button type="button" onclick="document.getElementById('profile-picture-input').click();">Changer la photo</button>
