@@ -244,9 +244,6 @@
 
         <div id="message"></div> 
     </div>
-            <button type="submit" class="btn">Créer un compte</button>
-        </form>
-    </div>
 
     <footer>
         <div class="footer-links">
