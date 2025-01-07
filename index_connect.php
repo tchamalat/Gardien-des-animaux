@@ -2,6 +2,22 @@
 include 'config.php'; 
 session_start();
 
+// Récupérez les gardiens depuis la base de données
+$query = "SELECT id, prenom, nom_utilisateur FROM creation_compte WHERE role = 0"; 
+$result = $conn->query($query);
+
+while ($row = $result->fetch_assoc()) {
+    $prenom = htmlspecialchars($row['prenom'] ?? 'Inconnu'); // Gérer les valeurs nulles
+    $nom_utilisateur = htmlspecialchars($row['nom_utilisateur'] ?? 'Utilisateur');
+    $id = intval($row['id']);
+
+    echo "<div class='gardien-card'>";
+    echo "<img src='display_image.php?id=$id' alt='$prenom'>";
+    echo "<h3>$prenom ($nom_utilisateur)</h3>";
+    echo "</div>";
+}
+
+
 // Gestion des requêtes AJAX pour les gardiens
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $input = json_decode(file_get_contents('php://input'), true);
