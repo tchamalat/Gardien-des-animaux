@@ -179,47 +179,71 @@
             </div>
         </div>
     </header>
-
     <div class="form-container">
         <h2>Création de compte :</h2>
-        <form id="registerForm" method="POST" action="register.php" novalidate>
+
+        <form id="registerForm" method="POST" novalidate>
             <div class="form-group">
                 <label for="prenom">Prénom :</label>
                 <input type="text" id="prenom" name="prenom" required>
             </div>
+
             <div class="form-group">
                 <label for="nom">Nom :</label>
                 <input type="text" id="nom" name="nom" required>
             </div>
+
             <div class="form-group">
                 <label for="username">Nom d'utilisateur :</label>
                 <input type="text" id="username" name="username" required>
             </div>
+
             <div class="form-group">
                 <label for="email">Adresse mail :</label>
                 <input type="email" id="email" name="email" required>
-                <small id="emailError">Adresse e-mail invalide.</small>
+                <small id="emailError" style="color: red; display: none;"></small>
             </div>
+
             <div class="form-group">
                 <label for="telephone">Numéro de téléphone :</label>
                 <input type="tel" id="telephone" name="telephone" pattern="[0-9]{10}" required>
             </div>
+
+            <div class="form-group">
+                <label for="adresse">Adresse :</label>
+                <input type="text" id="adresse" name="adresse" required>
+            </div>
+
+            <div class="form-group">
+                <label for="ville">Ville :</label>
+                <input type="text" id="ville" name="ville" required>
+            </div>
+
             <div class="form-group">
                 <label for="password">Mot de passe :</label>
                 <input type="password" id="password" name="password" required>
             </div>
+
             <div class="form-group">
                 <label for="confirm_password">Confirmation du mot de passe :</label>
                 <input type="password" id="confirm_password" name="confirm_password" required>
-                <small id="passwordError">Les mots de passe ne correspondent pas.</small>
+                <small id="passwordError" style="color: red; display: none;">Les mots de passe ne correspondent pas.</small>
             </div>
+
             <div class="form-group">
                 <label>Rôle :</label>
-                <input type="radio" id="gardien" name="role" value="0" required>
+                <input type="radio" id="role" name="role" value="0" required>
                 <label for="gardien">Gardien</label>
-                <input type="radio" id="proprietaire" name="role" value="1" required>
+
+                <input type="radio" id="role" name="role" value="1" required>
                 <label for="proprietaire">Propriétaire</label>
             </div>
+
+            <button type="submit" class="btn">Créer un compte</button>
+        </form>
+
+        <div id="message"></div> 
+    </div>
             <button type="submit" class="btn">Créer un compte</button>
         </form>
     </div>
