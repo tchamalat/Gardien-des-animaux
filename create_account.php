@@ -174,9 +174,9 @@
         <div class="header-container">
             <img src="images/logo.png" alt="Logo Gardien des Animaux">
             <h1 class="header-slogan">Un foyer chaleureux même en votre absence</h1>
-            <div class="auth-buttons">
-                <button class="btn" onclick="window.location.href='index.php'">Accueil</button>
-            </div>
+        <div class="auth-buttons">
+            <button class="btn" onclick="window.location.href='index.php'">Accueil</button>
+        </div>
         </div>
     </header>
     <div class="form-container">
@@ -244,6 +244,103 @@
 
         <div id="message"></div> 
     </div>
+    <script>
+        // Fonction de validation pour le numéro de téléphone
+        function validatePhoneNumber(phone) {
+            const phoneRegex = /^[0-9]{10}$/;
+            return phoneRegex.test(phone);
+        }
+        // Fonction de validation pour l'email
+        function validateEmail(email) {
+            const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|fr)$/;
+            return emailRegex.test(email);
+        }
+
+        // Écouteur d'événements pour le formulaire d'inscription
+        document.getElementById('registerForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Empêche le rechargement de la page
+
+            const formData = new FormData(this);
+            const email = formData.get('email');
+            const emailError = document.getElementById('emailError');
+
+            const phone = formData.get('telephone');
+            if (!validatePhoneNumber(phone)) {
+                alert("Le numéro de téléphone doit contenir exactement 10 chiffres.");
+                return;
+            }
+
+            // Vérification de l'email
+            if (!validateEmail(email)) {
+                emailError.style.display = 'inline';
+                emailError.textContent = "L'adresse e-mail doit être au format xxx.xxx@xxx.fr ou xxx.xxx@xxx.com ou xxxxxx@xxx.fr ou xxxxxx@xxx.com.";
+                return;
+            } else {
+                emailError.style.display = 'none';
+            }
+
+            // Vérification des mots de passe
+            const password = formData.get('password');
+            const confirmPassword = formData.get('confirm_password');
+            const passwordError = document.getElementById('passwordError');
+
+            if (password !== confirmPassword) {
+                passwordError.style.display = 'inline';
+                return;
+            } else {
+                passwordError.style.display = 'none';
+            }
+
+            // Envoi de la requête AJAX
+            fetch('register.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.text())
+            .then(data => {
+                if (data.trim() === "success") {
+                    window.location.href = "confirmation.php";
+                } else {
+                    document.getElementById('message').innerHTML = data;
+                }
+            })
+            .catch(error => console.error('Erreur:', error));
+        });
+    </script>
+    <script>
+        document.getElementById('registerForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Empêche le rechargement de la page
+
+            const formData = new FormData(this);
+
+            // Vérification des mots de passe
+            const password = formData.get('password');
+            const confirmPassword = formData.get('confirm_password');
+            const passwordError = document.getElementById('passwordError');
+
+            if (password !== confirmPassword) {
+                passwordError.style.display = 'inline'; // Affiche un message si les mots de passe ne correspondent pas
+                return;
+            } else {
+                passwordError.style.display = 'none';
+            }
+
+            // Envoi de la requête AJAX
+            fetch('register.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.text())
+            .then(data => {
+                if (data.trim() === "success") {
+                    window.location.href = "confirmation.php"; // Redirection vers la page de confirmation
+                } else {
+                    document.getElementById('message').innerHTML = data; // Affiche uniquement le message d'erreur
+                }
+            })
+            .catch(error => console.error('Erreur:', error));
+        });
+    </script>
 
     <footer>
         <div class="footer-links">
