@@ -46,7 +46,11 @@
             text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5);
             text-align: center;
             flex: 1;
-            margin: 0 20px;
+            margin: 0;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
         }
 
         .auth-buttons .btn {
@@ -59,6 +63,11 @@
             cursor: pointer;
             text-decoration: none;
             transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+        .auth-buttons {
+            position: absolute;
+            top: 20px;
+            right: 20px;
         }
 
         .auth-buttons .btn:hover {
