@@ -141,7 +141,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             font-size: 1.2em;
             cursor: pointer;
             transition: background-color 0.3s ease, transform 0.3s ease;
-            margin-top: 20px; /* Ajoute un espace entre le titre et le bouton */
         }
 
         .hero button:hover {
