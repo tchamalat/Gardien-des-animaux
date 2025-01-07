@@ -345,9 +345,10 @@ include 'config.php';
                         gardiensContainer.innerHTML = `<p>Erreur : ${data.error}</p>`;
                     } else {
                         gardiensContainer.innerHTML = data.map(gardien => `
-                            <div class="gardien">
-                                <img src="images/${gardien.profile_picture || 'default.jpg'}" alt="${gardien.prenom}">
-                                <p>${gardien.prenom} (${gardien.nom_utilisateur}) - ${gardien.distance.toFixed(2)} km</p>
+                            <div class="gardien-card">
+                                <img src="${gardien.profile_picture}" alt="${gardien.prenom}">
+                                <h3>${gardien.prenom} (${gardien.nom_utilisateur})</h3>
+				<p>${gardien.distance} km</p>
                             </div>
                         `).join('');
                     }
