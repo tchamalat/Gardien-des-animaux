@@ -37,7 +37,7 @@
 
         header img {
             height: 150px;
-            max-width: 120px;
+            max-width: 160px;
         }
 
         .header-slogan {
