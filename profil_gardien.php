@@ -107,8 +107,10 @@ $conn->close();
             font-weight: bold;
             text-align: center;
             flex: 1;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8); /* Ombre pour lisibilité */
+            transition: opacity 0.5s ease, transform 0.5s ease;
         }
+
         header.scrolled .header-slogan {
             opacity: 0;
             transform: translateY(-20px);
