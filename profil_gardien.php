@@ -101,6 +101,14 @@ $conn->close();
             background: none;
             box-shadow: none;
         }
+        header .header-slogan {
+            font-size: 1.5em;
+            color: orange;
+            font-weight: bold;
+            text-align: center;
+            flex: 1;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+        }
         .header-container {
             display: flex;
             flex-direction: column;
