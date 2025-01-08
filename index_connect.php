@@ -308,51 +308,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </section>
     <script>
         async function fetchGardiens() {
-            const gardiensContainer = document.getElementById('gardiens-container');
-            gardiensContainer.innerHTML = '<p class="texte">Chargement des gardiens en cours...</p>';
+    		const gardiensContainer = document.getElementById('gardiens-container');
+    		gardiensContainer.innerHTML = '<p class="texte">Chargement des gardiens en cours...</p>';
 
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(async (position) => {
-                    const { latitude, longitude } = position.coords;
+    		try {
+        		const response = await fetch('fetch_gardiens.php', {
+            			method: 'POST',
+            			headers: { 'Content-Type': 'application/json' },
+        		});
 
-                    try {
-                        const response = await fetch('fetch_gardiens.php', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ latitude, longitude })
-                        });
+        		const data = await response.json();
 
-                        const data = await response.json();
+        		if (data.error) {
+            			gardiensContainer.innerHTML = `<p class="texte">${data.error}</p>`;
+        		} else {
+            			if (data.length === 0) {
+                			gardiensContainer.innerHTML = '<p class="texte">Aucun gardien trouvé.</p>';
+            			} else {
+                			gardiensContainer.innerHTML = data.map(gardien => `
+                    				<div class="gardien-card">
+                        				<img src="${gardien.profile_picture}" alt="${gardien.prenom}">
+                        				<h3>${gardien.prenom} (${gardien.nom_utilisateur})</h3>
+                    				</div>
+                			`).join('');
+            			}
+        		}
+    		} catch (error) {
+        		console.error('Erreur lors de la récupération des gardiens:', error);
+        		gardiensContainer.innerHTML = `<p class="texte">Une erreur est survenue. Veuillez réessayer plus tard.</p>`;
+    		}
+	}
 
-                        if (data.error) {
-                            gardiensContainer.innerHTML = `<p class="texte">${data.error}</p>`;
-                        } else {
-                            if (data.length === 0) {
-                                gardiensContainer.innerHTML = '<p class="texte">Aucun gardien trouvé près de chez vous.</p>';
-                            } else {
-                                gardiensContainer.innerHTML = data.map(gardien => `
-                                    <div class="gardien-card">
-                                        <img src="${gardien.profile_picture}" alt="${gardien.prenom}">
-                                        <h3>${gardien.prenom}</h3>
-                                        <p>${gardien.nom_utilisateur}</p>
-                                        <p>Distance : ${gardien.distance.toFixed(2)} km</p>
-                                    </div>
-                                `).join('');
-                            }
-                        }
-                    } catch (error) {
-                        console.error('Erreur lors de la récupération des gardiens:', error);
-                        gardiensContainer.innerHTML = `<p class="texte">Une erreur est survenue. Veuillez réessayer plus tard.</p>`;
-                    }
-                }, (error) => {
-                    gardiensContainer.innerHTML = `<p class="texte">Erreur de géolocalisation : ${error.message}</p>`;
-                });
-            } else {
-                gardiensContainer.innerHTML = '<p class="texte">La géolocalisation n\'est pas prise en charge par votre navigateur.</p>';
-            }
-        }
+	document.addEventListener('DOMContentLoaded', fetchGardiens);
 
-        document.addEventListener('DOMContentLoaded', fetchGardiens);
     </script>
     <?php endif; ?>
 
