@@ -38,7 +38,7 @@ if (isset($data['latitude'], $data['longitude'])) {
             'id' => $row['id'],
             'prenom' => $row['prenom'],
             'nom_utilisateur' => $row['nom_utilisateur'],
-            'profile_picture' => $row['profile_picture'] ? "display_image.php?id={$row['id']}" : 'images/default.jpg',
+            'profile_picture' => $row['profile_picture'] ? "display_image_gardien.php?id={$row['id']}" : 'images/default.jpg',
             'distance' => round($row['distance'], 2), // Distance arrondie à 2 décimales
         ];
     }
