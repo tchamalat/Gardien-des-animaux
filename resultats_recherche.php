@@ -2,12 +2,7 @@
 include 'config.php';
 session_start();
 
-
 // Récupération des paramètres de recherche
-$latitude_user = $_GET['latitude'] ?? 0;
-$longitude_user = $_GET['longitude'] ?? 0;
-$rayon = $_GET['rayon'] ?? 20;
-
 $service = $_GET['service'] ?? '';
 $animal = $_GET['animal'] ?? '';
 $budget_min = (int)($_GET['budget_min'] ?? 0);
@@ -15,24 +10,21 @@ $budget_max = (int)($_GET['budget_max'] ?? 100);
 
 // Préparation de la requête SQL
 $sql = "
-    SELECT id, nom_utilisateur AS nom, type_animal AS animal, nombre_animal AS nombre_animaux, ville, budget_min, budget_max, service,
-    (
-        6371 * ACOS(
-            COS(RADIANS(?)) * COS(RADIANS(latitude)) * COS(RADIANS(longitude) - RADIANS(?)) +
-            SIN(RADIANS(?)) * SIN(RADIANS(latitude))
-        )
-    ) AS distance
-    FROM creation_compte
-    WHERE role = 0
-    AND (type_animal = ? OR ? = '')
-    AND (service = ? OR ? = '')
-    AND (budget_min >= ? AND budget_max <= ?)
-    HAVING distance <= ?
-    ORDER BY distance ASC
+    SELECT 
+        id, nom_utilisateur AS nom, type_animal AS animal, nombre_animal AS nombre_animaux, ville, budget_min, budget_max, service
+    FROM 
+        creation_compte
+    WHERE 
+        role = 0
+        AND (type_animal = ? OR ? = '')
+        AND (service = ? OR ? = '')
+        AND (budget_min >= ? AND budget_max <= ?)
+    ORDER BY 
+        budget_min ASC
 ";
 
 $stmt = $conn->prepare($sql);
-$stmt->bind_param("dddsssiiii", $latitude_user, $longitude_user, $latitude_user, $animal, $animal, $service, $service, $budget_min, $budget_max, $rayon);
+$stmt->bind_param("sssiii", $animal, $animal, $service, $service, $budget_min, $budget_max);
 $stmt->execute();
 
 $result = $stmt->get_result();
@@ -52,7 +44,99 @@ $conn->close();
     <meta charset='UTF-8'>
     <meta name='viewport' content='width=device-width, initial-scale=1.0'>
     <title>Résultats de la recherche</title>
-    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Ajoutez ici vos styles CSS */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f4f4f4;
+            color: #333;
+        }
+
+        header {
+            background: #333;
+            color: #fff;
+            padding: 15px 20px;
+            text-align: center;
+        }
+
+        .resultats-container {
+            padding: 20px;
+            max-width: 1000px;
+            margin: 20px auto;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: orange;
+            text-align: center;
+        }
+
+        .results-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .result-card {
+            margin: 15px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background: #f9f9f9;
+        }
+
+        .result-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .result-header h3 {
+            margin: 0;
+            font-size: 1.2em;
+        }
+
+        .badge {
+            background: orange;
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.9em;
+        }
+
+        .result-details {
+            margin: 10px 0;
+        }
+
+        .result-details p {
+            margin: 5px 0;
+        }
+
+        .result-actions {
+            text-align: right;
+        }
+
+        .btn-hero {
+            background: orange;
+            color: #fff;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: background 0.3s ease;
+        }
+
+        .btn-hero:hover {
+            background: #ff7f00;
+        }
+
+        .no-results {
+            text-align: center;
+            color: #888;
+        }
+    </style>
 </head>
 <body>
 <header>
@@ -114,3 +198,5 @@ $conn->close();
         </div>
     </div>
 </footer>
+</body>
+</html>
