@@ -11,26 +11,19 @@
             box-sizing: border-box;
         }
 
+        html, body {
+            height: 100%; /* Assure que le body prend toute la hauteur de la fenêtre */
+        }
+
         body {
             margin: 0;
             padding: 0;
             font-family: Arial, sans-serif;
             color: #fff;
-            min-height: 100vh;
-            overflow-x: hidden;
-            position: relative;
-        }
-
-        body::before {
-            content: "";
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            display: flex;
+            flex-direction: column; /* Place les éléments en colonne */
             background: url('images/premierplan.png') no-repeat center center fixed;
             background-size: cover;
-            z-index: -1;
         }
 
         header {
@@ -70,29 +63,14 @@
             transform: translate(-50%, -50%);
         }
 
-
-        .auth-buttons .btn {
-            background-color: orange;
-            color: white;
-            padding: 8px 15px;
-            border: none;
-            border-radius: 8px;
-            font-size: 0.9em;
-            cursor: pointer;
-            text-decoration: none;
-            transition: background-color 0.3s ease, transform 0.3s ease;
-        }
-
-        .auth-buttons .btn:hover {
-            background-color: #ff7f00;
-            transform: translateY(-3px);
+        main {
+            flex: 1; /* Prend tout l'espace disponible entre le header et le footer */
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         .form-container {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
             width: 90%;
             max-width: 400px;
             background: rgba(255, 255, 255, 0.9);
@@ -171,32 +149,12 @@
             background-color: #ff7f00;
             transform: translateY(-3px);
         }
-        ul {
-            margin-top: 20px;
-            padding-left: 20px;
-            list-style: none;
-        }
-
-        ul li {
-            position: relative;
-            padding-left: 25px;
-            margin-bottom: 10px;
-        }
-
-        ul li:before {
-            content: '✔';
-            position: absolute;
-            left: 0;
-            top: 0;
-            color: orange;
-            font-weight: bold;
-        }
 
         footer {
             background: rgba(0, 0, 0, 0.85);
             color: #fff;
             padding: 20px;
-            margin-top: auto; 
+            margin-top: auto; /* Colle le footer au bas de la page */
         }
 
         footer .footer-links {
@@ -235,43 +193,30 @@
         </div>
     </header>
 
-    <div class="form-container">
-        <h2>Je me connecte :</h2>
-        <form id="loginForm" method="POST" action="login.php">
-            <div class="form-group">
-                <label for="username">Identifiant ou Email :</label>
-                <input type="text" id="username" name="username" required>
-            </div>
-            <div class="form-group password-container">
-                <label for="password">Mot de passe :</label>
-                <input type="password" id="password" name="password" required>
-                <span class="toggle-password" onclick="togglePasswordVisibility()">
-                    <img src="images/oeilouvert.png" alt="Afficher/Masquer mot de passe" id="eyeIcon">
-                </span>
-            </div>
-            <div class="form-group">
-                <p class="forgot-password">
-                    <a href="forgot_password.php">Mot de passe oublié ?</a>
-                </p>
-            </div>
-            <button type="submit" class="btn">S'identifier</button>
-        </form>
-    </div>
-
-    <script>
-        function togglePasswordVisibility() {
-            const passwordInput = document.getElementById('password');
-            const eyeIcon = document.getElementById('eyeIcon');
-
-            if (passwordInput.type === 'password') {
-                passwordInput.type = 'text';
-                eyeIcon.src = 'images/oeilferme.png'; 
-            } else {
-                passwordInput.type = 'password';
-                eyeIcon.src = 'images/oeilouvert.png'; 
-            }
-        }
-    </script>
+    <main>
+        <div class="form-container">
+            <h2>Je me connecte :</h2>
+            <form id="loginForm" method="POST" action="login.php">
+                <div class="form-group">
+                    <label for="username">Identifiant ou Email :</label>
+                    <input type="text" id="username" name="username" required>
+                </div>
+                <div class="form-group password-container">
+                    <label for="password">Mot de passe :</label>
+                    <input type="password" id="password" name="password" required>
+                    <span class="toggle-password" onclick="togglePasswordVisibility()">
+                        <img src="images/oeilouvert.png" alt="Afficher/Masquer mot de passe" id="eyeIcon">
+                    </span>
+                </div>
+                <div class="form-group">
+                    <p class="forgot-password">
+                        <a href="forgot_password.php">Mot de passe oublié ?</a>
+                    </p>
+                </div>
+                <button type="submit" class="btn">S'identifier</button>
+            </form>
+        </div>
+    </main>
 
     <footer>
         <div class="footer-links">
