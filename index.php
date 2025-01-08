@@ -64,6 +64,14 @@ include 'config.php';
 	}
 
 
+	@media (max-width: 600px) { /* Ajustez la largeur pour définir votre "point de rupture" */
+    		.auth-buttons {
+        		flex-direction: column; /* Passe les boutons en colonne */
+        		gap: 15px; /* Augmente l'espacement entre eux si nécessaire */
+    		}
+	}
+
+
         .auth-buttons .btn {
             background-color: orange;
             color: white;
