@@ -228,6 +228,7 @@ $conn->close();
             <img src="images/logo.png" alt="Logo Gardien des Animaux">
             <div class="auth-buttons">
                 <button class="btn" onclick="window.location.href='search_page_index.php'">Nouvelle recherche</button>
+                <button class="btn" onclick="window.location.href='index.php'">Acceuil</button>                
             </div>
         </div>
     </header>
