@@ -1,9 +1,10 @@
 <?php
     
     $info = (object)[];
-
+    
     $data = [];
-    $data['userid'] = $_SESSION['userid'];
+    $data['userid'] = $DB->generate_id(20);
+    $data['date'] = date("Y-m-d H:i:s");
 
     $data['username'] = $DATA_OBJ->username ;
     if(empty($DATA_OBJ->username))
@@ -33,6 +34,14 @@
         if (!preg_match("/([\w\-]+\@[\w\-]+\.[\w\-]+)/", $DATA_OBJ->email) )
         {
             $Error .= "S'il vous plait entrer un email valide . <br> ";
+        }else {
+            // Vérifier si l'email existe déjà
+            $check_query = "SELECT email FROM users WHERE email = :email LIMIT 1";
+            $check_result = $DB->read($check_query, ['email' => $data['email']]);
+            
+            if (is_array($check_result) && count($check_result) > 0) {
+                $Error .= "Cet email est déjà utilisé. Veuillez utiliser un autre email. <br>";
+            }
         }
     }
 
@@ -67,6 +76,18 @@
             $Error .= "le Mot de passe doit au moins avoir 8 characters . <br> ";
         }
 
+        if (!preg_match("/[!@#$%^&*(),.?\":{}|<>]/", $DATA_OBJ->password)) {
+            $Error .= "Le mot de passe doit contenir au moins un caractère spécial (!@#$%^&* etc.). <br>";
+        }
+
+        if (!preg_match("/[A-Z]/", $DATA_OBJ->password)) {
+            $Error .= "Le mot de passe doit contenir au moins une lettre majuscule. <br>";
+        }
+    
+        if (!preg_match("/\d/", $DATA_OBJ->password)) {
+            $Error .= "Le mot de passe doit contenir au moins un chiffre. <br>";
+        }
+
        
     }
     
@@ -74,29 +95,34 @@
    
     if ($Error == "")
     {
-        $query = "update users set username = :username ,gender = :gender,email = :email,password = :password where userid = :userid limit 1";
+
+
+        $query = "insert into users (userid,username,gender,email,password,date) values (:userid,:username,:gender,:email,:password,:date)";
         $result = $DB->write($query,$data);
 
         if ($result)
         {
             
-            $info->message = $Error = "Tes donnees sont sauvegarder";
-            $info->data_type = "save_settings";
+            $info->message = $Error = "Ton profil a été cree";
+            $info->data_type = "info";
             echo json_encode($info);
+
+
+  
 
         }
         else
         {
             
-            $info->message = $Error = "Tes donnees ne sont pas sauvegarder";
-            $info->data_type = "save_settings";
+            $info->message = $Error = "Ton Profil n'a pas été cree du a une erreur";
+            $info->data_type = "error";
             echo json_encode($info);
         }
 
     }else
     {
         $info->message = $Error;
-        $info->data_type = "save_settings";
+        $info->data_type = "error";
         echo json_encode($info);
 
     }

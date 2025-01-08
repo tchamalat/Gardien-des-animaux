@@ -22,11 +22,12 @@
             $result->data_type = "user_info";
 
             // verifier si l'image existe
-            $image  = ($result->gender == "Male")? "ui/images/user_male.jpg" : "ui/images/user_female.png";
-            if (file_exists($result->image)){
-               $image = $result->image;
+            $image = ($result->gender == "Male") ? "ui/images/user_male.jpg" : "ui/images/user_female.png";
+            if (!empty($result->image) && file_exists($result->image)) {
+                $image = $result->image;
             }
             $result->image = $image;
+            
 
             echo json_encode( $result);
         }

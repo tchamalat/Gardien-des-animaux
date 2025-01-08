@@ -69,39 +69,74 @@ if(isset($DATA_OBJ->data_type) && $DATA_OBJ->data_type == "signup")
 
     //send_message
     include("includes/send_message.php");  
+
+}elseif(isset($DATA_OBJ->data_type) && $DATA_OBJ->data_type == "delete_message") 
+{
+
+    //send_message
+    include("includes/delete_message.php");  
+
+}elseif(isset($DATA_OBJ->data_type) && $DATA_OBJ->data_type == "delete_thread") 
+{
+
+    //send_message
+    include("includes/delete_thread.php");  
 }
+
 
 
 
 function message_left($data, $row)
 {
-    return  "
-    <div id='message_left'>
-   <div></div>
-    <img src='$row->image'>
-    <b> $row->username</b> <br>
-    $data->message<br><br>
+    $image = !empty($row->image) ? $row->image : "ui/images/icone.jpg";
+    $a =  "
+<div id='message_left' class='message' msgid='$data->id'>       
+       <img id='prof_img' src='$image'>
+       <b>$row->username</b> <br>
+       $data->message<br><br>";
 
-    <span style ='font-size :  11px; color: black;'>".date("jS M Y H:i:s a",strtotime($data->date))."</span>
+    if ($data->files != "" && file_exists($data->files)){
+      $a .="<img src='$data->files' style='width: 100%; cursor: pointer;' onclick='image_show(event)'/> <br>";
+    }
+    $a .="<span style ='font-size :  11px; color: black;'>".date("jS M Y H:i:s a",strtotime($data->date))."</span>
+    <img id='trash' src='ui/images/trash.jpeg' onclick = 'delete_message(event)' msgid='$data->id' />
+
     </div>";
-    
+    return $a;
 }
 
 function message_right($data, $row)
 {
+    $image = !empty($row->image) ? $row->image : "ui/images/icone.jpg";
+    $a = "
+<div id='message_right' class='message' msgid='$data->id'>       
+            <div>";
 
+            
+    if ($data->seen) {
+        $a .= "<img src='ui/images/tick_orange.webp' style=''/>";
+    } elseif ($data->received) {
+        $a .= "<img src='ui/images/tickBlack.png' style=''/>";
+    }
 
-    
-        return "
-                    <div id='message_right'>
-                     <div></div>
-                    <img src='$row->image'  style = 'float: right '>
-                   <b> $row->username</b> <br>
-                    $data->message<br><br>
+    $a .= "</div> 
+            <img id='prof_img' src='$image' style='float: right;'>           
+             <b>$row->username</b> <br>
+            $data->message<br><br>";
 
-                    <span style ='font-size :  11px; color: black;'>".date("jS M Y H:i:s a",strtotime($data->date))."</span>
-                </div>";
+            if ($data->files != "" && file_exists($data->files)){
+                $a .="<img src='$data->files' style='width: 100%; cursor: pointer;' onclick='image_show(event)' /> <br>";
+              }
+            
+
+           $a .= "<span style='font-size: 11px; color: black;'>". date("jS M Y H:i:s a", strtotime($data->date)) ."</span>
+            <img id='trash' src='ui/images/trash.jpeg' onclick = 'delete_message(event)' msgid='$data->id' />
+        </div>";
+
+    return $a;
 }
+
+
 
 function message_controls()
 {
@@ -111,9 +146,10 @@ function message_controls()
         return "
                 </div>
                 </div>
+                <span onclick = 'delete_thread(event)' style= 'color:purple; cursor: pointer;'> Supprimez toute la discussion </span>
                 <div style='display: flex; width: 100%; height: 40px;'>
                     <label for='message_file'><img src='ui/icons/clip.png' style='opacity: 0.8; width: 30px; margin: 5px; cursor: pointer;'></label>
-                    <input type='file' id='message_file' name='file' style='display: none' />
+                    <input type='file' id='message_file' name='file' style='display: none' onchange='send_image(this.files)'/>
                     
                     <input id='message_text' onkeyup = 'enter_pressed(event)' style='flex: 6; border: solid thin #ccc; border-bottom: none; font-size: 14px;  padding : 4px;' type='text' placeholder='écrivez votre message'/>
                     
