@@ -245,13 +245,13 @@
     <header>
         <div class="header-container">
             <img src="images/logo.png" alt="Logo Gardien des Animaux">
-            <h1 class="header-slogan">Un foyer chaleureux même en votre absence</h1>
         <div class="auth-buttons">
             <button class="btn" onclick="window.location.href='index.php'">Accueil</button>
         </div>
         </div>
     </header>
     <div class="form-container">
+        <h1 class="header-slogan">Un foyer chaleureux même en votre absence</h1>
         <h2>Création de compte :</h2>
 
         <form id="registerForm" method="POST" novalidate>
