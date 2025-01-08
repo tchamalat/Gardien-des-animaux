@@ -310,24 +310,27 @@ include 'config.php';
         <p class="texte">Ils sont prêts à offrir amour, soins et attention à vos animaux.</p>
 	<div id="gardiens-container" class="gardiens-container">
     		<?php
-    		// Récupérez les gardiens depuis la base de données
-    		$query = "SELECT id, prenom, nom_utilisateur FROM creation_compte WHERE role = 2"; // 2 pour les gardiens
+    		// Requête SQL pour récupérer tous les gardiens
+    		$query = "SELECT id, prenom, nom_utilisateur, profile_picture FROM creation_compte WHERE role = 0"; // 0 pour les gardiens
     		$result = $conn->query($query);
 
-		while ($row = $result->fetch_assoc()) {
-        		$prenom = htmlspecialchars($row['prenom'] ?? 'Inconnu'); // Gérer les valeurs nulles
-        		$nom_utilisateur = htmlspecialchars($row['nom_utilisateur'] ?? 'Utilisateur');
-        		$id = intval($row['id']);
+    		// Vérifiez que des gardiens sont disponibles
+    		if ($result->num_rows > 0) {
+        		while ($row = $result->fetch_assoc()) {
+            			$prenom = htmlspecialchars($row['prenom'] ?? 'Inconnu'); // Gérer les valeurs nulles
+            			$nom_utilisateur = htmlspecialchars($row['nom_utilisateur'] ?? 'Utilisateur');
+            			$id = intval($row['id']);
 
-        		echo "<div class='gardien-card'>";
-        		echo "<img src='display_image.php?id=$id' alt='$prenom'>";
-        		echo "<h3>$prenom ($nom_utilisateur)</h3>";
-        		echo "</div>";
+            			echo "<div class='gardien-card'>";
+            			echo "<img src='display_image.php?id=$id' alt='$prenom'>";
+            			echo "<h3>$prenom ($nom_utilisateur)</h3>";
+            			echo "</div>";
+        		}
+    		} else {
+        		echo "<p class='texte'>Aucun gardien disponible pour le moment.</p>";
     		}
     		?>
 	</div>
-
-
     </section>
     <script>
         async function fetchGardiens() {
