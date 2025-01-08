@@ -109,6 +109,10 @@ $conn->close();
             flex: 1;
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
         }
+        header.scrolled .header-slogan {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
         .header-container {
             display: flex;
             flex-direction: column;
