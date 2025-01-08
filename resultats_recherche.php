@@ -44,34 +44,66 @@ $conn->close();
     <meta charset='UTF-8'>
     <meta name='viewport' content='width=device-width, initial-scale=1.0'>
     <title>Résultats de la recherche</title>
-    <style>
-        /* Ajoutez ici vos styles CSS */
+<style>
         body {
             font-family: Arial, sans-serif;
+            color: #333;
+            background: url('images/premierplan.png') no-repeat center center fixed;
+            background-size: cover;
             margin: 0;
             padding: 0;
-            background: #f4f4f4;
-            color: #333;
+            overflow-x: hidden;
         }
 
         header {
-            background: #333;
-            color: #fff;
-            padding: 15px 20px;
-            text-align: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 10;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: none;
+        }
+
+        header h1 {
+            color: orange;
+            font-size: 1.8em;
+            margin: 0;
+        }
+
+        header .btn {
+            background-color: orange;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            cursor: pointer;
+            text-decoration: none;
+            margin-left: 10px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        header .btn:hover {
+            background-color: #ff7f00;
+            transform: translateY(-3px);
         }
 
         .resultats-container {
-            padding: 20px;
             max-width: 1000px;
-            margin: 20px auto;
-            background: #fff;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin: 150px auto 50px auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
         }
 
-        h2 {
+        .resultats-container h2 {
             color: orange;
+            margin-bottom: 20px;
             text-align: center;
         }
 
@@ -81,60 +113,118 @@ $conn->close();
         }
 
         .result-card {
-            margin: 15px 0;
-            padding: 15px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            background: #f9f9f9;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
         }
 
-        .result-header {
+        .result-card .result-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            margin-bottom: 10px;
         }
 
-        .result-header h3 {
+        .result-card .gardien-name {
+            font-size: 1.5em;
+            color: #333;
             margin: 0;
-            font-size: 1.2em;
         }
 
-        .badge {
-            background: orange;
-            color: #fff;
+        .result-card .badge {
+            background-color: orange;
+            color: white;
             padding: 5px 10px;
             border-radius: 5px;
             font-size: 0.9em;
         }
 
-        .result-details {
-            margin: 10px 0;
+        .result-card .result-details p {
+            margin: 8px 0;
         }
 
-        .result-details p {
-            margin: 5px 0;
+        .result-card .result-details span {
+            font-weight: bold;
         }
 
-        .result-actions {
-            text-align: right;
-        }
-
-        .btn-hero {
-            background: orange;
-            color: #fff;
+        .result-card .result-actions .btn-hero {
+            background-color: orange;
+            color: white;
             padding: 10px 20px;
-            text-decoration: none;
+            border: none;
             border-radius: 8px;
-            transition: background 0.3s ease;
+            font-size: 1em;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.3s ease, transform 0.3s ease;
         }
 
-        .btn-hero:hover {
-            background: #ff7f00;
+        .result-card .result-actions .btn-hero:hover {
+            background-color: #ff7f00;
+            transform: translateY(-3px);
         }
 
         .no-results {
             text-align: center;
             color: #888;
+            margin-top: 20px;
+            font-size: 1.2em;
+        }
+
+        ul {
+            margin-top: 20px;
+            padding-left: 20px;
+            list-style: none;
+        }
+
+        ul li {
+            position: relative;
+            padding-left: 25px;
+            margin-bottom: 10px;
+        }
+
+        ul li:before {
+            content: '✔';
+            position: absolute;
+            left: 0;
+            top: 0;
+            color: orange;
+            font-weight: bold;
+        }
+
+        footer {
+            background: rgba(0, 0, 0, 0.85);
+            color: #fff;
+            padding: 20px;
+            margin-top: 50px;
+        }
+
+        footer .footer-links {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+        }
+
+        footer .footer-links h4 {
+            color: orange;
+            margin-bottom: 10px;
+        }
+
+        footer .footer-links ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        footer .footer-links a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        footer .footer-links a:hover {
+            color: orange;
         }
     </style>
 </head>
