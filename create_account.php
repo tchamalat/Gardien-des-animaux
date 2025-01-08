@@ -36,7 +36,7 @@
         }
 
         header img {
-            height: 60px;
+            height: 150px;
             max-width: 120px;
         }
 
