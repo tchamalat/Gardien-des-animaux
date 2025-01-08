@@ -34,7 +34,7 @@
         }
 
         header img {
-            height: 60px;
+            height: 120px;
         }
 
         header .auth-buttons {
