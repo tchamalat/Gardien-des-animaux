@@ -118,6 +118,27 @@
             font-weight: bold;
         }
 
+        ul {
+            margin-top: 20px;
+            padding-left: 20px;
+            list-style: none;
+        }
+
+        ul li {
+            position: relative;
+            padding-left: 25px;
+            margin-bottom: 10px;
+        }
+
+        ul li:before {
+            content: '✔';
+            position: absolute;
+            left: 0;
+            top: 0;
+            color: orange;
+            font-weight: bold;
+        }
+
         footer {
             background: rgba(0, 0, 0, 0.85);
             color: #fff;
