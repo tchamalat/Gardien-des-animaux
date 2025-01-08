@@ -205,6 +205,10 @@
                 <option value="chien">Chien</option>
                 <option value="chat">Chat</option>
                 <option value="oiseau">Oiseau</option>
+                <option value="oiseau">Lapin</option>
+                <option value="oiseau">Rongeur</option>
+                <option value="oiseau">Reptile</option>
+                <option value="oiseau">Autre</option>
             </select>
         </div>
 
