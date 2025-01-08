@@ -222,14 +222,6 @@
         </div>
 
         <div class="form-group">
-            <label for="rayon">Rayon autour de vous (km)</label>
-            <input type="number" name="rayon" id="rayon" value="20" min="1">
-        </div>
-
-        <input type="hidden" id="latitude" name="latitude">
-        <input type="hidden" id="longitude" name="longitude">
-
-        <div class="form-group">
             <label for="budget_min">Budget minimum (€)</label>
             <input type="number" name="budget_min" placeholder="Minimum" value="20">
             <input type="number" name="budget_max" placeholder="Maximum" value="40">
