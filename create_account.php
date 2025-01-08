@@ -386,6 +386,17 @@
             .catch(error => console.error('Erreur:', error));
         });
     </script>
+    <script>
+        document.querySelectorAll('.role-selection input[type="radio"]').forEach((radio) => {
+            radio.addEventListener('change', function () {
+                document.querySelectorAll('.role-option').forEach((label) => {
+                    label.classList.remove('active'); // Retirer la classe active de toutes les options
+                });
+                this.nextElementSibling.classList.add('active'); // Ajouter la classe active à l'option sélectionnée
+            });
+        });
+    </script>
+
 
     <footer>
         <div class="footer-links">
