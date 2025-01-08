@@ -119,45 +119,57 @@ $result = $stmt->get_result();
             margin-top: 20px;
         }
 
-        footer {
-            padding: 20px;
-            background: rgba(0, 0, 0, 0.8);
-            color: #fff;
+        ul {
+            margin-top: 20px;
+            padding-left: 20px;
+            list-style: none;
         }
 
-        .footer-links {
+        ul li {
+            position: relative;
+            padding-left: 25px;
+            margin-bottom: 10px;
+        }
+
+        ul li:before {
+            content: '✔';
+            position: absolute;
+            left: 0;
+            top: 0;
+            color: orange;
+            font-weight: bold;
+        }
+
+        footer {
+            background: rgba(0, 0, 0, 0.85);
+            color: #fff;
+            padding: 20px;
+            margin-top: 50px;
+        }
+
+        footer .footer-links {
             display: flex;
             justify-content: space-around;
             flex-wrap: wrap;
         }
 
-        .footer-links div {
-            margin: 10px;
-            text-align: left;
-        }
-
-        .footer-links h4 {
-            font-size: 1.2em;
-            margin-bottom: 10px;
+        footer .footer-links h4 {
             color: orange;
+            margin-bottom: 10px;
         }
 
-        .footer-links ul {
+        footer .footer-links ul {
             list-style: none;
             padding: 0;
         }
 
-        .footer-links li {
-            margin-bottom: 5px;
-        }
-
-        .footer-links a {
-            color: #fff;
+        footer .footer-links a {
+            color: white;
             text-decoration: none;
             transition: color 0.3s ease;
         }
 
-        .footer-links a:hover {
+        footer .footer-links a:hover {
             color: orange;
         }
     </style>
