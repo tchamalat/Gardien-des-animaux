@@ -105,194 +105,149 @@ $stmt_animaux->close();
     <title>Mon Profil Public - Gardien des Animaux</title>
     <style>
         body {
-            font-family: 'Arial', sans-serif;
+            font-family: Arial, sans-serif;
             color: #333;
             background: url('images/premierplan.png') no-repeat center center fixed;
             background-size: cover;
             margin: 0;
             padding: 0;
         }
-
         header {
-            padding: 20px 30px;
+            background: none; /* Aucun fond */
+            padding: 15px 30px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: rgba(255, 255, 255, 0.9);
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             position: sticky;
             top: 0;
             z-index: 1000;
         }
 
         header img {
-            height: 80px;
+            height: 100px;
         }
-
-        header .auth-buttons {
-            display: flex;
-            gap: 15px;
-        }
-
         header .auth-buttons .btn {
             background-color: orange;
             color: white;
-            padding: 10px 20px;
+            padding: 10px 15px;
             border: none;
             border-radius: 8px;
-            font-size: 1em;
+            font-size: 0.9em;
             cursor: pointer;
-            text-decoration: none;
             transition: all 0.3s ease;
         }
-
         header .auth-buttons .btn:hover {
             background-color: #ff7f00;
         }
-
         .profile-container {
-            max-width: 1200px;
+            max-width: 900px;
             margin: 50px auto;
             background: rgba(255, 255, 255, 0.95);
-            border-radius: 15px;
-            padding: 30px 40px;
-            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            padding: 20px 30px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
             text-align: center;
         }
-
         .profile-picture img {
-            width: 150px;
-            height: 150px;
+            width: 120px;
+            height: 120px;
             border-radius: 50%;
             border: 4px solid orange;
-            object-fit: cover;
-            margin-bottom: 20px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
         }
-
-        .profile-details {
-            font-size: 1.2em;
-            margin-bottom: 30px;
-        }
-
-        .profile-details span {
-            font-weight: bold;
-            color: #333;
-        }
-
-        h3 {
-            color: orange;
-            margin-top: 30px;
-        }
-
-        .alert-message {
-            margin: 20px 0;
-            padding: 15px;
-            background-color: #f1f1f1;
-            border-left: 5px solid orange;
-            font-size: 1em;
-            text-align: left;
-        }
-
-        form .profile-item {
-            margin-bottom: 15px;
-            text-align: left;
-        }
-
-        form input[type="text"], form input[type="number"], form input[type="file"] {
-            width: 100%;
-            padding: 10px;
-            margin-top: 5px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-
-        form button {
-            margin-top: 15px;
-            padding: 10px 15px;
-            background-color: orange;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 1em;
-            transition: background-color 0.3s ease;
-        }
-
-        form button:hover {
-            background-color: #ff7f00;
-        }
-
         .animal-list {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 20px;
             margin-top: 30px;
         }
-
         .animal-card {
-            background: white;
+            background: rgba(255, 255, 255, 0.95);
             border-radius: 10px;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            padding: 15px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
             text-align: center;
-            padding: 20px;
         }
-
         .animal-card img {
             width: 100%;
             height: 150px;
             object-fit: cover;
             border-radius: 10px;
-            margin-bottom: 15px;
         }
-
         .animal-card button {
-            margin: 5px;
+            margin: 10px 5px;
             padding: 10px 15px;
-            background-color: orange;
+            font-size: 0.85em;
+            background: orange;
             color: white;
             border: none;
             border-radius: 8px;
             cursor: pointer;
-            font-size: 0.9em;
             transition: all 0.3s ease;
         }
-
         .animal-card button:hover {
-            background-color: #ff7f00;
+            background: #ff7f00;
         }
-
         .animal-card .btn-delete {
             background: red;
         }
-
         .animal-card .btn-delete:hover {
             background: darkred;
         }
+        ul {
+            margin-top: 20px;
+            padding-left: 20px;
+            list-style: none;
+        }
+
+        ul li {
+            position: relative;
+            padding-left: 25px;
+            margin-bottom: 10px;
+        }
+
+        ul li:before {
+            content: '✔';
+            position: absolute;
+            left: 0;
+            top: 0;
+            color: orange;
+            font-weight: bold;
+        }
 
         footer {
-            background: rgba(0, 0, 0, 0.9);
-            color: white;
+            background: rgba(0, 0, 0, 0.85);
+            color: #fff;
             padding: 20px;
             margin-top: 50px;
-            text-align: center;
         }
 
         footer .footer-links {
             display: flex;
-            justify-content: center;
-            gap: 40px;
+            justify-content: space-around;
             flex-wrap: wrap;
+        }
+
+        footer .footer-links h4 {
+            color: orange;
+            margin-bottom: 10px;
+        }
+
+        footer .footer-links ul {
+            list-style: none;
+            padding: 0;
         }
 
         footer .footer-links a {
             color: white;
             text-decoration: none;
-            font-size: 0.9em;
+            transition: color 0.3s ease;
         }
 
         footer .footer-links a:hover {
             color: orange;
         }
+
     </style>
 </head>
 <body>
@@ -309,7 +264,10 @@ $stmt_animaux->close();
         <img id="profile-img" src="display_image.php" alt="Photo de profil">
     </div>
     <div class="profile-details">
-        <p><strong>Nom d'utilisateur :</strong> <?php echo htmlspecialchars($nom_utilisateur); ?></p>
+        <div class="profile-item">
+            <label>Nom d'utilisateur :</label>
+            <span><?php echo htmlspecialchars($nom_utilisateur); ?></span>
+        </div>
     </div>
     <?php if (isset($message)): ?>
         <div class="alert-message"><?php echo htmlspecialchars($message); ?></div>
