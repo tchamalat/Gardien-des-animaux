@@ -108,22 +108,14 @@
         footer {
             background: rgba(0, 0, 0, 0.85);
             color: #fff;
-            padding: 20px 0;
-            margin-top: auto;
-            text-align: center;
+            padding: 20px;
+            margin-top: 50px;
         }
 
         footer .footer-links {
             display: flex;
             justify-content: space-around;
             flex-wrap: wrap;
-            max-width: 800px;
-            margin: auto;
-        }
-
-        footer .footer-links div {
-            text-align: left;
-            margin: 10px;
         }
 
         footer .footer-links h4 {
@@ -134,10 +126,6 @@
         footer .footer-links ul {
             list-style: none;
             padding: 0;
-        }
-
-        footer .footer-links li {
-            margin-bottom: 5px;
         }
 
         footer .footer-links a {
