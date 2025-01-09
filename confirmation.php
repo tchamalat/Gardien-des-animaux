@@ -26,11 +26,7 @@
             display: flex;
             align-items: center;
             padding: 20px 40px;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            z-index: 10;
+            position: relative;
         }
 
         header img {
@@ -46,12 +42,13 @@
 
         .form-container {
             max-width: 700px;
-            margin: 150px auto 50px; /* Adjusted margin to account for fixed header */
+            margin: auto;
             background: rgba(255, 255, 255, 0.95);
             border-radius: 15px;
             padding: 40px;
             text-align: center;
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            flex: 1;
         }
 
         .form-container h2 {
@@ -83,38 +80,25 @@
             transform: translateY(-3px);
         }
 
-        ul {
-            margin-top: 20px;
-            padding-left: 20px;
-            list-style: none;
-        }
-
-        ul li {
-            position: relative;
-            padding-left: 25px;
-            margin-bottom: 10px;
-        }
-
-        ul li:before {
-            content: '✔';
-            position: absolute;
-            left: 0;
-            top: 0;
-            color: orange;
-            font-weight: bold;
-        }
-
         footer {
             background: rgba(0, 0, 0, 0.85);
             color: #fff;
             padding: 20px;
-            margin-top: 50px;
+            margin-top: auto;
+            text-align: center;
         }
 
         footer .footer-links {
             display: flex;
             justify-content: space-around;
             flex-wrap: wrap;
+            max-width: 800px;
+            margin: auto;
+        }
+
+        footer .footer-links div {
+            text-align: left;
+            margin: 10px;
         }
 
         footer .footer-links h4 {
@@ -125,6 +109,10 @@
         footer .footer-links ul {
             list-style: none;
             padding: 0;
+        }
+
+        footer .footer-links li {
+            margin-bottom: 5px;
         }
 
         footer .footer-links a {
