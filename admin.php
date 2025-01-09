@@ -80,28 +80,6 @@ try {
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
         }
 
-        header .auth-buttons {
-            display: flex;
-            gap: 15px;
-        }
-
-        header .auth-buttons .btn {
-            background-color: orange;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 8px;
-            font-size: 1em;
-            cursor: pointer;
-            text-decoration: none;
-            transition: background-color 0.3s ease, transform 0.3s ease;
-        }
-
-        header .auth-buttons .btn:hover {
-            background-color: #ff7f00;
-            transform: translateY(-3px);
-        }
-
         .dashboard-container {
             max-width: 1200px;
             margin: 120px auto;
@@ -145,9 +123,10 @@ try {
         }
 
         .menu-dropdown {
-            position: relative;
+            position: fixed;
+            top: 20px;
+            right: 40px;
             display: inline-block;
-            margin-top: 30px;
         }
 
         .menu-dropdown .dropdown-btn {
@@ -169,6 +148,7 @@ try {
         .menu-dropdown .dropdown-content {
             display: none;
             position: absolute;
+            right: 0;
             background-color: white;
             min-width: 200px;
             box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
@@ -192,37 +172,19 @@ try {
             display: block;
         }
 
-        footer {
-            background: rgba(0, 0, 0, 0.85);
-            color: #fff;
-            padding: 20px;
-            margin-top: 50px;
-        }
-
-        footer .footer-links {
-            display: flex;
-            justify-content: space-around;
-            flex-wrap: wrap;
-        }
-
-        footer .footer-links h4 {
-            color: orange;
-            margin-bottom: 10px;
-        }
-
-        footer .footer-links ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        footer .footer-links a {
+        .menu-dropdown .dropdown-content .btn-deconnexion {
+            background-color: #ff0000;
             color: white;
-            text-decoration: none;
-            transition: color 0.3s ease;
+            border: none;
+            text-align: center;
+            padding: 12px 16px;
+            display: block;
+            border-radius: 8px;
+            cursor: pointer;
         }
 
-        footer .footer-links a:hover {
-            color: orange;
+        .menu-dropdown .dropdown-content .btn-deconnexion:hover {
+            background-color: #ff4d4d;
         }
     </style>
 </head>
@@ -232,9 +194,6 @@ try {
 <header>
     <img src="images/logo.png" alt="Logo Gardien des Animaux">
     <h1 class="header-slogan">Tableau de Bord Administrateur</h1>
-    <div class="auth-buttons">
-        <button class="btn" onclick="window.location.href='?logout=1'">Déconnexion</button>
-    </div>
 </header>
 
 <!-- Contenu principal -->
@@ -257,19 +216,20 @@ try {
             <p>Actifs : <?php echo $totalAbonnements; ?></p>
         </div>
     </div>
+</div>
 
-    <div class="menu-dropdown">
-        <button class="dropdown-btn">Gérer les Sections</button>
-        <div class="dropdown-content">
-            <a href="manage_abonnements.php">Gérer les Abonnements</a>
-            <a href="manage_utilisateurs.php">Gérer les Utilisateurs</a>
-            <a href="manage_reservations.php">Gérer les Réservations</a>
-            <a href="manage_avis.php">Gérer les Avis</a>
-            <a href="manage_animaux.php">Gérer les Animaux</a>
-            <a href="manage_faq.php">Gérer la FAQ</a>
-            <a href="manage_paiements.php">Gérer les Paiements</a>
-            <a href="manage_hebergements.php">Gérer les Hébergements</a>
-        </div>
+<div class="menu-dropdown">
+    <button class="dropdown-btn">Menu</button>
+    <div class="dropdown-content">
+        <a href="manage_abonnements.php">Gérer les Abonnements</a>
+        <a href="manage_utilisateurs.php">Gérer les Utilisateurs</a>
+        <a href="manage_reservations.php">Gérer les Réservations</a>
+        <a href="manage_avis.php">Gérer les Avis</a>
+        <a href="manage_animaux.php">Gérer les Animaux</a>
+        <a href="manage_faq.php">Gérer la FAQ</a>
+        <a href="manage_paiements.php">Gérer les Paiements</a>
+        <a href="manage_hebergements.php">Gérer les Hébergements</a>
+        <button class="btn-deconnexion" onclick="window.location.href='?logout=1'">Déconnexion</button>
     </div>
 </div>
 
