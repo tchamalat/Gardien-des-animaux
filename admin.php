@@ -123,9 +123,13 @@ try {
         }
 
         .menu-dropdown {
-            position: relative; /* Changement : position relative pour le parent */
+            position: fixed; /* Fixe le menu dans la position définie */
+            top: 20px; /* Distance par rapport au haut de la page */
+            right: 20px; /* Distance par rapport au côté droit de la page */
             display: inline-block;
+            z-index: 100; /* Assure que le menu reste au-dessus des autres éléments */
         }
+
 
         .menu-dropdown .dropdown-btn {
             background-color: orange;
