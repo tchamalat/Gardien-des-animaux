@@ -12,7 +12,7 @@ $user_id = $_SESSION['user_id'];
 
 // Récupération des réservations associées au propriétaire
 $sql = "
-    SELECT r.id_reservation, r.date_debut, r.date_fin, r.lieu, r.type, r.heure_debut, r.heure_fin, c.nom_utilisateur AS gardien
+    SELECT r.id_reservation, r.date_debut, r.date_fin, r.lieu, r.type, r.heure_debut, r.heure_fin, r.validite, c.nom_utilisateur AS gardien
     FROM reservation r
     JOIN creation_compte c ON r.gardien_id = c.id
     WHERE r.id_utilisateur = ?
@@ -210,7 +210,8 @@ $result = $stmt->get_result();
                 <th>Lieu</th>
                 <th>Type</th>
                 <th>Gardien</th>
-                <th>Supprimer</th> 
+                <th>Statut</th>
+                <th>Supprimer</th>
             </tr>
             <?php while ($row = $result->fetch_assoc()): ?>
                 <tr>
@@ -222,6 +223,17 @@ $result = $stmt->get_result();
                     <td><?php echo htmlspecialchars($row['lieu']); ?></td>
                     <td><?php echo htmlspecialchars($row['type']); ?></td>
                     <td><?php echo htmlspecialchars($row['gardien']); ?></td>
+                    <td>
+                        <?php
+                        if (is_null($row['validite'])) {
+                            echo "En attente";
+                        } elseif ($row['validite'] == 1) {
+                            echo "Validée";
+                        } elseif ($row['validite'] == 0) {
+                            echo "Refusée";
+                        }
+                        ?>
+                    </td>
                     <td>
                         <a href="supprimer_reservation.php?id=<?php echo $row['id_reservation']; ?>" onclick="return confirm('Voulez-vous vraiment supprimer cette réservation ?');">
                             ❌
