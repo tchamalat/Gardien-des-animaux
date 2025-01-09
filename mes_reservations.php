@@ -126,13 +126,15 @@ $result = $stmt->get_result();
 
         .container {
             flex: 1;
-            max-width: 1200px;
+            max-width: 90%; /* Passe de 1200px à 90% pour plus de flexibilité */
             margin: 120px auto 50px;
             background: rgba(255, 255, 255, 0.95);
             border-radius: 15px;
             padding: 30px;
             box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+            overflow-x: auto; /* Ajoute une barre de défilement horizontale si nécessaire */
         }
+
 
         h1 {
             font-size: 2.5em;
