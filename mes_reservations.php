@@ -301,7 +301,6 @@ $result = $stmt->get_result();
                                 }
                                 ?>
                             </td>
-
                                 <a href="?action=valider&id_reservation=<?php echo $row['id_reservation']; ?>" class="btn-profile" style="background-color: green;">Valider</a>
                                 <a href="?action=refuser&id_reservation=<?php echo $row['id_reservation']; ?>" class="btn-profile" style="background-color: red;">Refuser</a>
                             </td>
