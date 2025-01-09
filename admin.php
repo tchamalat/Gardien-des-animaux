@@ -2,11 +2,6 @@
 session_start();
 include 'config.php';
 
-$servername = "localhost";
-$username = "gardien";
-$password = "G@rdien-des-chiens";
-$dbname = "gardiendb";
-
 // Gestion de la déconnexion
 if (isset($_GET['logout'])) {
     session_destroy();
@@ -16,7 +11,7 @@ if (isset($_GET['logout'])) {
 
 // Connexion à la base de données
 try {
-    $pdo = new PDO('mysql:host=localhost;dbname=gardiendb', 'gardien', 'G@rdien-des-chiens');
+    $pdo = new PDO('mysql:host=localhost;dbname=your_database_name', 'your_username', 'your_password');
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch (PDOException $e) {
     die("Erreur de connexion : " . $e->getMessage());
@@ -24,13 +19,13 @@ try {
 
 // Récupération des statistiques
 try {
-    $stmtUsers = $pdo->query("SELECT COUNT(*) as total FROM creation_compte");
+    $stmtUsers = $pdo->query("SELECT COUNT(*) as total FROM utilisateurs");
     $totalUsers = $stmtUsers->fetch()['total'];
 
-    $stmtReservations = $pdo->query("SELECT COUNT(*) as total FROM reservation");
+    $stmtReservations = $pdo->query("SELECT COUNT(*) as total FROM reservations");
     $totalReservations = $stmtReservations->fetch()['total'];
 
-    $stmtAbonnements = $pdo->query("SELECT COUNT(*) as total FROM Abonnement");
+    $stmtAbonnements = $pdo->query("SELECT COUNT(*) as total FROM abonnements");
     $totalAbonnements = $stmtAbonnements->fetch()['total'];
 } catch (PDOException $e) {
     die("Erreur lors de la récupération des statistiques : " . $e->getMessage());
@@ -149,18 +144,13 @@ try {
             margin-bottom: 10px;
         }
 
-        .menu-list {
-            margin-top: 30px;
-            list-style: none;
-            padding: 0;
-        }
-
-        .menu-list li {
-            margin-bottom: 15px;
-        }
-
-        .menu-list .btn {
+        .menu-dropdown {
+            position: relative;
             display: inline-block;
+            margin-top: 30px;
+        }
+
+        .menu-dropdown .dropdown-btn {
             background-color: orange;
             color: white;
             padding: 10px 20px;
@@ -172,9 +162,34 @@ try {
             transition: background-color 0.3s ease, transform 0.3s ease;
         }
 
-        .menu-list .btn:hover {
+        .menu-dropdown .dropdown-btn:hover {
             background-color: #ff7f00;
-            transform: translateY(-3px);
+        }
+
+        .menu-dropdown .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: white;
+            min-width: 200px;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            z-index: 1;
+        }
+
+        .menu-dropdown .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .menu-dropdown .dropdown-content a:hover {
+            background-color: #f1f1f1;
+        }
+
+        .menu-dropdown:hover .dropdown-content {
+            display: block;
         }
 
         footer {
@@ -243,16 +258,19 @@ try {
         </div>
     </div>
 
-    <ul class="menu-list">
-        <li><a class="btn" href="manage_abonnements.php">Gérer les Abonnements</a></li>
-        <li><a class="btn" href="manage_utilisateurs.php">Gérer les Utilisateurs</a></li>
-        <li><a class="btn" href="manage_reservations.php">Gérer les Réservations</a></li>
-        <li><a class="btn" href="manage_avis.php">Gérer les Avis</a></li>
-        <li><a class="btn" href="manage_animaux.php">Gérer les Animaux</a></li>
-        <li><a class="btn" href="manage_faq.php">Gérer la FAQ</a></li>
-        <li><a class="btn" href="manage_paiements.php">Gérer les Paiements</a></li>
-        <li><a class="btn" href="manage_hebergements.php">Gérer les Hébergements</a></li>
-    </ul>
+    <div class="menu-dropdown">
+        <button class="dropdown-btn">Gérer les Sections</button>
+        <div class="dropdown-content">
+            <a href="manage_abonnements.php">Gérer les Abonnements</a>
+            <a href="manage_utilisateurs.php">Gérer les Utilisateurs</a>
+            <a href="manage_reservations.php">Gérer les Réservations</a>
+            <a href="manage_avis.php">Gérer les Avis</a>
+            <a href="manage_animaux.php">Gérer les Animaux</a>
+            <a href="manage_faq.php">Gérer la FAQ</a>
+            <a href="manage_paiements.php">Gérer les Paiements</a>
+            <a href="manage_hebergements.php">Gérer les Hébergements</a>
+        </div>
+    </div>
 </div>
 
 <!-- Footer -->
