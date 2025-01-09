@@ -59,11 +59,12 @@ $result = $stmt->get_result();
             height: 100px;
         }
         header .auth-buttons {
-            display: flex;
-            flex-wrap: wrap; /* Permet d'adapter les boutons s'ils ne tiennent pas sur une seule ligne */
-            gap: 10px; /* Espace entre les boutons */
-        }
-
+		display: flex;
+		flex-wrap: wrap; /* Permet de déplacer les boutons sur une nouvelle ligne si nécessaire */
+		gap: 10px; /* Ajoute un espacement entre les boutons */
+		justify-content: flex-end; /* Aligne les boutons à droite */
+		max-width: 100%; /* Empêche les boutons de dépasser la largeur de l'écran */
+	}
         header .auth-buttons .btn {
             background-color: orange;
             color: white;
