@@ -35,6 +35,27 @@ $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $user_id);
 $stmt->execute();
 $result = $stmt->get_result();
+
+// Vérification si une action de validation ou de refus est effectuée
+if (isset($_GET['action']) && isset($_GET['id_reservation'])) {
+    $action = $_GET['action']; // "valider" ou "refuser"
+    $id_reservation = $_GET['id_reservation'];
+
+    // Détermine la valeur de validite (1 pour valider, 0 pour refuser)
+    $validite = ($action === "valider") ? 1 : 0;
+
+    // Mise à jour du statut de la réservation
+    $sql_update_validite = "UPDATE reservation SET validite = ? WHERE id_reservation = ?";
+    $stmt_update = $conn->prepare($sql_update_validite);
+    $stmt_update->bind_param("ii", $validite, $id_reservation);
+    $stmt_update->execute();
+    $stmt_update->close();
+
+    // Redirige vers la même page pour éviter les re-soumissions
+    header("Location: mes_reservations.php");
+    exit();
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -252,11 +273,12 @@ $result = $stmt->get_result();
                         <th>Type</th>
                         <th>Heure Début</th>
                         <th>Heure Fin</th>
-                        <th>Profil Public</th>
+                        <th>Statut</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <?php while ($row = $result->fetch_assoc()): ?>
+                     <?php while ($row = $result->fetch_assoc()): ?>
                         <tr>
                             <td><?php echo htmlspecialchars($row['id_reservation']); ?></td>
                             <td><?php echo htmlspecialchars($row['prenom'] . ' ' . $row['nom']); ?></td>
@@ -268,12 +290,25 @@ $result = $stmt->get_result();
                             <td><?php echo htmlspecialchars($row['heure_debut']); ?></td>
                             <td><?php echo htmlspecialchars($row['heure_fin']); ?></td>
                             <td>
-                                <a href="profil_proprietaire.php?id=<?php echo htmlspecialchars($row['proprietaire_id']); ?>" class="btn-profile">Voir</a>
+                                <?php 
+                                if ($row['validite'] === null) {
+                                    echo "En attente";
+                                } elseif ($row['validite'] == 1) {
+                                    echo "Validée";
+                                } else {
+                                    echo "Refusée";
+                                }
+                                ?>
+                            </td>
+                            <td>
+                                <a href="?action=valider&id_reservation=<?php echo $row['id_reservation']; ?>" class="btn-profile" style="background-color: green;">Valider</a>
+                                <a href="?action=refuser&id_reservation=<?php echo $row['id_reservation']; ?>" class="btn-profile" style="background-color: red;">Refuser</a>
                             </td>
                         </tr>
                     <?php endwhile; ?>
                 </tbody>
             </table>
+
         <?php else: ?>
             <p class="no-reservation">Aucune réservation trouvée.</p>
         <?php endif; ?>
