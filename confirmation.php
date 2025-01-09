@@ -23,31 +23,36 @@
         }
 
         header {
-            text-align: center;
-            margin-top: 50px;
+            display: flex;
+            align-items: center;
+            padding: 20px 40px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.5); /* Optional background for better readability */
+            z-index: 10;
         }
 
         header img {
-            height: 80px;
-            margin-bottom: 10px;
+            height: 100px; /* Larger logo */
+            margin-right: 20px;
         }
 
         header h1 {
             color: white;
-            font-size: 2.5em;
+            font-size: 2em;
             text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.6);
         }
 
         .form-container {
             max-width: 700px;
-            margin: auto;
+            margin: 150px auto 50px; /* Adjusted margin to account for fixed header */
             background: rgba(255, 255, 255, 0.95);
             border-radius: 15px;
             padding: 40px;
             text-align: center;
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-            margin-top: 30px;
-            margin-bottom: auto;
         }
 
         .form-container h2 {
@@ -103,14 +108,22 @@
         footer {
             background: rgba(0, 0, 0, 0.85);
             color: #fff;
-            padding: 20px;
-            margin-top: 50px;
+            padding: 20px 0;
+            margin-top: auto;
+            text-align: center;
         }
 
         footer .footer-links {
             display: flex;
             justify-content: space-around;
             flex-wrap: wrap;
+            max-width: 800px;
+            margin: auto;
+        }
+
+        footer .footer-links div {
+            text-align: left;
+            margin: 10px;
         }
 
         footer .footer-links h4 {
@@ -121,6 +134,10 @@
         footer .footer-links ul {
             list-style: none;
             padding: 0;
+        }
+
+        footer .footer-links li {
+            margin-bottom: 5px;
         }
 
         footer .footer-links a {
