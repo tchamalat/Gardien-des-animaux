@@ -105,149 +105,194 @@ $stmt_animaux->close();
     <title>Mon Profil Public - Gardien des Animaux</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Arial', sans-serif;
             color: #333;
             background: url('images/premierplan.png') no-repeat center center fixed;
             background-size: cover;
             margin: 0;
             padding: 0;
         }
+
         header {
-            background: none; /* Aucun fond */
-            padding: 15px 30px;
+            padding: 20px 30px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             position: sticky;
             top: 0;
             z-index: 1000;
         }
 
         header img {
-            height: 100px;
+            height: 80px;
         }
+
+        header .auth-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
         header .auth-buttons .btn {
             background-color: orange;
             color: white;
-            padding: 10px 15px;
+            padding: 10px 20px;
             border: none;
             border-radius: 8px;
-            font-size: 0.9em;
+            font-size: 1em;
             cursor: pointer;
+            text-decoration: none;
             transition: all 0.3s ease;
         }
+
         header .auth-buttons .btn:hover {
             background-color: #ff7f00;
         }
+
         .profile-container {
-            max-width: 900px;
+            max-width: 1200px;
             margin: 50px auto;
             background: rgba(255, 255, 255, 0.95);
-            border-radius: 10px;
-            padding: 20px 30px;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 15px;
+            padding: 30px 40px;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
             text-align: center;
         }
+
         .profile-picture img {
-            width: 120px;
-            height: 120px;
+            width: 150px;
+            height: 150px;
             border-radius: 50%;
             border: 4px solid orange;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            object-fit: cover;
+            margin-bottom: 20px;
         }
+
+        .profile-details {
+            font-size: 1.2em;
+            margin-bottom: 30px;
+        }
+
+        .profile-details span {
+            font-weight: bold;
+            color: #333;
+        }
+
+        h3 {
+            color: orange;
+            margin-top: 30px;
+        }
+
+        .alert-message {
+            margin: 20px 0;
+            padding: 15px;
+            background-color: #f1f1f1;
+            border-left: 5px solid orange;
+            font-size: 1em;
+            text-align: left;
+        }
+
+        form .profile-item {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        form input[type="text"], form input[type="number"], form input[type="file"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        form button {
+            margin-top: 15px;
+            padding: 10px 15px;
+            background-color: orange;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.3s ease;
+        }
+
+        form button:hover {
+            background-color: #ff7f00;
+        }
+
         .animal-list {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 20px;
             margin-top: 30px;
         }
+
         .animal-card {
-            background: rgba(255, 255, 255, 0.95);
+            background: white;
             border-radius: 10px;
-            padding: 15px;
-            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
             text-align: center;
+            padding: 20px;
         }
+
         .animal-card img {
             width: 100%;
             height: 150px;
             object-fit: cover;
             border-radius: 10px;
+            margin-bottom: 15px;
         }
+
         .animal-card button {
-            margin: 10px 5px;
+            margin: 5px;
             padding: 10px 15px;
-            font-size: 0.85em;
-            background: orange;
+            background-color: orange;
             color: white;
             border: none;
             border-radius: 8px;
             cursor: pointer;
+            font-size: 0.9em;
             transition: all 0.3s ease;
         }
+
         .animal-card button:hover {
-            background: #ff7f00;
+            background-color: #ff7f00;
         }
+
         .animal-card .btn-delete {
             background: red;
         }
+
         .animal-card .btn-delete:hover {
             background: darkred;
         }
-        ul {
-            margin-top: 20px;
-            padding-left: 20px;
-            list-style: none;
-        }
-
-        ul li {
-            position: relative;
-            padding-left: 25px;
-            margin-bottom: 10px;
-        }
-
-        ul li:before {
-            content: '✔';
-            position: absolute;
-            left: 0;
-            top: 0;
-            color: orange;
-            font-weight: bold;
-        }
 
         footer {
-            background: rgba(0, 0, 0, 0.85);
-            color: #fff;
+            background: rgba(0, 0, 0, 0.9);
+            color: white;
             padding: 20px;
             margin-top: 50px;
+            text-align: center;
         }
 
         footer .footer-links {
             display: flex;
-            justify-content: space-around;
+            justify-content: center;
+            gap: 40px;
             flex-wrap: wrap;
-        }
-
-        footer .footer-links h4 {
-            color: orange;
-            margin-bottom: 10px;
-        }
-
-        footer .footer-links ul {
-            list-style: none;
-            padding: 0;
         }
 
         footer .footer-links a {
             color: white;
             text-decoration: none;
-            transition: color 0.3s ease;
+            font-size: 0.9em;
         }
 
         footer .footer-links a:hover {
             color: orange;
         }
-
     </style>
 </head>
 <body>
@@ -264,10 +309,7 @@ $stmt_animaux->close();
         <img id="profile-img" src="display_image.php" alt="Photo de profil">
     </div>
     <div class="profile-details">
-        <div class="profile-item">
-            <label>Nom d'utilisateur :</label>
-            <span><?php echo htmlspecialchars($nom_utilisateur); ?></span>
-        </div>
+        <p><strong>Nom d'utilisateur :</strong> <?php echo htmlspecialchars($nom_utilisateur); ?></p>
     </div>
     <?php if (isset($message)): ?>
         <div class="alert-message"><?php echo htmlspecialchars($message); ?></div>
@@ -303,6 +345,35 @@ $stmt_animaux->close();
         <?php endwhile; ?>
     </div>
 </div>
+<footer>
+    <div class="footer-links">
+        <a href="securite_connect.php">Sécurité</a>
+        <a href="aide_connect.php">Centre d'aide</a>
+        <a href="confidentialite_connect.php">Politique de confidentialité</a>
+        <a href="contact_connect.php">Nous contacter</a>
+    </div>
+</footer>
+
+<script>
+    document.getElementById('nombre_animal').addEventListener('input', function() {
+        const container = document.getElementById('animal-fields');
+        container.innerHTML = '';
+        const count = parseInt(this.value, 10) || 0;
+        for (let i = 1; i <= count; i++) {
+            const div = document.createElement('div');
+            div.innerHTML = `
+                <label>Nom de l'animal ${i} :</label>
+                <input type="text" name="nom_animal[]" required>
+                <label>Photo de l'animal ${i} :</label>
+                <input type="file" name="photo_animal[]" accept="image/*" required>
+            `;
+            container.appendChild(div);
+        }
+    });
+</script>
+</body>
+</html>
+
 <footer>
     <div class="footer-links">
         <div>
