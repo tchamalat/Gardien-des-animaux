@@ -192,6 +192,23 @@
             <button class="btn" onclick="window.location.href='index.php'">Accueil</button>
         </div>
     </header>
+    <script>
+        function togglePasswordVisibility() {
+            const passwordField = document.getElementById('password');
+            const eyeIcon = document.getElementById('eyeIcon');
+        
+            if (passwordField.type === 'password') {
+                passwordField.type = 'text'; // Afficher le mot de passe
+                eyeIcon.src = 'images/oeilferme.png'; // Mettre à jour l'icône (œil fermé)
+                eyeIcon.alt = 'Masquer mot de passe';
+            } else {
+                passwordField.type = 'password'; // Masquer le mot de passe
+                eyeIcon.src = 'images/oeilouvert.png'; // Mettre à jour l'icône (œil ouvert)
+                eyeIcon.alt = 'Afficher mot de passe';
+            }
+        }
+    </script>
+
 
     <main>
         <div class="form-container">
