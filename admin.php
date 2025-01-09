@@ -145,6 +145,10 @@ try {
             background-color: #ff7f00;
         }
 
+        .menu-dropdown:hover .dropdown-content {
+            display: block; /* S'assure que le menu s'affiche */
+        }
+
         .menu-dropdown .dropdown-content {
             display: none;
             position: absolute;
@@ -168,10 +172,6 @@ try {
             background-color: #f1f1f1;
         }
 
-        .menu-dropdown:hover .dropdown-content {
-            display: block;
-        }
-
         .menu-dropdown .dropdown-content .btn-deconnexion {
             background-color: #ff0000;
             color: white;
@@ -186,6 +186,7 @@ try {
         .menu-dropdown .dropdown-content .btn-deconnexion:hover {
             background-color: #ff4d4d;
         }
+
     </style>
 </head>
 <body>
