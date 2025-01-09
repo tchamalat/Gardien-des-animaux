@@ -247,8 +247,13 @@ $result = $conn->query("SELECT * FROM creation_compte");
             <input type="password" name="mot_de_passe" placeholder="Mot de passe" required>
         </div>
         <div class="form-group">
-            <input type="number" name="role" placeholder="Rôle (1=Admin, 2=User)" required>
+            <label for="role">Rôle :</label>
+            <select name="role" id="role" required>
+                <option value="0">Gardien</option>
+                <option value="1">Propriétaire</option>
+            </select>
         </div>
+
         <button type="submit" name="save" class="btn">Sauvegarder</button>
     </form>
 </div>
