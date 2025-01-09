@@ -26,7 +26,6 @@
             display: flex;
             align-items: center;
             padding: 20px 40px;
-            position: relative;
         }
 
         header img {
@@ -41,11 +40,11 @@
         }
 
         .form-container {
-            max-width: 700px;
+            max-width: 500px; /* Reduced width */
             margin: auto;
             background: rgba(255, 255, 255, 0.95);
             border-radius: 15px;
-            padding: 40px;
+            padding: 20px; /* Reduced padding */
             text-align: center;
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
             flex: 1;
@@ -53,23 +52,23 @@
 
         .form-container h2 {
             color: orange;
-            font-size: 2.2em;
-            margin-bottom: 20px;
+            font-size: 2em;
+            margin-bottom: 15px;
         }
 
         .form-container p {
-            font-size: 1.1em;
+            font-size: 1em;
             color: #555;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
         }
 
         .form-container .btn {
             background-color: orange;
             color: white;
-            padding: 15px 35px;
+            padding: 12px 25px;
             border: none;
             border-radius: 8px;
-            font-size: 1.2em;
+            font-size: 1.1em;
             cursor: pointer;
             text-decoration: none;
             transition: background-color 0.3s ease, transform 0.3s ease;
