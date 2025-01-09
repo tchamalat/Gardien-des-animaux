@@ -375,14 +375,6 @@ $stmt_animaux->close();
         <?php endwhile; ?>
     </div>
 </div>
-<footer>
-    <div class="footer-links">
-        <a href="securite_connect.php">Sécurité</a>
-        <a href="aide_connect.php">Centre d'aide</a>
-        <a href="confidentialite_connect.php">Politique de confidentialité</a>
-        <a href="contact_connect.php">Nous contacter</a>
-    </div>
-</footer>
 
 <script>
     document.getElementById('nombre_animal').addEventListener('input', function() {
@@ -427,22 +419,5 @@ $stmt_animaux->close();
     </div>
 </footer>
 
-<script>
-    document.getElementById('nombre_animal').addEventListener('input', function() {
-        const container = document.getElementById('animal-fields');
-        container.innerHTML = '';
-        const count = parseInt(this.value, 10) || 0;
-        for (let i = 1; i <= count; i++) {
-            const div = document.createElement('div');
-            div.innerHTML = `
-                <label>Nom de l'animal ${i} :</label>
-                <input type="text" name="nom_animal[]" required>
-                <label>Photo de l'animal ${i} :</label>
-                <input type="file" name="photo_animal[]" accept="image/*" required>
-            `;
-            container.appendChild(div);
-        }
-    });
-</script>
 </body>
 </html>
