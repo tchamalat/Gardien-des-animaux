@@ -442,7 +442,7 @@
 
             if (!validatePassword(password)) {
                 passwordError.style.display = 'inline';
-                passwordError.textContent = "Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial.";
+                passwordError.textContent = "Le mot de passe doit contenir au moins 8 caractères, une Majuscule, une minuscule, un chiffr et un caractère spécial.";
                 return;
             } else {
                 passwordError.style.display = 'none';
