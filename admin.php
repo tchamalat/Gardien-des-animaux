@@ -27,10 +27,10 @@ try {
     $stmtUsers = $pdo->query("SELECT COUNT(*) as total FROM creation_compte");
     $totalUsers = $stmtUsers->fetch()['total'];
 
-    $stmtReservations = $pdo->query("SELECT COUNT(*) as total FROM reservation WHERE statut = 'en cours'");
+    $stmtReservations = $pdo->query("SELECT COUNT(*) as total FROM reservation");
     $totalReservations = $stmtReservations->fetch()['total'];
 
-    $stmtAbonnements = $pdo->query("SELECT COUNT(*) as total FROM Abonnement WHERE statut = 'actif'");
+    $stmtAbonnements = $pdo->query("SELECT COUNT(*) as total FROM Abonnement");
     $totalAbonnements = $stmtAbonnements->fetch()['total'];
 } catch (PDOException $e) {
     die("Erreur lors de la récupération des statistiques : " . $e->getMessage());
