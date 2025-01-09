@@ -270,25 +270,54 @@ $stmt_animaux->close();
             background: darkred;
         }
 
+        ul {
+            margin-top: 20px;
+            padding-left: 20px;
+            list-style: none;
+        }
+
+        ul li {
+            position: relative;
+            padding-left: 25px;
+            margin-bottom: 10px;
+        }
+
+        ul li:before {
+            content: '✔';
+            position: absolute;
+            left: 0;
+            top: 0;
+            color: orange;
+            font-weight: bold;
+        }
+
         footer {
-            background: rgba(0, 0, 0, 0.9);
-            color: white;
+            background: rgba(0, 0, 0, 0.85);
+            color: #fff;
             padding: 20px;
             margin-top: 50px;
-            text-align: center;
         }
 
         footer .footer-links {
             display: flex;
-            justify-content: center;
-            gap: 40px;
+            justify-content: space-around;
             flex-wrap: wrap;
+        }
+
+        footer .footer-links h4 {
+            color: orange;
+            margin-bottom: 10px;
+        }
+
+        footer .footer-links ul {
+            list-style: none;
+            padding: 0;
         }
 
         footer .footer-links a {
             color: white;
             text-decoration: none;
-            font-size: 0.9em;
+            transition: color 0.3s ease;
         }
 
         footer .footer-links a:hover {
