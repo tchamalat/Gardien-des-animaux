@@ -8,6 +8,28 @@ if (isset($_GET['logout'])) {
     header("Location: login.html");
     exit();
 }
+
+// Connexion à la base de données
+try {
+    $pdo = new PDO('mysql:host=localhost;dbname=your_database_name', 'your_username', 'your_password');
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    die("Erreur de connexion : " . $e->getMessage());
+}
+
+// Récupération des statistiques
+try {
+    $stmtUsers = $pdo->query("SELECT COUNT(*) as total FROM utilisateurs");
+    $totalUsers = $stmtUsers->fetch()['total'];
+
+    $stmtReservations = $pdo->query("SELECT COUNT(*) as total FROM reservations WHERE statut = 'en cours'");
+    $totalReservations = $stmtReservations->fetch()['total'];
+
+    $stmtAbonnements = $pdo->query("SELECT COUNT(*) as total FROM abonnements WHERE statut = 'actif'");
+    $totalAbonnements = $stmtAbonnements->fetch()['total'];
+} catch (PDOException $e) {
+    die("Erreur lors de la récupération des statistiques : " . $e->getMessage());
+}
 ?>
 
 <!DOCTYPE html>
@@ -80,29 +102,50 @@ if (isset($_GET['logout'])) {
             transform: translateY(-3px);
         }
 
-        .form-container {
-            max-width: 800px;
-            margin: 150px auto;
+        .dashboard-container {
+            max-width: 1200px;
+            margin: 120px auto;
             background: rgba(255, 255, 255, 0.95);
             border-radius: 15px;
             padding: 30px;
             box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .dashboard-header {
             text-align: center;
+            margin-bottom: 30px;
         }
 
-        .form-container h2 {
-            font-size: 1.8em;
+        .dashboard-header h2 {
+            font-size: 2em;
             color: orange;
-            margin-bottom: 20px;
         }
 
-        .form-container h3 {
-            font-size: 1.4em;
-            color: #333;
-            margin-bottom: 20px;
+        .stats-cards {
+            display: flex;
+            gap: 20px;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        .stats-card {
+            flex: 1;
+            min-width: 250px;
+            background-color: orange;
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .stats-card h3 {
+            font-size: 1.5em;
+            margin-bottom: 10px;
         }
 
         .menu-list {
+            margin-top: 30px;
             list-style: none;
             padding: 0;
         }
@@ -175,9 +218,26 @@ if (isset($_GET['logout'])) {
 </header>
 
 <!-- Contenu principal -->
-<div class="form-container">
-    <h2>Bienvenue, <?php echo htmlspecialchars($_SESSION['admin']); ?> !</h2>
-    <h3>Gestion des Tables Principales</h3>
+<div class="dashboard-container">
+    <div class="dashboard-header">
+        <h2>Bienvenue, <?php echo htmlspecialchars($_SESSION['admin']); ?> !</h2>
+    </div>
+
+    <div class="stats-cards">
+        <div class="stats-card">
+            <h3>Utilisateurs</h3>
+            <p>Nombre total : <?php echo $totalUsers; ?></p>
+        </div>
+        <div class="stats-card">
+            <h3>Réservations</h3>
+            <p>En cours : <?php echo $totalReservations; ?></p>
+        </div>
+        <div class="stats-card">
+            <h3>Abonnements</h3>
+            <p>Actifs : <?php echo $totalAbonnements; ?></p>
+        </div>
+    </div>
+
     <ul class="menu-list">
         <li><a class="btn" href="manage_abonnements.php">Gérer les Abonnements</a></li>
         <li><a class="btn" href="manage_utilisateurs.php">Gérer les Utilisateurs</a></li>
