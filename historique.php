@@ -58,24 +58,29 @@ $result = $stmt->get_result();
         header img {
             height: 100px;
         }
+        header .auth-buttons {
+            display: flex;
+            flex-wrap: wrap; /* Permet d'adapter les boutons s'ils ne tiennent pas sur une seule ligne */
+            gap: 10px; /* Espace entre les boutons */
+        }
 
         header .auth-buttons .btn {
             background-color: orange;
             color: white;
-            padding: 10px 20px;
+            padding: 10px 15px;
             border: none;
             border-radius: 8px;
             font-size: 1em;
             cursor: pointer;
             text-decoration: none;
-            margin-left: 10px;
             transition: background-color 0.3s ease, transform 0.3s ease;
+            white-space: nowrap; /* Empêche les boutons de se diviser sur plusieurs lignes */
         }
 
         header .auth-buttons .btn:hover {
             background-color: #ff7f00;
             transform: translateY(-3px);
-        }
+        }        
 
         .container {
             max-width: 900px;
