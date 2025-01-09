@@ -26,7 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $stmt_admin->bind_result($admin_id, $email_admin, $stored_password, $permissions);
                 $stmt_admin->fetch();
 
-                if ($hashed_password == $stored_password) {
+                if (password_verify($password, $stored_password)) {
                     $_SESSION['admin_id'] = $admin_id;
                     $_SESSION['email_admin'] = $email_admin;
                     $_SESSION['permissions'] = $permissions;
