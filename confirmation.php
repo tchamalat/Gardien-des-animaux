@@ -30,7 +30,6 @@
             top: 0;
             left: 0;
             width: 100%;
-            background: rgba(0, 0, 0, 0.5); /* Optional background for better readability */
             z-index: 10;
         }
 
