@@ -161,7 +161,6 @@ $stmt_animaux->close();
             text-align: center;
         }
 
-
         .profile-picture img {
             width: 150px;
             height: 150px;
@@ -354,27 +353,30 @@ $stmt_animaux->close();
         <div id="animal-fields"></div>
         <button type="submit" name="ajouter_animaux" class="btn">Enregistrer les animaux</button>
     </form>
-    <h3>Mes Animaux</h3>
-    <div class="animal-list">
-        <?php while ($row = $result_animaux->fetch_assoc()): ?>
-            <div class="animal-card">
-                <form method="POST" enctype="multipart/form-data">
-                    <input type="hidden" name="id_animal" value="<?php echo $row['id_animal']; ?>">
-                    <label>Nom :</label>
-                    <input type="text" name="nom_animal" value="<?php echo htmlspecialchars($row['prenom_animal']); ?>" required>
-                    <div class="animal-photo">
-                        <?php if ($row['url_photo']): ?>
-                            <img src="data:image/jpeg;base64,<?php echo base64_encode($row['url_photo']); ?>" alt="Photo de <?php echo htmlspecialchars($row['prenom_animal']); ?>">
-                        <?php else: ?>
-                            <p>Aucune photo disponible</p>
-                        <?php endif; ?>
-                    </div>
-                    <button type="submit" name="update_animal">Modifier</button>
-                    <button type="submit" name="delete_animal" class="btn-delete">Supprimer</button>
-                </form>
-            </div>
-        <?php endwhile; ?>
-    </div>
+
+    <?php if ($result_animaux->num_rows > 0): ?>
+        <h3>Mes Animaux</h3>
+        <div class="animal-list">
+            <?php while ($row = $result_animaux->fetch_assoc()): ?>
+                <div class="animal-card">
+                    <form method="POST" enctype="multipart/form-data">
+                        <input type="hidden" name="id_animal" value="<?php echo $row['id_animal']; ?>">
+                        <label>Nom :</label>
+                        <input type="text" name="nom_animal" value="<?php echo htmlspecialchars($row['prenom_animal']); ?>" required>
+                        <div class="animal-photo">
+                            <?php if ($row['url_photo']): ?>
+                                <img src="data:image/jpeg;base64,<?php echo base64_encode($row['url_photo']); ?>" alt="Photo de <?php echo htmlspecialchars($row['prenom_animal']); ?>">
+                            <?php else: ?>
+                                <p>Aucune photo disponible</p>
+                            <?php endif; ?>
+                        </div>
+                        <button type="submit" name="update_animal">Modifier</button>
+                        <button type="submit" name="delete_animal" class="btn-delete">Supprimer</button>
+                    </form>
+                </div>
+            <?php endwhile; ?>
+        </div>
+    <?php endif; ?>
 </div>
 
 <script>
