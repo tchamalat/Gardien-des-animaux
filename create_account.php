@@ -424,6 +424,54 @@
             });
         });
     </script>
+    <script>
+        // Fonction de validation pour un mot de passe sécurisé
+        function validatePassword(password) {
+            const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+            return passwordRegex.test(password);
+        }
+
+        document.getElementById('registerForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Empêche le rechargement de la page
+            const formData = new FormData(this);
+
+            // Vérification du mot de passe
+            const password = formData.get('password');
+            const confirmPassword = formData.get('confirm_password');
+            const passwordError = document.getElementById('passwordError');
+
+            if (!validatePassword(password)) {
+                passwordError.style.display = 'inline';
+                passwordError.textContent = "Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial.";
+                return;
+            } else {
+                passwordError.style.display = 'none';
+            }
+
+            if (password !== confirmPassword) {
+                passwordError.style.display = 'inline';
+                passwordError.textContent = "Les mots de passe ne correspondent pas.";
+                return;
+            } else {
+                passwordError.style.display = 'none';
+            }
+
+            // Envoi de la requête AJAX
+            fetch('register.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.text())
+            .then(data => {
+                if (data.trim() === "success") {
+                    window.location.href = "confirmation.php"; // Redirection vers la page de confirmation
+                } else {
+                    document.getElementById('message').innerHTML = data; // Affiche uniquement le message d'erreur
+                }
+            })
+            .catch(error => console.error('Erreur:', error));
+        });
+    </script>
 
 
     <footer>
