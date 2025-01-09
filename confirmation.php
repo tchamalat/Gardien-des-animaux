@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Confirmation d'inscription - Gardien des Animaux</title>
     <style>
-        /* Styles globaux */
+        /* Global Styles */
         * {
             margin: 0;
             padding: 0;
@@ -17,58 +17,47 @@
             background: url('images/premierplan.png') no-repeat center center fixed;
             background-size: cover;
             color: #333;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
 
         header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            z-index: 10;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 20px;
-            background: none;
-        }
-
-        header .header-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 100%;
+            text-align: center;
+            margin-top: 50px;
         }
 
         header img {
             height: 80px;
+            margin-bottom: 10px;
         }
 
         header h1 {
             color: white;
-            font-size: 2em;
-            margin-top: 10px;
-            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
-            text-align: center;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.6);
         }
 
         .form-container {
-            max-width: 800px;
-            margin: 150px auto 50px; /* Centrage vertical */
+            max-width: 700px;
+            margin: auto;
             background: rgba(255, 255, 255, 0.95);
             border-radius: 15px;
-            padding: 30px;
+            padding: 40px;
             text-align: center;
-            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            margin-top: 30px;
+            margin-bottom: auto;
         }
 
         .form-container h2 {
             color: orange;
-            font-size: 2em;
+            font-size: 2.2em;
             margin-bottom: 20px;
         }
 
         .form-container p {
-            font-size: 1.2em;
+            font-size: 1.1em;
             color: #555;
             margin-bottom: 30px;
         }
@@ -76,7 +65,7 @@
         .form-container .btn {
             background-color: orange;
             color: white;
-            padding: 15px 30px;
+            padding: 15px 35px;
             border: none;
             border-radius: 8px;
             font-size: 1.2em;
@@ -90,38 +79,25 @@
             transform: translateY(-3px);
         }
 
-        ul {
-            margin-top: 20px;
-            padding-left: 20px;
-            list-style: none;
-        }
-
-        ul li {
-            position: relative;
-            padding-left: 25px;
-            margin-bottom: 10px;
-        }
-
-        ul li:before {
-            content: '✔';
-            position: absolute;
-            left: 0;
-            top: 0;
-            color: orange;
-            font-weight: bold;
-        }
-
         footer {
             background: rgba(0, 0, 0, 0.85);
             color: #fff;
-            padding: 20px;
-            margin-top: 50px;
+            padding: 20px 0;
+            margin-top: auto;
+            text-align: center;
         }
 
         footer .footer-links {
             display: flex;
             justify-content: space-around;
             flex-wrap: wrap;
+            max-width: 800px;
+            margin: auto;
+        }
+
+        footer .footer-links div {
+            text-align: left;
+            margin: 10px;
         }
 
         footer .footer-links h4 {
@@ -132,6 +108,10 @@
         footer .footer-links ul {
             list-style: none;
             padding: 0;
+        }
+
+        footer .footer-links li {
+            margin-bottom: 5px;
         }
 
         footer .footer-links a {
@@ -149,17 +129,15 @@
 
 <!-- Header -->
 <header>
-    <div class="header-container">
-        <img src="images/logo.png" alt="Logo Gardien des Animaux">
-        <h1>Inscription Réussie</h1>
-    </div>
+    <img src="images/logo.png" alt="Logo Gardien des Animaux">
+    <h1>Inscription Réussie</h1>
 </header>
 
 <!-- Confirmation Message -->
 <section class="form-container">
     <h2>Merci pour votre inscription !</h2>
     <p>Votre compte a été créé avec succès. Vous pouvez maintenant vous connecter.</p>
-    <button class="btn" onclick="window.location.href='login.html'">Se connecter</button>
+    <a class="btn" href="login.html">Se connecter</a>
 </section>
 
 <!-- Footer -->
