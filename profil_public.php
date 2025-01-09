@@ -401,8 +401,6 @@ $stmt_animaux->close();
         }
     });
 </script>
-</body>
-</html>
 
 <footer>
     <div class="footer-links">
