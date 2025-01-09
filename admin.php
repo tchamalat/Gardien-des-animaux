@@ -24,7 +24,7 @@ try {
 
 // Récupération des statistiques
 try {
-    $stmtUsers = $pdo->query("SELECT COUNT(*) as total FROM create_account");
+    $stmtUsers = $pdo->query("SELECT COUNT(*) as total FROM creation_compte");
     $totalUsers = $stmtUsers->fetch()['total'];
 
     $stmtReservations = $pdo->query("SELECT COUNT(*) as total FROM reservation WHERE statut = 'en cours'");
