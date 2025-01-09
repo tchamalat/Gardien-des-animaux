@@ -214,7 +214,7 @@ try {
             background: rgba(0, 0, 0, 0.85);
             color: #fff;
             padding: 20px;
-            margin-top: 50px;
+            margin-top: auto;
         }
 
         footer .footer-links {
