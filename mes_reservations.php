@@ -300,9 +300,15 @@ $result = $stmt->get_result();
                                     echo "Inconnu";
                                 }
                                 ?>
-                            </td>
-                                <a href="?action=valider&id_reservation=<?php echo $row['id_reservation']; ?>" class="btn-profile" style="background-color: green;">Valider</a>
-                                <a href="?action=refuser&id_reservation=<?php echo $row['id_reservation']; ?>" class="btn-profile" style="background-color: red;">Refuser</a>
+                            <td>
+                                <div style="display: flex; gap: 10px; justify-content: center;">
+                                    <a href="?action=valider&id_reservation=<?php echo $row['id_reservation']; ?>" 
+                                        class="btn-profile" 
+                                        style="background-color: green;">Valider</a>
+                                    <a href="?action=refuser&id_reservation=<?php echo $row['id_reservation']; ?>" 
+                                        class="btn-profile" 
+                                        style="background-color: red;">Refuser</a>
+                                </div>
                             </td>
                         </tr>
                     <?php endwhile; ?>
