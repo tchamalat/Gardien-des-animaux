@@ -123,9 +123,7 @@ try {
         }
 
         .menu-dropdown {
-            position: fixed;
-            top: 20px;
-            right: 40px;
+            position: relative; /* Changement : position relative pour le parent */
             display: inline-block;
         }
 
@@ -146,12 +144,13 @@ try {
         }
 
         .menu-dropdown:hover .dropdown-content {
-            display: block; /* S'assure que le menu s'affiche */
+            display: block; /* Changement : s'assure que le menu s'affiche */
         }
 
         .menu-dropdown .dropdown-content {
             display: none;
-            position: absolute;
+            position: absolute; /* Positionné par rapport au parent */
+            top: 100%; /* S'assure que le menu est en dessous du bouton */
             right: 0;
             background-color: white;
             min-width: 200px;
@@ -186,6 +185,7 @@ try {
         .menu-dropdown .dropdown-content .btn-deconnexion:hover {
             background-color: #ff4d4d;
         }
+
 
     </style>
 </head>
