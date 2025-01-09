@@ -55,20 +55,6 @@ $stmt->bind_param("i", $user_id);
 $stmt->execute();
 $result = $stmt->get_result();
 
-// Récupère les réservations associées au gardien
-$sql = "
-    SELECT r.id_reservation, r.date_debut, r.date_fin, r.lieu, r.type, r.heure_debut, r.heure_fin, 
-           c.id AS proprietaire_id, c.nom, c.prenom, c.mail
-    FROM reservation r
-    INNER JOIN creation_compte c ON r.id_utilisateur = c.id
-    WHERE r.gardien_id = ?
-    ORDER BY r.date_debut ASC
-";
-$stmt = $conn->prepare($sql);
-$stmt->bind_param("i", $user_id);
-$stmt->execute();
-$result = $stmt->get_result();
-
 ?>
 
 <!DOCTYPE html>
