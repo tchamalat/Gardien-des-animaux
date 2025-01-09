@@ -304,16 +304,18 @@ $result = $stmt->get_result();
                             <td><?php echo htmlspecialchars($row['heure_fin']); ?></td>
                             <td>
                                 <?php 
-                                if ($row['validite'] === null) {
+                                if (is_null($row['validite'])) {
                                     echo "En attente";
                                 } elseif ($row['validite'] == 1) {
                                     echo "Validée";
-                                } else {
+                                } elseif ($row['validite'] == 0) {
                                     echo "Refusée";
+                                } else {
+                                    echo "Inconnu";
                                 }
                                 ?>
                             </td>
-                            <td>
+
                                 <a href="?action=valider&id_reservation=<?php echo $row['id_reservation']; ?>" class="btn-profile" style="background-color: green;">Valider</a>
                                 <a href="?action=refuser&id_reservation=<?php echo $row['id_reservation']; ?>" class="btn-profile" style="background-color: red;">Refuser</a>
                             </td>
