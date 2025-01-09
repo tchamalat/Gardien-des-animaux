@@ -19,13 +19,13 @@ try {
 
 // Récupération des statistiques
 try {
-    $stmtUsers = $pdo->query("SELECT COUNT(*) as total FROM utilisateurs");
+    $stmtUsers = $pdo->query("SELECT COUNT(*) as total FROM creation_compte");
     $totalUsers = $stmtUsers->fetch()['total'];
 
     $stmtReservations = $pdo->query("SELECT COUNT(*) as total FROM reservations");
     $totalReservations = $stmtReservations->fetch()['total'];
 
-    $stmtAbonnements = $pdo->query("SELECT COUNT(*) as total FROM abonnements");
+    $stmtAbonnements = $pdo->query("SELECT COUNT(*) as total FROM Abonnement");
     $totalAbonnements = $stmtAbonnements->fetch()['total'];
 } catch (PDOException $e) {
     die("Erreur lors de la récupération des statistiques : " . $e->getMessage());
