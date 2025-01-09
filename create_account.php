@@ -440,14 +440,6 @@
             const confirmPassword = formData.get('confirm_password');
             const passwordError = document.getElementById('passwordError');
 
-            if (!validatePassword(password)) {
-                passwordError.style.display = 'inline';
-                passwordError.textContent = "Le mot de passe doit contenir au moins 8 caractères, une Majuscule, une minuscule, un chiffr et un caractère spécial.";
-                return;
-            } else {
-                passwordError.style.display = 'none';
-            }
-
             if (password !== confirmPassword) {
                 passwordError.style.display = 'inline';
                 passwordError.textContent = "Les mots de passe ne correspondent pas.";
