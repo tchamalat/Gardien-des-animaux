@@ -153,13 +153,14 @@ $stmt_animaux->close();
 
         .profile-container {
             max-width: 1200px;
-            margin: 50px auto;
+            margin: 120px auto 50px; /* Espace entre header et footer */
             background: rgba(255, 255, 255, 0.95);
             border-radius: 15px;
             padding: 30px 40px;
             box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
             text-align: center;
         }
+
 
         .profile-picture img {
             width: 150px;
