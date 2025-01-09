@@ -80,7 +80,15 @@ $result = $stmt->get_result();
         header .auth-buttons .btn:hover {
             background-color: #ff7f00;
             transform: translateY(-3px);
-        }        
+        }
+        .auth-buttons {
+	        position: absolute;
+            top: 20px; /* Ajustez la valeur si nécessaire */
+            right: 20px; /* Ajustez la valeur si nécessaire */
+            display: flex;
+            gap: 15px;
+            z-index: 100; /* Assurez-vous que les boutons sont au-dessus d'autres éléments */
+	    }
 
         .container {
             max-width: 900px;
