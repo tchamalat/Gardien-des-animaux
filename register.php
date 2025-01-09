@@ -7,17 +7,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nom = $_POST['nom'] ?? '';
     $nom_utilisateur = $_POST['username'] ?? '';
     $mail = $_POST['email'] ?? '';
-    $numero_telephone = preg_replace('/\D/', '', $_POST['telephone'] ?? ''); // Supprime les caractères non numériques
+    $numero_telephone = preg_replace('/\D/', '', $_POST['telephone'] ?? '');
     $adresse = $_POST['adresse'] ?? '';
     $ville = $_POST['ville'] ?? '';
     $mot_de_passe = $_POST['password'] ?? '';
     $role = $_POST['role'] ?? '';
 
     // Validation des données du formulaire
-    if (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/', $mot_de_passe)) {
+    $password_pattern = '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/';
+    
+    if (!preg_match($password_pattern, $mot_de_passe)) {
         echo "<p style='color: red;'>Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial.</p>";
+        error_log("Échec de validation du mot de passe : $mot_de_passe"); // Débogage
         exit();
     }
+
     if (!preg_match('/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|fr)$/', $mail)) {
         echo "<p style='color: red;'>L'adresse e-mail doit être valide.</p>";
         exit();
@@ -34,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // Hachage du mot de passe
-    $mot_de_passe_hache = md5($mot_de_passe); // Vous pouvez utiliser password_hash() pour une meilleure sécurité
+    $mot_de_passe_hache = password_hash($mot_de_passe, PASSWORD_DEFAULT);
 
     // Vérification de l'unicité de l'email, du numéro de téléphone et du nom d'utilisateur
     $stmt = $conn->prepare("
