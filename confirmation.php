@@ -41,15 +41,17 @@
 
         .form-container {
             max-width: 500px; /* Reduced width */
+            max-height: 400px; /* Set maximum height */
             margin: auto;
             background: rgba(255, 255, 255, 0.95);
             border-radius: 15px;
             padding: 20px; /* Reduced padding */
             text-align: center;
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-            flex: 1;
+            position: relative;
+            top: 50%;
+            transform: translateY(-50%); /* Center vertically */
         }
-
         .form-container h2 {
             color: orange;
             font-size: 2em;
