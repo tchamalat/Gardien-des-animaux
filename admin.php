@@ -22,7 +22,7 @@ try {
     $stmtUsers = $pdo->query("SELECT COUNT(*) as total FROM creation_compte");
     $totalUsers = $stmtUsers->fetch()['total'];
 
-    $stmtReservations = $pdo->query("SELECT COUNT(*) as total FROM reservations");
+    $stmtReservations = $pdo->query("SELECT COUNT(*) as total FROM reservation");
     $totalReservations = $stmtReservations->fetch()['total'];
 
     $stmtAbonnements = $pdo->query("SELECT COUNT(*) as total FROM Abonnement");
