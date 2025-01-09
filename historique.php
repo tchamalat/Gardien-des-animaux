@@ -66,17 +66,19 @@ $result = $stmt->get_result();
 		max-width: 100%; /* Empêche les boutons de dépasser la largeur de l'écran */
 	}
         header .auth-buttons .btn {
-            background-color: orange;
-            color: white;
-            padding: 10px 15px;
-            border: none;
-            border-radius: 8px;
-            font-size: 1em;
-            cursor: pointer;
-            text-decoration: none;
-            transition: background-color 0.3s ease, transform 0.3s ease;
-            white-space: nowrap; /* Empêche les boutons de se diviser sur plusieurs lignes */
-        }
+    		background-color: orange;
+    		color: white;
+    		padding: 10px 15px;
+    		border: none;
+    		border-radius: 8px;
+    		font-size: 1em;
+    		cursor: pointer;
+    		text-decoration: none;
+    		transition: background-color 0.3s ease, transform 0.3s ease;
+    		white-space: nowrap; /* Empêche les boutons de se diviser sur plusieurs lignes */
+    		overflow: hidden; /* Empêche les débordements */
+    		text-overflow: ellipsis; /* Ajoute des points de suspension si le contenu dépasse */
+	}
 
         header .auth-buttons .btn:hover {
             background-color: #ff7f00;
