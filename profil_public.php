@@ -118,7 +118,6 @@ $stmt_animaux->close();
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: rgba(255, 255, 255, 0.9);
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             position: sticky;
             top: 0;
