@@ -2,6 +2,11 @@
 session_start();
 include 'config.php';
 
+$servername = "localhost";
+$username = "gardien";
+$password = "G@rdien-des-chiens";
+$dbname = "gardiendb";
+
 // Gestion de la déconnexion
 if (isset($_GET['logout'])) {
     session_destroy();
@@ -11,7 +16,7 @@ if (isset($_GET['logout'])) {
 
 // Connexion à la base de données
 try {
-    $pdo = new PDO('mysql:host=localhost;dbname=your_database_name', 'your_username', 'your_password');
+    $pdo = new PDO('mysql:host=localhost;dbname=gardiendb', 'gardien', 'G@rdien-des-chiens');
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch (PDOException $e) {
     die("Erreur de connexion : " . $e->getMessage());
