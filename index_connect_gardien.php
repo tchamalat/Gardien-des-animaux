@@ -217,7 +217,33 @@
         <p>Chargement des propriétaires en cours...</p>
     </div>
 </section>
+    
+    <!-- Avis Section -->
+    <section class="avis-section">
+        <h2 class="texte">Ce que disent nos utilisateurs</h2>
+        <p class="texte">Vos retours sont précieux et aident à améliorer nos services.</p>
+        <div class="avis-list">
+            <?php
+            $query = "SELECT avis.review, avis.rating, avis.date_created, creation_compte.nom_utilisateur 
+                      FROM avis 
+                      JOIN creation_compte ON avis.user_id = creation_compte.id 
+                      ORDER BY avis.date_created DESC LIMIT 3";
+            $result = $conn->query($query);
 
+            while ($row = $result->fetch_assoc()) {
+                echo "<div class='avis'>";
+                echo "<p><strong>" . htmlspecialchars($row['nom_utilisateur']) . " :</strong></p>";
+                echo "<p>“" . htmlspecialchars($row['review']) . "”</p>";
+                echo "<span>" . htmlspecialchars($row['rating']) . " / 5 <img src='images/star.png' alt='étoile'></span>";
+                echo "</div>";
+            }
+            ?>
+        </div>
+        <button class="voir-plus" onclick="window.location.href='leave_review.php'">
+            Laisser un avis
+        </button>
+    </section>
+    
 <script>
     // Fonction pour récupérer les propriétaires disponibles
     async function fetchProprietaires() {
