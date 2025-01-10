@@ -27,9 +27,49 @@ try {
 
     $stmtAbonnements = $pdo->query("SELECT COUNT(*) as total FROM Abonnement");
     $totalAbonnements = $stmtAbonnements->fetch()['total'];
+
+    // Données mensuelles pour les graphiques
+    $stmtUserEvolution = $pdo->query("
+        SELECT MONTH(date_creation) AS mois, COUNT(*) AS total
+        FROM creation_compte
+        GROUP BY mois
+        ORDER BY mois ASC
+    ");
+    $userEvolution = $stmtUserEvolution->fetchAll(PDO::FETCH_ASSOC);
+
+    $stmtReservationEvolution = $pdo->query("
+        SELECT MONTH(date_debut) AS mois, COUNT(*) AS total
+        FROM reservation
+        GROUP BY mois
+        ORDER BY mois ASC
+    ");
+    $reservationEvolution = $stmtReservationEvolution->fetchAll(PDO::FETCH_ASSOC);
+
+    $stmtAbonnementEvolution = $pdo->query("
+        SELECT MONTH(date_debut) AS mois, COUNT(*) AS total
+        FROM Abonnement
+        GROUP BY mois
+        ORDER BY mois ASC
+    ");
+    $abonnementEvolution = $stmtAbonnementEvolution->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
     die("Erreur lors de la récupération des statistiques : " . $e->getMessage());
 }
+
+// Transformation des données pour Chart.js
+function transformDataForChart($data) {
+    $labels = [];
+    $values = [];
+    foreach ($data as $row) {
+        $labels[] = date("F", mktime(0, 0, 0, $row['mois'], 1)); // Convertit le mois en nom
+        $values[] = $row['total'];
+    }
+    return ['labels' => $labels, 'values' => $values];
+}
+
+$userChartData = transformDataForChart($userEvolution);
+$reservationChartData = transformDataForChart($reservationEvolution);
+$abonnementChartData = transformDataForChart($abonnementEvolution);
 ?>
 
 <!DOCTYPE html>
