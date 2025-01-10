@@ -256,7 +256,7 @@ try {
 <!-- Contenu principal -->
 <div class="dashboard-container">
     <div class="dashboard-header">
-        <h2>Bienvenue, <?php echo htmlspecialchars($_SESSION['admin']); ?> !</h2>
+        <h2>Bienvenue <?php echo htmlspecialchars($_SESSION['admin']); ?> !</h2>
     </div>
 
     <div class="stats-cards">
