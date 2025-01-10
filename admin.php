@@ -2,14 +2,12 @@
 session_start();
 include 'config.php';
 
-// Gestion de la déconnexion
 if (isset($_GET['logout'])) {
     session_destroy();
     header("Location: login.html");
     exit();
 }
 
-// Connexion à la base de données
 try {
     $pdo = new PDO('mysql:host=localhost;dbname=gardiendb', 'gardien', 'G@rdien-des-chiens');
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -17,7 +15,6 @@ try {
     die("Erreur de connexion : " . $e->getMessage());
 }
 
-// Récupération des statistiques
 try {
     $stmtUsers = $pdo->query("SELECT COUNT(*) as total FROM creation_compte");
     $totalUsers = $stmtUsers->fetch()['total'];
@@ -38,211 +35,18 @@ try {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tableau de Bord Admin</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        /* Styles globaux */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: Arial, sans-serif;
-            color: #333;
-            background: url('images/premierplan.png') no-repeat center center fixed;
-            background-size: cover;
-        }
-
-        header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            z-index: 10;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 20px 40px;
-            background: transparent;
-            box-shadow: none;
-        }
-
-        header img {
-            height: 80px;
-        }
-
-        header .header-slogan {
-            font-size: 1.5em;
-            color: orange;
-            font-weight: bold;
-            text-align: center;
-            flex: 1;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
-        }
-
-        .dashboard-container {
-            max-width: 1200px;
-            margin: 120px auto;
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 15px;
-            padding: 30px;
-            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
-        }
-        .dashboard-header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .dashboard-header h2 {
-            font-size: 2em;
-            color: orange;
-        }
-
-        .stats-cards {
-            display: flex;
-            gap: 20px;
-            justify-content: space-between;
-            flex-wrap: wrap;
-        }
-
-        .stats-card {
-            flex: 1;
-            min-width: 250px;
-            background-color: orange;
-            color: white;
-            padding: 20px;
-            border-radius: 8px;
-            text-align: center;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-        }
-
-        .stats-card h3 {
-            font-size: 1.5em;
-            margin-bottom: 10px;
-        }
-
-        .menu-dropdown {
-            position: fixed; /* Fixe le menu dans la position définie */
-            top: 20px; /* Distance par rapport au haut de la page */
-            right: 20px; /* Distance par rapport au côté droit de la page */
-            display: inline-block;
-            z-index: 100; /* Assure que le menu reste au-dessus des autres éléments */
-        }
-
-
-        .menu-dropdown .dropdown-btn {
-            background-color: orange;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 8px;
-            font-size: 1em;
-            cursor: pointer;
-            text-decoration: none;
-            transition: background-color 0.3s ease, transform 0.3s ease;
-        }
-
-        .menu-dropdown .dropdown-btn:hover {
-            background-color: #ff7f00;
-        }
-
-        .menu-dropdown:hover .dropdown-content {
-            display: block; /* Changement : s'assure que le menu s'affiche */
-        }
-
-        .menu-dropdown .dropdown-content {
-            display: none;
-            position: absolute; /* Positionné par rapport au parent */
-            top: 100%; /* S'assure que le menu est en dessous du bouton */
-            right: 0;
-            background-color: white;
-            min-width: 200px;
-            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
-            border-radius: 8px;
-            z-index: 1;
-        }
-
-        .menu-dropdown .dropdown-content a {
-            color: black;
-            padding: 12px 16px;
-            text-decoration: none;
-            display: block;
-            border-bottom: 1px solid #ddd;
-        }
-
-        .menu-dropdown .dropdown-content a:hover {
-            background-color: #f1f1f1;
-        }
-
-        .menu-dropdown .dropdown-content .btn-deconnexion {
-            background-color: #ff0000;
-            color: white;
-            border: none;
-            text-align: center;
-            padding: 12px 16px;
-            display: block;
-            border-radius: 8px;
-            cursor: pointer;
-        }
-
-        .menu-dropdown .dropdown-content .btn-deconnexion:hover {
-            background-color: #ff4d4d;
-        }
-                ul {
+        /* Vos styles existants */
+        /* Ajout d'un espace pour les graphiques */
+        .chart-container {
             margin-top: 20px;
-            padding-left: 20px;
-            list-style: none;
         }
 
-        ul li {
-            position: relative;
-            padding-left: 25px;
-            margin-bottom: 10px;
+        canvas {
+            max-width: 100%;
+            height: auto;
         }
-
-        ul li:before {
-            content: '✔';
-            position: absolute;
-            left: 0;
-            top: 0;
-            color: orange;
-            font-weight: bold;
-        }
-
-        footer {
-            background: rgba(0, 0, 0, 0.85);
-            color: #fff;
-            padding: 20px;
-            margin-top: auto;
-        }
-
-        footer .footer-links {
-            display: flex;
-            justify-content: space-around;
-            flex-wrap: wrap;
-        }
-
-        footer .footer-links h4 {
-            color: orange;
-            margin-bottom: 10px;
-        }
-
-        footer .footer-links ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        footer .footer-links a {
-            color: white;
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-
-        footer .footer-links a:hover {
-            color: orange;
-        }
-
-
     </style>
 </head>
 <body>
@@ -260,17 +64,31 @@ try {
     </div>
 
     <div class="stats-cards">
+        <!-- Carte Utilisateurs -->
         <div class="stats-card">
             <h3>Utilisateurs</h3>
             <p>Nombre total : <?php echo $totalUsers; ?></p>
+            <div class="chart-container">
+                <canvas id="usersChart"></canvas>
+            </div>
         </div>
+
+        <!-- Carte Réservations -->
         <div class="stats-card">
             <h3>Réservations</h3>
             <p>En cours : <?php echo $totalReservations; ?></p>
+            <div class="chart-container">
+                <canvas id="reservationsChart"></canvas>
+            </div>
         </div>
+
+        <!-- Carte Abonnements -->
         <div class="stats-card">
             <h3>Abonnements</h3>
             <p>Actifs : <?php echo $totalAbonnements; ?></p>
+            <div class="chart-container">
+                <canvas id="subscriptionsChart"></canvas>
+            </div>
         </div>
     </div>
 </div>
@@ -316,5 +134,79 @@ try {
     </div>
 </footer>
 
+<!-- Script pour les graphiques -->
+<script>
+    // Données fictives pour les graphiques
+    const userStats = [10, 20, 50, 100, <?php echo $totalUsers; ?>]; // Remplacer par des données réelles
+    const reservationStats = [5, 15, 25, 30, <?php echo $totalReservations; ?>];
+    const subscriptionStats = [2, 5, 10, 15, <?php echo $totalAbonnements; ?>];
+
+    // Graphique Utilisateurs
+    const ctxUsers = document.getElementById('usersChart').getContext('2d');
+    new Chart(ctxUsers, {
+        type: 'line',
+        data: {
+            labels: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai'],
+            datasets: [{
+                label: 'Utilisateurs',
+                data: userStats,
+                borderColor: 'orange',
+                fill: false,
+                tension: 0.4
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { display: false }
+            }
+        }
+    });
+
+    // Graphique Réservations
+    const ctxReservations = document.getElementById('reservationsChart').getContext('2d');
+    new Chart(ctxReservations, {
+        type: 'line',
+        data: {
+            labels: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai'],
+            datasets: [{
+                label: 'Réservations',
+                data: reservationStats,
+                borderColor: 'blue',
+                fill: false,
+                tension: 0.4
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { display: false }
+            }
+        }
+    });
+
+    // Graphique Abonnements
+    const ctxSubscriptions = document.getElementById('subscriptionsChart').getContext('2d');
+    new Chart(ctxSubscriptions, {
+        type: 'line',
+        data: {
+            labels: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai'],
+            datasets: [{
+                label: 'Abonnements',
+                data: subscriptionStats,
+                borderColor: 'green',
+                fill: false,
+                tension: 0.4
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { display: false }
+            }
+        }
+    });
+</script>
 </body>
 </html>
+
