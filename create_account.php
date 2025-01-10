@@ -48,7 +48,7 @@
             flex: 1;
             margin: 0;
             position: absolute;
-            top: 50%;
+            top: 100%;
             left: 50%;
             transform: translate(-50%, -50%);
         }
@@ -76,7 +76,7 @@
         }
 
         .form-container {
-            margin: 150px auto 50px; /* Ajustement pour centrer */
+            margin: 250px auto 50px; /* Ajustement pour centrer */
             width: 90%;
             max-width: 400px;
             background: rgba(255, 255, 255, 0.9);
@@ -244,7 +244,7 @@
 <body>
     <header>
         <div class="header-container">
-            <img src="images/logo.png" alt="Logo Gardien des Animaux"><br><br><br>
+            <img src="images/logo.png" alt="Logo Gardien des Animaux">
             <h1 class="header-slogan">Un foyer chaleureux même en votre absence</h1>
         <div class="auth-buttons">
             <button class="btn" onclick="window.location.href='index.php'">Accueil</button>
