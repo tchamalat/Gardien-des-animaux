@@ -241,6 +241,14 @@ try {
         footer .footer-links a:hover {
             color: orange;
         }
+        .chart-container {
+            margin-top: 20px;
+        }
+
+        canvas {
+            max-width: 100%;
+            height: auto;
+        }
 
 
     </style>
@@ -260,17 +268,31 @@ try {
     </div>
 
     <div class="stats-cards">
+        <!-- Carte Utilisateurs -->
         <div class="stats-card">
             <h3>Utilisateurs</h3>
             <p>Nombre total : <?php echo $totalUsers; ?></p>
+            <div class="chart-container">
+                <canvas id="usersChart"></canvas>
+            </div>
         </div>
+
+        <!-- Carte Réservations -->
         <div class="stats-card">
             <h3>Réservations</h3>
             <p>En cours : <?php echo $totalReservations; ?></p>
+            <div class="chart-container">
+                <canvas id="reservationsChart"></canvas>
+            </div>
         </div>
+
+        <!-- Carte Abonnements -->
         <div class="stats-card">
             <h3>Abonnements</h3>
             <p>Actifs : <?php echo $totalAbonnements; ?></p>
+            <div class="chart-container">
+                <canvas id="subscriptionsChart"></canvas>
+            </div>
         </div>
     </div>
 </div>
@@ -316,5 +338,57 @@ try {
     </div>
 </footer>
 
+<!-- Script pour les graphiques -->
+<script>
+    // Données des graphiques depuis PHP
+    const userChartData = <?php echo json_encode($userChartData); ?>;
+    const reservationChartData = <?php echo json_encode($reservationChartData); ?>;
+    const abonnementChartData = <?php echo json_encode($abonnementChartData); ?>;
+
+    // Graphique Utilisateurs
+    new Chart(document.getElementById('usersChart'), {
+        type: 'line',
+        data: {
+            labels: userChartData.labels,
+            datasets: [{
+                label: 'Utilisateurs',
+                data: userChartData.values,
+                borderColor: 'orange',
+                fill: false,
+                tension: 0.4
+            }]
+        }
+    });
+
+    // Graphique Réservations
+    new Chart(document.getElementById('reservationsChart'), {
+        type: 'line',
+        data: {
+            labels: reservationChartData.labels,
+            datasets: [{
+                label: 'Réservations',
+                data: reservationChartData.values,
+                borderColor: 'blue',
+                fill: false,
+                tension: 0.4
+            }]
+        }
+    });
+
+    // Graphique Abonnements
+    new Chart(document.getElementById('subscriptionsChart'), {
+        type: 'line',
+        data: {
+            labels: abonnementChartData.labels,
+            datasets: [{
+                label: 'Abonnements',
+                data: abonnementChartData.values,
+                borderColor: 'green',
+                fill: false,
+                tension: 0.4
+            }]
+        }
+    });
+</script>
 </body>
 </html>
