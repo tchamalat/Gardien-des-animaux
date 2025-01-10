@@ -244,7 +244,7 @@
 <body>
     <header>
         <div class="header-container">
-            <img src="images/logo.png" alt="Logo Gardien des Animaux"><br/>
+            <img src="images/logo.png" alt="Logo Gardien des Animaux"><br><br><br>
             <h1 class="header-slogan">Un foyer chaleureux même en votre absence</h1>
         <div class="auth-buttons">
             <button class="btn" onclick="window.location.href='index.php'">Accueil</button>
