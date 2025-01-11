@@ -320,6 +320,8 @@ $result = $stmt->get_result();
                             <td>
                                 <?php if ($row['paiement_effectue'] == 1): ?>
                                     <span style="color: green; font-weight: bold;">Payée</span>
+                                    <br>
+                                    <a href="profil_proprietaire.php?id=<?php echo $row['proprietaire_id']; ?>" class="btn-profile" style="margin-top: 5px;">Voir Profil</a>
                                 <?php else: ?>
                                     <div style="display: flex; gap: 10px; justify-content: center;">
                                         <a href="?action=valider&id_reservation=<?php echo $row['id_reservation']; ?>" 
