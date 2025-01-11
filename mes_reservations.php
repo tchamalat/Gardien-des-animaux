@@ -21,10 +21,25 @@ if ($result_check->num_rows === 0) {
     echo "Vous devez être un gardien pour voir vos réservations.";
     exit();
 }
+
 // Vérification si une action de validation ou de refus est effectuée
 if (isset($_GET['action']) && isset($_GET['id_reservation'])) {
     $action = $_GET['action']; // "valider" ou "refuser"
     $id_reservation = $_GET['id_reservation'];
+
+    // Vérifie si la réservation est déjà payée
+    $sql_check_payment = "SELECT paiement_effectue FROM reservation WHERE id_reservation = ?";
+    $stmt_check_payment = $conn->prepare($sql_check_payment);
+    $stmt_check_payment->bind_param("i", $id_reservation);
+    $stmt_check_payment->execute();
+    $result_payment = $stmt_check_payment->get_result();
+    $payment_status = $result_payment->fetch_assoc();
+
+    if ($payment_status['paiement_effectue'] == 1) {
+        echo "<script>alert('Cette réservation a déjà été payée et ne peut pas être modifiée.');</script>";
+        header("Location: mes_reservations.php");
+        exit();
+    }
 
     // Détermine la valeur de validite (1 pour valider, 0 pour refuser)
     $validite = ($action === "valider") ? 1 : 0;
@@ -44,7 +59,7 @@ if (isset($_GET['action']) && isset($_GET['id_reservation'])) {
 // Récupère les réservations associées au gardien
 $sql = "
     SELECT r.id_reservation, r.date_debut, r.date_fin, r.lieu, r.type, r.heure_debut, r.heure_fin, r.validite,
-           c.id AS proprietaire_id, c.nom, c.prenom, c.mail
+           r.paiement_effectue, c.id AS proprietaire_id, c.nom, c.prenom, c.mail
     FROM reservation r
     INNER JOIN creation_compte c ON r.id_utilisateur = c.id
     WHERE r.gardien_id = ?
@@ -63,7 +78,7 @@ $result = $stmt->get_result();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mes Réservations</title>
-    <style>
+        <style>
         /* Styles globaux */
         * {
             margin: 0;
@@ -303,14 +318,18 @@ $result = $stmt->get_result();
                                 }
                                 ?>
                             <td>
-                                <div style="display: flex; gap: 10px; justify-content: center;">
-                                    <a href="?action=valider&id_reservation=<?php echo $row['id_reservation']; ?>" 
-                                        class="btn-profile" 
-                                        style="background-color: green;">Valider</a>
-                                    <a href="?action=refuser&id_reservation=<?php echo $row['id_reservation']; ?>" 
-                                        class="btn-profile" 
-                                        style="background-color: red;">Refuser</a>
-                                </div>
+                                <?php if ($row['paiement_effectue'] == 1): ?>
+                                    <span style="color: green; font-weight: bold;">Payée</span>
+                                <?php else: ?>
+                                    <div style="display: flex; gap: 10px; justify-content: center;">
+                                        <a href="?action=valider&id_reservation=<?php echo $row['id_reservation']; ?>" 
+                                            class="btn-profile" 
+                                            style="background-color: green;">Valider</a>
+                                        <a href="?action=refuser&id_reservation=<?php echo $row['id_reservation']; ?>" 
+                                            class="btn-profile" 
+                                            style="background-color: red;">Refuser</a>
+                                    </div>
+                                <?php endif; ?>
                             </td>
                         </tr>
                     <?php endwhile; ?>
@@ -349,3 +368,6 @@ $result = $stmt->get_result();
     </footer>
 </body>
 </html>
+
+
+
