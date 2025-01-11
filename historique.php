@@ -261,6 +261,15 @@ $result = $stmt->get_result();
                         }
                         ?>
                     </td>
+		    <td>
+    			<?php
+    			if ($row['validite'] == 1) { // If reservation is accepted
+        			echo '<a href="paiement.php?id=' . $row['id_reservation'] . '" class="btn">Payer</a>';
+    			} else {
+        			echo '-';
+    			}
+    			?>
+		    </td>
                     <td>
                         <a href="supprimer_reservation.php?id=<?php echo $row['id_reservation']; ?>" onclick="return confirm('Voulez-vous vraiment supprimer cette réservation ?');">
                             ❌
