@@ -10,39 +10,6 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] != 1) {
 
 $user_id = $_SESSION['user_id'];
 
-// Handle reservation deletion
-if (isset($_GET['delete_id'])) {
-    $delete_id = intval($_GET['delete_id']);
-    
-    // Check if the reservation is still pending
-    $check_sql = "SELECT validite FROM reservation WHERE id_reservation = ? AND id_utilisateur = ?";
-    $check_stmt = $conn->prepare($check_sql);
-    $check_stmt->bind_param('ii', $delete_id, $user_id);
-    $check_stmt->execute();
-    $check_result = $check_stmt->get_result();
-
-    if ($check_result->num_rows > 0) {
-        $row = $check_result->fetch_assoc();
-        if (is_null($row['validite'])) { // Only allow deletion if the reservation is pending
-            $delete_sql = "DELETE FROM reservation WHERE id_reservation = ?";
-            $delete_stmt = $conn->prepare($delete_sql);
-            $delete_stmt->bind_param('i', $delete_id);
-            $delete_stmt->execute();
-            $delete_stmt->close();
-        } else {
-            echo "<script>alert('Vous ne pouvez supprimer que des réservations en attente.');</script>";
-        }
-    } else {
-        echo "<script>alert('Réservation introuvable ou non autorisée.');</script>";
-    }
-
-    $check_stmt->close();
-
-    // Redirect to prevent duplicate submissions
-    header('Location: historique.php');
-    exit;
-}
-
 // Récupération des réservations associées au propriétaire
 $sql = "
     SELECT r.id_reservation, r.date_debut, r.date_fin, r.lieu, r.type, r.heure_debut, r.heure_fin, r.validite, r.paiement_effectue, c.nom_utilisateur AS gardien
@@ -280,8 +247,10 @@ $result = $stmt->get_result();
                         ?>
                     </td>
                     <td>
-                        <?php if (is_null($row['validite'])): ?>
-                            <a href="?delete_id=<?php echo $row['id_reservation']; ?>" class="btn-small btn-delete" onclick="return confirm('Voulez-vous vraiment supprimer cette réservation ?');">Supprimer</a>
+                        <?php if ($row['validite'] == 1 && $row['paiement_effectue'] == 0): ?>
+                            <a href="paiement.php?id=<?php echo $row['id_reservation']; ?>" class="btn-small">Payer</a>
+                        <?php elseif ($row['paiement_effectue'] == 1): ?>
+                            <span style="color: green; font-weight: bold;">Payée</span>
                         <?php else: ?>
                             -
                         <?php endif; ?>
