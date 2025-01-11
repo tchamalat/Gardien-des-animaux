@@ -62,22 +62,68 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Paiement</title>
+    <title>Paiement pour la Réservation</title>
     <style>
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
             font-family: Arial, sans-serif;
             color: #333;
             background: url('images/premierplan.png') no-repeat center center fixed;
             background-size: cover;
-            margin: 0;
-            padding: 0;
-            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: none;
+            z-index: 10;
+        }
+
+        header img {
+            height: 100px;
+        }
+
+        header .auth-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        header .auth-buttons .btn {
+            background-color: orange;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        header .auth-buttons .btn:hover {
+            background-color: #ff7f00;
+            transform: translateY(-3px);
         }
 
         .container {
-            max-width: 500px;
-            margin: 100px auto;
-            background: rgba(255, 255, 255, 0.9);
+            max-width: 700px;
+            margin: 150px auto;
+            background: rgba(255, 255, 255, 0.95);
             border-radius: 15px;
             padding: 30px;
             text-align: center;
@@ -90,6 +136,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         p {
+            font-size: 1.1em;
             margin-bottom: 20px;
             color: #555;
         }
@@ -97,7 +144,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         .btn {
             background-color: orange;
             color: white;
-            padding: 10px 20px;
+            padding: 15px 30px;
             border: none;
             border-radius: 8px;
             font-size: 1.2em;
@@ -110,11 +157,51 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             background-color: #ff7f00;
             transform: translateY(-3px);
         }
+
+        footer {
+            background: rgba(0, 0, 0, 0.85);
+            color: #fff;
+            padding: 20px;
+            margin-top: auto;
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+        }
+
+        footer .footer-links h4 {
+            color: orange;
+            margin-bottom: 10px;
+        }
+
+        footer .footer-links ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        footer .footer-links a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        footer .footer-links a:hover {
+            color: orange;
+        }
     </style>
 </head>
 <body>
+    <!-- Header -->
+    <header>
+        <img src="images/logo.png" alt="Logo Gardien des Animaux">
+        <div class="auth-buttons">
+            <a href="historique.php" class="btn">Retour</a>
+            <a href="index_connect.php" class="btn">Accueil</a>
+        </div>
+    </header>
+
+    <!-- Payment Section -->
     <div class="container">
-        <h2>Paiement pour la réservation</h2>
+        <h2>Paiement pour la Réservation</h2>
         <p>Gardien : <strong><?php echo htmlspecialchars($reservation['gardien']); ?></strong></p>
         <p>Lieu : <strong><?php echo htmlspecialchars($reservation['lieu']); ?></strong></p>
         <p>Date : <strong><?php echo htmlspecialchars($reservation['date_debut']); ?> au <?php echo htmlspecialchars($reservation['date_fin']); ?></strong></p>
@@ -122,5 +209,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <button type="submit" class="btn">Effectuer le paiement</button>
         </form>
     </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-links">
+            <div>
+                <h4>En savoir plus :</h4>
+                <ul>
+                    <li><a href="securite_connect.php">Sécurité</a></li>
+                    <li><a href="aide_connect.php">Centre d'aide</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4>A propos de nous :</h4>
+                <ul>
+                    <li><a href="confidentialite_connect.php">Politique de confidentialité</a></li>
+                    <li><a href="contact_connect.php">Nous contacter</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4>Conditions Générales :</h4>
+                <ul>
+                    <li><a href="conditions_connect.php">Conditions d'utilisateur et de Service</a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
 </body>
 </html>
