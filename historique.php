@@ -12,7 +12,7 @@ $user_id = $_SESSION['user_id'];
 
 // Récupération des réservations associées au propriétaire
 $sql = "
-    SELECT r.id_reservation, r.date_debut, r.date_fin, r.lieu, r.type, r.heure_debut, r.heure_fin, r.validite, c.nom_utilisateur AS gardien
+    SELECT r.id_reservation, r.date_debut, r.date_fin, r.lieu, r.type, r.heure_debut, r.heure_fin, r.validite, r.paiement_effectue, c.nom_utilisateur AS gardien
     FROM reservation r
     JOIN creation_compte c ON r.gardien_id = c.id
     WHERE r.id_utilisateur = ?
@@ -32,6 +32,7 @@ $result = $stmt->get_result();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Historique des Réservations</title>
     <style>
+        /* Style similaire à vos autres pages */
         body {
             font-family: Arial, sans-serif;
             color: #333;
@@ -58,50 +59,27 @@ $result = $stmt->get_result();
         header img {
             height: 100px;
         }
-        header .auth-buttons {
-		display: flex;
-		flex-wrap: wrap; /* Permet de déplacer les boutons sur une nouvelle ligne si nécessaire */
-		gap: 10px; /* Ajoute un espacement entre les boutons */
-		justify-content: flex-end; /* Aligne les boutons à droite */
-		max-width: 100%; /* Empêche les boutons de dépasser la largeur de l'écran */
-	}
-        header .auth-buttons .btn {
-    		background-color: orange;
-    		color: white;
-    		padding: 10px 15px;
-    		border: none;
-    		border-radius: 8px;
-    		font-size: 1em;
-    		cursor: pointer;
-    		text-decoration: none;
-    		transition: background-color 0.3s ease, transform 0.3s ease;
-    		white-space: nowrap; /* Empêche les boutons de se diviser sur plusieurs lignes */
-    		overflow: hidden; /* Empêche les débordements */
-    		text-overflow: ellipsis; /* Ajoute des points de suspension si le contenu dépasse */
-	}
 
-        header .auth-buttons .btn:hover {
-            background-color: #ff7f00;
-            transform: translateY(-3px);
-        }
-        .auth-buttons {
-	        position: absolute;
-            top: 20px; /* Ajustez la valeur si nécessaire */
-            right: 20px; /* Ajustez la valeur si nécessaire */
+        header .auth-buttons {
             display: flex;
-            gap: 15px;
-            z-index: 100; /* Assurez-vous que les boutons sont au-dessus d'autres éléments */
-	}
-        .auth-buttons .btn {
+            gap: 10px;
+        }
+
+        header .auth-buttons .btn {
             background-color: orange;
             color: white;
-            padding: 10px 20px;
+            padding: 10px 15px;
             border: none;
             border-radius: 8px;
             font-size: 1em;
             cursor: pointer;
             text-decoration: none;
             transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        header .auth-buttons .btn:hover {
+            background-color: #ff7f00;
+            transform: translateY(-3px);
         }
 
         .container {
@@ -146,27 +124,6 @@ $result = $stmt->get_result();
             margin-top: 20px;
         }
 
-        ul {
-            margin-top: 20px;
-            padding-left: 20px;
-            list-style: none;
-        }
-
-        ul li {
-            position: relative;
-            padding-left: 25px;
-            margin-bottom: 10px;
-        }
-
-        ul li:before {
-            content: '✔';
-            position: absolute;
-            left: 0;
-            top: 0;
-            color: orange;
-            font-weight: bold;
-        }
-
         footer {
             background: rgba(0, 0, 0, 0.85);
             color: #fff;
@@ -199,6 +156,23 @@ $result = $stmt->get_result();
         footer .footer-links a:hover {
             color: orange;
         }
+
+        .btn-small {
+            background-color: orange;
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.9em;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .btn-small:hover {
+            background-color: #ff7f00;
+            transform: translateY(-3px);
+        }
     </style>
 </head>
 <body>
@@ -207,17 +181,7 @@ $result = $stmt->get_result();
 <header>
     <img src="images/logo.png" alt="Logo Gardien des Animaux">
     <div class="auth-buttons">
-        <?php
-        if (isset($_SESSION['role'])) {
-            if ($_SESSION['role'] == 0) {
-                echo '<button class="btn" onclick="window.location.href=\'profil_gardien.php\'">Mon Profil</button>';
-            } elseif ($_SESSION['role'] == 1) {
-                echo '<button class="btn" onclick="window.location.href=\'profil.php\'">Mon Profil</button>';
-            }
-        } else {
-            echo '<button class="btn" onclick="window.location.href=\'login.php\'">Mon Profil</button>';
-        }
-        ?>
+        <button class="btn" onclick="window.location.href='profil.php'">Mon Profil</button>
         <button class="btn" onclick="window.location.href='index_connect.php'">Accueil</button>
     </div>
 </header>
@@ -238,7 +202,7 @@ $result = $stmt->get_result();
                 <th>Type</th>
                 <th>Gardien</th>
                 <th>Statut</th>
-                <th>Supprimer</th>
+                <th>Action</th>
             </tr>
             <?php while ($row = $result->fetch_assoc()): ?>
                 <tr>
@@ -261,19 +225,14 @@ $result = $stmt->get_result();
                         }
                         ?>
                     </td>
-		    <td>
-    			<?php
-    			if ($row['validite'] == 1) { // If reservation is accepted
-        			echo '<a href="paiement.php?id=' . $row['id_reservation'] . '" class="btn">Payer</a>';
-    			} else {
-        			echo '-';
-    			}
-    			?>
-		    </td>
                     <td>
-                        <a href="supprimer_reservation.php?id=<?php echo $row['id_reservation']; ?>" onclick="return confirm('Voulez-vous vraiment supprimer cette réservation ?');">
-                            ❌
-                        </a>
+                        <?php if ($row['validite'] == 1 && $row['paiement_effectue'] == 0): ?>
+                            <a href="paiement.php?id=<?php echo $row['id_reservation']; ?>" class="btn-small">Payer</a>
+                        <?php elseif ($row['paiement_effectue'] == 1): ?>
+                            <span style="color: green; font-weight: bold;">Payée</span>
+                        <?php else: ?>
+                            -
+                        <?php endif; ?>
                     </td>
                 </tr>
             <?php endwhile; ?>
