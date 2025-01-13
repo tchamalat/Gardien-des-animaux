@@ -59,17 +59,18 @@
         .auth-buttons .btn {
             background-color: orange;
             color: white;
-            padding: 10px 20px;
+            padding: 8px 15px;
             border: none;
             border-radius: 8px;
-            font-size: 1em;
+            font-size: 0.9em;
             cursor: pointer;
             text-decoration: none;
             transition: background-color 0.3s ease, transform 0.3s ease;
         }
         .auth-buttons {
-            display: flex;
-            gap: 15px;
+            position: absolute;
+            top: 20px;
+            right: 20px;
         }
         .auth-buttons .btn:hover {
             background-color: #ff7f00;
