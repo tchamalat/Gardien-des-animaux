@@ -26,12 +26,11 @@
             top: 0;
             left: 0;
             width: 100%;
-            height: 150px; 
-            grid-template-columns: auto 1fr auto;
-            z-index: 10;
+            height: 150px;
             display: flex;
             align-items: center;
-            justify-content: center; 
+            justify-content: space-between;
+            padding: 0 20px;
             background: transparent;
             box-shadow: none;
         }
@@ -40,8 +39,9 @@
             color: orange;
             font-weight: bold;
             text-align: center;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8); /* Ombre pour lisibilité */
-            transition: opacity 0.5s ease, transform 0.5s ease; /* Transition fluide */
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+            transition: opacity 0.5s ease, transform 0.5s ease; 
+            flex: 1; 
         }
         header img {
             height: 150px;
