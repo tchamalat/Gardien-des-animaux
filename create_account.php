@@ -23,15 +23,17 @@
         }
 
         header {
-            position: relative;
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
-            height: 300px; 
+            z-index: 10;
             display: flex;
-            flex-direction: column;
-            justify-content: center;
             align-items: center;
-            background: transparent;
-            box-shadow: none;
+            justify-content: space-between;
+            padding: 20px;
+            background: transparent; 
+            box-shadow: none; 
         }
 
         header img {
