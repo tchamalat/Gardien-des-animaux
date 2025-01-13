@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Créer un compte - Gardien des Animaux</title>
-    <style>
+        <style>
         * {
             margin: 0;
             padding: 0;
@@ -21,18 +21,20 @@
             min-height: 100vh;
             overflow-x: hidden;
         }
+
         header {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
-            height: 150px; /* Hauteur du header */
+            height: 150px;
             z-index: 10;
             display: flex;
             align-items: center;
-            justify-content: center; /* Centrer horizontalement */
+            justify-content: flex-start; /* Aligne le contenu à gauche */
             background: transparent;
             box-shadow: none;
+            padding-left: 20px; /* Espace entre le bord et le contenu */
         }
 
         header img {
@@ -44,8 +46,9 @@
             color: orange;
             font-weight: bold;
             text-align: center;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8); /* Ombre pour lisibilité */
-            transition: opacity 0.5s ease, transform 0.5s ease; /* Transition fluide */
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            margin-left: 20px; /* Espace entre le logo et le slogan */
         }
 
         header.scrolled .header-slogan {
@@ -53,27 +56,14 @@
             transform: translateY(-20px);
         }
 
-        header .auth-buttons {
+        .auth-buttons {
+            position: absolute;
+            top: 20px;
+            right: 20px;
             display: flex;
             gap: 15px;
         }
 
-        header .auth-buttons .btn {
-            background-color: orange;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 8px;
-            font-size: 1em;
-            cursor: pointer;
-            text-decoration: none;
-            transition: background-color 0.3s ease, transform 0.3s ease;
-        }
-
-        header .auth-buttons .btn:hover {
-            background-color: #ff7f00;
-            transform: translateY(-3px);
-        }
         .auth-buttons .btn {
             background-color: orange;
             color: white;
@@ -85,18 +75,14 @@
             text-decoration: none;
             transition: background-color 0.3s ease, transform 0.3s ease;
         }
-        .auth-buttons {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-        }
+
         .auth-buttons .btn:hover {
             background-color: #ff7f00;
             transform: translateY(-3px);
         }
 
         .form-container {
-            margin: 250px auto 50px; /* Ajustement pour centrer */
+            margin: 250px auto 50px;
             width: 90%;
             max-width: 400px;
             background: rgba(255, 255, 255, 0.9);
@@ -130,17 +116,6 @@
             border: 1px solid #ccc;
             border-radius: 5px;
             font-size: 1em;
-        }
-
-        .form-group input[type="radio"] {
-            display: inline-block;
-            width: auto;
-            margin-right: 10px;
-        }
-
-        .form-group small {
-            color: red;
-            display: none;
         }
 
         .btn {
@@ -215,51 +190,8 @@
         footer .footer-links a:hover {
             color: orange;
         }
-        .role-selection {
-            display: flex;
-            justify-content: space-between;
-            gap: 10px;
-            margin-top: 10px;
-        }
-
-        .role-option {
-            background-color: #fff;
-            color: #333;
-            padding: 10px 20px;
-            border: 2px solid orange;
-            border-radius: 8px;
-            font-size: 1em;
-            text-align: center;
-            cursor: pointer;
-            flex: 1;
-            transition: all 0.3s ease;
-        }
-
-        .role-option:hover {
-            background-color: orange;
-            color: #fff;
-            transform: translateY(-3px);
-        }
-
-        .role-option.active {
-            background-color: orange;
-            color: white;
-            border-color: #ff7f00;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-        }
-
-        input[type="radio"] {
-            display: none; /* Cachez les boutons radio */
-        }
-
-        input[type="radio"]:checked + .role-option {
-            background-color: orange;
-            color: white;
-            border-color: #ff7f00;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-        }
-
     </style>
+
     <script>
         window.addEventListener('scroll', () => {
             const header = document.querySelector('header');
@@ -530,3 +462,4 @@
     </footer>
 </body>
 </html>
+
