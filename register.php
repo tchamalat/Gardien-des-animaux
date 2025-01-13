@@ -18,7 +18,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     if (!preg_match($password_pattern, $mot_de_passe)) {
         echo "<p style='color: red;'>Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial.</p>";
-        error_log("Échec de validation du mot de passe : $mot_de_passe"); // Débogage
         exit();
     }
 
@@ -29,11 +28,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (!preg_match('/^[0-9]{10}$/', $numero_telephone)) {
         echo "<p style='color: red;'>Le numéro de téléphone doit contenir exactement 10 chiffres.</p>";
-        exit();
-    }
-
-    if (empty($mot_de_passe)) {
-        echo "<p style='color: red;'>Le mot de passe est requis.</p>";
         exit();
     }
 
@@ -51,37 +45,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->store_result();
 
     if ($stmt->num_rows > 0) {
-        $stmt->bind_result($existing_mail, $existing_phone, $existing_username);
-        while ($stmt->fetch()) {
-            if ($existing_mail === $mail) {
-                echo "<p style='color: red;'>L'adresse e-mail est déjà utilisée.</p>";
-                exit();
-            }
-            if ($existing_phone === $numero_telephone) {
-                echo "<p style='color: red;'>Le numéro de téléphone est déjà utilisé.</p>";
-                exit();
-            }
-            if ($existing_username === $nom_utilisateur) {
-                echo "<p style='color: red;'>Le nom d'utilisateur est déjà pris.</p>";
-                exit();
-            }
-        }
-    }
-
-    // Si toutes les validations passent, insérer les données dans la base de données
-    $stmt = $conn->prepare("
-        INSERT INTO creation_compte (prenom, nom, nom_utilisateur, mail, numero_telephone, adresse, ville, mot_de_passe, role) 
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-    ");
-    $stmt->bind_param("ssssssssi", $prenom, $nom, $nom_utilisateur, $mail, $numero_telephone, $adresse, $ville, $mot_de_passe_hache, $role);
-
-    if ($stmt->execute()) {
-        echo "success"; // Réponse de succès pour redirection
-    } else {
-        echo "<p style='color: red;'>Erreur lors de la création du compte. Veuillez réessayer.</p>";
+        echo "<p style='color: red;'>E-mail, numéro de téléphone ou nom d'utilisateur déjà utilisé.</p>";
+        $stmt->close();
+        exit();
     }
 
     $stmt->close();
+
+    // Utilisation d'une transaction pour garantir l'unicité
+    $conn->begin_transaction();
+
+    try {
+        $stmt = $conn->prepare("
+            INSERT INTO creation_compte (prenom, nom, nom_utilisateur, mail, numero_telephone, adresse, ville, mot_de_passe, role) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ");
+        $stmt->bind_param("ssssssssi", $prenom, $nom, $nom_utilisateur, $mail, $numero_telephone, $adresse, $ville, $mot_de_passe_hache, $role);
+
+        if ($stmt->execute()) {
+            $conn->commit();
+            echo "success"; // Réponse de succès pour redirection
+        } else {
+            $conn->rollback();
+            echo "<p style='color: red;'>Erreur lors de la création du compte. Veuillez réessayer.</p>";
+        }
+    } catch (Exception $e) {
+        $conn->rollback();
+        echo "<p style='color: red;'>Erreur : " . $e->getMessage() . "</p>";
+    }
+
+    $stmt->close();
+    $conn->close();
 }
-$conn->close();
 ?>
