@@ -44,7 +44,7 @@
         }
 
         header img {
-            height: 150px;
+            height: 140px;
         }
 
         header .header-slogan {
