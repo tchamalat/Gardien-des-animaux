@@ -23,15 +23,13 @@
         }
 
         header {
-            position: fixed;
-            top: 0;
-            left: 0;
+            position: relative;
             width: 100%;
-            z-index: 10;
+            height: 300px; 
             display: flex;
+            flex-direction: column;
+            justify-content: center;
             align-items: center;
-            justify-content: space-between;
-            padding: 20px;
             background: transparent;
             box-shadow: none;
         }
@@ -46,8 +44,6 @@
             color: orange;
             font-weight: bold;
             text-align: center;
-            flex: 1;
-            transition: opacity 0.5s ease, transform 0.5s ease;
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
         }
 
