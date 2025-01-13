@@ -143,35 +143,7 @@
             transform: translateY(-3px);
         }
 
-        footer {
-            background: rgba(0, 0, 0, 0.85);
-            color: #fff;
-            padding: 20px;
-            margin-top: 50px;
-        }
-
-        footer .footer-links {
-            display: flex;
-            justify-content: space-around;
-            flex-wrap: wrap;
-        }
-
-        footer .footer-links h4 {
-            color: orange;
-            margin-bottom: 10px;
-        }
-
-        footer .footer-links ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        footer .footer-links a {
-            color: white;
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-                ul {
+        ul {
             margin-top: 20px;
             padding-left: 20px;
             list-style: none;
@@ -224,7 +196,7 @@
         footer .footer-links a:hover {
             color: orange;
         }
-        
+    </style>
     <script>
         window.addEventListener('scroll', () => {
             const header = document.querySelector('header');
