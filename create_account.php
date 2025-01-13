@@ -26,26 +26,26 @@
             top: 0;
             left: 0;
             width: 100%;
-            height: 150px;
+            height: 150px; /* Height of the header */
             display: flex;
             align-items: center;
-            justify-content: space-between;
+            justify-content: space-between; /* Space between the three parts */
             padding: 0 20px;
             background: transparent;
             box-shadow: none;
         }
         header .header-slogan {
+            flex-grow: 1; /* Allow the slogan to take up the central space */
+            text-align: center; /* Center text horizontally */
             font-size: 1.5em;
             color: orange;
             font-weight: bold;
-            text-align: center;
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
-            transition: opacity 0.5s ease, transform 0.5s ease; 
-            flex: 1; 
+            transition: opacity 0.5s ease, transform 0.5s ease;
         }
         header img {
-            height: 150px;
-            max-width: 160px;
+            height: 120px; /* Logo height */
+            max-width: 150px; /* Logo width */
         }
         header.scrolled .header-slogan {
             opacity: 0;
@@ -65,7 +65,7 @@
         }
         .auth-buttons {
             display: flex;
-            gap: 10px;
+            align-items: center;
         }
         .auth-buttons .btn:hover {
             background-color: #ff7f00;
