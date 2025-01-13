@@ -26,11 +26,12 @@
             top: 0;
             left: 0;
             width: 100%;
-            height: 150px; /* Hauteur du header */
+            height: 150px; 
+            grid-template-columns: auto 1fr auto;
             z-index: 10;
             display: flex;
             align-items: center;
-            justify-content: center; /* Centrer horizontalement */
+            justify-content: center; 
             background: transparent;
             box-shadow: none;
         }
@@ -63,9 +64,8 @@
             transition: background-color 0.3s ease, transform 0.3s ease;
         }
         .auth-buttons {
-            position: absolute;
-            top: 20px;
-            right: 20px;
+            display: flex;
+            gap: 10px;
         }
         .auth-buttons .btn:hover {
             background-color: #ff7f00;
