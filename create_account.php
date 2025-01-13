@@ -39,12 +39,14 @@
             max-width: 160px;
         }
 
-        .header-slogan {
+        header .header-slogan {
             font-size: 1.5em;
             color: orange;
             font-weight: bold;
             text-align: center;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+            flex: 1;
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8); /* Ombre pour une meilleure lisibilité */
         }
 
         header.scrolled .header-slogan {
