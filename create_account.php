@@ -59,20 +59,18 @@
         .auth-buttons .btn {
             background-color: orange;
             color: white;
-            padding: 8px 15px;
+            padding: 10px 20px;
             border: none;
             border-radius: 8px;
-            font-size: 0.9em;
+            font-size: 1em;
             cursor: pointer;
             text-decoration: none;
             transition: background-color 0.3s ease, transform 0.3s ease;
         }
         .auth-buttons {
-            position: absolute;
-            top: 20px;
-            right: 20px;
+            display: flex;
+            gap: 15px;
         }
-
         .auth-buttons .btn:hover {
             background-color: #ff7f00;
             transform: translateY(-3px);
@@ -243,6 +241,16 @@
         }
 
     </style>
+    <script>
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+    </script>
 </head>
 <body>
     <header>
