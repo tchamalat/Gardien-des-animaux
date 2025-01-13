@@ -21,34 +21,34 @@
             min-height: 100vh;
             overflow-x: hidden;
         }
-
         header {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
+            height: 150px; /* Ajuster la hauteur du header si nécessaire */
             z-index: 10;
             display: flex;
             align-items: center;
-            justify-content: space-between;
+            justify-content: center; /* Centrer horizontalement */
             padding: 20px;
             background: transparent; 
             box-shadow: none; 
         }
-
-        header img {
-            height: 150px;
-            max-width: 160px;
-        }
-
         header .header-slogan {
             font-size: 1.5em;
             color: orange;
             font-weight: bold;
             text-align: center;
-            flex: 1;
-            transition: opacity 0.5s ease, transform 0.5s ease;
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8); /* Ombre pour une meilleure lisibilité */
+            position: absolute; /* Permet de positionner indépendamment */
+            top: 50%; /* Centrer verticalement */
+            left: 50%; /* Centrer horizontalement */
+            transform: translate(-50%, -50%); /* Corrige le décalage dû au positionnement */
+        }
+        header img {
+            height: 150px;
+            max-width: 160px;
         }
 
         header.scrolled .header-slogan {
