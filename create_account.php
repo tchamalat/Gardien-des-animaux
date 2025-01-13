@@ -26,13 +26,13 @@
             top: 0;
             left: 0;
             width: 100%;
+            height: 150px; /* Hauteur du header */
             z-index: 10;
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            padding: 20px;
-            background: transparent; /* Supprime le fond blanc */
-            box-shadow: none; /* Supprime l'ombre */
+            justify-content: center; /* Centrer horizontalement */
+            background: transparent;
+            box-shadow: none;
         }
 
         header img {
@@ -44,9 +44,8 @@
             color: orange;
             font-weight: bold;
             text-align: center;
-            flex: 1;
-            transition: opacity 0.5s ease, transform 0.5s ease;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8); /* Ombre pour une meilleure lisibilité */
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8); /* Ombre pour lisibilité */
+            transition: opacity 0.5s ease, transform 0.5s ease; /* Transition fluide */
         }
 
         header.scrolled .header-slogan {
@@ -87,8 +86,9 @@
             transition: background-color 0.3s ease, transform 0.3s ease;
         }
         .auth-buttons {
-            display: flex;
-            align-items: center;
+            position: absolute;
+            top: 20px;
+            right: 20px;
         }
         .auth-buttons .btn:hover {
             background-color: #ff7f00;
