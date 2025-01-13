@@ -4,7 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Créer un compte - Gardien des Animaux</title>
-        <style>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Créer un compte - Gardien des Animaux</title>
+    <style>
         * {
             margin: 0;
             padding: 0;
@@ -31,10 +37,10 @@
             z-index: 10;
             display: flex;
             align-items: center;
-            justify-content: flex-start; /* Aligne le contenu à gauche */
+            justify-content: space-between;
             background: transparent;
             box-shadow: none;
-            padding-left: 20px; /* Espace entre le bord et le contenu */
+            padding: 0 20px;
         }
 
         header img {
@@ -48,7 +54,7 @@
             text-align: center;
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
             transition: opacity 0.5s ease, transform 0.5s ease;
-            margin-left: 20px; /* Espace entre le logo et le slogan */
+            flex: 1;
         }
 
         header.scrolled .header-slogan {
@@ -137,7 +143,35 @@
             transform: translateY(-3px);
         }
 
-        ul {
+        footer {
+            background: rgba(0, 0, 0, 0.85);
+            color: #fff;
+            padding: 20px;
+            margin-top: 50px;
+        }
+
+        footer .footer-links {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+        }
+
+        footer .footer-links h4 {
+            color: orange;
+            margin-bottom: 10px;
+        }
+
+        footer .footer-links ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        footer .footer-links a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+                ul {
             margin-top: 20px;
             padding-left: 20px;
             list-style: none;
@@ -190,8 +224,7 @@
         footer .footer-links a:hover {
             color: orange;
         }
-    </style>
-
+        
     <script>
         window.addEventListener('scroll', () => {
             const header = document.querySelector('header');
