@@ -26,31 +26,26 @@
             top: 0;
             left: 0;
             width: 100%;
-            height: 150px; /* Ajuster la hauteur du header si nécessaire */
+            height: 150px; /* Hauteur du header */
             z-index: 10;
             display: flex;
             align-items: center;
             justify-content: center; /* Centrer horizontalement */
-            padding: 20px;
-            background: transparent; 
-            box-shadow: none; 
+            background: transparent;
+            box-shadow: none;
         }
         header .header-slogan {
             font-size: 1.5em;
             color: orange;
             font-weight: bold;
             text-align: center;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8); /* Ombre pour une meilleure lisibilité */
-            position: absolute; /* Permet de positionner indépendamment */
-            top: 50%; /* Centrer verticalement */
-            left: 50%; /* Centrer horizontalement */
-            transform: translate(-50%, -50%); /* Corrige le décalage dû au positionnement */
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8); /* Ombre pour lisibilité */
+            transition: opacity 0.5s ease, transform 0.5s ease; /* Transition fluide */
         }
         header img {
             height: 150px;
             max-width: 160px;
         }
-
         header.scrolled .header-slogan {
             opacity: 0;
             transform: translateY(-20px);
