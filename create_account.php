@@ -28,11 +28,12 @@
             left: 0;
             width: 100%;
             z-index: 10;
-            padding: 20px;
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            background: none;
+            justify-content: space-between;
+            padding: 20px;
+            background: transparent;
+            box-shadow: none;
         }
 
         header img {
@@ -41,16 +42,18 @@
         }
 
         .header-slogan {
-            font-size: 1.2em;
-            color: #fff;
-            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5);
+            font-size: 1.5em;
+            color: orange;
+            font-weight: bold;
             text-align: center;
             flex: 1;
-            margin: 0;
-            position: absolute;
-            top: 100%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+        }
+
+        header.scrolled .header-slogan {
+            opacity: 0;
+            transform: translateY(-20px);
         }
 
         .auth-buttons .btn {
