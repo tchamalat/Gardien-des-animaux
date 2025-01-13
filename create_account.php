@@ -26,32 +26,55 @@
             top: 0;
             left: 0;
             width: 100%;
-            height: 150px; /* Height of the header */
+            z-index: 10;
             display: flex;
             align-items: center;
-            justify-content: space-between; /* Space between the three parts */
-            padding: 0 20px;
-            background: transparent;
-            box-shadow: none;
+            justify-content: space-between;
+            padding: 20px;
+            background: transparent; /* Supprime le fond blanc */
+            box-shadow: none; /* Supprime l'ombre */
         }
+
+        header img {
+            height: 80px;
+        }
+
         header .header-slogan {
-            flex-grow: 1; /* Allow the slogan to take up the central space */
-            text-align: center; /* Center text horizontally */
             font-size: 1.5em;
             color: orange;
             font-weight: bold;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+            text-align: center;
+            flex: 1;
             transition: opacity 0.5s ease, transform 0.5s ease;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8); /* Ombre pour une meilleure lisibilité */
         }
-        header img {
-            height: 120px; /* Logo height */
-            max-width: 150px; /* Logo width */
-        }
+
         header.scrolled .header-slogan {
             opacity: 0;
             transform: translateY(-20px);
         }
 
+        header .auth-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        header .auth-buttons .btn {
+            background-color: orange;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        header .auth-buttons .btn:hover {
+            background-color: #ff7f00;
+            transform: translateY(-3px);
+        }
         .auth-buttons .btn {
             background-color: orange;
             color: white;
