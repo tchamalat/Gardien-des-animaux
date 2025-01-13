@@ -50,7 +50,7 @@ include 'config.php';
         }
 
         header img {
-            height: 1800px;
+            height: 180px;
             max-width: 200px;
         }
 
