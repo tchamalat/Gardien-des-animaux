@@ -57,7 +57,7 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 1) {
             opacity: 0;
             transform: translateY(-20px);
         }
-                header .auth-buttons {
+        header .auth-buttons {
             display: flex;
             gap: 15px;
         }
@@ -257,7 +257,7 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 1) {
                     <li>Suivi des mouvements de l'animal</li>
                     <li>Photos et vidéos gratuites</li>
                 </ul>
-                <button class="subscribe-btn" onclick="subscribe('standard')">Souscrire</button>
+                <button class="subscribe-btn" onclick="subscribe.php">Souscrire</button>
             </div>
 
             <!-- Premium Subscription -->
@@ -270,7 +270,7 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 1) {
                     <li>Activités spécifiques</li>
                     <li>Cadeaux personnalisés</li>
                 </ul>
-                <button class="subscribe-btn" onclick="subscribe('premium')">Souscrire</button>
+                <button class="subscribe-btn" onclick="subscribe.php">Souscrire</button>
             </div>
         </div>
     </main>
