@@ -196,6 +196,49 @@
         footer .footer-links a:hover {
             color: orange;
         }
+                .role-selection {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .role-option {
+            background-color: #fff;
+            color: #333;
+            padding: 10px 20px;
+            border: 2px solid orange;
+            border-radius: 8px;
+            font-size: 1em;
+            text-align: center;
+            cursor: pointer;
+            flex: 1;
+            transition: all 0.3s ease;
+        }
+
+        .role-option:hover {
+            background-color: orange;
+            color: #fff;
+            transform: translateY(-3px);
+        }
+
+        .role-option.active {
+            background-color: orange;
+            color: white;
+            border-color: #ff7f00;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        input[type="radio"] {
+            display: none; /* Cachez les boutons radio */
+        }
+
+        input[type="radio"]:checked + .role-option {
+            background-color: orange;
+            color: white;
+            border-color: #ff7f00;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
     </style>
     <script>
         window.addEventListener('scroll', () => {
