@@ -27,11 +27,17 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 1) {
         }
 
         header {
-            background: rgba(0, 0, 0, 0.8);
-            padding: 10px;
             position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
-            z-index: 100;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px;
+            background: transparent; /* Supprime le fond blanc */
+            box-shadow: none; /* Supprime l'ombre */
         }
 
         header img {
