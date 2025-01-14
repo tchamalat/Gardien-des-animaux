@@ -336,15 +336,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
     </section>
     <script>
-	    let userLatitude, userLongitude;
-	    // Fonction pour obtenir la position de l'utilisateur
-	    function getLocation() {
-		    if (navigator.geolocation) {
-			    navigator.geolocation.getCurrentPosition(savePosition, showError);
-		    } else {
-			    alert("La géolocalisation n'est pas prise en charge par votre navigateur.");
-		    }
-	    }
+        // Sauvegarde de la position
+        function savePosition(position) {
+            userLatitude = position.coords.latitude;
+            userLongitude = position.coords.longitude;
+            console.log(`Latitude: ${userLatitude}, Longitude: ${userLongitude}`);
+        }
+
+        // Gestion des erreurs de géolocalisation
+        function showError(error) {
+            switch (error.code) {
+                case error.PERMISSION_DENIED:
+                    alert("Vous avez refusé la demande de géolocalisation.");
+                    break;
+                case error.POSITION_UNAVAILABLE:
+                    alert("Les informations de localisation ne sont pas disponibles.");
+                    break;
+                case error.TIMEOUT:
+                    alert("La demande de géolocalisation a expiré.");
+                    break;
+                default:
+                    alert("Une erreur inconnue est survenue.");
+                    break;
+            }
+        }
+	let userLatitude, userLongitude;
+	// Fonction pour obtenir la position de l'utilisateur
+	function getLocation() {
+		if (navigator.geolocation) {
+			navigator.geolocation.getCurrentPosition(savePosition, showError);
+		} else {
+			alert("La géolocalisation n'est pas prise en charge par votre navigateur.");
+		}
+	}
         async function fetchGardiens() {
     		const gardiensContainer = document.getElementById('gardiens-container');
     		gardiensContainer.innerHTML = '<p class="texte">Chargement des gardiens en cours...</p>';
