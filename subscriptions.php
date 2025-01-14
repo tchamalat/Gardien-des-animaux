@@ -210,8 +210,7 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 1) {
     <script>
         function subscribe(type) {
             const duration = type === 'standard' ? 30 : 365; // Duration in days
-            const userId = <?php echo $_SESSION['user_id']; ?>; // Assuming user_id is stored in session
-
+            const userId = <?php echo json_encode($_SESSION['user_id']); ?>; // Ensure user_id is passed safely
             if (confirm(`Voulez-vous vraiment souscrire à l'abonnement ${type === 'standard' ? 'Standard' : 'Premium'} ?`)) {
                 fetch('subscribe.php', {
                     method: 'POST',
@@ -222,16 +221,17 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 1) {
                         id_utilisateur: userId
                     })
                 })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        alert('Abonnement enregistré avec succès !');
-                        window.location.href = 'index_connect.php'; // Redirect after successful subscription
-                    } else {
-                        alert('Erreur : ' + data.message);
-                    }
-                })
-                .catch(error => console.error('Erreur lors de la souscription :', error));
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data); // Log server response for debugging
+                        if (data.success) {
+                            alert('Abonnement enregistré avec succès !');
+                            window.location.href = 'index_connect.php'; // Redirect after successful subscription
+                        } else {
+                            alert('Erreur : ' + data.message);
+                        }
+                    })
+                    .catch(error => console.error('Erreur lors de la souscription :', error));
             }
         }
     </script>
