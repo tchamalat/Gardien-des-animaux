@@ -139,12 +139,16 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 1) {
     </script>
 </head>
 <body>
+    <!-- Header -->
     <header>
-        <img src="images/logo.png" alt="Gardien des Animaux">
+        <img src="images/logo.png" alt="Logo Gardien des Animaux">
+        <h1 class="header-slogan">Choisissez votre Abonnement</h1>
+        <div class="auth-buttons">
+            <button class="btn" onclick="window.location.href='index_connect.php'">Accueil</button>
+        </div>
     </header>
 
     <main>
-        <h1 class="header-slogan">Choississez votre Abonnement</h1>
         <div class="subscriptions-container">
             <!-- Standard Subscription -->
             <div class="subscription-card">
