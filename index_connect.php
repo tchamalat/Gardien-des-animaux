@@ -304,7 +304,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 <body>
     <!-- Header -->
-    <!-- Header -->
     <header>
         <div class="header-container">
             <img src="images/logo.png" alt="Logo Gardien des Animaux">
@@ -324,7 +323,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <!-- Hero Section -->
     <section class="hero">
         <h1 class="texte">Bienvenue sur Gardien des Animaux</h1>
-        <button onclick="window.location.href='search_page.php'">Trouver un gardien</button>
+        <button onclick="getLocation()">Trouver un gardien</button>
     </section>
 
     <!-- Section Gardien -->
@@ -336,8 +335,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
     </section>
     <script>
+        let userLatitude, userLongitude;
 
-        // Gestion des erreurs de géolocalisation
+        // Function to get user's location
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(async (position) => {
+                    userLatitude = position.coords.latitude;
+                    userLongitude = position.coords.longitude;
+                    console.log(`Latitude: ${userLatitude}, Longitude: ${userLongitude}`);
+                    await fetchGardiens(userLatitude, userLongitude);
+                }, showError);
+            } else {
+                alert("La géolocalisation n'est pas prise en charge par votre navigateur.");
+            }
+        }
+
+        // Function to handle geolocation errors
         function showError(error) {
             switch (error.code) {
                 case error.PERMISSION_DENIED:
@@ -354,55 +368,40 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     break;
             }
         }
-	let userLatitude, userLongitude;
-	// Fonction pour obtenir la position de l'utilisateur
-	function getLocation() {
-		if (navigator.geolocation) {
-			navigator.geolocation.getCurrentPosition(savePosition, showError);
-		} else {
-			alert("La géolocalisation n'est pas prise en charge par votre navigateur.");
-		}
-	}
-        // Sauvegarde de la position
-        function savePosition(position) {
-            userLatitude = position.coords.latitude;
-            userLongitude = position.coords.longitude;
-            console.log(`Latitude: ${userLatitude}, Longitude: ${userLongitude}`);
+
+        // Function to fetch guardians based on location
+        async function fetchGardiens(latitude, longitude) {
+            const gardiensContainer = document.getElementById('gardiens-container');
+            gardiensContainer.innerHTML = '<p class="texte">Chargement des gardiens en cours...</p>';
+
+            try {
+                const response = await fetch('index_connect.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ latitude, longitude })
+                });
+
+                const data = await response.json();
+
+                if (data.length === 0) {
+                    gardiensContainer.innerHTML = '<p class="texte">Aucun gardien trouvé dans votre région.</p>';
+                } else {
+                    gardiensContainer.innerHTML = data.map(gardien => `
+                        <div class="gardien-card">
+                            <img src="${gardien.profile_picture}" alt="${gardien.prenom}">
+                            <h3>${gardien.prenom} (${gardien.nom_utilisateur})</h3>
+                            <p>Distance : ${gardien.distance.toFixed(2)} km</p>
+                        </div>
+                    `).join('');
+                }
+            } catch (error) {
+                console.error('Erreur lors de la récupération des gardiens:', error);
+                gardiensContainer.innerHTML = `<p class="texte">Une erreur est survenue. Veuillez réessayer plus tard.</p>`;
+            }
         }
-        async function fetchGardiens() {
-    		const gardiensContainer = document.getElementById('gardiens-container');
-    		gardiensContainer.innerHTML = '<p class="texte">Chargement des gardiens en cours...</p>';
 
-    		try {
-        		const response = await fetch('fetch_gardiens.php', {
-            			method: 'POST',
-            			headers: { 'Content-Type': 'application/json' },
-        		});
-
-        		const data = await response.json();
-
-        		if (data.error) {
-            			gardiensContainer.innerHTML = `<p class="texte">${data.error}</p>`;
-        		} else {
-            			if (data.length === 0) {
-                			gardiensContainer.innerHTML = '<p class="texte">Aucun gardien trouvé.</p>';
-            			} else {
-                			gardiensContainer.innerHTML = data.map(gardien => `
-                    				<div class="gardien-card">
-                        				<img src="${gardien.profile_picture}" alt="${gardien.prenom}">
-                        				<h3>${gardien.prenom} (${gardien.nom_utilisateur})</h3>
-                    				</div>
-                			`).join('');
-            			}
-        		}
-    		} catch (error) {
-        		console.error('Erreur lors de la récupération des gardiens:', error);
-        		gardiensContainer.innerHTML = `<p class="texte">Une erreur est survenue. Veuillez réessayer plus tard.</p>`;
-    		}
-	}
-
-	document.addEventListener('DOMContentLoaded', fetchGardiens);
-
+        // Trigger location fetching on page load
+        document.addEventListener('DOMContentLoaded', getLocation);
     </script>
     <?php endif; ?>
 
