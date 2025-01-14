@@ -57,6 +57,27 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 1) {
             opacity: 0;
             transform: translateY(-20px);
         }
+                header .auth-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        header .auth-buttons .btn {
+            background-color: orange;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        header .auth-buttons .btn:hover {
+            background-color: #ff7f00;
+            transform: translateY(-3px);
+        }
 
         .subscriptions-container {
             margin-top: 120px;
