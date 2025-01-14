@@ -144,7 +144,7 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 1) {
     </header>
 
     <main>
-        <h1>Choisissez Votre Abonnement</h1>
+        <h1 class="header-slogan">Choississez votre Abonnement</h1>
         <div class="subscriptions-container">
             <!-- Standard Subscription -->
             <div class="subscription-card">
