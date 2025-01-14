@@ -336,6 +336,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
     </section>
     <script>
+	    let userLatitude, userLongitude;
+	    // Fonction pour obtenir la position de l'utilisateur
+	    function getLocation() {
+		    if (navigator.geolocation) {
+			    navigator.geolocation.getCurrentPosition(savePosition, showError);
+		    } else {
+			    alert("La géolocalisation n'est pas prise en charge par votre navigateur.");
+		    }
+	    }
         async function fetchGardiens() {
     		const gardiensContainer = document.getElementById('gardiens-container');
     		gardiensContainer.innerHTML = '<p class="texte">Chargement des gardiens en cours...</p>';
