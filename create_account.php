@@ -474,16 +474,6 @@
             .catch(error => console.error('Erreur:', error));
         });
     </script>
-    <script>
-        document.getElementById('registerForm').addEventListener('submit', function(event) {
-            const submitButton = document.querySelector('.btn[type="submit"]');
-            submitButton.disabled = true;
-            submitButton.textContent = "Veuillez patienter..."; // Change le texte du bouton
-        });
-    </script>
-
-
-
     <footer>
         <div class="footer-links">
             <div>
