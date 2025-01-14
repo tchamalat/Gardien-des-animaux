@@ -324,6 +324,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <section class="hero">
         <h1 class="texte">Bienvenue sur Gardien des Animaux</h1>
         <button onclick="getLocation()">Trouver un gardien</button>
+	<button onclick="window.location.href='subscriptions.php'" class="btn">Voir les Abonnements</button>
     </section>
 
     <!-- Section Gardien -->
