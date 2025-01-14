@@ -43,6 +43,20 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 1) {
         header img {
             height: 80px;
         }
+        header .header-slogan {
+            font-size: 1.5em;
+            color: orange;
+            font-weight: bold;
+            text-align: center;
+            flex: 1;
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8); /* Ombre pour une meilleure lisibilité */
+        }
+
+        header.scrolled .header-slogan {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
 
         .subscriptions-container {
             margin-top: 120px;
