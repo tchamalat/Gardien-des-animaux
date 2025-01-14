@@ -207,6 +207,35 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 1) {
     </script>
 </head>
 <body>
+    <script>
+        function subscribe(type) {
+            const duration = type === 'standard' ? 30 : 365; // Duration in days
+            const userId = <?php echo $_SESSION['user_id']; ?>; // Assuming user_id is stored in session
+
+            if (confirm(`Voulez-vous vraiment souscrire à l'abonnement ${type === 'standard' ? 'Standard' : 'Premium'} ?`)) {
+                fetch('subscribe.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        type_abonnement: type,
+                        duree_abonnement: duration,
+                        id_utilisateur: userId
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Abonnement enregistré avec succès !');
+                        window.location.href = 'index_connect.php'; // Redirect after successful subscription
+                    } else {
+                        alert('Erreur : ' + data.message);
+                    }
+                })
+                .catch(error => console.error('Erreur lors de la souscription :', error));
+            }
+        }
+    </script>
+
     <!-- Header -->
     <header>
         <img src="images/logo.png" alt="Logo Gardien des Animaux">
