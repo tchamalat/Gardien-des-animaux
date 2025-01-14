@@ -336,12 +336,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
     </section>
     <script>
-        // Sauvegarde de la position
-        function savePosition(position) {
-            userLatitude = position.coords.latitude;
-            userLongitude = position.coords.longitude;
-            console.log(`Latitude: ${userLatitude}, Longitude: ${userLongitude}`);
-        }
 
         // Gestion des erreurs de géolocalisation
         function showError(error) {
@@ -369,6 +363,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 			alert("La géolocalisation n'est pas prise en charge par votre navigateur.");
 		}
 	}
+        // Sauvegarde de la position
+        function savePosition(position) {
+            userLatitude = position.coords.latitude;
+            userLongitude = position.coords.longitude;
+            console.log(`Latitude: ${userLatitude}, Longitude: ${userLongitude}`);
+        }
         async function fetchGardiens() {
     		const gardiensContainer = document.getElementById('gardiens-container');
     		gardiensContainer.innerHTML = '<p class="texte">Chargement des gardiens en cours...</p>';
