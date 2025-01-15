@@ -2,17 +2,22 @@
 session_start();
 include 'config.php';
 
+// Logout Handling
 if (isset($_GET['logout'])) {
     session_destroy();
     header("Location: login.html");
     exit();
 }
+
+// Database Connection
 try {
     $pdo = new PDO('mysql:host=localhost;dbname=gardiendb', 'gardien', 'G@rdien-des-chiens');
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch (PDOException $e) {
     die("Erreur de connexion : " . $e->getMessage());
 }
+
+// Fetch Data
 try {
     $stmtUsers = $pdo->query("SELECT COUNT(*) as total FROM creation_compte");
     $totalUsers = $stmtUsers->fetch()['total'];
@@ -23,7 +28,7 @@ try {
     $stmtAbonnements = $pdo->query("SELECT COUNT(*) as total FROM Abonnement");
     $totalAbonnements = $stmtAbonnements->fetch()['total'];
 
-    // Données mensuelles pour les graphiques
+    // Monthly Data for Graphs
     $stmtUserEvolution = $pdo->query("
         SELECT MONTH(date_creation) AS mois, COUNT(*) AS total
         FROM creation_compte
@@ -51,11 +56,12 @@ try {
     die("Erreur lors de la récupération des statistiques : " . $e->getMessage());
 }
 
+// Transform Data for Chart.js
 function transformDataForChart($data) {
     $labels = [];
     $values = [];
     foreach ($data as $row) {
-        $labels[] = date("F", mktime(0, 0, 0, $row['mois'], 1)); // Convertit le mois en nom
+        $labels[] = date("F", mktime(0, 0, 0, $row['mois'], 1)); // Month Name
         $values[] = $row['total'];
     }
     return ['labels' => $labels, 'values' => $values];
@@ -72,6 +78,7 @@ $abonnementChartData = transformDataForChart($abonnementEvolution);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tableau de Bord Admin</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         /* Styles globaux */
         * {
@@ -291,33 +298,22 @@ $abonnementChartData = transformDataForChart($abonnementEvolution);
 
 
     </style>
-    <script>
-        window.addEventListener('scroll', () => {
-            const header = document.querySelector('header');
-            if (window.scrollY > 50) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
-            }
-        });
-    </script>
 </head>
 <body>
-
 <!-- Header -->
 <header>
     <img src="images/logo.png" alt="Logo Gardien des Animaux">
     <h1 class="header-slogan">Tableau de Bord Administrateur</h1>
 </header>
 
-<!-- Contenu principal -->
+<!-- Dashboard Content -->
 <div class="dashboard-container">
     <div class="dashboard-header">
         <h2>Bienvenue <?php echo htmlspecialchars($_SESSION['admin']); ?> !</h2>
     </div>
 
     <div class="stats-cards">
-        <!-- Carte Utilisateurs -->
+        <!-- User Stats -->
         <div class="stats-card">
             <h3>Utilisateurs</h3>
             <p>Nombre total : <?php echo $totalUsers; ?></p>
@@ -326,12 +322,21 @@ $abonnementChartData = transformDataForChart($abonnementEvolution);
             </div>
         </div>
 
-        <!-- Carte Réservations -->
+        <!-- Reservation Stats -->
         <div class="stats-card">
             <h3>Réservations</h3>
             <p>En cours : <?php echo $totalReservations; ?></p>
             <div class="chart-container">
                 <canvas id="reservationsChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Subscription Stats -->
+        <div class="stats-card">
+            <h3>Abonnements</h3>
+            <p>Nombre total : <?php echo $totalAbonnements; ?></p>
+            <div class="chart-container">
+                <canvas id="subscriptionsChart"></canvas>
             </div>
         </div>
     </div>
@@ -378,14 +383,14 @@ $abonnementChartData = transformDataForChart($abonnementEvolution);
     </div>
 </footer>
 
-<!-- Script pour les graphiques -->
+<!-- Charts Script -->
 <script>
-    // Données des graphiques depuis PHP
+    // Data from PHP
     const userChartData = <?php echo json_encode($userChartData); ?>;
     const reservationChartData = <?php echo json_encode($reservationChartData); ?>;
     const abonnementChartData = <?php echo json_encode($abonnementChartData); ?>;
 
-    // Graphique Utilisateurs
+    // User Chart
     new Chart(document.getElementById('usersChart'), {
         type: 'line',
         data: {
@@ -394,13 +399,20 @@ $abonnementChartData = transformDataForChart($abonnementEvolution);
                 label: 'Utilisateurs',
                 data: userChartData.values,
                 borderColor: 'orange',
-                fill: false,
+                backgroundColor: 'rgba(255, 165, 0, 0.2)',
+                fill: true,
                 tension: 0.4
             }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { display: true }
+            }
         }
     });
 
-    // Graphique Réservations
+    // Reservation Chart
     new Chart(document.getElementById('reservationsChart'), {
         type: 'line',
         data: {
@@ -409,13 +421,20 @@ $abonnementChartData = transformDataForChart($abonnementEvolution);
                 label: 'Réservations',
                 data: reservationChartData.values,
                 borderColor: 'blue',
-                fill: false,
+                backgroundColor: 'rgba(0, 0, 255, 0.2)',
+                fill: true,
                 tension: 0.4
             }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { display: true }
+            }
         }
     });
 
-    // Graphique Abonnements
+    // Subscription Chart
     new Chart(document.getElementById('subscriptionsChart'), {
         type: 'line',
         data: {
@@ -424,9 +443,16 @@ $abonnementChartData = transformDataForChart($abonnementEvolution);
                 label: 'Abonnements',
                 data: abonnementChartData.values,
                 borderColor: 'green',
-                fill: false,
+                backgroundColor: 'rgba(0, 128, 0, 0.2)',
+                fill: true,
                 tension: 0.4
             }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { display: true }
+            }
         }
     });
 </script>
