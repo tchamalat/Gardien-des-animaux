@@ -56,18 +56,18 @@ include 'config.php';
 
 	.auth-buttons {
 	    position: absolute;
-            top: 20px; /* Ajustez la valeur si nécessaire */
-            right: 20px; /* Ajustez la valeur si nécessaire */
+            top: 20px; 
+            right: 20px; 
             display: flex;
             gap: 15px;
-            z-index: 100; /* Assurez-vous que les boutons sont au-dessus d'autres éléments */
+            z-index: 100; 
 	}
 
 
-	@media (max-width: 600px) { /* Ajustez la largeur pour définir votre "point de rupture" */
+	@media (max-width: 600px) { 
     		.auth-buttons {
-        		flex-direction: column; /* Passe les boutons en colonne */
-        		gap: 15px; /* Augmente l'espacement entre eux si nécessaire */
+        		flex-direction: column; 
+        		gap: 15px; 
     		}
 	}
 
@@ -119,7 +119,7 @@ include 'config.php';
         }
 
         .gardiens {
-            background: transparent; /* Suppression de la bande noire */
+            background: transparent; 
             color: #fff;
         }
         .gardiens-container {
@@ -231,11 +231,11 @@ include 'config.php';
             gap: 20px;
         }
         .avis img {
-            height: 50px; /* Réduction de la taille de l'étoile */
+            height: 50px; 
             width: 50px;
-            border-radius: 50%; /* Ajout d'un cercle autour de l'étoile */
-            background-color: white; /* Fond blanc pour le cercle */
-            padding: 5px; /* Ajout d'un espace autour de l'étoile */
+            border-radius: 50%; 
+            background-color: white; 
+            padding: 5px; 
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
@@ -244,13 +244,13 @@ include 'config.php';
             color: #333;
             display: flex;
             align-items: center;
-            gap: 10px; /* Espacement entre l'étoile et la note */
+            gap: 10px; 
         }
 
         .avis span p {
-            margin: 0; /* Suppression des marges inutiles */
+            margin: 0; 
             font-weight: bold;
-            font-size: 1.2em; /* Taille de la note */
+            font-size: 1.2em; 
         }
 	    .voir-plus {
 	    background-color: #f5a623;
@@ -276,8 +276,6 @@ include 'config.php';
 <body>
     <script>
         let userLatitude, userLongitude;
-
-        // Fonction pour obtenir la position de l'utilisateur
         function getLocation() {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(savePosition, showError);
@@ -285,15 +283,11 @@ include 'config.php';
                 alert("La géolocalisation n'est pas prise en charge par votre navigateur.");
             }
         }
-
-        // Sauvegarde de la position
         function savePosition(position) {
             userLatitude = position.coords.latitude;
             userLongitude = position.coords.longitude;
             console.log(`Latitude: ${userLatitude}, Longitude: ${userLongitude}`);
         }
-
-        // Gestion des erreurs de géolocalisation
         function showError(error) {
             switch (error.code) {
                 case error.PERMISSION_DENIED:
@@ -310,8 +304,6 @@ include 'config.php';
                     break;
             }
         }
-
-        // Redirection vers la page de recherche
         function redirectToSearch() {
             if (userLatitude !== undefined && userLongitude !== undefined) {
                 window.location.href = `search_page_index.php?latitude=${userLatitude}&longitude=${userLongitude}`;
@@ -319,8 +311,6 @@ include 'config.php';
                 alert("La localisation n'est pas disponible. Veuillez activer la géolocalisation.");
             }
         }
-
-        // Appeler la fonction pour obtenir la localisation dès que la page est chargée
         document.addEventListener('DOMContentLoaded', getLocation);
     </script>
 
@@ -348,13 +338,13 @@ include 'config.php';
 	<div id="gardiens-container" class="gardiens-container">
     		<?php
     		// Requête SQL pour récupérer tous les gardiens
-    		$query = "SELECT id, prenom, nom_utilisateur, profile_picture FROM creation_compte WHERE role = 0"; // 0 pour les gardiens
+    		$query = "SELECT id, prenom, nom_utilisateur, profile_picture FROM creation_compte WHERE role = 0"; 
     		$result = $conn->query($query);
 
     		// Vérifiez que des gardiens sont disponibles
     		if ($result->num_rows > 0) {
         		while ($row = $result->fetch_assoc()) {
-            			$prenom = htmlspecialchars($row['prenom'] ?? 'Inconnu'); // Gérer les valeurs nulles
+            			$prenom = htmlspecialchars($row['prenom'] ?? 'Inconnu'); 
             			$nom_utilisateur = htmlspecialchars($row['nom_utilisateur'] ?? 'Utilisateur');
             			$id = intval($row['id']);
 
@@ -404,8 +394,6 @@ include 'config.php';
                 gardiensContainer.innerHTML = `<p>La géolocalisation n'est pas prise en charge par votre navigateur.</p>`;
             }
         }
-
-        // Charger les gardiens dès que la page est prête
         document.addEventListener('DOMContentLoaded', fetchGardiens);
     </script>
 
