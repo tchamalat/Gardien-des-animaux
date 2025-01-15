@@ -1,8 +1,7 @@
 <?php
 session_start();
-require_once 'config.php'; // Fichier de connexion à la base de données
+require_once 'config.php'; 
 
-// Vérifie si l'utilisateur est connecté
 if (!isset($_SESSION['user_id'])) {
     header('Location: login.php');
     exit;
@@ -10,7 +9,6 @@ if (!isset($_SESSION['user_id'])) {
 
 $user_id = $_SESSION['user_id'];
 
-// Gestion de la suppression du message
 if (isset($_GET['delete_id'])) {
     $delete_id = intval($_GET['delete_id']);
 
@@ -24,7 +22,6 @@ if (isset($_GET['delete_id'])) {
     }
 }
 
-// Gestion de l'envoi du message
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $recipient_username = $_POST['recipient_username'];
     $message_content = $_POST['message'];
