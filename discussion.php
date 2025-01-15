@@ -300,10 +300,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <header>
         <img src="images/logo.png" alt="Logo">
         <div class="auth-buttons">
-            <button class="btn" onclick="window.location.href='index_connect.php'">Accueil</button>
-            <button class="btn" onclick="window.location.href='profil.php'">Mon Profil</button>
-            <button class="btn" onclick="window.location.href='search_page.php'">Je poste une annonce</button>
-        </div>
+		<button class="btn" onclick="window.location.href='search_page.php'">Je poste une annonce</button>
+		<button class="btn" onclick="window.location.href='index_connect.php'">Accueil</button>
+		<button class="btn" onclick="window.location.href='profil.php'">Mon Profil</button>
+	</div>
     </header>
 
     <div class="container">
