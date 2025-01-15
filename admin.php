@@ -56,14 +56,27 @@ try {
     die("Erreur lors de la récupération des statistiques : " . $e->getMessage());
 }
 
-// Transform Data for Chart.js
 function transformDataForChart($data) {
     $labels = [];
     $values = [];
-    foreach ($data as $row) {
-        $labels[] = date("F", mktime(0, 0, 0, $row['mois'], 1)); // Month Name
-        $values[] = $row['total'];
+    $months = range(1, 12); // 1 = January, 12 = December
+
+    foreach ($months as $month) {
+        $found = false;
+        foreach ($data as $row) {
+            if ((int)$row['mois'] === $month) {
+                $labels[] = date("F", mktime(0, 0, 0, $month, 1));
+                $values[] = $row['total'];
+                $found = true;
+                break;
+            }
+        }
+        if (!$found) {
+            $labels[] = date("F", mktime(0, 0, 0, $month, 1));
+            $values[] = 0; // Default to 0 if no data exists for the month
+        }
     }
+
     return ['labels' => $labels, 'values' => $values];
 }
 
