@@ -295,9 +295,17 @@ $abonnementChartData = transformDataForChart($abonnementEvolution);
             max-width: 100%;
             height: auto;
         }
-
-
     </style>
+    <script>
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+    </script>
 </head>
 <body>
 <!-- Header -->
