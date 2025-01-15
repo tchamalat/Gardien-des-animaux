@@ -129,43 +129,59 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 	.header-container {
     	    display: flex;
-            justify-content: space-between; /* Place le logo à gauche et les boutons à droite */
+            justify-content: space-between; 
             align-items: center;
             width: 100%;
 	}
 
 
         header img {
-            height: 120px;
+	    height: 120px;
             max-width: 200px;
         }
 
 	.auth-buttons {
-            position: absolute;
+	    position: absolute;
             top: 20px;
-            right: 20px;
-            display: flex;
-            gap: 10px; 
-            z-index: 100; 
+    	    right: 20px;
+    	    display: flex;
+    	    flex-wrap: wrap; /* Allow buttons to wrap on smaller screens */
+    	    gap: 10px; /* Add space between buttons */
+    	    z-index: 100; 
+	}
+
+	.auth-buttons .btn {
+    	    background-color: orange;
+    	    color: white;
+    	    padding: 10px 15px; /* Adjust padding for better fit */
+    	    border: none;
+    	    border-radius: 8px;
+    	    font-size: 1em;
+    	    cursor: pointer;
+    	    text-decoration: none;
+    	    transition: background-color 0.3s ease, transform 0.3s ease;
+	}
+
+	.auth-buttons .btn:hover {
+    	    background-color: #ff7f00;
+    	    transform: translateY(-3px);
 	}
 
 
-        .auth-buttons .btn {
-            background-color: orange;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 8px;
-            font-size: 1em;
-            cursor: pointer;
-            text-decoration: none;
-            transition: background-color 0.3s ease, transform 0.3s ease;
-        }
+	@media (max-width: 768px) {
+		.auth-buttons {
+			justify-content: center;
+			flex-direction: column; /* Stack buttons vertically */
+			position: static; /* Remove absolute positioning for better flow */
+			margin-top: 20px;
+		}
 
-        .auth-buttons .btn:hover {
-            background-color: #ff7f00;
-            transform: translateY(-3px);
-        }
+    		.auth-buttons .btn {
+           	       width: 100%; /* Make buttons full width */
+            	       text-align: center;
+    		}
+	}
+
 
         .container {
             margin: 150px auto;
