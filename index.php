@@ -337,11 +337,8 @@ include 'config.php';
         <p class="texte">Ils sont prêts à offrir amour, soins et attention à vos animaux.</p>
 	<div id="gardiens-container" class="gardiens-container">
     		<?php
-    		// Requête SQL pour récupérer tous les gardiens
     		$query = "SELECT id, prenom, nom_utilisateur, profile_picture FROM creation_compte WHERE role = 0"; 
     		$result = $conn->query($query);
-
-    		// Vérifiez que des gardiens sont disponibles
     		if ($result->num_rows > 0) {
         		while ($row = $result->fetch_assoc()) {
             			$prenom = htmlspecialchars($row['prenom'] ?? 'Inconnu'); 
@@ -359,43 +356,7 @@ include 'config.php';
     		?>
 	</div>
     </section>
-    <script>
-        async function fetchGardiens() {
-            const gardiensContainer = document.getElementById('gardiens-container');
 
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(async (position) => {
-                    const { latitude, longitude } = position.coords;
-
-                    // Appel à l'API fetch_gardiens.php
-                    const response = await fetch('fetch_gardiens.php', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ latitude, longitude })
-                    });
-
-                    const data = await response.json();
-
-                    if (data.error) {
-                        gardiensContainer.innerHTML = `<p>Erreur : ${data.error}</p>`;
-                    } else {
-                        gardiensContainer.innerHTML = data.map(gardien => `
-                            <div class="gardien-card">
-                                <img src="${gardien.profile_picture}" alt="${gardien.prenom}">
-                                <h3>${gardien.prenom} (${gardien.nom_utilisateur})</h3>
-				<p>${gardien.distance} km</p>
-                            </div>
-                        `).join('');
-                    }
-                }, (error) => {
-                    gardiensContainer.innerHTML = `<p>Erreur de géolocalisation : ${error.message}</p>`;
-                });
-            } else {
-                gardiensContainer.innerHTML = `<p>La géolocalisation n'est pas prise en charge par votre navigateur.</p>`;
-            }
-        }
-        document.addEventListener('DOMContentLoaded', fetchGardiens);
-    </script>
 
     <!-- Avis Section -->
     <section class="avis-section">
