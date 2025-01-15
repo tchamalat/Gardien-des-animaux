@@ -2,22 +2,17 @@
 session_start();
 include 'config.php';
 
-// Gestion de la déconnexion
 if (isset($_GET['logout'])) {
     session_destroy();
     header("Location: login.html");
     exit();
 }
-
-// Connexion à la base de données
 try {
     $pdo = new PDO('mysql:host=localhost;dbname=gardiendb', 'gardien', 'G@rdien-des-chiens');
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch (PDOException $e) {
     die("Erreur de connexion : " . $e->getMessage());
 }
-
-// Récupération des statistiques
 try {
     $stmtUsers = $pdo->query("SELECT COUNT(*) as total FROM creation_compte");
     $totalUsers = $stmtUsers->fetch()['total'];
@@ -56,7 +51,6 @@ try {
     die("Erreur lors de la récupération des statistiques : " . $e->getMessage());
 }
 
-// Transformation des données pour Chart.js
 function transformDataForChart($data) {
     $labels = [];
     $values = [];
