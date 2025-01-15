@@ -145,15 +145,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             top: 20px;
     	    right: 20px;
     	    display: flex;
-    	    flex-wrap: wrap; /* Allow buttons to wrap on smaller screens */
-    	    gap: 10px; /* Add space between buttons */
+    	    flex-wrap: wrap; 
+    	    gap: 10px; 
     	    z-index: 100; 
 	}
 
 	.auth-buttons .btn {
     	    background-color: orange;
     	    color: white;
-    	    padding: 10px 15px; /* Adjust padding for better fit */
+    	    padding: 10px 15px; 
     	    border: none;
     	    border-radius: 8px;
     	    font-size: 1em;
@@ -165,21 +165,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	.auth-buttons .btn:hover {
     	    background-color: #ff7f00;
     	    transform: translateY(-3px);
-	}
-
-
-	@media (max-width: 768px) {
-		.auth-buttons {
-			justify-content: center;
-			flex-direction: column; /* Stack buttons vertically */
-			position: static; /* Remove absolute positioning for better flow */
-			margin-top: 20px;
-		}
-
-    		.auth-buttons .btn {
-           	       width: 100%; /* Make buttons full width */
-            	       text-align: center;
-    		}
 	}
 
 
