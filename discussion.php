@@ -129,7 +129,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         header img {
-            height: 100px;
+            height: 120px;
         }
 
         .auth-buttons .btn {
