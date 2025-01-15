@@ -397,30 +397,30 @@ $abonnementChartData = transformDataForChart($abonnementEvolution);
 <script>
     const userChartData = <?php echo json_encode($userChartData); ?>;
     const reservationChartData = <?php echo json_encode($reservationChartData); ?>;
-    if (userChartData.labels.length === 0 || userChartData.values.length === 0) {
-        console.error('User chart data is empty.');
-    } else {
-        new Chart(document.getElementById('usersChart'), {
-            type: 'line',
-            data: {
-                labels: userChartData.labels,
-                datasets: [{
-                    label: 'Utilisateurs',
-                    data: userChartData.values,
-                    borderColor: 'orange',
-                    backgroundColor: 'rgba(255, 165, 0, 0.2)',
-                    fill: true,
-                    tension: 0.4
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: { display: true }
-                }
+
+    // Chart for Utilisateurs
+    new Chart(document.getElementById('usersChart'), {
+        type: 'line',
+        data: {
+            labels: userChartData.labels,
+            datasets: [{
+                label: 'Utilisateurs',
+                data: userChartData.values,
+                borderColor: 'orange',
+                backgroundColor: 'rgba(255, 165, 0, 0.2)',
+                fill: true,
+                tension: 0.4
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { display: true }
             }
-        });
-    }
+        }
+    });
+
+    // Chart for Réservations
     new Chart(document.getElementById('reservationsChart'), {
         type: 'line',
         data: {
@@ -442,6 +442,7 @@ $abonnementChartData = transformDataForChart($abonnementEvolution);
         }
     });
 </script>
+
 
 </body>
 </html>
