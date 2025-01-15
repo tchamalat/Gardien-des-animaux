@@ -339,14 +339,6 @@ $abonnementChartData = transformDataForChart($abonnementEvolution);
             </div>
         </div>
 
-        <!-- Subscription Stats -->
-        <div class="stats-card">
-            <h3>Abonnements</h3>
-            <p>Nombre total : <?php echo $totalAbonnements; ?></p>
-            <div class="chart-container">
-                <canvas id="subscriptionsChart"></canvas>
-            </div>
-        </div>
     </div>
 </div>
 
@@ -430,28 +422,6 @@ $abonnementChartData = transformDataForChart($abonnementEvolution);
                 data: reservationChartData.values,
                 borderColor: 'blue',
                 backgroundColor: 'rgba(0, 0, 255, 0.2)',
-                fill: true,
-                tension: 0.4
-            }]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: { display: true }
-            }
-        }
-    });
-
-    // Subscription Chart
-    new Chart(document.getElementById('subscriptionsChart'), {
-        type: 'line',
-        data: {
-            labels: abonnementChartData.labels,
-            datasets: [{
-                label: 'Abonnements',
-                data: abonnementChartData.values,
-                borderColor: 'green',
-                backgroundColor: 'rgba(0, 128, 0, 0.2)',
                 fill: true,
                 tension: 0.4
             }]
