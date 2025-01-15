@@ -1,0 +1,90 @@
+server {
+    if ($host = www.gardien-des-animaux.fr) {
+        return 301 https://$host$request_uri;
+    } # managed by Certbot
+
+
+    if ($host = gardien-des-animaux.fr) {
+        return 301 https://$host$request_uri;
+    } # managed by Certbot
+
+
+    listen 80;
+    server_name gardien-des-animaux.fr www.gardien-des-animaux.fr;
+
+    return 301 https://$server_name$request_uri;
+
+
+
+
+}
+
+server {
+    listen 443 ssl http2;
+    server_name gardien-des-animaux.fr www.gardien-des-animaux.fr;
+
+    root /var/www/gardien-des-animaux.fr/html;
+    index index.html index.php index.htm;
+
+    location ~ \.php$ {
+        try_files $uri =404;
+        fastcgi_pass unix:/run/php/php8.2-fpm.sock;
+        fastcgi_index index.php;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        include fastcgi_params;
+    }
+    ssl_certificate /etc/letsencrypt/live/gardien-des-animaux.fr/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/gardien-des-animaux.fr/privkey.pem; # managed by Certbot
+    ssl_trusted_certificate /etc/roman-ssl/chain.cer;
+
+    ssl_session_timeout 1d;
+    ssl_session_cache shared:MozSSL:10m;  # about 40000 sessions
+    ssl_session_tickets off;
+                        
+    ssl_dhparam /etc/ssl/certs/dhparam.pem;
+                        
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_ciphers ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384;
+    ssl_prefer_server_ciphers off;
+                        
+    # HSTS (ngx_http_headers_module is required) (63072000 seconds)
+    add_header Strict-Transport-Security "max-age=63072000" always;
+                        
+    # OCSP stapling
+    ssl_stapling on;
+    ssl_stapling_verify on;
+
+    location / {
+        try_files $uri $uri/ =404;
+
+    }
+
+
+    error_page 404 /404.html;
+    location = /404.html {
+        internal;
+    }
+
+    location /phpmyadmin {
+        root /usr/share/;
+        index index.php index.html index.htm;
+        location ~ ^/phpmyadmin/(.+\.php)$ {
+            try_files $uri =404;
+            fastcgi_pass unix:/run/php/php8.2-fpm.sock;
+            fastcgi_index index.php;
+            fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+            include fastcgi_params;
+        }
+        location ~* ^/phpmyadmin/(.+\.(jpg|jpeg|gif|css|png|js|ico|html|xml|txt))$ {
+            root /usr/share/;
+        }
+    }
+
+    location /phpMyAdmin {
+        rewrite ^/* /phpmyadmin last;
+    }
+
+
+
+
+}
