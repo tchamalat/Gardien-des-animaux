@@ -319,15 +319,6 @@ $abonnementChartData = transformDataForChart($abonnementEvolution);
                 <canvas id="reservationsChart"></canvas>
             </div>
         </div>
-
-        <!-- Carte Abonnements -->
-        <div class="stats-card">
-            <h3>Abonnements</h3>
-            <p>Actifs : <?php echo $totalAbonnements; ?></p>
-            <div class="chart-container">
-                <canvas id="subscriptionsChart"></canvas>
-            </div>
-        </div>
     </div>
 </div>
 
