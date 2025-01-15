@@ -42,29 +42,7 @@ try {
     die("Erreur lors de la récupération des statistiques : " . $e->getMessage());
 }
 
-function transformDataForChart($data) {
-    $labels = [];
-    $values = [];
-    $months = range(1, 12);
 
-    foreach ($months as $month) {
-        $found = false;
-        foreach ($data as $row) {
-            if ((int)$row['mois'] === $month) {
-                $labels[] = date("F", mktime(0, 0, 0, $month, 1));
-                $values[] = $row['total'];
-                $found = true;
-                break;
-            }
-        }
-        if (!$found) {
-            $labels[] = date("F", mktime(0, 0, 0, $month, 1));
-            $values[] = 0; // Default to 0
-        }
-    }
-
-    return ['labels' => $labels, 'values' => $values];
-}
 
 
 $userChartData = transformDataForChart($userEvolution);
