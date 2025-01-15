@@ -400,33 +400,6 @@ $abonnementChartData = transformDataForChart($abonnementEvolution);
 <!-- Charts Script -->
 <script>
     const userChartData = <?php echo json_encode($userChartData); ?>;
-
-    if (userChartData.labels.length === 0 || userChartData.values.length === 0) {
-        console.error('User chart data is empty.');
-    } else {
-        new Chart(document.getElementById('usersChart'), {
-            type: 'line',
-            data: {
-                labels: userChartData.labels,
-                datasets: [{
-                    label: 'Utilisateurs',
-                    data: userChartData.values,
-                    borderColor: 'orange',
-                    backgroundColor: 'rgba(255, 165, 0, 0.2)',
-                    fill: true,
-                    tension: 0.4
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: { display: true }
-                }
-            }
-        });
-    }
-
-    const userChartData = <?php echo json_encode($userChartData); ?>;
     const reservationChartData = <?php echo json_encode($reservationChartData); ?>;
     const abonnementChartData = <?php echo json_encode($abonnementChartData); ?>;
 
