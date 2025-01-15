@@ -59,7 +59,7 @@ try {
 function transformDataForChart($data) {
     $labels = [];
     $values = [];
-    $months = range(1, 12); // 1 = January, 12 = December
+    $months = range(1, 12); // Ensure all months are represented
 
     foreach ($months as $month) {
         $found = false;
@@ -73,12 +73,13 @@ function transformDataForChart($data) {
         }
         if (!$found) {
             $labels[] = date("F", mktime(0, 0, 0, $month, 1));
-            $values[] = 0; // Default to 0 if no data exists for the month
+            $values[] = 0; // Default to 0
         }
     }
 
     return ['labels' => $labels, 'values' => $values];
 }
+
 
 $userChartData = transformDataForChart($userEvolution);
 $reservationChartData = transformDataForChart($reservationEvolution);
@@ -398,12 +399,37 @@ $abonnementChartData = transformDataForChart($abonnementEvolution);
 
 <!-- Charts Script -->
 <script>
-    // Data from PHP
+    const userChartData = <?php echo json_encode($userChartData); ?>;
+
+    if (userChartData.labels.length === 0 || userChartData.values.length === 0) {
+        console.error('User chart data is empty.');
+    } else {
+        new Chart(document.getElementById('usersChart'), {
+            type: 'line',
+            data: {
+                labels: userChartData.labels,
+                datasets: [{
+                    label: 'Utilisateurs',
+                    data: userChartData.values,
+                    borderColor: 'orange',
+                    backgroundColor: 'rgba(255, 165, 0, 0.2)',
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: true }
+                }
+            }
+        });
+    }
+
     const userChartData = <?php echo json_encode($userChartData); ?>;
     const reservationChartData = <?php echo json_encode($reservationChartData); ?>;
     const abonnementChartData = <?php echo json_encode($abonnementChartData); ?>;
 
-    // User Chart
     new Chart(document.getElementById('usersChart'), {
         type: 'line',
         data: {
@@ -424,8 +450,6 @@ $abonnementChartData = transformDataForChart($abonnementEvolution);
             }
         }
     });
-
-    // Reservation Chart
     new Chart(document.getElementById('reservationsChart'), {
         type: 'line',
         data: {
