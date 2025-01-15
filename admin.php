@@ -21,10 +21,7 @@ try {
 
     $stmtReservations = $pdo->query("SELECT COUNT(*) as total FROM reservation");
     $totalReservations = $stmtReservations->fetch()['total'];
-
-    $stmtAbonnements = $pdo->query("SELECT COUNT(*) as total FROM Abonnement");
-    $totalAbonnements = $stmtAbonnements->fetch()['total'];
-
+    
     $stmtUserEvolution = $pdo->query("
         SELECT MONTH(date_creation) AS mois, COUNT(*) AS total
         FROM creation_compte
@@ -41,13 +38,6 @@ try {
     ");
     $reservationEvolution = $stmtReservationEvolution->fetchAll(PDO::FETCH_ASSOC);
 
-    $stmtAbonnementEvolution = $pdo->query("
-        SELECT MONTH(date_debut_abo) AS mois, COUNT(*) AS total
-        FROM Abonnement
-        GROUP BY mois
-        ORDER BY mois ASC
-    ");
-    $abonnementEvolution = $stmtAbonnementEvolution->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
     die("Erreur lors de la récupération des statistiques : " . $e->getMessage());
 }
@@ -90,7 +80,6 @@ $abonnementChartData = transformDataForChart($abonnementEvolution);
     <title>Tableau de Bord Admin</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        /* Styles globaux */
         * {
             margin: 0;
             padding: 0;
@@ -128,7 +117,7 @@ $abonnementChartData = transformDataForChart($abonnementEvolution);
             font-weight: bold;
             text-align: center;
             flex: 1;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8); /* Ombre pour lisibilité */
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8); 
             transition: opacity 0.5s ease, transform 0.5s ease;
         }
 
@@ -178,11 +167,11 @@ $abonnementChartData = transformDataForChart($abonnementEvolution);
         }
 
         .menu-dropdown {
-            position: fixed; /* Fixe le menu dans la position définie */
-            top: 20px; /* Distance par rapport au haut de la page */
-            right: 20px; /* Distance par rapport au côté droit de la page */
+            position: fixed; 
+            top: 20px; 
+            right: 20px; 
             display: inline-block;
-            z-index: 100; /* Assure que le menu reste au-dessus des autres éléments */
+            z-index: 100; 
         }
 
 
@@ -203,13 +192,13 @@ $abonnementChartData = transformDataForChart($abonnementEvolution);
         }
 
         .menu-dropdown:hover .dropdown-content {
-            display: block; /* Changement : s'assure que le menu s'affiche */
+            display: block; 
         }
 
         .menu-dropdown .dropdown-content {
             display: none;
-            position: absolute; /* Positionné par rapport au parent */
-            top: 100%; /* S'assure que le menu est en dessous du bouton */
+            position: absolute; 
+            top: 100%;
             right: 0;
             background-color: white;
             min-width: 200px;
@@ -397,8 +386,6 @@ $abonnementChartData = transformDataForChart($abonnementEvolution);
 <script>
     const userChartData = <?php echo json_encode($userChartData); ?>;
     const reservationChartData = <?php echo json_encode($reservationChartData); ?>;
-
-    // Chart for Utilisateurs
     new Chart(document.getElementById('usersChart'), {
         type: 'line',
         data: {
@@ -419,8 +406,6 @@ $abonnementChartData = transformDataForChart($abonnementEvolution);
             }
         }
     });
-
-    // Chart for Réservations
     new Chart(document.getElementById('reservationsChart'), {
         type: 'line',
         data: {
