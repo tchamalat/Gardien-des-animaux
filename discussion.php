@@ -127,10 +127,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             align-items: center;
             background: none;
         }
+	.header-container {
+    	    display: flex;
+            justify-content: space-between; /* Place le logo à gauche et les boutons à droite */
+            align-items: center;
+            width: 100%;
+	}
+
 
         header img {
             height: 120px;
+            max-width: 200px;
         }
+
+	.auth-buttons {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 15px; 
+            z-index: 100; 
+	}
+
 
         .auth-buttons .btn {
             background-color: orange;
@@ -138,9 +156,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             padding: 10px 20px;
             border: none;
             border-radius: 8px;
-            cursor: pointer;
             font-size: 1em;
-            margin-left: 10px;
+            cursor: pointer;
+            text-decoration: none;
             transition: background-color 0.3s ease, transform 0.3s ease;
         }
 
