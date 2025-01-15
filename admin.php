@@ -2,14 +2,12 @@
 session_start();
 include 'config.php';
 
-// Logout Handling
 if (isset($_GET['logout'])) {
     session_destroy();
     header("Location: login.html");
     exit();
 }
 
-// Database Connection
 try {
     $pdo = new PDO('mysql:host=localhost;dbname=gardiendb', 'gardien', 'G@rdien-des-chiens');
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -17,7 +15,6 @@ try {
     die("Erreur de connexion : " . $e->getMessage());
 }
 
-// Fetch Data
 try {
     $stmtUsers = $pdo->query("SELECT COUNT(*) as total FROM creation_compte");
     $totalUsers = $stmtUsers->fetch()['total'];
@@ -28,7 +25,6 @@ try {
     $stmtAbonnements = $pdo->query("SELECT COUNT(*) as total FROM Abonnement");
     $totalAbonnements = $stmtAbonnements->fetch()['total'];
 
-    // Monthly Data for Graphs
     $stmtUserEvolution = $pdo->query("
         SELECT MONTH(date_creation) AS mois, COUNT(*) AS total
         FROM creation_compte
@@ -59,7 +55,7 @@ try {
 function transformDataForChart($data) {
     $labels = [];
     $values = [];
-    $months = range(1, 12); // Ensure all months are represented
+    $months = range(1, 12);
 
     foreach ($months as $month) {
         $found = false;
@@ -401,28 +397,30 @@ $abonnementChartData = transformDataForChart($abonnementEvolution);
 <script>
     const userChartData = <?php echo json_encode($userChartData); ?>;
     const reservationChartData = <?php echo json_encode($reservationChartData); ?>;
-    const abonnementChartData = <?php echo json_encode($abonnementChartData); ?>;
-
-    new Chart(document.getElementById('usersChart'), {
-        type: 'line',
-        data: {
-            labels: userChartData.labels,
-            datasets: [{
-                label: 'Utilisateurs',
-                data: userChartData.values,
-                borderColor: 'orange',
-                backgroundColor: 'rgba(255, 165, 0, 0.2)',
-                fill: true,
-                tension: 0.4
-            }]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: { display: true }
+    if (userChartData.labels.length === 0 || userChartData.values.length === 0) {
+        console.error('User chart data is empty.');
+    } else {
+        new Chart(document.getElementById('usersChart'), {
+            type: 'line',
+            data: {
+                labels: userChartData.labels,
+                datasets: [{
+                    label: 'Utilisateurs',
+                    data: userChartData.values,
+                    borderColor: 'orange',
+                    backgroundColor: 'rgba(255, 165, 0, 0.2)',
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: true }
+                }
             }
-        }
-    });
+        });
+    }
     new Chart(document.getElementById('reservationsChart'), {
         type: 'line',
         data: {
@@ -444,5 +442,6 @@ $abonnementChartData = transformDataForChart($abonnementEvolution);
         }
     });
 </script>
+
 </body>
 </html>
