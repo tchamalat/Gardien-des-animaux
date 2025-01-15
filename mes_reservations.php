@@ -2,7 +2,6 @@
 session_start();
 include 'config.php';
 
-// Vérifie si l'utilisateur est connecté
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
     exit();
@@ -10,7 +9,6 @@ if (!isset($_SESSION['user_id'])) {
 
 $user_id = $_SESSION['user_id'];
 
-// Vérifie si l'utilisateur est un gardien
 $sql_check_role = "SELECT id FROM creation_compte WHERE id = ? AND role = 0";
 $stmt_check = $conn->prepare($sql_check_role);
 $stmt_check->bind_param("i", $user_id);
@@ -22,12 +20,9 @@ if ($result_check->num_rows === 0) {
     exit();
 }
 
-// Vérification si une action de validation ou de refus est effectuée
 if (isset($_GET['action']) && isset($_GET['id_reservation'])) {
-    $action = $_GET['action']; // "valider" ou "refuser"
+    $action = $_GET['action']; 
     $id_reservation = $_GET['id_reservation'];
-
-    // Vérifie si la réservation est déjà payée
     $sql_check_payment = "SELECT paiement_effectue FROM reservation WHERE id_reservation = ?";
     $stmt_check_payment = $conn->prepare($sql_check_payment);
     $stmt_check_payment->bind_param("i", $id_reservation);
@@ -40,23 +35,16 @@ if (isset($_GET['action']) && isset($_GET['id_reservation'])) {
         header("Location: mes_reservations.php");
         exit();
     }
-
-    // Détermine la valeur de validite (1 pour valider, 0 pour refuser)
     $validite = ($action === "valider") ? 1 : 0;
-
-    // Mise à jour du statut de la réservation
     $sql_update_validite = "UPDATE reservation SET validite = ? WHERE id_reservation = ?";
     $stmt_update = $conn->prepare($sql_update_validite);
     $stmt_update->bind_param("ii", $validite, $id_reservation);
     $stmt_update->execute();
     $stmt_update->close();
-
-    // Redirige vers la même page pour éviter les re-soumissions
     header("Location: mes_reservations.php");
     exit();
 }
 
-// Récupère les réservations associées au gardien
 $sql = "
     SELECT r.id_reservation, r.date_debut, r.date_fin, r.lieu, r.type, r.heure_debut, r.heure_fin, r.validite,
            r.paiement_effectue, c.id AS proprietaire_id, c.nom, c.prenom, c.mail
@@ -79,7 +67,6 @@ $result = $stmt->get_result();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mes Réservations</title>
         <style>
-        /* Styles globaux */
         * {
             margin: 0;
             padding: 0;
@@ -141,13 +128,13 @@ $result = $stmt->get_result();
 
         .container {
             flex: 1;
-            max-width: 90%; /* Passe de 1200px à 90% pour plus de flexibilité */
+            max-width: 90%; 
             margin: 120px auto 50px;
             background: rgba(255, 255, 255, 0.95);
             border-radius: 15px;
             padding: 30px;
             box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
-            overflow-x: auto; /* Ajoute une barre de défilement horizontale si nécessaire */
+            overflow-x: auto; 
         }
 
 
