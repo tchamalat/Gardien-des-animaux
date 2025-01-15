@@ -343,7 +343,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 navigator.geolocation.getCurrentPosition(async (position) => {
                     userLatitude = position.coords.latitude;
                     userLongitude = position.coords.longitude;
-                    console.log(Latitude: ${userLatitude}, Longitude: ${userLongitude});
+                    console.log(`Latitude: ${userLatitude}, Longitude: ${userLongitude}`);
                     await fetchGardiens(userLatitude, userLongitude);
                 }, showError);
             } else {
@@ -386,17 +386,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 if (data.length === 0) {
                     gardiensContainer.innerHTML = '<p class="texte">Aucun gardien trouvé dans votre région.</p>';
                 } else {
-                    gardiensContainer.innerHTML = data.map(gardien => 
+                    gardiensContainer.innerHTML = data.map(gardien => `
                         <div class="gardien-card">
                             <img src="${gardien.profile_picture}" alt="${gardien.prenom}">
                             <h3>${gardien.prenom} (${gardien.nom_utilisateur})</h3>
                             <p>Distance : ${gardien.distance.toFixed(2)} km</p>
                         </div>
-                    ).join('');
+                    `).join('');
                 }
             } catch (error) {
                 console.error('Erreur lors de la récupération des gardiens:', error);
-                gardiensContainer.innerHTML = <p class="texte">Une erreur est survenue. Veuillez réessayer plus tard.</p>;
+                gardiensContainer.innerHTML = `<p class="texte">Une erreur est survenue. Veuillez réessayer plus tard.</p>`;
             }
         }
 
