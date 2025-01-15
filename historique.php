@@ -2,7 +2,6 @@
 session_start();
 require_once 'config.php';
 
-// Vérifie si l'utilisateur est connecté et s'il a le rôle de propriétaire (role = 1)
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] != 1) {
     header('Location: login.php');
     exit;
@@ -10,7 +9,6 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] != 1) {
 
 $user_id = $_SESSION['user_id'];
 
-// Récupération des réservations associées au propriétaire
 $sql = "
     SELECT r.id_reservation, r.date_debut, r.date_fin, r.lieu, r.type, r.heure_debut, r.heure_fin, r.validite, r.paiement_effectue, c.nom_utilisateur AS gardien
     FROM reservation r
@@ -32,7 +30,6 @@ $result = $stmt->get_result();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Historique des Réservations</title>
     <style>
-        /* Style similaire à vos autres pages */
         body {
             font-family: Arial, sans-serif;
             color: #333;
