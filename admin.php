@@ -153,7 +153,7 @@ $abonnementChartData = transformDataForChart($abonnementEvolution);
             align-items: center;
             justify-content: center;
             padding: 20px;
-            background-color: rgba(255, 255, 255, 0.9);
+            background-color: none;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
             text-align: center;
         }
