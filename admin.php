@@ -139,10 +139,6 @@ $abonnementChartData = transformDataForChart($abonnementEvolution);
             padding-left: 30px;
         }
 
-        .sidebar ul li a i {
-            margin-right: 10px;
-        }
-
         header {
             position: fixed;
             top: 0;
@@ -172,29 +168,6 @@ $abonnementChartData = transformDataForChart($abonnementEvolution);
             width: calc(100% - 270px);
         }
 
-        .stats-cards {
-            display: flex;
-            gap: 20px;
-            justify-content: space-between;
-            flex-wrap: wrap;
-        }
-
-        .stats-card {
-            flex: 1;
-            min-width: 250px;
-            background-color: orange;
-            color: white;
-            padding: 20px;
-            border-radius: 8px;
-            text-align: center;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-        }
-
-        .stats-card h3 {
-            font-size: 1.5em;
-            margin-bottom: 10px;
-        }
-
         .chart-container {
             margin: 20px 0;
             background: white;
@@ -203,37 +176,27 @@ $abonnementChartData = transformDataForChart($abonnementEvolution);
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
 
+        .chart-container h3 {
+            font-size: 1.5em;
+            color: #444;
+            margin-bottom: 15px;
+        }
+
         canvas {
             max-width: 100%;
             height: auto;
-        }
-
-        ul li {
-            position: relative;
-            padding-left: 25px;
-            margin-bottom: 10px;
-        }
-
-        ul li:before {
-            content: '✔';
-            position: absolute;
-            left: 0;
-            top: 0;
-            color: orange;
-            font-weight: bold;
         }
 
         footer {
             background: rgba(0, 0, 0, 0.85);
             color: #fff;
             padding: 20px;
-            position: fixed; /* Fixe le footer */
-            bottom: 0; /* Place le footer au bas de la page */
+            position: fixed;
+            bottom: 0;
             left: 0;
-            width: 100%; /* Prend toute la largeur de la page */
-            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2); /* Ajoute une ombre légère */
+            width: 100%;
+            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2);
         }
-
 
         footer .footer-links {
             display: flex;
@@ -338,9 +301,27 @@ $abonnementChartData = transformDataForChart($abonnementEvolution);
                 data: userChartData.values,
                 borderColor: 'orange',
                 backgroundColor: 'rgba(255, 165, 0, 0.2)',
+                borderWidth: 2,
+                pointBackgroundColor: '#fff',
+                pointBorderColor: 'orange',
+                pointBorderWidth: 2,
                 fill: true,
                 tension: 0.4
             }]
+        },
+        options: {
+            plugins: {
+                legend: {
+                    display: true,
+                    labels: {
+                        color: '#333',
+                        font: {
+                            size: 14
+                        }
+                    }
+                }
+            },
+            responsive: true
         }
     });
 
@@ -353,9 +334,27 @@ $abonnementChartData = transformDataForChart($abonnementEvolution);
                 data: reservationChartData.values,
                 borderColor: 'blue',
                 backgroundColor: 'rgba(0, 0, 255, 0.2)',
+                borderWidth: 2,
+                pointBackgroundColor: '#fff',
+                pointBorderColor: 'blue',
+                pointBorderWidth: 2,
                 fill: true,
                 tension: 0.4
             }]
+        },
+        options: {
+            plugins: {
+                legend: {
+                    display: true,
+                    labels: {
+                        color: '#333',
+                        font: {
+                            size: 14
+                        }
+                    }
+                }
+            },
+            responsive: true
         }
     });
 </script>
