@@ -217,10 +217,12 @@ $abonnementChartData = transformDataForChart($abonnementEvolution);
         }
 
         canvas {
-            max-width: 80%; /* Reduce the overall chart width */
-            height: 400px;  /* Set a specific height for the charts */
-            margin: 0 auto; /* Center the charts */
-        }
+            width: 90% !important; /* Reduce the width of the chart */
+            height: 300px !important; /* Set a fixed height for the chart */
+            display: block;
+            margin: 0 auto; /* Center align the canvas */
+        }    
+
 
         ul li {
             position: relative;
@@ -350,6 +352,7 @@ $abonnementChartData = transformDataForChart($abonnementEvolution);
 
 <!-- Charts Script -->
 <script>
+    // Render User Chart
     new Chart(document.getElementById('usersChart'), {
         type: 'line',
         data: {
@@ -365,15 +368,27 @@ $abonnementChartData = transformDataForChart($abonnementEvolution);
         },
         options: {
             responsive: true,
-            maintainAspectRatio: false, // Allow more control over the height
+            maintainAspectRatio: true, // Keep the charts smaller and proportional
             plugins: {
                 legend: {
                     position: 'top'
+                }
+            },
+            scales: {
+                x: {
+                    ticks: {
+                        maxRotation: 45,
+                        minRotation: 0
+                    }
+                },
+                y: {
+                    beginAtZero: true
                 }
             }
         }
     });
 
+    // Render Reservations Chart
     new Chart(document.getElementById('reservationsChart'), {
         type: 'line',
         data: {
@@ -389,14 +404,26 @@ $abonnementChartData = transformDataForChart($abonnementEvolution);
         },
         options: {
             responsive: true,
-            maintainAspectRatio: false, // Same as above
+            maintainAspectRatio: true,
             plugins: {
                 legend: {
                     position: 'top'
+                }
+            },
+            scales: {
+                x: {
+                    ticks: {
+                        maxRotation: 45,
+                        minRotation: 0
+                    }
+                },
+                y: {
+                    beginAtZero: true
                 }
             }
         }
     });
 </script>
+
 </body>
 </html>
