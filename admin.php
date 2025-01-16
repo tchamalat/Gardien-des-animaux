@@ -157,7 +157,20 @@ $abonnementChartData = transformDataForChart($abonnementEvolution);
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
             text-align: center;
         }
+        header .header-slogan {
+            font-size: 1.5em;
+            color: orange;
+            font-weight: bold;
+            text-align: center;
+            flex: 1;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8); /* Ombre pour lisibilité */
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
 
+        header.scrolled .header-slogan {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
         header h1 {
             font-size: 1.8em;
             color: orange;
