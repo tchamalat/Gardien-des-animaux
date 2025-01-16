@@ -177,7 +177,6 @@ $abonnementChartData = transformDataForChart($abonnementEvolution);
             gap: 20px;
             justify-content: space-between;
             flex-wrap: wrap;
-            margin-bottom: 30px;
         }
 
         .stats-card {
