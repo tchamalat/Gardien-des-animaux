@@ -305,7 +305,7 @@ $abonnementChartData = transformDataForChart($abonnementEvolution);
 
 <!-- Header -->
 <header>
-    <h1>Tableau de Bord Administrateur</h1>
+    <h1 class="header-slogan">Tableau de Bord Administrateur</h1>
 </header>
 
 <!-- Dashboard Content -->
