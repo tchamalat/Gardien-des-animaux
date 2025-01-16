@@ -143,39 +143,33 @@ $abonnementChartData = transformDataForChart($abonnementEvolution);
             margin-right: 10px;
         }
 
-        .dashboard-container {
-            margin-left: 270px;
-            padding: 20px;
-            width: 100%;
-        }
-
         header {
             position: fixed;
             top: 0;
-            left: 0;
-            width: 100%;
+            left: 250px;
+            width: calc(100% - 250px);
             z-index: 10;
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            padding: 20px 40px;
-            background: transparent;
-            box-shadow: none;
-        }
-
-
-        header img {
-            height: 50px;
-        }
-
-        .dashboard-header {
+            justify-content: center;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
             text-align: center;
-            margin-bottom: 30px;
         }
 
-        .dashboard-header h2 {
-            font-size: 2em;
+        header h1 {
+            font-size: 1.8em;
             color: orange;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+        }
+
+        .dashboard-container {
+            margin-left: 270px;
+            margin-top: 100px;
+            padding: 20px;
+            width: calc(100% - 270px);
         }
 
         .stats-cards {
@@ -183,6 +177,7 @@ $abonnementChartData = transformDataForChart($abonnementEvolution);
             gap: 20px;
             justify-content: space-between;
             flex-wrap: wrap;
+            margin-bottom: 30px;
         }
 
         .stats-card {
@@ -202,31 +197,16 @@ $abonnementChartData = transformDataForChart($abonnementEvolution);
         }
 
         .chart-container {
-            margin-top: 20px;
+            margin: 20px 0;
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
 
         canvas {
             max-width: 100%;
             height: auto;
-        }
-        header .header-slogan {
-            font-size: 1.5em;
-            color: orange;
-            font-weight: bold;
-            text-align: center;
-            flex: 1;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8); 
-            transition: opacity 0.5s ease, transform 0.5s ease;
-        }
-
-        header.scrolled .header-slogan {
-            opacity: 0;
-            transform: translateY(-20px);
-        }
-                        ul {
-            margin-top: 20px;
-            padding-left: 20px;
-            list-style: none;
         }
 
         ul li {
@@ -281,92 +261,7 @@ $abonnementChartData = transformDataForChart($abonnementEvolution);
         footer .footer-links a:hover {
             color: orange;
         }
-        .chart-container {
-            margin-top: 20px;
-        }
-
-        canvas {
-            max-width: 100%;
-            height: auto;
-        }
-                .menu-dropdown {
-            position: fixed; 
-            top: 20px; 
-            right: 20px; 
-            display: inline-block;
-            z-index: 100; 
-        }
-
-
-        .menu-dropdown .dropdown-btn {
-            background-color: orange;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 8px;
-            font-size: 1em;
-            cursor: pointer;
-            text-decoration: none;
-            transition: background-color 0.3s ease, transform 0.3s ease;
-        }
-
-        .menu-dropdown .dropdown-btn:hover {
-            background-color: #ff7f00;
-        }
-
-        .menu-dropdown:hover .dropdown-content {
-            display: block; 
-        }
-
-        .menu-dropdown .dropdown-content {
-            display: none;
-            position: absolute; 
-            top: 100%;
-            right: 0;
-            background-color: white;
-            min-width: 200px;
-            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
-            border-radius: 8px;
-            z-index: 1;
-        }
-
-        .menu-dropdown .dropdown-content a {
-            color: black;
-            padding: 12px 16px;
-            text-decoration: none;
-            display: block;
-            border-bottom: 1px solid #ddd;
-        }
-
-        .menu-dropdown .dropdown-content a:hover {
-            background-color: #f1f1f1;
-        }
-
-        .menu-dropdown .dropdown-content .btn-deconnexion {
-            background-color: #ff0000;
-            color: white;
-            border: none;
-            text-align: center;
-            padding: 12px 16px;
-            display: block;
-            border-radius: 8px;
-            cursor: pointer;
-        }
-
-        .menu-dropdown .dropdown-content .btn-deconnexion:hover {
-            background-color: #ff4d4d;
-        }
     </style>
-    <script>
-        window.addEventListener('scroll', () => {
-            const header = document.querySelector('header');
-            if (window.scrollY > 50) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
-            }
-        });
-    </script>
 </head>
 <body>
 
@@ -386,32 +281,24 @@ $abonnementChartData = transformDataForChart($abonnementEvolution);
     </ul>
 </div>
 
+<!-- Header -->
+<header>
+    <h1>Tableau de Bord Administrateur</h1>
+</header>
+
 <!-- Dashboard Content -->
 <div class="dashboard-container">
-    <header>
-        <h1>Tableau de Bord Administrateur</h1>
-    </header>
+    <div class="chart-container">
+        <h3>Évolution des Utilisateurs</h3>
+        <canvas id="usersChart"></canvas>
+    </div>
 
-    <div class="stats-cards">
-        <!-- User Stats -->
-        <div class="stats-card">
-            <h3>Utilisateurs</h3>
-            <p>Nombre total : <?php echo $totalUsers; ?></p>
-            <div class="chart-container">
-                <canvas id="usersChart"></canvas>
-            </div>
-        </div>
-
-        <!-- Reservation Stats -->
-        <div class="stats-card">
-            <h3>Réservations</h3>
-            <p>En cours : <?php echo $totalReservations; ?></p>
-            <div class="chart-container">
-                <canvas id="reservationsChart"></canvas>
-            </div>
-        </div>
+    <div class="chart-container">
+        <h3>Évolution des Réservations</h3>
+        <canvas id="reservationsChart"></canvas>
     </div>
 </div>
+
 <!-- Footer -->
 <footer>
     <div class="footer-links">
@@ -437,6 +324,7 @@ $abonnementChartData = transformDataForChart($abonnementEvolution);
         </div>
     </div>
 </footer>
+
 <!-- Charts Script -->
 <script>
     const userChartData = <?php echo json_encode($userChartData); ?>;
@@ -474,6 +362,3 @@ $abonnementChartData = transformDataForChart($abonnementEvolution);
 </script>
 </body>
 </html>
-
-
-
