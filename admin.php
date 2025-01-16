@@ -217,12 +217,9 @@ $abonnementChartData = transformDataForChart($abonnementEvolution);
         }
 
         canvas {
-            width: 90% !important; /* Reduce the width of the chart */
-            height: 300px !important; /* Set a fixed height for the chart */
-            display: block;
-            margin: 0 auto; /* Center align the canvas */
-        }    
-
+            max-width: 100%;
+            height: auto;
+        }
 
         ul li {
             position: relative;
@@ -352,7 +349,9 @@ $abonnementChartData = transformDataForChart($abonnementEvolution);
 
 <!-- Charts Script -->
 <script>
-    // Render User Chart
+    const userChartData = <?php echo json_encode($userChartData); ?>;
+    const reservationChartData = <?php echo json_encode($reservationChartData); ?>;
+
     new Chart(document.getElementById('usersChart'), {
         type: 'line',
         data: {
@@ -365,30 +364,9 @@ $abonnementChartData = transformDataForChart($abonnementEvolution);
                 fill: true,
                 tension: 0.4
             }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: true, // Keep the charts smaller and proportional
-            plugins: {
-                legend: {
-                    position: 'top'
-                }
-            },
-            scales: {
-                x: {
-                    ticks: {
-                        maxRotation: 45,
-                        minRotation: 0
-                    }
-                },
-                y: {
-                    beginAtZero: true
-                }
-            }
         }
     });
 
-    // Render Reservations Chart
     new Chart(document.getElementById('reservationsChart'), {
         type: 'line',
         data: {
@@ -401,29 +379,8 @@ $abonnementChartData = transformDataForChart($abonnementEvolution);
                 fill: true,
                 tension: 0.4
             }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: true,
-            plugins: {
-                legend: {
-                    position: 'top'
-                }
-            },
-            scales: {
-                x: {
-                    ticks: {
-                        maxRotation: 45,
-                        minRotation: 0
-                    }
-                },
-                y: {
-                    beginAtZero: true
-                }
-            }
         }
     });
 </script>
-
 </body>
 </html>
