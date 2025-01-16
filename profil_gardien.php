@@ -123,10 +123,8 @@ $conn->close();
         }
 
         header img {
-            height: 80px;
-            position: absolute;
-            left: 20px; /* Placez le logo à gauche */
-            top: 20px;
+            height: 150px;
+            max-width: 170px;
         }
 
         header .auth-buttons {
