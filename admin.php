@@ -91,6 +91,62 @@ $abonnementChartData = transformDataForChart($abonnementEvolution);
             color: #333;
             background: url('images/premierplan.png') no-repeat center center fixed;
             background-size: cover;
+            display: flex;
+        }
+
+        .sidebar {
+            width: 250px;
+            height: 100vh;
+            background-color: #2c3e50;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .sidebar h2 {
+            margin: 20px 0;
+            font-size: 1.5em;
+            text-align: center;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+            width: 100%;
+        }
+
+        .sidebar ul li {
+            width: 100%;
+            text-align: left;
+        }
+
+        .sidebar ul li a {
+            text-decoration: none;
+            color: white;
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            transition: background-color 0.3s ease, padding-left 0.3s ease;
+        }
+
+        .sidebar ul li a:hover {
+            background-color: #34495e;
+            padding-left: 30px;
+        }
+
+        .sidebar ul li a i {
+            margin-right: 10px;
+        }
+
+        .dashboard-container {
+            margin-left: 270px;
+            padding: 20px;
+            width: 100%;
         }
 
         header {
@@ -107,32 +163,11 @@ $abonnementChartData = transformDataForChart($abonnementEvolution);
             box-shadow: none;
         }
 
+
         header img {
-            height: 80px;
+            height: 50px;
         }
 
-        header .header-slogan {
-            font-size: 1.5em;
-            color: orange;
-            font-weight: bold;
-            text-align: center;
-            flex: 1;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8); 
-            transition: opacity 0.5s ease, transform 0.5s ease;
-        }
-
-        header.scrolled .header-slogan {
-            opacity: 0;
-            transform: translateY(-20px);
-        }
-        .dashboard-container {
-            max-width: 1200px;
-            margin: 120px auto;
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 15px;
-            padding: 30px;
-            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
-        }
         .dashboard-header {
             text-align: center;
             margin-bottom: 30px;
@@ -166,7 +201,95 @@ $abonnementChartData = transformDataForChart($abonnementEvolution);
             margin-bottom: 10px;
         }
 
-        .menu-dropdown {
+        .chart-container {
+            margin-top: 20px;
+        }
+
+        canvas {
+            max-width: 100%;
+            height: auto;
+        }
+        header .header-slogan {
+            font-size: 1.5em;
+            color: orange;
+            font-weight: bold;
+            text-align: center;
+            flex: 1;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8); 
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        header.scrolled .header-slogan {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+                        ul {
+            margin-top: 20px;
+            padding-left: 20px;
+            list-style: none;
+        }
+
+        ul li {
+            position: relative;
+            padding-left: 25px;
+            margin-bottom: 10px;
+        }
+
+        ul li:before {
+            content: '✔';
+            position: absolute;
+            left: 0;
+            top: 0;
+            color: orange;
+            font-weight: bold;
+        }
+
+        footer {
+            background: rgba(0, 0, 0, 0.85);
+            color: #fff;
+            padding: 20px;
+            position: fixed; /* Fixe le footer */
+            bottom: 0; /* Place le footer au bas de la page */
+            left: 0;
+            width: 100%; /* Prend toute la largeur de la page */
+            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2); /* Ajoute une ombre légère */
+        }
+
+
+        footer .footer-links {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+        }
+
+        footer .footer-links h4 {
+            color: orange;
+            margin-bottom: 10px;
+        }
+
+        footer .footer-links ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        footer .footer-links a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        footer .footer-links a:hover {
+            color: orange;
+        }
+        .chart-container {
+            margin-top: 20px;
+        }
+
+        canvas {
+            max-width: 100%;
+            height: auto;
+        }
+                .menu-dropdown {
             position: fixed; 
             top: 20px; 
             right: 20px; 
@@ -233,72 +356,6 @@ $abonnementChartData = transformDataForChart($abonnementEvolution);
         .menu-dropdown .dropdown-content .btn-deconnexion:hover {
             background-color: #ff4d4d;
         }
-                ul {
-            margin-top: 20px;
-            padding-left: 20px;
-            list-style: none;
-        }
-
-        ul li {
-            position: relative;
-            padding-left: 25px;
-            margin-bottom: 10px;
-        }
-
-        ul li:before {
-            content: '✔';
-            position: absolute;
-            left: 0;
-            top: 0;
-            color: orange;
-            font-weight: bold;
-        }
-
-        footer {
-            background: rgba(0, 0, 0, 0.85);
-            color: #fff;
-            padding: 20px;
-            position: fixed; /* Fixe le footer */
-            bottom: 0; /* Place le footer au bas de la page */
-            left: 0;
-            width: 100%; /* Prend toute la largeur de la page */
-            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2); /* Ajoute une ombre légère */
-        }
-
-
-        footer .footer-links {
-            display: flex;
-            justify-content: space-around;
-            flex-wrap: wrap;
-        }
-
-        footer .footer-links h4 {
-            color: orange;
-            margin-bottom: 10px;
-        }
-
-        footer .footer-links ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        footer .footer-links a {
-            color: white;
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-
-        footer .footer-links a:hover {
-            color: orange;
-        }
-        .chart-container {
-            margin-top: 20px;
-        }
-
-        canvas {
-            max-width: 100%;
-            height: auto;
-        }
     </style>
     <script>
         window.addEventListener('scroll', () => {
@@ -312,14 +369,30 @@ $abonnementChartData = transformDataForChart($abonnementEvolution);
     </script>
 </head>
 <body>
-<!-- Header -->
-<header>
-    <img src="images/logo.png" alt="Logo Gardien des Animaux">
-    <h1 class="header-slogan">Tableau de Bord Administrateur</h1>
-</header>
+
+<!-- Sidebar -->
+<div class="sidebar">
+    <h2>Menu Admin</h2>
+    <ul>
+        <li><a href="manage_abonnements.php"><i>📅</i> Gérer les Abonnements</a></li>
+        <li><a href="manage_utilisateurs.php"><i>👤</i> Gérer les Utilisateurs</a></li>
+        <li><a href="manage_reservations.php"><i>📑</i> Gérer les Réservations</a></li>
+        <li><a href="manage_avis.php"><i>⭐</i> Gérer les Avis</a></li>
+        <li><a href="manage_animaux.php"><i>🐾</i> Gérer les Animaux</a></li>
+        <li><a href="manage_faq.php"><i>❓</i> Gérer la FAQ</a></li>
+        <li><a href="manage_paiements.php"><i>💳</i> Gérer les Paiements</a></li>
+        <li><a href="manage_hebergements.php"><i>🏠</i> Gérer les Hébergements</a></li>
+        <li><a href="?logout=1"><i>🚪</i> Déconnexion</a></li>
+    </ul>
+</div>
 
 <!-- Dashboard Content -->
 <div class="dashboard-container">
+    <header>
+        <img src="images/logo.png" alt="Logo Gardien des Animaux">
+        <h1>Tableau de Bord Administrateur</h1>
+    </header>
+
     <div class="dashboard-header">
         <h2>Bienvenue <?php echo htmlspecialchars($_SESSION['admin']); ?> !</h2>
     </div>
@@ -342,25 +415,8 @@ $abonnementChartData = transformDataForChart($abonnementEvolution);
                 <canvas id="reservationsChart"></canvas>
             </div>
         </div>
-
     </div>
 </div>
-
-<div class="menu-dropdown">
-    <button class="dropdown-btn">Menu</button>
-    <div class="dropdown-content">
-        <a href="manage_abonnements.php">Gérer les Abonnements</a>
-        <a href="manage_utilisateurs.php">Gérer les Utilisateurs</a>
-        <a href="manage_reservations.php">Gérer les Réservations</a>
-        <a href="manage_avis.php">Gérer les Avis</a>
-        <a href="manage_animaux.php">Gérer les Animaux</a>
-        <a href="manage_faq.php">Gérer la FAQ</a>
-        <a href="manage_paiements.php">Gérer les Paiements</a>
-        <a href="manage_hebergements.php">Gérer les Hébergements</a>
-        <button class="btn-deconnexion" onclick="window.location.href='?logout=1'">Déconnexion</button>
-    </div>
-</div>
-
 <!-- Footer -->
 <footer>
     <div class="footer-links">
@@ -386,11 +442,11 @@ $abonnementChartData = transformDataForChart($abonnementEvolution);
         </div>
     </div>
 </footer>
-
 <!-- Charts Script -->
 <script>
     const userChartData = <?php echo json_encode($userChartData); ?>;
     const reservationChartData = <?php echo json_encode($reservationChartData); ?>;
+
     new Chart(document.getElementById('usersChart'), {
         type: 'line',
         data: {
@@ -403,14 +459,9 @@ $abonnementChartData = transformDataForChart($abonnementEvolution);
                 fill: true,
                 tension: 0.4
             }]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: { display: true }
-            }
         }
     });
+
     new Chart(document.getElementById('reservationsChart'), {
         type: 'line',
         data: {
@@ -423,16 +474,11 @@ $abonnementChartData = transformDataForChart($abonnementEvolution);
                 fill: true,
                 tension: 0.4
             }]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: { display: true }
-            }
         }
     });
 </script>
-
-
 </body>
 </html>
+
+
+
