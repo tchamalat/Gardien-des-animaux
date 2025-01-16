@@ -258,8 +258,13 @@ $abonnementChartData = transformDataForChart($abonnementEvolution);
             background: rgba(0, 0, 0, 0.85);
             color: #fff;
             padding: 20px;
-            margin-top: auto;
+            position: fixed; /* Fixe le footer */
+            bottom: 0; /* Place le footer au bas de la page */
+            left: 0;
+            width: 100%; /* Prend toute la largeur de la page */
+            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2); /* Ajoute une ombre légère */
         }
+
 
         footer .footer-links {
             display: flex;
