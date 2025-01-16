@@ -80,8 +80,8 @@ if ($user) {
         }
 
         header img {
-            height: 60px;
-            max-width: 120px;
+            height: 120px;
+            max-width: 160px;
         }
 
         header h1 {
