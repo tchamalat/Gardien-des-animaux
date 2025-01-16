@@ -389,13 +389,8 @@ $abonnementChartData = transformDataForChart($abonnementEvolution);
 <!-- Dashboard Content -->
 <div class="dashboard-container">
     <header>
-        <img src="images/logo.png" alt="Logo Gardien des Animaux">
         <h1>Tableau de Bord Administrateur</h1>
     </header>
-
-    <div class="dashboard-header">
-        <h2>Bienvenue <?php echo htmlspecialchars($_SESSION['admin']); ?> !</h2>
-    </div>
 
     <div class="stats-cards">
         <!-- User Stats -->
