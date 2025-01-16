@@ -217,8 +217,9 @@ $abonnementChartData = transformDataForChart($abonnementEvolution);
         }
 
         canvas {
-            max-width: 100%;
-            height: auto;
+            max-width: 80%; /* Reduce the overall chart width */
+            height: 400px;  /* Set a specific height for the charts */
+            margin: 0 auto; /* Center the charts */
         }
 
         ul li {
@@ -349,9 +350,6 @@ $abonnementChartData = transformDataForChart($abonnementEvolution);
 
 <!-- Charts Script -->
 <script>
-    const userChartData = <?php echo json_encode($userChartData); ?>;
-    const reservationChartData = <?php echo json_encode($reservationChartData); ?>;
-
     new Chart(document.getElementById('usersChart'), {
         type: 'line',
         data: {
@@ -364,6 +362,15 @@ $abonnementChartData = transformDataForChart($abonnementEvolution);
                 fill: true,
                 tension: 0.4
             }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false, // Allow more control over the height
+            plugins: {
+                legend: {
+                    position: 'top'
+                }
+            }
         }
     });
 
@@ -379,6 +386,15 @@ $abonnementChartData = transformDataForChart($abonnementEvolution);
                 fill: true,
                 tension: 0.4
             }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false, // Same as above
+            plugins: {
+                legend: {
+                    position: 'top'
+                }
+            }
         }
     });
 </script>
