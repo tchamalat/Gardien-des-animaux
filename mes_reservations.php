@@ -74,18 +74,20 @@ $result = $stmt->get_result();
         }
 
         html, body {
-            height: 100%;
+            height: auto; /* Permet à la hauteur de s'ajuster */
             font-family: Arial, sans-serif;
             background: url('images/premierplan.png') no-repeat center center fixed;
             background-size: cover;
             color: #333;
+            margin: 0;
+            padding: 0;
         }
 
         body {
             display: flex;
             flex-direction: column;
+            min-height: 100vh; /* Assure que la page occupe au moins la hauteur de la fenêtre */
         }
-
         header {
             position: fixed;
             top: 0;
@@ -127,16 +129,15 @@ $result = $stmt->get_result();
         }
 
         .container {
-            flex: 1;
+            flex-grow: 1; /* Permet à la section principale de s'étendre pour occuper l'espace disponible */
             max-width: 90%; 
-            margin: 120px auto 50px;
+            margin: 120px auto 0;
             background: rgba(255, 255, 255, 0.95);
             border-radius: 15px;
             padding: 30px;
             box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
-            overflow-x: auto; 
+            overflow-x: auto;
         }
-
 
         h1 {
             font-size: 2.5em;
