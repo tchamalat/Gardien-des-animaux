@@ -34,8 +34,10 @@
         }
 
         header img {
-            height: 120px;
+            height: 150px;
+            max-width: 170px;
         }
+
 
         header .auth-buttons {
             display: flex;
