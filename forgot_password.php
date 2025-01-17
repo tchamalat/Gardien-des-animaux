@@ -62,18 +62,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             box-sizing: border-box;
         }
 
-        body {
+        html, body {
+            height: 100%;
             font-family: Arial, sans-serif;
             background: url('images/premierplan.png') no-repeat center center fixed;
             background-size: cover;
             color: #333;
-            margin: 0;
-            padding: 0;
             display: flex;
             flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
+        }
+
+        body {
+            margin: 0;
         }
 
         header {
@@ -133,6 +133,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             width: 90%;
             max-width: 500px;
             text-align: center;
+            margin: 100px auto auto; 
+            flex-grow: 1; 
         }
 
         h2 {
