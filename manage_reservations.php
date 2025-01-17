@@ -183,9 +183,9 @@ $result = $conn->query("SELECT * FROM reservation");
     <h2>Menu Admin</h2>
     <ul>
         <li><a href="admin.php">Tableau de Bord</a></li>
-        <li><a href="manage_abonnements.php" class="active">Gérer les Abonnements</a></li>
+        <li><a href="manage_abonnements.php">Gérer les Abonnements</a></li>
         <li><a href="manage_utilisateurs.php">Gérer les Utilisateurs</a></li>
-        <li><a href="manage_reservations.php">Gérer les Réservations</a></li>
+        <li><a href="manage_reservations.php" class="active">Gérer les Réservations</a></li>
         <li><a href="manage_avis.php">Gérer les Avis</a></li>
         <li><a href="manage_animaux.php">Gérer les Animaux</a></li>
         <li><a href="manage_faq.php">Gérer la FAQ</a></li>
