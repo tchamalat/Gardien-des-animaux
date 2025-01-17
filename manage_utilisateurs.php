@@ -8,7 +8,6 @@ if (isset($_GET['logout'])) {
     exit();
 }
 
-// Gestion de l'ajout ou de la mise à jour d'un utilisateur
 if (isset($_POST['save'])) {
     $id = $_POST['id'] ?? null;
     $prenom = $_POST['prenom'];
@@ -20,7 +19,6 @@ if (isset($_POST['save'])) {
     $ville = $_POST['ville'];
     $mot_de_passe = $_POST['mot_de_passe'];
     $role = $_POST['role'];
-
     if ($id) {
         $stmt = $conn->prepare("UPDATE creation_compte SET prenom = ?, nom = ?, nom_utilisateur = ?, mail = ?, numero_telephone = ?, adresse = ?, ville = ?, mot_de_passe = ?, role = ? WHERE id = ?");
         $stmt->bind_param("ssssssssii", $prenom, $nom, $nom_utilisateur, $mail, $numero_telephone, $adresse, $ville, $mot_de_passe, $role, $id);
@@ -28,14 +26,12 @@ if (isset($_POST['save'])) {
         $stmt = $conn->prepare("INSERT INTO creation_compte (prenom, nom, nom_utilisateur, mail, numero_telephone, adresse, ville, mot_de_passe, role) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
         $stmt->bind_param("ssssssssi", $prenom, $nom, $nom_utilisateur, $mail, $numero_telephone, $adresse, $ville, $mot_de_passe, $role);
     }
-
     $stmt->execute();
     $stmt->close();
     header("Location: manage_utilisateurs.php");
     exit();
 }
 
-// Gestion de la suppression d'un utilisateur
 if (isset($_GET['delete'])) {
     $id = $_GET['delete'];
     $stmt = $conn->prepare("DELETE FROM creation_compte WHERE id = ?");
@@ -45,8 +41,6 @@ if (isset($_GET['delete'])) {
     header("Location: manage_utilisateurs.php");
     exit();
 }
-
-// Récupération des utilisateurs
 $result = $conn->query("SELECT * FROM creation_compte");
 ?>
 
