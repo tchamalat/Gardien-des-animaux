@@ -8,18 +8,14 @@ if (!isset($_SESSION['user_id'])) {
 
 include 'config.php';
 
-$user_id = $_SESSION['user_id'];
-
-// Activer le débogage
+$user_id = $_SESSION['user_id']
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-// Gérer l'ajout des animaux
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ajouter_animaux']) && isset($_POST['nom_animal'])) {
     $noms_animaux = is_array($_POST['nom_animal']) ? $_POST['nom_animal'] : [$_POST['nom_animal']];
     $photos_animaux = $_FILES['photo_animal'];
-
     if (!is_array($photos_animaux['tmp_name'])) {
         $photos_animaux = [
             'name' => [$photos_animaux['name']],
@@ -29,14 +25,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ajouter_animaux']) &&
             'size' => [$photos_animaux['size']],
         ];
     }
-
     for ($i = 0; $i < count($noms_animaux); $i++) {
         $nom_animal = $noms_animaux[$i];
-
         if ($photos_animaux['error'][$i] === UPLOAD_ERR_OK) {
             $photo_tmp_name = $photos_animaux['tmp_name'][$i];
             $photo_content = file_get_contents($photo_tmp_name);
-
             $sql = "INSERT INTO Animal (id_utilisateur, prenom_animal, url_photo) VALUES (?, ?, ?)";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param("iss", $user_id, $nom_animal, $photo_content);
@@ -47,11 +40,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ajouter_animaux']) &&
     $message = "Animaux ajoutés avec succès !";
 }
 
-// Gérer la mise à jour des animaux
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_animal'])) {
     $id_animal = $_POST['id_animal'];
     $nom_animal = $_POST['nom_animal'];
-
     if (!empty($_FILES['photo_animal']['tmp_name']) && $_FILES['photo_animal']['error'] === UPLOAD_ERR_OK) {
         $photo_tmp_name = $_FILES['photo_animal']['tmp_name'];
         $photo_content = file_get_contents($photo_tmp_name);
@@ -68,7 +59,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_animal'])) {
     $message = "Animal mis à jour avec succès !";
 }
 
-// Gérer la suppression des animaux
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_animal'])) {
     $id_animal = $_POST['id_animal'];
     $sql_delete = "DELETE FROM Animal WHERE id_animal = ?";
@@ -79,7 +69,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_animal'])) {
     $message = "Animal supprimé avec succès !";
 }
 
-// Récupérer les informations utilisateur
 $sql_user = "SELECT nom_utilisateur, profile_picture FROM creation_compte WHERE id = ?";
 $stmt_user = $conn->prepare($sql_user);
 $stmt_user->bind_param("i", $user_id);
@@ -87,8 +76,6 @@ $stmt_user->execute();
 $stmt_user->bind_result($nom_utilisateur, $profile_picture);
 $stmt_user->fetch();
 $stmt_user->close();
-
-// Récupérer les animaux de l'utilisateur
 $sql_animaux = "SELECT id_animal, prenom_animal, url_photo FROM Animal WHERE id_utilisateur = ?";
 $stmt_animaux = $conn->prepare($sql_animaux);
 $stmt_animaux->bind_param("i", $user_id);
@@ -153,7 +140,7 @@ $stmt_animaux->close();
 
         .profile-container {
             max-width: 1200px;
-            margin: 120px auto 50px; /* Espace entre header et footer */
+            margin: 120px auto 50px; 
             background: rgba(255, 255, 255, 0.95);
             border-radius: 15px;
             padding: 30px 40px;
@@ -295,11 +282,11 @@ $stmt_animaux->close();
             background: rgba(0, 0, 0, 0.85);
             color: #fff;
             padding: 20px;
-            position: fixed; /* Fixe le footer */
-            bottom: 0; /* Place le footer au bas de la page */
+            position: fixed; 
+            bottom: 0;
             left: 0;
-            width: 100%; /* Prend toute la largeur de la page */
-            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2); /* Ajoute une ombre légère */
+            width: 100%;
+            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2); 
         }
 
 
