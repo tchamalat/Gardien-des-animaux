@@ -1,4 +1,12 @@
 <?php
+// Inclusion de PHPMailer
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+require 'PHPMailer/src/Exception.php';
+require 'PHPMailer/src/PHPMailer.php';
+require 'PHPMailer/src/SMTP.php';
+
 // Connexion à la base de données (exemple)
 $servername = "localhost";
 $username = "gardien";
@@ -16,98 +24,52 @@ if ($conn->connect_error) {
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Récupération de l'email du formulaire
     $email = $_POST['email'];
-    
-    // Vérification de l'existence de l'email dans la base de données
-    $sql = "SELECT * FROM users WHERE email='$email'"; // Remplacez 'users' par votre table et 'email' par le champ approprié
-    $result = $conn->query($sql);
+
+    // Vérification de l'existence de l'email dans la base de données avec requête préparée
+    $stmt = $conn->prepare("SELECT * FROM users WHERE email = ?");
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
     if ($result->num_rows > 0) {
         // Email trouvé, envoi du lien de réinitialisation
-        $reset_link = "https://gardien-des-animaux.fr/messages/reset_password.php?email=" . urlencode($email); // Lien de réinitialisation (vous devrez créer la page 'reset_password.php')
+        $reset_link = "https://gardien-des-animaux.fr/messages/reset_password.php?email=" . urlencode($email); // Lien de réinitialisation
 
-        
-        // Envoi de l'email
-        $sto = $email; // Destinataire
-        $subject = "Réinitialisation de votre mot de passe"; // Sujet du mail
-        $message = "Bonjour, \n\nPour réinitialiser votre mot de passe, veuillez cliquer sur le lien suivant : \n$reset_link\n\nCordialement,\nVotre équipe"; // Message
+        // Utilisation de PHPMailer pour l'envoi de l'email
+        $mail = new PHPMailer(true);
 
-        $headers = "Content-Type: text/plain; charset=utf-8\r\n";
-        $headers .= "From:hatsasse@gmail.com\r\n"; // Email de l'émetteur
+        try {
+            // Paramètres du serveur SMTP
+            $mail->isSMTP();
+            $mail->Host = 'smtp.gmail.com';
+            $mail->SMTPAuth = true;
+            $mail->Username = 'hatsasse@gmail.com'; // Votre adresse Gmail
+            $mail->Password = 'motdepasse_app'; // Mot de passe spécifique à l'application Gmail
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+            $mail->Port = 587;
 
-        if (mail($sto, $subject, $message, $headers)) {
+            // Destinataire
+            $mail->setFrom('hatsasse@gmail.com', 'Gardien des Chiens');
+            $mail->addAddress($email);
+
+            // Contenu
+            $mail->isHTML(false); // Format texte brut
+            $mail->Subject = "Réinitialisation de votre mot de passe";
+            $mail->Body = "Bonjour,\n\nPour réinitialiser votre mot de passe, veuillez cliquer sur le lien suivant :\n$reset_link\n\nCordialement,\nVotre équipe";
+
+            // Envoi de l'email
+            $mail->send();
             echo "<p>Un lien pour réinitialiser votre mot de passe a été envoyé à $email.</p>";
-        } else {
-            echo "<p>Erreur survenue lors de l'envoi de l'email.</p>";
+        } catch (Exception $e) {
+            echo "<p>Erreur lors de l'envoi de l'email : {$mail->ErrorInfo}</p>";
         }
     } else {
         echo "<p>Aucun compte trouvé avec cet email.</p>";
     }
+
+    // Fermeture de la connexion
+    $stmt->close();
 }
 
 $conn->close();
 ?>
-
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Récupérer votre mot de passe</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f7f1e1; /* beige clair */
-            color: #d77f29; /* orange */
-            padding: 50px;
-        }
-        .container {
-            background-color: #fff; /* blanc */
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0px 0px 15px rgba(0,0,0,0.1);
-            text-align: center;
-        }
-        input[type="email"] {
-            padding: 10px;
-            margin: 10px;
-            border: 1px solid #d77f29;
-            border-radius: 5px;
-            width: 80%;
-        }
-        input[type="submit"] {
-            background-color: #d77f29;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            width: 85%;
-        }
-        input[type="submit"]:hover {
-            background-color: #b86a1e;
-        }
-        a {
-            color: #d77f29;
-            text-decoration: none;
-            font-weight: bold;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h2>Récupérer votre mot de passe</h2>
-        <form method="POST">
-            <input type="email" name="email" placeholder="Entrez votre adresse email" required><br>
-            <input type="submit" value="Envoyer le lien de réinitialisation">
-        </form>
-        <br>
-        <a href="signup.php" style="display: block; text-align: center; text-decoration:none;">
-            N'avez-vous pas de compte ? Inscrivez-vous ici.
-        </a>
-
-        <a href="login.php" style="display: block; text-align: center; text-decoration:none;">
-            Revenez pour la connexion.
-        </a>
-    </div>
-</body>
-</html>
