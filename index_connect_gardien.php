@@ -221,15 +221,12 @@
 </section>
     
 <script>
-    // Fonction pour récupérer les propriétaires disponibles
     async function fetchProprietaires() {
         const proprietairesList = document.querySelector('.proprietaires-list');
         proprietairesList.innerHTML = '<p>Chargement des propriétaires en cours...</p>';
-
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(async (position) => {
                 const { latitude, longitude } = position.coords;
-
                 try {
                     const response = await fetch('fetch_proprietaires.php', {
                         method: 'POST',
