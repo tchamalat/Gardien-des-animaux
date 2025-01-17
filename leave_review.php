@@ -1,8 +1,7 @@
 <?php
 session_start();
-include 'config.php'; // Inclut la configuration pour la connexion à la base de données
+include 'config.php'; 
 
-// Vérifiez si l'utilisateur est connecté
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.html");
     exit();
