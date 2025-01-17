@@ -1,3 +1,12 @@
+<?php
+session_start();
+$confirmationMessage = '';
+if (isset($_SESSION['confirmation_message'])) {
+    $confirmationMessage = $_SESSION['confirmation_message'];
+    unset($_SESSION['confirmation_message']); // Supprimer le message après affichage
+}
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
