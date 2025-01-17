@@ -1,13 +1,14 @@
 <?php
+session_start();
 
-session_start(); 
-
+// Informations de connexion à la base de données
 $servername = "localhost";
 $username = "gardien";
 $password = "G@rdien-des-chiens";
 $dbname = "gardiendb";
-$conn = new mysqli($servername, $username, $password, $dbname);
 
+// Connexion à la base de données
+$conn = new mysqli($servername, $username, $password, $dbname);
 if ($conn->connect_error) {
     die("Connexion échouée : " . $conn->connect_error);
 }
@@ -41,7 +42,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt->close();
     $conn->close();
 
-    // Rediriger vers la page de contact
+    // Rediriger vers la page de contact avec un message de confirmation
     header("Location: contact.php");
     exit;
 }
