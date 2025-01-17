@@ -23,7 +23,7 @@ try {
     $stmtReservations = $pdo->query("SELECT COUNT(*) as total FROM reservation");
     $totalReservations = $stmtReservations->fetch()['total'];
 
-    $stmtAbonnements = $pdo->query("SELECT COUNT(*) as total FROM abonnements");
+    $stmtAbonnements = $pdo->query("SELECT COUNT(*) as total FROM Abonnement");
     $totalAbonnements = $stmtAbonnements->fetch()['total'];
 
     $stmtAnimaux = $pdo->query("SELECT COUNT(*) as total FROM animaux");
