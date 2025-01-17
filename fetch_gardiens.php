@@ -2,8 +2,6 @@
 include 'config.php';
 
 header('Content-Type: application/json');
-
-// Vérifier que les données JSON POST sont envoyées
 $data = json_decode(file_get_contents('php://input'), true);
 
 if (!isset($data['latitude']) || !isset($data['longitude'])) {
@@ -13,24 +11,17 @@ if (!isset($data['latitude']) || !isset($data['longitude'])) {
 
 $userLatitude = $data['latitude'];
 $userLongitude = $data['longitude'];
-
-// Fonction pour calculer la distance en km entre deux points géographiques
 function calculateDistance($lat1, $lon1, $lat2, $lon2) {
-    $earthRadius = 6371; // Rayon moyen de la Terre en km
-
+    $earthRadius = 6371; 
     $latDelta = deg2rad($lat2 - $lat1);
     $lonDelta = deg2rad($lon2 - $lon1);
-
     $a = sin($latDelta / 2) * sin($latDelta / 2) +
          cos(deg2rad($lat1)) * cos(deg2rad($lat2)) *
          sin($lonDelta / 2) * sin($lonDelta / 2);
-
     $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
-
     return $earthRadius * $c;
 }
 
-// Requête SQL pour récupérer les gardiens avec leurs coordonnées
 $query = $conn->prepare("
     SELECT 
         id, prenom, nom_utilisateur, profile_picture, latitude, longitude
@@ -49,7 +40,6 @@ $result = $query->get_result();
 
 $gardiens = [];
 while ($row = $result->fetch_assoc()) {
-    // Vérifier que les coordonnées du gardien sont disponibles
     if (!empty($row['latitude']) && !empty($row['longitude'])) {
         $distance = calculateDistance(
             $userLatitude,
@@ -58,9 +48,9 @@ while ($row = $result->fetch_assoc()) {
             $row['longitude']
         );
 
-        $distance = round($distance, 1); // Arrondir la distance à une décimale
+        $distance = round($distance, 1); 
     } else {
-        $distance = 'Indisponible'; // Distance non calculable
+        $distance = 'Indisponible'; 
     }
 
     $gardiens[] = [
