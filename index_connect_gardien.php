@@ -11,30 +11,26 @@
             box-sizing: border-box;
         }
 
-	body {
-    	    font-family: Arial, sans-serif;
-    	    color: #333;
-    	    background: url('images/premierplan.png') no-repeat center center fixed;
-    	    background-size: cover;
-    	    display: flex;
-    	    flex-direction: column;
-    	    min-height: 100vh;
-    	    padding-bottom: 60px;
-	}
+        body {
+            font-family: Arial, sans-serif;
+            color: #333;
+            background: url('images/premierplan.png') no-repeat center center fixed;
+            background-size: cover;
+        }
 
-	header {
-    	    position: fixed;
-    	    top: 0;
-    	    left: 0;
-    	    width: 100%;
-    	    z-index: 10;
-    	    display: flex;
-    	    align-items: center;
-    	    justify-content: space-between;
-    	    padding: 20px;
-    	    background: none;
-            box-shadow: none;
-	}
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px;
+            background: none; /* Supprimez la couleur de fond */
+            box-shadow: none; /* Supprimez l'ombre */
+        }
 
         header img {
             height: 150px;
@@ -87,14 +83,14 @@
             background: none;
         }
 
-	.proprietaires-section {
-    	    max-width: 1200px;
-    	    margin: 120px auto 40px; /* Espace au-dessus pour compenser le header fixe */
-   	    padding: 20px;
-   	    background: rgba(255, 255, 255, 0.95);
-    	    border-radius: 15px;
-   	    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
-	}
+        .proprietaires-section {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+        }
 
         .proprietaires-section h2 {
             font-size: 1.8em;
@@ -172,17 +168,12 @@
             font-weight: bold;
         }
 
-	footer {
-    	    background: rgba(0, 0, 0, 0.85);
-    	    color: #fff;
-    	    padding: 20px;
-    	    position: absolute;
-    	    bottom: 0;
-    	    left: 0;
-    	    width: 100%;
-    	    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2);
-	}
-
+        footer {
+            background: rgba(0, 0, 0, 0.85);
+            color: #fff;
+            padding: 20px;
+            margin-top: 50px;
+        }
 
         footer .footer-links {
             display: flex;
