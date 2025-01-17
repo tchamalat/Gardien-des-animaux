@@ -6,12 +6,10 @@ require 'lib/src/PHPMailer.php';
 require 'lib/src/SMTP.php';
 require 'lib/src/Exception.php';
 
-$message = ''; // Initialisation du message
+$message = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = $_POST['email'];
-
-    // Connexion à la base de données
     require 'config.php';
     $query = $conn->prepare('SELECT * FROM creation_compte WHERE mail = ?');
     $query->bind_param('s', $email);
@@ -31,19 +29,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $mail->isSMTP();
             $mail->Host = 'smtp.gmail.com'; 
             $mail->SMTPAuth = true;
-            $mail->Username = 'dan.bensimon44@gmail.com'; // Votre email
-            $mail->Password = 'ltiw cegp hnjh hdup'; // Votre mot de passe SMTP
+            $mail->Username = 'dan.bensimon44@gmail.com';
+            $mail->Password = 'ltiw cegp hnjh hdup'; 
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
             $mail->Port = 587; 
-
-            // Configuration de l'email
             $mail->setFrom('noreply@gardien-des-animaux.fr', 'Gardien des Animaux');
             $mail->addAddress($email);
             $mail->isHTML(true);
             $mail->Subject = "Réinitialisation de mot de passe";
             $mail->Body = "Cliquez sur ce lien pour réinitialiser votre mot de passe : <a href='$reset_link'>$reset_link</a>";
-
-            // Envoyer l'email
             $mail->send();
             $message = "Un email avec un lien de réinitialisation a été envoyé.";
         } catch (Exception $e) {
