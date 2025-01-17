@@ -1,6 +1,9 @@
 <?php
 
-include 'config.php'; 
+$servername = "localhost";
+$username = "gardien";
+$password = "G@rdien-des-chiens";
+$dbname = "gardiendb";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $name = htmlspecialchars(trim($_POST['name']));
