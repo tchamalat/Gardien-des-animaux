@@ -3,7 +3,7 @@ session_start();
 $confirmationMessage = '';
 if (isset($_SESSION['confirmation_message'])) {
     $confirmationMessage = $_SESSION['confirmation_message'];
-    unset($_SESSION['confirmation_message']); // Supprimer le message après affichage
+    unset($_SESSION['confirmation_message']); 
 }
 ?>
 
@@ -14,7 +14,6 @@ if (isset($_SESSION['confirmation_message'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nous contacter - Gardien des Animaux</title>
     <style>
-        /* Styles globaux */
         * {
             margin: 0;
             padding: 0;
