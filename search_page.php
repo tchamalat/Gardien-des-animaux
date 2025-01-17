@@ -13,8 +13,6 @@
             margin: 0;
             padding: 0;
             overflow-x: hidden;
-            display: flex;
-            flex-direction: column;
         }
 
         header {
@@ -134,7 +132,7 @@
             background: rgba(0, 0, 0, 0.85);
             color: #fff;
             padding: 20px;
-            margin-top: auto;
+            margin-top: 50px;
         }
 
         footer .footer-links {
