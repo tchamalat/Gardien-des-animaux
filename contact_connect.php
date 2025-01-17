@@ -243,7 +243,7 @@ if (isset($_SESSION['confirmation_message'])) {
     </p>
 
     <h2>3. Formulaire de contact</h2>
-    <form action="send_message.php" method="POST" class="contact-form">
+    <form action="send_message_connect.php" method="POST" class="contact-form">
         <div class="form-group">
             <label for="name">Nom :</label>
             <input type="text" id="name" name="name" placeholder="Votre nom" required>
