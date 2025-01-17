@@ -320,13 +320,13 @@ $stmt_animaux->close();
     </style>
 </head>
 <body>
-<header>
-    <img src="images/logo.png" alt="Logo Gardien des Animaux">
-    <div class="auth-buttons">
-        <button class="btn" onclick="window.location.href='index_connect.php'">Accueil</button>
-        <button class="btn" onclick="window.location.href='profil.php'">Mon Profil</button>
-    </div>
-</header>
+    <header>
+        <img src="images/logo.png" alt="Logo Gardien des Animaux">
+        <div class="auth-buttons">
+            <button class="btn" onclick="window.location.href='index_connect.php'">Accueil</button>
+            <button class="btn" onclick="window.location.href='profil.php'">Mon Profil</button>
+        </div>
+    </header>
 <div class="profile-container">
     <h2>Mon Profil Public</h2>
     <div class="profile-picture">
