@@ -14,7 +14,7 @@ class Database
     private function connect()
         {
 
-            $string = "mysql:host=82.66.52.68;dbname=gardiendb";            try{
+            $string = "mysql:host=localhost;dbname=gardiendb";            try{
 
                 $connection = new PDO($string, DBUSER, DBPASS);
                 return $connection;
