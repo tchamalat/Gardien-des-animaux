@@ -120,7 +120,8 @@ $stmt_animaux->close();
         }
 
         header img {
-            height: 80px;
+            height: 150px;
+            max-width: 170px;
         }
 
         header .auth-buttons {
