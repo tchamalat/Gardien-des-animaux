@@ -8,9 +8,7 @@ $data = json_decode(file_get_contents('php://input'), true);
 if (isset($data['latitude'], $data['longitude'])) {
     $latitude = $data['latitude'];
     $longitude = $data['longitude'];
-    $radius = $data['radius'] ?? 50; // Rayon en kilomètres, valeur par défaut : 50 km
-
-    // Préparer la requête SQL
+    $radius = $data['radius'] ?? 50;
     $query = $conn->prepare("
         SELECT 
             id, nom_utilisateur, prenom, ville, profile_picture, latitude, longitude,
@@ -43,7 +41,7 @@ if (isset($data['latitude'], $data['longitude'])) {
             'prenom' => $row['prenom'],
             'ville' => $row['ville'],
             'profile_picture' => "display_image.php?id={$row['id']}",
-            'distance' => round($row['distance'], 2), // Distance arrondie à 2 décimales
+            'distance' => round($row['distance'], 2), 
         ];
     }
 
