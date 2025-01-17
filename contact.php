@@ -228,6 +228,13 @@
     </div>
 </header>
 
+<!-- Afficher le message de confirmation -->
+<?php if (!empty($confirmationMessage)): ?>
+    <div class="confirmation-message">
+    <?= htmlspecialchars($confirmationMessage); ?>
+    </div>
+<?php endif; ?>
+
 <!-- Section Nous Contacter -->
 <div class="contact-container">
     <h2>Contactez-nous</h2>
