@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recherche de Gardien</title>
     <style>
-        /* Styles globaux */
         * {
             margin: 0;
             padding: 0;
@@ -40,7 +39,7 @@
         }
 
         .auth-buttons {
-            margin-left: auto; /* Déplace les boutons à droite */
+            margin-left: auto; 
             display: flex;
             gap: 15px;
         }
