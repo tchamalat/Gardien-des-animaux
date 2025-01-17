@@ -186,7 +186,7 @@
 <!-- Conteneur principal de la recherche -->
 <div class="search-container">
     <h2>Trouvez un gardien pour vos animaux</h2>
-    <form action="resultats_recherche.php" method="GET">
+    <form action="resultats_recherche_index.php" method="GET">
         <div class="form-group">
             <label for="service">Type de service</label>
             <select name="service" id="service">
