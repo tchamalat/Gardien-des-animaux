@@ -38,7 +38,7 @@ if(isset($_FILES['file']) && $_FILES['file']['name'] != ""){
     if($_FILES['file']['error'] == 0 && in_array($_FILES['file']['type'], $allowed)){
 
         //good to go
-        $base_url = "https://github.com/tchamalat/Gardien-des-animaux/tree/main/messages"; // L'URL de votre site
+        $base_url = "https://gardien-des-animaux.fr/messages"; // L'URL de votre site
         $folder = $base_url . "/uploads/";
 
         if (!file_exists($folder)){
