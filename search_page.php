@@ -5,6 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recherche de Gardien</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
 	body {
     	    display: flex;
     	    flex-direction: column;
@@ -12,7 +18,8 @@
     	    margin: 0;
 	    background: url('images/premierplan.png') no-repeat center center fixed;
 	    background-size: cover;
-	    }
+	}
+
         header {
             position: fixed;
             top: 0;
@@ -26,13 +33,27 @@
             background: none;
         }
 
-        header h1 {
-            color: orange;
-            font-size: 1.8em;
-            margin: 0;
+        header img {
+            height: 120px;
+            max-width: 200px;
         }
 
-        header .auth-buttons .btn {
+        .auth-buttons {
+            margin-left: auto; 
+            display: flex;
+            gap: 15px;
+            margin-top: -90px;
+        }
+
+	    @media (max-width: 600px) { 
+        		.auth-buttons {
+            		flex-direction: column; 
+        	    	gap: 15px;
+			        margin-top: -3px !important;
+    		    }
+	    }
+
+        .auth-buttons .btn {
             background-color: orange;
             color: white;
             padding: 10px 20px;
@@ -41,20 +62,19 @@
             font-size: 1em;
             cursor: pointer;
             text-decoration: none;
-            margin-left: 10px;
             transition: background-color 0.3s ease, transform 0.3s ease;
-            margin-right: 30px; 
         }
 
-        header .auth-buttons .btn:hover {
+
+        .auth-buttons .btn:hover {
             background-color: #ff7f00;
             transform: translateY(-3px);
         }
 
         .search-container {
-            max-width: 800px;
-            margin: 150px auto 50px auto;
-            background: rgba(255, 255, 255, 0.95);
+            max-width: 600px;
+            margin: 150px auto;
+            background: rgba(255, 255, 255, 0.85);
             border-radius: 15px;
             padding: 30px;
             box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
@@ -63,41 +83,40 @@
 
         .search-container h2 {
             color: orange;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
         }
 
         .form-group {
-            margin: 15px 0;
+            margin-bottom: 20px;
             text-align: left;
         }
 
         .form-group label {
             display: block;
             font-weight: bold;
+            color: #555;
             margin-bottom: 5px;
         }
 
-        .form-group select,
+        .form-group select, 
         .form-group input {
-            width: calc(100% - 20px);
+            width: 100%;
             padding: 10px;
             font-size: 1em;
             border: 1px solid #ddd;
             border-radius: 8px;
-            box-sizing: border-box;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
         .search-btn {
             background-color: orange;
             color: white;
-            padding: 12px 25px;
+            padding: 15px 30px;
             border: none;
-            border-radius: 10px;
-            font-size: 1.1em;
-            font-weight: bold;
+            border-radius: 8px;
+            font-size: 1.2em;
             cursor: pointer;
             transition: background-color 0.3s ease, transform 0.3s ease;
-            margin-top: 20px;
         }
 
         .search-btn:hover {
@@ -126,12 +145,12 @@
             font-weight: bold;
         }
 
-        footer {
-            background: rgba(0, 0, 0, 0.85);
-            color: #fff;
-            padding: 20px;
-            text-align: center;
-        }
+	footer {
+    	    background: rgba(0, 0, 0, 0.85);
+    	    color: #fff;
+    	    padding: 20px;
+    	    text-align: center;
+	}
 
         footer .footer-links {
             display: flex;
