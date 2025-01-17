@@ -224,7 +224,7 @@
         }
 
         input[type="radio"] {
-            display: none; /* Cachez les boutons radio */
+            display: none; 
         }
 
         input[type="radio"]:checked + .role-option {
@@ -451,11 +451,11 @@
     </script>
     <script>
         document.getElementById('registerForm').addEventListener('submit', function(event) {
-            event.preventDefault(); // Empêche la soumission par défaut
+            event.preventDefault(); 
 
             const submitButton = this.querySelector('button[type="submit"]');
-            submitButton.disabled = true; // Désactive le bouton pour éviter les clics multiples
-            submitButton.textContent = 'En cours...'; // Indique que la soumission est en cours
+            submitButton.disabled = true; 
+            submitButton.textContent = 'En cours...';
 
             const formData = new FormData(this);
             const password = formData.get('password');
@@ -463,7 +463,7 @@
 
             if (password !== confirmPassword) {
                 document.getElementById('passwordError').style.display = 'inline';
-                submitButton.disabled = false; // Réactive le bouton en cas d'erreur
+                submitButton.disabled = false; 
                 submitButton.textContent = 'Créer un compte';
                 return;
             }
@@ -475,16 +475,16 @@
             .then(response => response.text())
             .then(data => {
                 submitButton.disabled = false;
-                submitButton.textContent = 'Créer un compte'; // Réinitialise le texte du bouton
+                submitButton.textContent = 'Créer un compte';
 
                 if (data.trim() === "success") {
-                    window.location.href = "confirmation.php"; // Redirige en cas de succès
+                    window.location.href = "confirmation.php"; 
                 } else {
-                    document.getElementById('message').innerHTML = data; // Affiche l'erreur
+                    document.getElementById('message').innerHTML = data; 
                 }
             })
             .catch(error => {
-                submitButton.disabled = false; // Réactive le bouton en cas d'erreur
+                submitButton.disabled = false; 
                 submitButton.textContent = 'Créer un compte';
                 console.error('Erreur:', error);
             });
