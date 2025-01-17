@@ -1,4 +1,11 @@
 <?php
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+require 'lib/src/PHPMailer.php';
+require 'lib/src/SMTP.php';
+require 'lib/src/Exception.php';
+
 // Connexion à la base de données
 $servername = "localhost";
 $username = "gardien";
@@ -16,13 +23,39 @@ if ($conn->connect_error) {
 // Fonction pour envoyer un email
 function envoyerEmailConfirmation($destinataire, $email) {
     $subject = "Confirmation de changement de mot de passe";
-    $message = "Bonjour,\n\nVotre mot de passe a été modifié avec succès. Si vous n'êtes pas à l'origine de cette action, veuillez réinitialiser votre mot de passe en cliquant sur le lien suivant :\n\n";
-    $message .= "https://gardien-des-animaux.fr/messages/reset_password.php?email=" . urlencode($email) . "\n\nMerci,\nL'équipe MyChat";
+    $reset_link = "https://gardien-des-animaux.fr/messages/reset_password.php?email=" . urlencode($email);
 
-    $headers = "Content-Type: text/plain; charset=utf-8\r\n";
-    $headers .= "From: hatsasse@gmail.com\r\n"; // Remplacez par l'adresse email de l'expéditeur
+    $message = "
+        <p>Bonjour,</p>
+        <p>Votre mot de passe a été modifié avec succès. Si vous n'êtes pas à l'origine de cette action, veuillez réinitialiser votre mot de passe en cliquant sur le lien suivant :</p>
+        <p><a href='$reset_link'>$reset_link</a></p>
+        <p>Merci,<br>L'équipe MyChat</p>
+    ";
 
-    return mail($destinataire, $subject, $message, $headers);
+    // Configuration de PHPMailer
+    $mail = new PHPMailer(true);
+    try {
+        $mail->isSMTP();
+        $mail->Host = 'smtp.gmail.com';
+        $mail->SMTPAuth = true;
+        $mail->Username = 'dan.bensimon44@gmail.com'; // Remplacez par votre email Gmail
+        $mail->Password = 'ltiw cegp hnjh hdup'; // Remplacez par votre mot de passe d'application Gmail
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+        $mail->Port = 587;
+
+        $mail->setFrom('noreply@gardien-des-animaux.fr', 'Gardien des Animaux');
+        $mail->addAddress($destinataire);
+
+        $mail->isHTML(true);
+        $mail->Subject = $subject;
+        $mail->Body = $message;
+
+        $mail->send();
+        return true;
+    } catch (Exception $e) {
+        error_log("Erreur d'envoi d'email : " . $mail->ErrorInfo);
+        return false;
+    }
 }
 
 // Vérification de l'email dans l'URL
@@ -45,8 +78,9 @@ if (isset($_GET['email']) && filter_var($_GET['email'], FILTER_VALIDATE_EMAIL)) 
             if (strlen($new_password) >= 6) { // Critères de sécurité
 
                 // Mise à jour du mot de passe dans la base de données
+                $hashed_password = password_hash($new_password, PASSWORD_DEFAULT); // Hachage sécurisé
                 $update_stmt = $conn->prepare("UPDATE users SET password = ? WHERE email = ?");
-                $update_stmt->bind_param("ss", $new_password, $email);
+                $update_stmt->bind_param("ss", $hashed_password, $email);
                 if ($update_stmt->execute()) {
                     echo "<p>Votre mot de passe a été réinitialisé avec succès.</p>";
 
