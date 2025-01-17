@@ -46,7 +46,8 @@
 	    @media (max-width: 600px) { 
         		.auth-buttons {
             		flex-direction: column; 
-        	    	gap: 15px; 
+        	    	gap: 15px;
+			margin-top: -13px !important;
     		    }
 	    }
 
