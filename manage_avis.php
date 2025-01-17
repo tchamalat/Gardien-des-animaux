@@ -7,8 +7,6 @@ if (isset($_GET['logout'])) {
     header("Location: login.html");
     exit();
 }
-
-// Gestion de l'ajout ou de la mise à jour d'un avis
 if (isset($_POST['save'])) {
     $id = $_POST['id'] ?? null;
     $user_id = $_POST['user_id'];
@@ -29,7 +27,6 @@ if (isset($_POST['save'])) {
     exit();
 }
 
-// Gestion de la suppression d'un avis
 if (isset($_GET['delete'])) {
     $id = $_GET['delete'];
     $stmt = $conn->prepare("DELETE FROM avis WHERE id = ?");
@@ -40,7 +37,6 @@ if (isset($_GET['delete'])) {
     exit();
 }
 
-// Récupération des avis
 $result = $conn->query("SELECT * FROM avis");
 ?>
 
