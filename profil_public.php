@@ -329,7 +329,11 @@ $stmt_animaux->close();
 <div class="profile-container">
     <h2>Mon Profil Public</h2>
     <div class="profile-picture">
-        <img id="profile-img" src="display_image.php" alt="Photo de profil">
+        <?php if ($profile_picture): ?>
+            <img id="profile-img" src="data:image/jpeg;base64,<?php echo base64_encode($profile_picture); ?>" alt="Photo de profil">
+        <?php else: ?>
+            <img id="profile-img" src="images/default_profile.png" alt="Photo de profil par défaut">
+        <?php endif; ?>
     </div>
     <div class="profile-details">
         <p><strong>Nom d'utilisateur :</strong> <?php echo htmlspecialchars($nom_utilisateur); ?></p>
