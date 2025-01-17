@@ -89,34 +89,41 @@ if(isset($DATA_OBJ->data_type) && $DATA_OBJ->data_type == "signup")
 function message_left($data, $row)
 {
     $image = !empty($row->image) ? $row->image : "ui/images/icone.jpg";
+
+    // Commence la construction du message
     $a =  "
 <div id='message_left' class='message' msgid='$data->id'>       
        <img id='prof_img' src='$image'>
        <b>$row->username</b> <br>
        $data->message<br><br>";
 
-    if ($data->files != "" && file_exists($data->files)){
-      $a .="<img src='$data->files' style='width: 100%; cursor: pointer;' onclick='image_show(event)'/> <br>";
+    // Gestion de l'image envoyée
+    if ($data->files != "") {
+        // Utilise un script pour afficher l'image depuis la base de données
+        $a .= "<img src='get_image.php?msgid=$data->id' style='width: 100%; cursor: pointer;' onclick='image_show(event)' /> <br>";
     }
-    $a .="<span style ='font-size :  11px; color: black;'>".date("jS M Y H:i:s a",strtotime($data->date))."</span>
-    <img id='trash' src='ui/images/trash.jpeg' onclick = 'delete_message(event)' msgid='$data->id' />
 
+    $a .= "<span style='font-size: 11px; color: black;'>".date("jS M Y H:i:s a", strtotime($data->date))."</span>
+           <img id='trash' src='ui/images/trash.jpeg' onclick='delete_message(event)' msgid='$data->id' />
     </div>";
+
     return $a;
 }
 
 function message_right($data, $row)
 {
     $image = !empty($row->image) ? $row->image : "ui/images/icone.jpg";
+
+    // Commence la construction du message
     $a = "
 <div id='message_right' class='message' msgid='$data->id'>       
             <div>";
 
-            
+    // Gestion des icônes (vu/reçu)
     if ($data->seen) {
-        $a .= "<img src='ui/images/tick_orange.webp' style=''/>";
+        $a .= "<img src='ui/images/tick_orange.webp' style='' />";
     } elseif ($data->received) {
-        $a .= "<img src='ui/images/tickBlack.png' style=''/>";
+        $a .= "<img src='ui/images/tickBlack.png' style='' />";
     }
 
     $a .= "</div> 
@@ -124,17 +131,19 @@ function message_right($data, $row)
              <b>$row->username</b> <br>
             $data->message<br><br>";
 
-            if ($data->files != "" && file_exists($data->files)){
-                $a .="<img src='$data->files' style='width: 100%; cursor: pointer;' onclick='image_show(event)' /> <br>";
-              }
-            
+    // Gestion de l'image envoyée
+    if ($data->files != "") {
+        // Utilise un script pour afficher l'image depuis la base de données
+        $a .= "<img src='get_image.php?msgid=$data->id' style='width: 100%; cursor: pointer;' onclick='image_show(event)' /> <br>";
+    }
 
-           $a .= "<span style='font-size: 11px; color: black;'>". date("jS M Y H:i:s a", strtotime($data->date)) ."</span>
-            <img id='trash' src='ui/images/trash.jpeg' onclick = 'delete_message(event)' msgid='$data->id' />
+    $a .= "<span style='font-size: 11px; color: black;'>".date("jS M Y H:i:s a", strtotime($data->date))."</span>
+           <img id='trash' src='ui/images/trash.jpeg' onclick='delete_message(event)' msgid='$data->id' />
         </div>";
 
     return $a;
 }
+
 
 
 
