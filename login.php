@@ -11,10 +11,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['username'], $_POST['password'])) {
         $usernameOrEmail = $_POST['username'];
         $password = $_POST['password'];
-
         $hashed_password = md5($password);
-
-        // Vérification dans la table Administrateur
         $sql_admin = "SELECT id_admin, email_admin, mot_de_passe_admin, permissions FROM Administrateur WHERE email_admin = ?";
         
         if ($stmt_admin = $conn->prepare($sql_admin)) {
@@ -30,8 +27,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $_SESSION['admin_id'] = $admin_id;
                     $_SESSION['email_admin'] = $email_admin;
                     $_SESSION['permissions'] = $permissions;
-
-                    // Rediriger vers admin.php
                     header('Location: admin.php');
                     exit();
                 } else {
@@ -39,7 +34,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 }
                 $stmt_admin->close();
             } else {
-                // Vérification dans la table creation_compte si ce n'est pas un administrateur
                 $sql_user = "SELECT id, nom_utilisateur, mail, mot_de_passe, role FROM creation_compte WHERE nom_utilisateur = ? OR mail = ?";
                 
                 if ($stmt_user = $conn->prepare($sql_user)) {
@@ -55,8 +49,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             $_SESSION['user_id'] = $user_id;
                             $_SESSION['nom_utilisateur'] = $nom_utilisateur;
                             $_SESSION['role'] = $role;
-
-                            // Rediriger vers confirmation_connexion.php
                             header('Location: confirmation_connexion.php');
                             exit();
                         } else {
@@ -76,8 +68,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
 }
-
-// Si une erreur survient, afficher un message d'erreur
 if (isset($error_message)) {
     echo "<script>alert('$error_message'); window.location.href = 'login.html';</script>";
 }
