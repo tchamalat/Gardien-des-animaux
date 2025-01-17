@@ -5,20 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recherche de Gardien</title>
     <style>
-        * {
+        body {
+            font-family: Arial, sans-serif;
+            color: #333;
+            background: url('images/premierplan.png') no-repeat center center fixed;
+            background-size: cover;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
+            overflow-x: hidden;
         }
-
-	body {
-    	    display: flex;
-    	    flex-direction: column;
-    	    min-height: 100vh;
-    	    margin: 0;
-	    background: url('images/premierplan.png') no-repeat center center fixed;
-	    background-size: cover;
-	}
 
         header {
             position: fixed;
@@ -33,27 +28,13 @@
             background: none;
         }
 
-        header img {
-            height: 120px;
-            max-width: 200px;
+        header h1 {
+            color: orange;
+            font-size: 1.8em;
+            margin: 0;
         }
 
-        .auth-buttons {
-            margin-left: auto; 
-            display: flex;
-            gap: 15px;
-            margin-top: -90px;
-        }
-
-	    @media (max-width: 600px) { 
-        		.auth-buttons {
-            		flex-direction: column; 
-        	    	gap: 15px;
-			        margin-top: -3px !important;
-    		    }
-	    }
-
-        .auth-buttons .btn {
+        header .auth-buttons .btn {
             background-color: orange;
             color: white;
             padding: 10px 20px;
@@ -62,19 +43,20 @@
             font-size: 1em;
             cursor: pointer;
             text-decoration: none;
+            margin-left: 10px;
             transition: background-color 0.3s ease, transform 0.3s ease;
+            margin-right: 30px; 
         }
 
-
-        .auth-buttons .btn:hover {
+        header .auth-buttons .btn:hover {
             background-color: #ff7f00;
             transform: translateY(-3px);
         }
 
         .search-container {
-            max-width: 600px;
-            margin: 150px auto;
-            background: rgba(255, 255, 255, 0.85);
+            max-width: 800px;
+            margin: 150px auto 50px auto;
+            background: rgba(255, 255, 255, 0.95);
             border-radius: 15px;
             padding: 30px;
             box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
@@ -83,40 +65,41 @@
 
         .search-container h2 {
             color: orange;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
         }
 
         .form-group {
-            margin-bottom: 20px;
+            margin: 15px 0;
             text-align: left;
         }
 
         .form-group label {
             display: block;
             font-weight: bold;
-            color: #555;
             margin-bottom: 5px;
         }
 
-        .form-group select, 
+        .form-group select,
         .form-group input {
-            width: 100%;
+            width: calc(100% - 20px);
             padding: 10px;
             font-size: 1em;
             border: 1px solid #ddd;
             border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            box-sizing: border-box;
         }
 
         .search-btn {
             background-color: orange;
             color: white;
-            padding: 15px 30px;
+            padding: 12px 25px;
             border: none;
-            border-radius: 8px;
-            font-size: 1.2em;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: bold;
             cursor: pointer;
             transition: background-color 0.3s ease, transform 0.3s ease;
+            margin-top: 20px;
         }
 
         .search-btn:hover {
@@ -145,12 +128,12 @@
             font-weight: bold;
         }
 
-	footer {
-    	    background: rgba(0, 0, 0, 0.85);
-    	    color: #fff;
-    	    padding: 20px;
-    	    text-align: center;
-	}
+        footer {
+            background: rgba(0, 0, 0, 0.85);
+            color: #fff;
+            padding: 20px;
+            margin-top: 50px;
+        }
 
         footer .footer-links {
             display: flex;
