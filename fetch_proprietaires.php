@@ -14,8 +14,7 @@ if (isset($data['latitude'], $data['longitude'])) {
             id, nom_utilisateur, prenom, ville, profile_picture, latitude, longitude,
             (6371 * ACOS(COS(RADIANS(?)) * COS(RADIANS(latitude)) * COS(RADIANS(longitude) - RADIANS(?)) + SIN(RADIANS(?)) * SIN(RADIANS(latitude)))) AS distance
         FROM creation_compte
-        WHERE role = 1 AND latitude IS NOT NULL AND longitude IS NOT NULL
-        ORDER BY distance ASC
+        WHERE role = 1
     ");
 
     if (!$query) {
