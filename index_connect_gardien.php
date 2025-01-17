@@ -39,8 +39,9 @@
 
 
         header .auth-buttons {
-            display: flex;
-            gap: 15px;
+        	display: flex;
+        	gap: 15px;
+		margin-top: -111px;
         }
 	    @media (max-width: 600px) { 
         		.auth-buttons {
