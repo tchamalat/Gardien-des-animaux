@@ -8,13 +8,11 @@ if (isset($_GET['logout'])) {
     exit();
 }
 
-// Gestion de l'ajout ou de la mise à jour d'une FAQ
 if (isset($_POST['save'])) {
     $id = $_POST['id'] ?? null;
     $question = $_POST['question'];
     $reponse = $_POST['reponse'];
     $id_admin = $_SESSION['admin_id'];
-
     if ($id) {
         $stmt = $conn->prepare("UPDATE FAQ SET question = ?, reponse = ?, id_admin = ? WHERE id_faq = ?");
         $stmt->bind_param("ssii", $question, $reponse, $id_admin, $id);
@@ -22,14 +20,12 @@ if (isset($_POST['save'])) {
         $stmt = $conn->prepare("INSERT INTO FAQ (question, reponse, id_admin) VALUES (?, ?, ?)");
         $stmt->bind_param("ssi", $question, $reponse, $id_admin);
     }
-
     $stmt->execute();
     $stmt->close();
     header("Location: manage_faq.php");
     exit();
 }
 
-// Gestion de la suppression d'une FAQ
 if (isset($_GET['delete'])) {
     $id = $_GET['delete'];
     $stmt = $conn->prepare("DELETE FROM FAQ WHERE id_faq = ?");
@@ -40,7 +36,6 @@ if (isset($_GET['delete'])) {
     exit();
 }
 
-// Récupération des entrées de la FAQ
 $result = $conn->query("SELECT FAQ.id_faq, FAQ.question, FAQ.reponse, Administrateur.email_admin FROM FAQ JOIN Administrateur ON FAQ.id_admin = Administrateur.id_admin");
 ?>
 
