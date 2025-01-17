@@ -1,8 +1,7 @@
 <?php
 session_start();
-include 'config.php'; // Assure que la configuration pour la base de données est incluse
+include 'config.php'; 
 
-// Vérifiez si l'utilisateur est connecté
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
     exit();
@@ -10,7 +9,6 @@ if (!isset($_SESSION['user_id'])) {
 
 $user_id = $_SESSION['user_id'];
 
-// Récupérez le rôle de l'utilisateur à partir de la base de données
 $sql = "SELECT role FROM creation_compte WHERE id = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $user_id);
@@ -21,11 +19,11 @@ $user = $result->fetch_assoc();
 if ($user) {
     $role = $user['role']; // 0 pour gardien, 1 pour propriétaire
 } else {
-    // Si l'utilisateur n'existe pas, redirigez vers la page de connexion
     header("Location: login.php");
     exit();
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -70,7 +68,7 @@ if ($user) {
             font-weight: bold;
             text-align: center;
             flex: 1;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8); /* Ombre pour lisibilité */
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8); 
             transition: opacity 0.5s ease, transform 0.5s ease;
         }
 
