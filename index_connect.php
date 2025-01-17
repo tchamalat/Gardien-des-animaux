@@ -2,15 +2,12 @@
 include 'config.php'; 
 session_start();
 
-// Gestion des requêtes AJAX pour les gardiens
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $input = json_decode(file_get_contents('php://input'), true);
-
     if (isset($input['latitude'], $input['longitude'], $_SESSION['role']) && $_SESSION['role'] == 1) { 
         $user_latitude = floatval($input['latitude']);
         $user_longitude = floatval($input['longitude']);
         $radius = 10;
-
         $gardiens_query = $conn->prepare("
             SELECT 
                 id, prenom, nom_utilisateur, profile_picture, latitude, longitude,
@@ -336,8 +333,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </section>
     <script>
         let userLatitude, userLongitude;
-
-        // Function to get user's location
         function getLocation() {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(async (position) => {
@@ -350,8 +345,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 alert("La géolocalisation n'est pas prise en charge par votre navigateur.");
             }
         }
-
-        // Function to handle geolocation errors
         function showError(error) {
             switch (error.code) {
                 case error.PERMISSION_DENIED:
@@ -368,8 +361,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     break;
             }
         }
-
-        // Function to fetch guardians based on location
         async function fetchGardiens(latitude, longitude) {
             const gardiensContainer = document.getElementById('gardiens-container');
             gardiensContainer.innerHTML = '<p class="texte">Chargement des gardiens en cours...</p>';
@@ -399,8 +390,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 gardiensContainer.innerHTML = `<p class="texte">Une erreur est survenue. Veuillez réessayer plus tard.</p>`;
             }
         }
-
-        // Trigger location fetching on page load
         document.addEventListener('DOMContentLoaded', getLocation);
     </script>
     <?php endif; ?>
