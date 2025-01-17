@@ -1,14 +1,10 @@
 <?php
 include 'config.php';
 session_start();
-
-// Récupération des paramètres de recherche
 $service = $_GET['service'] ?? '';
 $animal = $_GET['animal'] ?? '';
 $budget_min = (int)($_GET['budget_min'] ?? 0);
 $budget_max = (int)($_GET['budget_max'] ?? 100);
-
-// Préparation de la requête SQL
 $sql = "
     SELECT 
         id, nom_utilisateur AS nom, type_animal AS animal, nombre_animal AS nombre_animaux, ville, budget_min, budget_max, service
@@ -22,13 +18,10 @@ $sql = "
     ORDER BY 
         budget_min ASC
 ";
-
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("sssiii", $animal, $animal, $service, $service, $budget_min, $budget_max);
 $stmt->execute();
-
 $result = $stmt->get_result();
-
 $gardiens = [];
 while ($row = $result->fetch_assoc()) {
     $gardiens[] = $row;
@@ -198,11 +191,11 @@ $conn->close();
             background: rgba(0, 0, 0, 0.85);
             color: #fff;
             padding: 20px;
-            position: fixed; /* Fixe le footer */
-            bottom: 0; /* Place le footer au bas de la page */
+            position: fixed; 
+            bottom: 0; 
             left: 0;
-            width: 100%; /* Prend toute la largeur de la page */
-            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2); /* Ajoute une ombre légère */
+            width: 100%;
+            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2); 
         }
 
         footer .footer-links {
