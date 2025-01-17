@@ -1,5 +1,12 @@
 <?php
-// Connexion à la base de données (exemple)
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+require 'lib/src/PHPMailer.php';
+require 'lib/src/SMTP.php';
+require 'lib/src/Exception.php';
+
+// Connexion à la base de données
 $servername = "localhost";
 $username = "gardien";
 $password = "G@rdien-des-chiens";
@@ -18,29 +25,49 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $email = $_POST['email'];
     
     // Vérification de l'existence de l'email dans la base de données
-    $sql = "SELECT * FROM users WHERE email='$email'"; // Remplacez 'users' par votre table et 'email' par le champ approprié
-    $result = $conn->query($sql);
+    $sql = "SELECT * FROM users WHERE email = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
     if ($result->num_rows > 0) {
         // Email trouvé, envoi du lien de réinitialisation
-        $reset_link = "https://gardien-des-animaux.fr/messages/reset_password.php?email=" . urlencode($email); // Lien de réinitialisation (vous devrez créer la page 'reset_password.php')
+        $reset_link = "https://gardien-des-animaux.fr/messages/reset_password.php?email=" . urlencode($email); // Lien de réinitialisation
 
-        // Envoi de l'email
-        $sto = $email; // Destinataire
-        $subject = "Réinitialisation de votre mot de passe"; // Sujet du mail
-        $message = "Bonjour, \n\nPour réinitialiser votre mot de passe, veuillez cliquer sur le lien suivant : \n$reset_link\n\nCordialement,\nVotre équipe"; // Message
+        // Configuration de PHPMailer
+        $mail = new PHPMailer(true);
+        try {
+            $mail->isSMTP();
+            $mail->Host = 'smtp.gmail.com'; 
+            $mail->SMTPAuth = true;
+            $mail->Username = 'dan.bensimon44@gmail.com'; // Remplacez par votre email Gmail
+            $mail->Password = 'ltiw cegp hnjh hdup'; // Remplacez par votre mot de passe d'application Gmail
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+            $mail->Port = 587;
 
-        $headers = "Content-Type: text/plain; charset=utf-8\r\n";
-        $headers .= "From:hatsasse@gmail.com\r\n"; // Email de l'émetteur
+            $mail->setFrom('noreply@gardien-des-animaux.fr', 'Gardien des Animaux');
+            $mail->addAddress($email);
 
-        if (mail($sto, $subject, $message, $headers)) {
+            $mail->isHTML(true);
+            $mail->Subject = "Réinitialisation de votre mot de passe";
+            $mail->Body = "
+                <p>Bonjour,</p>
+                <p>Pour réinitialiser votre mot de passe, veuillez cliquer sur le lien suivant :</p>
+                <p><a href='$reset_link'>$reset_link</a></p>
+                <p>Cordialement,</p>
+                <p>L'équipe Gardien des Animaux</p>
+            ";
+
+            $mail->send();
             echo "<p>Un lien pour réinitialiser votre mot de passe a été envoyé à $email.</p>";
-        } else {
-            echo "<p>Erreur survenue lors de l'envoi de l'email. L'email n'existe pas.</p>";
+        } catch (Exception $e) {
+            echo "<p>Erreur : l'email n'a pas pu être envoyé. Mailer Error: {$mail->ErrorInfo}</p>";
         }
     } else {
         echo "<p>Aucun compte trouvé avec cet email.</p>";
     }
+    $stmt->close();
 }
 
 $conn->close();
