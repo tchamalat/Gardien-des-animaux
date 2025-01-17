@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Centre d'aide - Gardien des Animaux</title>
     <style>
-        /* Styles globaux */
         * {
             margin: 0;
             padding: 0;
@@ -29,7 +28,7 @@
             align-items: center;
             justify-content: space-between;
             padding: 20px;
-            background: transparent; /* Header transparent */
+            background: transparent; 
         }
 
         header img {
@@ -43,7 +42,7 @@
             font-weight: bold;
             text-align: center;
             flex: 1;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8); /* Ombre pour lisibilité */
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8); 
             transition: opacity 0.5s ease, transform 0.5s ease;
         }
 
@@ -76,7 +75,7 @@
 
         .help-center-container {
             max-width: 800px;
-            margin: 150px auto; /* Espace sous l'en-tête fixe */
+            margin: 150px auto; 
             background: rgba(255, 255, 255, 0.95);
             border-radius: 15px;
             padding: 30px;
