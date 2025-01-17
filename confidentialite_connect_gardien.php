@@ -34,9 +34,9 @@
         }
 
         header img {
-            height: 80px;
+            height: 150px;
+            max-width: 170px;
         }
-
         header .header-slogan {
             font-size: 1.5em;
             color: orange;
