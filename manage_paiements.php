@@ -179,15 +179,15 @@ $result = $conn->query("SELECT * FROM Paiement");
 <div class="sidebar">
     <h2>Menu Admin</h2>
     <ul>
-        <li><a href="dashboard.php">Tableau de Bord</a></li>
-        <li><a href="manage_abonnements.php">Gérer les Abonnements</a></li>
+        <li><a href="admin.php">Tableau de Bord</a></li>
+        <li><a href="manage_abonnements.php" class="active">Gérer les Abonnements</a></li>
         <li><a href="manage_utilisateurs.php">Gérer les Utilisateurs</a></li>
         <li><a href="manage_reservations.php">Gérer les Réservations</a></li>
         <li><a href="manage_avis.php">Gérer les Avis</a></li>
         <li><a href="manage_animaux.php">Gérer les Animaux</a></li>
         <li><a href="manage_faq.php">Gérer la FAQ</a></li>
+        <li><a href="manage_paiements.php">Gérer les Paiements</a></li>
         <li><a href="manage_hebergements.php">Gérer les Hébergements</a></li>
-        <li><a href="manage_paiements.php" class="active">Gérer les Paiements</a></li>
         <li><a href="?logout=1">Déconnexion</a></li>
     </ul>
 </div>
