@@ -211,6 +211,14 @@
 <!-- Section Nous Contacter -->
 <div class="contact-container">
     <h2>Contactez-nous</h2>
+
+    <!-- Afficher le message de confirmation -->
+    <?php if (!empty($confirmationMessage)): ?>
+        <div style="color: green; border: 1px solid green; padding: 10px; margin-bottom: 20px;">
+            <?= htmlspecialchars($confirmationMessage); ?>
+        </div>
+    <?php endif; ?>
+
     <p>
         Vous avez une question, une suggestion ou besoin d’aide ? Notre équipe est à votre disposition pour répondre à toutes vos demandes. Voici comment nous joindre :
     </p>
