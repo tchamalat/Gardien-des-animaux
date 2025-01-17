@@ -102,6 +102,10 @@ include 'config.php';
             align-items: center;
         }
 
+	.hero h1 {
+	    margin-bottom: 30px; 
+        }
+
         .hero button {
             background-color: orange;
             color: white;
