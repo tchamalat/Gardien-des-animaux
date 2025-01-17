@@ -71,6 +71,35 @@ $userChartData = transformDataForChart($userEvolution);
 $reservationChartData = transformDataForChart($reservationEvolution);
 ?>
 
+<?php
+session_start();
+include 'config.php';
+
+if (isset($_GET['logout'])) {
+    session_destroy();
+    header("Location: login.html");
+    exit();
+}
+
+try {
+    $pdo = new PDO('mysql:host=localhost;dbname=gardiendb', 'gardien', 'G@rdien-des-chiens');
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    die("Erreur de connexion : " . $e->getMessage());
+}
+
+// Récupération des statistiques
+try {
+    $stmtUsers = $pdo->query("SELECT COUNT(*) as total FROM creation_compte");
+    $totalUsers = $stmtUsers->fetch()['total'];
+
+    $stmtReservations = $pdo->query("SELECT COUNT(*) as total FROM reservation");
+    $totalReservations = $stmtReservations->fetch()['total'];
+} catch (PDOException $e) {
+    die("Erreur lors de la récupération des statistiques : " . $e->getMessage());
+}
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -79,13 +108,8 @@ $reservationChartData = transformDataForChart($reservationEvolution);
     <title>Tableau de Bord Admin</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         body {
+            margin: 0;
             font-family: Arial, sans-serif;
             background-color: #f5f5f5;
         }
@@ -137,16 +161,31 @@ $reservationChartData = transformDataForChart($reservationEvolution);
             padding: 20px;
         }
 
-        .chart-container {
-            margin: 20px 0;
+        .stats-cards {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            flex: 1;
+            background-color: orange;
+            color: white;
             padding: 20px;
-            background-color: white;
             border-radius: 8px;
-            box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .stat-card h3 {
+            margin: 0;
+            font-size: 1.5rem;
         }
 
         canvas {
             max-width: 100%;
+            margin: 20px auto;
+            display: block;
             height: 400px;
         }
     </style>
@@ -171,53 +210,60 @@ $reservationChartData = transformDataForChart($reservationEvolution);
 
 <!-- Contenu principal -->
 <div class="dashboard-container">
-    <div class="chart-container">
-        <h3>Évolution des Utilisateurs</h3>
-        <canvas id="usersChart"></canvas>
+    <div class="stats-cards">
+        <div class="stat-card">
+            <h3><?= $totalUsers ?></h3>
+            <p>Utilisateurs</p>
+        </div>
+        <div class="stat-card">
+            <h3><?= $totalReservations ?></h3>
+            <p>Réservations</p>
+        </div>
     </div>
 
-    <div class="chart-container">
-        <h3>Évolution des Réservations</h3>
-        <canvas id="reservationsChart"></canvas>
-    </div>
+    <canvas id="adminChart"></canvas>
 </div>
 
 <script>
-    // Données pour le graphique des utilisateurs
-    const userChartData = <?php echo json_encode($userChartData); ?>;
-    const reservationChartData = <?php echo json_encode($reservationChartData); ?>;
+    // Données pour le graphique
+    const data = {
+        labels: ['Utilisateurs', 'Réservations'],
+        datasets: [{
+            label: 'Statistiques',
+            data: [<?= $totalUsers ?>, <?= $totalReservations ?>],
+            backgroundColor: ['#f4840c', '#e96d0c'],
+            borderColor: ['#d45a00', '#d45a00'],
+            borderWidth: 1
+        }]
+    };
 
-    // Graphique des utilisateurs
-    new Chart(document.getElementById('usersChart'), {
-        type: 'line',
-        data: {
-            labels: userChartData.labels,
-            datasets: [{
-                label: 'Utilisateurs',
-                data: userChartData.values,
-                borderColor: 'orange',
-                backgroundColor: 'rgba(255, 165, 0, 0.2)',
-                fill: true,
-                tension: 0.4
-            }]
+    // Configuration du graphique
+    const config = {
+        type: 'bar',
+        data: data,
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    display: false
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
         }
-    });
+    };
 
-    // Graphique des réservations
-    new Chart(document.getElementById('reservationsChart'), {
-        type: 'line',
-        data: {
-            labels: reservationChartData.labels,
-            datasets: [{
-                label: 'Réservations',
-                data: reservationChartData.values,
-                borderColor: 'blue',
-                backgroundColor: 'rgba(0, 0, 255, 0.2)',
-                fill: true,
-                tension: 0.4
-            }]
-        }
-    });
+    // Rendu du graphique
+    const ctx = document.getElementById('adminChart').getContext('2d');
+    new Chart(ctx, config);
+</script>
+
+</body>
+</html>
+
 </script>
 
 </body>
