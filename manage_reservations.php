@@ -8,7 +8,6 @@ if (isset($_GET['logout'])) {
     exit();
 }
 
-// Gestion de l'ajout ou de la mise à jour d'une réservation
 if (isset($_POST['save'])) {
     $id = $_POST['id'] ?? null;
     $id_utilisateur = $_POST['id_utilisateur'];
@@ -19,7 +18,6 @@ if (isset($_POST['save'])) {
     $heure_debut = $_POST['heure_debut'];
     $heure_fin = $_POST['heure_fin'];
     $gardien_id = $_POST['gardien_id'];
-
     if ($id) {
         $stmt = $conn->prepare("UPDATE reservation SET id_utilisateur = ?, date_debut = ?, date_fin = ?, lieu = ?, type = ?, heure_debut = ?, heure_fin = ?, gardien_id = ? WHERE id_reservation = ?");
         $stmt->bind_param("issssssii", $id_utilisateur, $date_debut, $date_fin, $lieu, $type, $heure_debut, $heure_fin, $gardien_id, $id);
@@ -33,7 +31,6 @@ if (isset($_POST['save'])) {
     exit();
 }
 
-// Gestion de la suppression d'une réservation
 if (isset($_GET['delete'])) {
     $id = $_GET['delete'];
     $stmt = $conn->prepare("DELETE FROM reservation WHERE id_reservation = ?");
@@ -43,8 +40,6 @@ if (isset($_GET['delete'])) {
     header("Location: manage_reservations.php");
     exit();
 }
-
-// Récupération des réservations
 $result = $conn->query("SELECT * FROM reservation");
 ?>
 
