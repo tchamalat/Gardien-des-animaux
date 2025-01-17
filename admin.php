@@ -133,7 +133,6 @@ try {
 <div class="sidebar">
     <h2>Menu Admin</h2>
     <ul>
-        <li><a href="manage_abonnements.php">Gérer les Abonnements</a></li>
         <li><a href="manage_utilisateurs.php">Gérer les Utilisateurs</a></li>
         <li><a href="manage_reservations.php">Gérer les Réservations</a></li>
         <li><a href="manage_avis.php">Gérer les Avis</a></li>
