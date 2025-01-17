@@ -74,6 +74,10 @@ $conn->close();
             align-items: center;
             background: none;
         }
+        header img {
+            height: 150px;
+            max-width: 170px;
+        }
 
         header h1 {
             color: orange;
