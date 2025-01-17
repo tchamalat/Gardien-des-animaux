@@ -132,7 +132,7 @@
             background: rgba(0, 0, 0, 0.85);
             color: #fff;
             padding: 20px;
-            margin-top: 50px;
+            text-align: center;
         }
 
         footer .footer-links {
