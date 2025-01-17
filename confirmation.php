@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Confirmation d'inscription - Gardien des Animaux</title>
     <style>
-        /* Global Styles */
         * {
             margin: 0;
             padding: 0;
@@ -29,7 +28,7 @@
         }
 
         header img {
-            height: 100px; /* Larger logo */
+            height: 100px; 
             margin-right: 20px;
         }
 
@@ -40,17 +39,17 @@
         }
 
         .form-container {
-            max-width: 500px; /* Reduced width */
-            max-height: 400px; /* Set maximum height */
+            max-width: 500px;
+            max-height: 400px;
             margin: auto;
             background: rgba(255, 255, 255, 0.95);
             border-radius: 15px;
-            padding: 20px; /* Reduced padding */
+            padding: 20px;
             text-align: center;
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
             position: relative;
             top: 50%;
-            transform: translateY(-50%); /* Center vertically */
+            transform: translateY(-50%); 
         }
         .form-container h2 {
             color: orange;
