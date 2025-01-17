@@ -18,8 +18,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nombre_animal = $_POST['nombre_animal'];
     $budget_min = $_POST['budget_min'];
     $budget_max = $_POST['budget_max'];
-
-    // Validation des budgets
     if ($budget_min < 0 || $budget_max < 0) {
         $_SESSION['message'] = 'Les budgets minimum et maximum ne peuvent pas être négatifs.';
         header('Location: profil_gardien.php');
@@ -33,8 +31,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     $service = $_POST['service'];
-
-    // Validation du type de service
     if ($service !== 'garde' && $service !== 'promenade') {
         $_SESSION['message'] = 'Le type de service doit être soit garde, soit promenade.';
         header('Location: profil_gardien.php');
@@ -107,7 +103,7 @@ $conn->close();
             font-weight: bold;
             text-align: center;
             flex: 1;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8); /* Ombre pour lisibilité */
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8); 
             transition: opacity 0.5s ease, transform 0.5s ease;
         }
 
@@ -126,7 +122,7 @@ $conn->close();
             height: 150px;
             max-width: 170px;
             position: absolute;
-            left: 20px; /* Placez le logo à gauche */
+            left: 20px; 
             top: 20px;
         }
 
@@ -135,7 +131,7 @@ $conn->close();
             gap: 15px;
             position: absolute;
             top: 20px;
-            right: 20px; /* Positionner à droite */
+            right: 20px; 
         }
 
 
