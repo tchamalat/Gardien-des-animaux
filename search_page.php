@@ -13,6 +13,8 @@
             margin: 0;
             padding: 0;
             overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
         }
 
         header {
@@ -133,6 +135,7 @@
             color: #fff;
             padding: 20px;
             margin-top: 50px;
+            margin-top: auto;
         }
 
         footer .footer-links {
