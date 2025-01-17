@@ -51,74 +51,79 @@ $result = $conn->query("SELECT * FROM creation_compte");
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gérer les Utilisateurs</title>
     <style>
-        /* Styles globaux */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         body {
+            margin: 0;
             font-family: Arial, sans-serif;
-            color: #333;
-            background: url('images/premierplan.png') no-repeat center center fixed;
-            background-size: cover;
+            background-color: #f5f5f5;
         }
 
-        header {
+        .sidebar {
+            width: 250px;
+            height: 100vh;
+            background-color: #2c3e50;
+            color: white;
             position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
-            z-index: 10;
+            padding: 20px;
             display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 20px 40px;
-            background: transparent;
+            flex-direction: column;
         }
 
-        header img {
-            height: 80px;
-        }
-
-        header .header-slogan {
-            font-size: 1.5em;
+        .sidebar h2 {
+            font-size: 1.5rem;
             color: orange;
-            font-weight: bold;
+            margin-bottom: 30px;
             text-align: center;
-            flex: 1;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
         }
 
-        header .auth-buttons .btn {
-            background-color: orange;
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar ul li {
+            margin: 10px 0;
+        }
+
+        .sidebar ul li a {
             color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 8px;
-            font-size: 1em;
-            cursor: pointer;
             text-decoration: none;
-            transition: background-color 0.3s ease, transform 0.3s ease;
+            padding: 10px 15px;
+            border-radius: 5px;
+            display: block;
+            transition: background-color 0.3s;
         }
 
-        header .auth-buttons .btn:hover {
-            background-color: #ff7f00;
-            transform: translateY(-3px);
+        .sidebar ul li a:hover {
+            background-color: #34495e;
+        }
+
+        .sidebar ul li a.active {
+            background-color: #e96d0c;
+        }
+
+        .content {
+            margin-left: 270px;
+            padding: 20px;
+        }
+
+        .content h1 {
+            font-size: 2.5rem;
+            color: orange;
+            text-align: center;
+            margin-bottom: 20px;
         }
 
         .form-container {
-            max-width: 95%; /* Prend 95% de la largeur de la page */
-            margin: 150px auto;
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 15px;
-            padding: 30px;
-            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
-            overflow: hidden;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            margin-bottom: 30px;
         }
+
         .form-container h2 {
-            font-size: 1.8em;
             color: orange;
             margin-bottom: 20px;
         }
@@ -127,197 +132,154 @@ $result = $conn->query("SELECT * FROM creation_compte");
             margin-bottom: 15px;
         }
 
-        .form-group input {
+        .form-group input,
+        .form-group select {
             width: 100%;
             padding: 10px;
             border: 1px solid #ccc;
             border-radius: 5px;
-            font-size: 1em;
         }
 
         table {
-            width: 100%; /* Prend toute la largeur du conteneur */
-            border-collapse: collapse;
-            margin-top: 10px;
-            table-layout: auto; /* Colonnes ajustées automatiquement */
-        }
-        .table-container {
-            overflow-x: auto; /* Active le défilement horizontal si nécessaire */
             width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
         }
+
         table th, table td {
+            border: 1px solid #ddd;
             padding: 10px;
             text-align: left;
-            border: 1px solid #ddd;
-            white-space: nowrap; /* Empêche le texte de dépasser */
         }
 
         table th {
             background-color: orange;
             color: white;
         }
+
         .btn {
-            display: inline-block;
             background-color: orange;
             color: white;
             padding: 10px 20px;
             border: none;
-            border-radius: 8px;
-            font-size: 1em;
+            border-radius: 5px;
             cursor: pointer;
             text-decoration: none;
-            transition: background-color 0.3s ease, transform 0.3s ease;
         }
 
         .btn:hover {
-            background-color: #ff7f00;
-            transform: translateY(-3px);
+            background-color: #e96d0c;
         }
 
-        footer {
-            background: rgba(0, 0, 0, 0.85);
-            color: #fff;
-            padding: 20px;
-            margin-top: 50px;
+        .btn-delete {
+            background-color: #e74c3c;
         }
 
-        footer .footer-links {
-            display: flex;
-            justify-content: space-around;
-            flex-wrap: wrap;
-        }
-
-        footer .footer-links h4 {
-            color: orange;
-            margin-bottom: 10px;
-        }
-
-        footer .footer-links ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        footer .footer-links a {
-            color: white;
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-
-        footer .footer-links a:hover {
-            color: orange;
+        .btn-delete:hover {
+            background-color: #c0392b;
         }
     </style>
 </head>
 <body>
 
-<header>
-    <img src="images/logo.png" alt="Logo Gardien des Animaux">
-    <h1 class="header-slogan">Gestion des Utilisateurs</h1>
-    <div class="auth-buttons">
-        <button class="btn" onclick="window.location.href='admin.php'">Retour au Tableau de Bord</button>
-    </div>
-</header>
-
-<div class="form-container">
-    <h2>Ajouter ou Modifier un Utilisateur</h2>
-    <form method="POST" action="">
-        <input type="hidden" name="id" id="id">
-        <div class="form-group">
-            <input type="text" name="prenom" placeholder="Prénom" required>
-        </div>
-        <div class="form-group">
-            <input type="text" name="nom" placeholder="Nom" required>
-        </div>
-        <div class="form-group">
-            <input type="text" name="nom_utilisateur" placeholder="Nom d'utilisateur" required>
-        </div>
-        <div class="form-group">
-            <input type="email" name="mail" placeholder="Email" required>
-        </div>
-        <div class="form-group">
-            <input type="text" name="numero_telephone" placeholder="Téléphone" required>
-        </div>
-        <div class="form-group">
-            <input type="text" name="adresse" placeholder="Adresse" required>
-        </div>
-        <div class="form-group">
-            <input type="text" name="ville" placeholder="Ville" required>
-        </div>
-        <div class="form-group">
-            <input type="password" name="mot_de_passe" placeholder="Mot de passe" required>
-        </div>
-        <div class="form-group">
-            <label for="role">Rôle :</label>
-            <select name="role" id="role" required>
-                <option value="0">Gardien</option>
-                <option value="1">Propriétaire</option>
-            </select>
-        </div>
-
-        <button type="submit" name="save" class="btn">Sauvegarder</button>
-    </form>
+<!-- Barre latérale -->
+<div class="sidebar">
+    <h2>Menu Admin</h2>
+    <ul>
+        <li><a href="dashboard.php">Tableau de Bord</a></li>
+        <li><a href="manage_abonnements.php">Gérer les Abonnements</a></li>
+        <li><a href="manage_utilisateurs.php" class="active">Gérer les Utilisateurs</a></li>
+        <li><a href="manage_reservations.php">Gérer les Réservations</a></li>
+        <li><a href="manage_avis.php">Gérer les Avis</a></li>
+        <li><a href="manage_animaux.php">Gérer les Animaux</a></li>
+        <li><a href="manage_faq.php">Gérer la FAQ</a></li>
+        <li><a href="manage_hebergements.php">Gérer les Hébergements</a></li>
+        <li><a href="manage_paiements.php">Gérer les Paiements</a></li>
+        <li><a href="?logout=1">Déconnexion</a></li>
+    </ul>
 </div>
 
-<div class="form-container">
-    <h2>Liste des Utilisateurs</h2>
-    <table>
-        <tr>
-            <th>ID</th>
-            <th>Prénom</th>
-            <th>Nom</th>
-            <th>Nom d'utilisateur</th>
-            <th>Email</th>
-            <th>Téléphone</th>
-            <th>Adresse</th>
-            <th>Ville</th>
-            <th>Rôle</th>
-            <th>Actions</th>
-        </tr>
-        <?php while ($row = $result->fetch_assoc()): ?>
-            <tr>
-                <td><?php echo $row['id']; ?></td>
-                <td><?php echo htmlspecialchars($row['prenom']); ?></td>
-                <td><?php echo htmlspecialchars($row['nom']); ?></td>
-                <td><?php echo htmlspecialchars($row['nom_utilisateur']); ?></td>
-                <td><?php echo htmlspecialchars($row['mail']); ?></td>
-                <td><?php echo htmlspecialchars($row['numero_telephone']); ?></td>
-                <td><?php echo htmlspecialchars($row['adresse']); ?></td>
-                <td><?php echo htmlspecialchars($row['ville']); ?></td>
-                <td><?php echo $row['role']; ?></td>
-                <td>
-                    <a class="btn btn-delete" href="?delete=<?php echo $row['id']; ?>" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?');">Supprimer</a>
-                </td>
-            </tr>
-        <?php endwhile; ?>
-    </table>
-</div>
+<!-- Contenu principal -->
+<div class="content">
+    <h1>Gestion des Utilisateurs</h1>
 
-<footer>
-    <div class="footer-links">
-        <div>
-            <h4>En savoir plus :</h4>
-            <ul>
-                <li><a href="securite.php">Sécurité</a></li>
-                <li><a href="aide.php">Centre d'aide</a></li>
-            </ul>
-        </div>
-        <div>
-            <h4>A propos de nous :</h4>
-            <ul>
-                <li><a href="confidentialite.php">Politique de confidentialité</a></li>
-                <li><a href="contact.php">Nous contacter</a></li>
-            </ul>
-        </div>
-        <div>
-            <h4>Conditions Générales :</h4>
-            <ul>
-                <li><a href="conditions.php">Conditions d'utilisateur et de Service</a></li>
-            </ul>
-        </div>
+    <div class="form-container">
+        <h2>Ajouter ou Modifier un Utilisateur</h2>
+        <form method="POST" action="">
+            <input type="hidden" name="id" id="id">
+            <div class="form-group">
+                <input type="text" name="prenom" placeholder="Prénom" required>
+            </div>
+            <div class="form-group">
+                <input type="text" name="nom" placeholder="Nom" required>
+            </div>
+            <div class="form-group">
+                <input type="text" name="nom_utilisateur" placeholder="Nom d'utilisateur" required>
+            </div>
+            <div class="form-group">
+                <input type="email" name="mail" placeholder="Email" required>
+            </div>
+            <div class="form-group">
+                <input type="text" name="numero_telephone" placeholder="Téléphone" required>
+            </div>
+            <div class="form-group">
+                <input type="text" name="adresse" placeholder="Adresse" required>
+            </div>
+            <div class="form-group">
+                <input type="text" name="ville" placeholder="Ville" required>
+            </div>
+            <div class="form-group">
+                <input type="password" name="mot_de_passe" placeholder="Mot de passe" required>
+            </div>
+            <div class="form-group">
+                <label for="role">Rôle :</label>
+                <select name="role" id="role" required>
+                    <option value="0">Gardien</option>
+                    <option value="1">Propriétaire</option>
+                </select>
+            </div>
+            <button type="submit" name="save" class="btn">Sauvegarder</button>
+        </form>
     </div>
-</footer>
+
+    <div class="form-container">
+        <h2>Liste des Utilisateurs</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Prénom</th>
+                    <th>Nom</th>
+                    <th>Nom d'utilisateur</th>
+                    <th>Email</th>
+                    <th>Téléphone</th>
+                    <th>Adresse</th>
+                    <th>Ville</th>
+                    <th>Rôle</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php while ($row = $result->fetch_assoc()): ?>
+                    <tr>
+                        <td><?= $row['id'] ?></td>
+                        <td><?= htmlspecialchars($row['prenom']) ?></td>
+                        <td><?= htmlspecialchars($row['nom']) ?></td>
+                        <td><?= htmlspecialchars($row['nom_utilisateur']) ?></td>
+                        <td><?= htmlspecialchars($row['mail']) ?></td>
+                        <td><?= htmlspecialchars($row['numero_telephone']) ?></td>
+                        <td><?= htmlspecialchars($row['adresse']) ?></td>
+                        <td><?= htmlspecialchars($row['ville']) ?></td>
+                        <td><?= $row['role'] == 0 ? "Gardien" : "Propriétaire" ?></td>
+                        <td>
+                            <a class="btn btn-delete" href="?delete=<?= $row['id'] ?>" onclick="return confirm('Supprimer cet utilisateur ?');">Supprimer</a>
+                        </td>
+                    </tr>
+                <?php endwhile; ?>
+            </tbody>
+        </table>
+    </div>
+</div>
 
 </body>
 </html>
-
-<?php $conn->close(); ?>
