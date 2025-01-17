@@ -1,71 +1,78 @@
 <?php
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
+// Connexion à la base de données
+$servername = "localhost";
+$username = "gardien";
+$password = "G@rdien-des-chiens";
+$dbname = "gardiendb"// Remplacez par le nom de votre base de données
 
-require 'lib/src/PHPMailer.php';
-require 'lib/src/SMTP.php';
-require 'lib/src/Exception.php';
+// Création de la connexion
+$conn = new mysqli($servername, $username, $password, $dbname);
 
-$message = '';
+// Vérification de la connexion
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $email = $_POST['email'];
+// Fonction pour envoyer un email
+function envoyerEmailConfirmation($destinataire, $email) {
+    $subject = "Confirmation de changement de mot de passe";
+    $message = "Bonjour,\n\nVotre mot de passe a été modifié avec succès. Si vous n'êtes pas à l'origine de cette action, veuillez réinitialiser votre mot de passe en cliquant sur le lien suivant :\n\n";
+    $message .= "https://gardien-des-animaux.fr/messages/reset_password.php?email=" . urlencode($email) . "\n\nMerci,\nL'équipe MyChat";
 
-    // Connexion à la base de données
-    $servername = "localhost";
-    $username = "gardien";
-    $password = "G@rdien-des-chiens";
-    $dbname = "gardiendb";
+    $headers = "Content-Type: text/plain; charset=utf-8\r\n";
+    $headers .= "From: hatsasse@gmail.com\r\n"; // Remplacez par l'adresse email de l'expéditeur
 
-    $conn = new mysqli($servername, $username, $password, $dbname);
+    return mail($destinataire, $subject, $message, $headers);
+}
 
-    if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
-    }
+// Vérification de l'email dans l'URL
+if (isset($_GET['email']) && filter_var($_GET['email'], FILTER_VALIDATE_EMAIL)) {
+    $email = $_GET['email'];
 
-    $query = $conn->prepare('SELECT * FROM users WHERE email = ?');
-    $query->bind_param('s', $email);
-    $query->execute();
-    $result = $query->get_result();
+    // Vérification de l'existence de l'email dans la base de données
+    $stmt = $conn->prepare("SELECT * FROM users WHERE email = ?"); // Utilisation des requêtes préparées
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
+    // Si l'email existe
     if ($result->num_rows > 0) {
-        $token = bin2hex(random_bytes(50));
-        $expiry = date('Y-m-d H:i:s', strtotime('+5 hour'));
+        // Traitement du changement de mot de passe
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $new_password = $_POST['password'];
 
-        $query = $conn->prepare('UPDATE users SET reset_token = ?, token_expiration = ? WHERE email = ?');
-        $query->bind_param('sss', $token, $expiry, $email);
-        $query->execute();
+            // Validation du mot de passe
+            if (strlen($new_password) >= 6) { // Critères de sécurité
 
-        $reset_link = "https://gardien-des-animaux.fr/messages/reset_password.php?token=$token";
+                // Mise à jour du mot de passe dans la base de données
+                $update_stmt = $conn->prepare("UPDATE users SET password = ? WHERE email = ?");
+                $update_stmt->bind_param("ss", $new_password, $email);
+                if ($update_stmt->execute()) {
+                    echo "<p>Votre mot de passe a été réinitialisé avec succès.</p>";
 
-        $mail = new PHPMailer(true);
-        try {
-            $mail->isSMTP();
-            $mail->Host = 'smtp.gmail.com';
-            $mail->SMTPAuth = true;
-            $mail->Username = 'dan.bensimon44@gmail.com';
-            $mail->Password = 'ltiw cegp hnjh hdup'; 
-            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-            $mail->Port = 587;
-
-            $mail->setFrom('noreply@gardien-des-animaux.fr', 'Gardien des Animaux');
-            $mail->addAddress($email);
-
-            $mail->isHTML(true);
-            $mail->Subject = "Réinitialisation de mot de passe";
-            $mail->Body = "Cliquez sur ce lien pour réinitialiser votre mot de passe : <a href='$reset_link'>$reset_link</a>";
-
-            $mail->send();
-            $message = "Un email avec un lien de réinitialisation a été envoyé.";
-        } catch (Exception $e) {
-            $message = "Erreur : l'email n'a pas pu être envoyé. Mailer Error: {$mail->ErrorInfo}";
+                    // Envoi de l'email de confirmation
+                    if (envoyerEmailConfirmation($email, $email)) {
+                        echo "<p>Un email de confirmation a été envoyé.</p>";
+                    } else {
+                        echo "<p>Erreur lors de l'envoi de l'email de confirmation.</p>";
+                    }
+                } else {
+                    echo "<p>Erreur lors de la mise à jour du mot de passe.</p>";
+                }
+                $update_stmt->close();
+            } else {
+                echo "<p>Le mot de passe doit contenir au moins 6 caractères.</p>";
+            }
         }
     } else {
-        $message = "Aucun compte n'est associé à cette adresse email.";
+        echo "<p>Aucun utilisateur trouvé avec cet email.</p>";
     }
-
-    $conn->close();
+    $stmt->close();
+} else {
+    echo "<p>URL invalide ou email non fourni.</p>";
 }
+
+$conn->close();
 ?>
 
 <!DOCTYPE html>
@@ -73,22 +80,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Réinitialisation de mot de passe</title>
+    <title>Réinitialiser votre mot de passe</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f7f1e1;
-            color: #d77f29;
+            background-color: #f7f1e1; /* beige clair */
+            color: #d77f29; /* orange */
             padding: 50px;
         }
         .container {
-            background-color: #fff;
+            background-color: #fff; /* blanc */
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0px 0px 15px rgba(0,0,0,0.1);
             text-align: center;
         }
-        input[type="email"] {
+        input[type="password"] {
             padding: 10px;
             margin: 10px;
             border: 1px solid #d77f29;
@@ -107,42 +114,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         input[type="submit"]:hover {
             background-color: #b86a1e;
         }
-        .message {
-            margin-bottom: 20px;
-            padding: 10px;
-            border-radius: 5px;
-            font-size: 1em;
-        }
-        .message.success {
-            background-color: #d4edda;
-            color: #155724;
-        }
-        .message.error {
-            background-color: #f8d7da;
-            color: #721c24;
-        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h2>Réinitialisation de mot de passe</h2>
-        <p>Veuillez entrer votre adresse email pour recevoir un lien de réinitialisation de mot de passe.</p>
-
-        <?php if (!empty($message)): ?>
-            <p class="message <?php echo strpos($message, 'Erreur') === false ? 'success' : 'error'; ?>">
-                <?php echo htmlspecialchars($message); ?>
-            </p>
-        <?php endif; ?>
-
+        <h2>Réinitialiser votre mot de passe</h2>
         <form method="POST">
-            <input type="email" name="email" placeholder="Entrez votre adresse email" required><br>
-            <input type="submit" value="Envoyer le lien de réinitialisation">
+            <input type="password" name="password" placeholder="Entrez un nouveau mot de passe" required><br>
+            <input type="submit" value="Réinitialiser le mot de passe">
         </form>
-
-        <br>
-        <a href="signup.php" style="color: #d77f29; text-decoration: none;">Vous n'avez pas de compte ? Inscrivez-vous ici.</a>
-        <br>
-        <a href="login.php" style="color: #d77f29; text-decoration: none;">Retour à la connexion.</a>
     </div>
 </body>
 </html>
