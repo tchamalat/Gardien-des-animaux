@@ -138,6 +138,7 @@ $stmt_animaux->close();
             cursor: pointer;
             text-decoration: none;
             transition: all 0.3s ease;
+            margin-right: 20px;
         }
 
         header .auth-buttons .btn:hover {
