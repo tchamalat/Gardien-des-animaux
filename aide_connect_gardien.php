@@ -233,9 +233,9 @@
         Si vous ne trouvez pas la réponse à votre question, notre équipe est à votre disposition pour vous aider. Voici comment nous contacter :
     </p>
     <ul>
-        <li><strong>Email :</strong> <a href="mailto:contact@gardien-des-animaux.fr">contact@gardien-des-animaux.fr</a></li>
-        <li><strong>Téléphone :</strong> +33 1 23 45 67 89 (disponible du lundi au vendredi, de 9h à 18h).</li>
-        <li><strong>Formulaire de contact :</strong> <a href="contact_connect.php">Cliquez ici pour accéder au formulaire</a>.</li>
+        <li><strong>Email :</strong> <a href="mailto:gardien-des-animaux@gmail.com">gardien-des-animaux@gmail.com</a></li>
+        <li><strong>Téléphone :</strong> +33 6 69 37 31 14 (disponible du lundi au vendredi, de 9h à 18h).</li>
+        <li><strong>Formulaire de contact :</strong> <a href="contact.php">Cliquez ici pour accéder au formulaire</a>.</li>
     </ul>
 </div>
 
