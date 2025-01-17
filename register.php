@@ -15,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Validation des données du formulaire
     $password_pattern = '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&.])[A-Za-z\d@$!%*?&.]{8,}$/';
-    
+
     if (!preg_match($password_pattern, $mot_de_passe)) {
         echo "<p style='color: red;'>Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial.</p>";
         exit();
@@ -31,10 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit();
     }
 
-    // Hachage du mot de passe
-    $mot_de_passe_hache = password_hash($mot_de_passe, PASSWORD_DEFAULT);
-
-    // Vérification de l'unicité de l'email, du numéro de téléphone et du nom d'utilisateur
+    // Vérification de l'unicité des champs
     $stmt = $conn->prepare("
         SELECT mail, numero_telephone, nom_utilisateur 
         FROM creation_compte 
@@ -42,17 +39,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     ");
     $stmt->bind_param("sss", $mail, $numero_telephone, $nom_utilisateur);
     $stmt->execute();
-    $stmt->store_result();
+    $stmt->bind_result($existingMail, $existingPhone, $existingUsername);
 
-    if ($stmt->num_rows > 0) {
-        echo "<p style='color: red;'>E-mail, numéro de téléphone ou nom d'utilisateur déjà utilisé.</p>";
-        $stmt->close();
+    $conflict = [];
+    while ($stmt->fetch()) {
+        if ($existingMail === $mail) {
+            $conflict[] = "E-mail déjà utilisé.";
+        }
+        if ($existingPhone === $numero_telephone) {
+            $conflict[] = "Numéro de téléphone déjà utilisé.";
+        }
+        if ($existingUsername === $nom_utilisateur) {
+            $conflict[] = "Nom d'utilisateur déjà utilisé.";
+        }
+    }
+    $stmt->close();
+
+    if (!empty($conflict)) {
+        echo "<p style='color: red;'>" . implode("<br>", $conflict) . "</p>";
         exit();
     }
 
-    $stmt->close();
+    // Hachage du mot de passe
+    $mot_de_passe_hache = password_hash($mot_de_passe, PASSWORD_DEFAULT);
 
-    // Utilisation d'une transaction pour garantir l'unicité
+    // Utilisation d'une transaction pour garantir l'intégrité
     $conn->begin_transaction();
 
     try {
