@@ -69,7 +69,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 if (isset($error_message)) {
-    echo "<script>alert('$error_message'); window.location.href = 'login.html';</script>";
+    header("Location: login.html?error=" . urlencode($error_message));
+    exit();
 }
 
 $conn->close();
