@@ -230,7 +230,7 @@ $conn->close();
 <body>
 <header>
     <h1>Résultats de la recherche</h1>
-    <button class="btn" onclick="window.location.href='search_page.php'">Nouvelle recherche</button>
+    <button class="btn" onclick="window.location.href='search_page_index.php'">Nouvelle recherche</button>
 </header>
 
 <div class="resultats-container">
