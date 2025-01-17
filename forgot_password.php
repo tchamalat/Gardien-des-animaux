@@ -90,8 +90,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         header img {
-            height: 150px;
-            max-width: 170px;
+            height: 130px;
+            max-width: 150px;
         }
 
         header .header-slogan {
