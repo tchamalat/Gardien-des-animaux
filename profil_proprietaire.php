@@ -8,20 +8,15 @@ if (!isset($_SESSION['user_id'])) {
 
 include 'config.php';
 
-// Vérifier si un ID de propriétaire est passé dans l'URL
 if (!isset($_GET['id'])) {
     echo "ID du propriétaire non spécifié.";
     exit();
 }
 
 $proprietaire_id = $_GET['id'];
-
-// Activer le débogage
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
-
-// Récupérer les informations du propriétaire
 $sql_user = "SELECT nom_utilisateur, profile_picture FROM creation_compte WHERE id = ?";
 $stmt_user = $conn->prepare($sql_user);
 $stmt_user->bind_param("i", $proprietaire_id);
@@ -29,8 +24,6 @@ $stmt_user->execute();
 $stmt_user->bind_result($nom_utilisateur, $profile_picture);
 $stmt_user->fetch();
 $stmt_user->close();
-
-// Récupérer les animaux du propriétaire
 $sql_animaux = "SELECT prenom_animal, url_photo FROM Animal WHERE id_utilisateur = ?";
 $stmt_animaux = $conn->prepare($sql_animaux);
 $stmt_animaux->bind_param("i", $proprietaire_id);
