@@ -241,8 +241,8 @@
         Pour toute question ou demande concernant vos données personnelles, contactez-nous :
     </p>
     <ul>
-        <li><strong>Email :</strong> <a href="mailto:contact@gardien-des-animaux.fr">contact@gardien-des-animaux.fr</a></li>
-        <li><strong>Téléphone :</strong> +33 1 23 45 67 89 (du lundi au vendredi, de 9h à 18h).</li>
+        <li><strong>Email :</strong> <a href="mailto:gardien-des-animaux@gmail.com">gardien-des-animaux@gmail.com</a></li>
+        <li><strong>Téléphone :</strong> +33 6 69 37 31 14 (du lundi au vendredi, de 9h à 18h).</li>
     </ul>
 </div>
 
