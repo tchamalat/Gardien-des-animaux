@@ -181,38 +181,58 @@ if (isset($_GET['gardien_id'])) {
             font-size: 1.2em;
         }
 
+        ul {
+            margin-top: 20px;
+            padding-left: 20px;
+            list-style: none;
+        }
+
+        ul li {
+            position: relative;
+            padding-left: 25px;
+            margin-bottom: 10px;
+        }
+
+        ul li:before {
+            content: '✔';
+            position: absolute;
+            left: 0;
+            top: 0;
+            color: orange;
+            font-weight: bold;
+        }
+
         footer {
-            padding: 20px;
             background: rgba(0, 0, 0, 0.85);
             color: #fff;
-            text-align: center;
+            padding: 20px;
             margin-top: 50px;
         }
 
-        .footer-links {
+        footer .footer-links {
             display: flex;
             justify-content: space-around;
-            margin-top: 20px;
+            flex-wrap: wrap;
         }
 
-        .footer-links div h4 {
+        footer .footer-links h4 {
             color: orange;
             margin-bottom: 10px;
         }
 
-        .footer-links ul {
+        footer .footer-links ul {
             list-style: none;
-            text-align: left;
+            padding: 0;
         }
 
-        .footer-links a {
-            color: white; 
+        footer .footer-links a {
+            color: white;
             text-decoration: none;
             transition: color 0.3s ease;
         }
 
-        .footer-links a:hover {
-            color: #ff7f00;
+        footer .footer-links a:hover {
+            color: orange;
         }
     </style>
 </head>
