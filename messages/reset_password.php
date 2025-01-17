@@ -17,7 +17,7 @@ if ($conn->connect_error) {
 function envoyerEmailConfirmation($destinataire, $email) {
     $subject = "Confirmation de changement de mot de passe";
     $message = "Bonjour,\n\nVotre mot de passe a été modifié avec succès. Si vous n'êtes pas à l'origine de cette action, veuillez réinitialiser votre mot de passe en cliquant sur le lien suivant :\n\n";
-    $message .= "http://localhost/62/reset_password.php?email=" . urlencode($email) . "\n\nMerci,\nL'équipe MyChat";
+    $message .= "https://gardien-des-animaux.fr/messages/reset_password.php?email=" . urlencode($email) . "\n\nMerci,\nL'équipe MyChat";
 
     $headers = "Content-Type: text/plain; charset=utf-8\r\n";
     $headers .= "From: hatsasse@gmail.com\r\n"; // Remplacez par l'adresse email de l'expéditeur
