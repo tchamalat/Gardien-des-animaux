@@ -322,6 +322,8 @@
                         <label id="label_contacts" for="radio_contacts">Contacts<img src="ui/icons/contacts.png"></label>
                         <label id="label_settings"  for="radio_settings">Settings<img src="ui/icons/settings.png"></label>
                         <label id="logout"  for="radio_logout">Logout<img src="ui/icons/logout.png"></label>
+                        <a id="logout" href="https://gardien-des-animaux.fr/login.html">Revenir Acceuil connection <img src="ui/icons/logout.png" alt="Déconnexion"></a>
+
                     </div>
                 </div>
 
