@@ -3,9 +3,9 @@
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-require 'PHPMailer/src/Exception.php';
-require 'PHPMailer/src/PHPMailer.php';
-require 'PHPMailer/src/SMTP.php';
+require 'lib/src/PHPMailer.php';
+require 'lib/src/SMTP.php';
+require 'lib/src/Exception.php';
 
 // Connexion à la base de données (exemple)
 $servername = "localhost";
@@ -44,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $mail->Host = 'smtp.gmail.com';
             $mail->SMTPAuth = true;
             $mail->Username = 'hatsasse@gmail.com'; // Votre adresse Gmail
-            $mail->Password = 'motdepasse_app'; // Mot de passe spécifique à l'application Gmail
+            $mail->Password = 'rqhhumfsmhshijgk'; // Mot de passe spécifique à l'application Gmail
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
             $mail->Port = 587;
 
@@ -73,3 +73,69 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 $conn->close();
 ?>
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Récupérer votre mot de passe</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f1e1; /* beige clair */
+            color: #d77f29; /* orange */
+            padding: 50px;
+        }
+        .container {
+            background-color: #fff; /* blanc */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 15px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        input[type="email"] {
+            padding: 10px;
+            margin: 10px;
+            border: 1px solid #d77f29;
+            border-radius: 5px;
+            width: 80%;
+        }
+        input[type="submit"] {
+            background-color: #d77f29;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 85%;
+        }
+        input[type="submit"]:hover {
+            background-color: #b86a1e;
+        }
+        a {
+            color: #d77f29;
+            text-decoration: none;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Récupérer votre mot de passe</h2>
+        <form method="POST">
+            <input type="email" name="email" placeholder="Entrez votre adresse email" required><br>
+            <input type="submit" value="Envoyer le lien de réinitialisation">
+        </form>
+        <br>
+        <a href="signup.php" style="display: block; text-align: center; text-decoration:none;">
+            N'avez-vous pas de compte ? Inscrivez-vous ici.
+        </a>
+
+        <a href="login.php" style="display: block; text-align: center; text-decoration:none;">
+            Revenez pour la connexion.
+        </a>
+    </div>
+</body>
+</html>
+
