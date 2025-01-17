@@ -2,7 +2,6 @@
 session_start();
 require_once 'config.php';
 
-// Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
     header('Location: login.php');
     exit;
@@ -10,15 +9,12 @@ if (!isset($_SESSION['user_id'])) {
 
 $user_id = $_SESSION['user_id'];
 
-// Get reservation ID from URL
 if (!isset($_GET['id']) || empty($_GET['id'])) {
     echo "Réservation introuvable.";
     exit;
 }
-
 $reservation_id = intval($_GET['id']);
 
-// Fetch reservation details
 $sql = "
     SELECT r.id_reservation, r.date_debut, r.date_fin, r.lieu, r.type, r.heure_debut, r.heure_fin, r.validite, c.nom_utilisateur AS gardien
     FROM reservation r
@@ -37,18 +33,13 @@ if ($result->num_rows === 0) {
 
 $reservation = $result->fetch_assoc();
 
-// Handle payment submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Simulate payment process
-    $payment_success = true; // Set to `false` for payment failure simulation
-
+    $payment_success = true; 
     if ($payment_success) {
-        // Update reservation to mark as paid
         $update_sql = "UPDATE reservation SET paiement_effectue = 1 WHERE id_reservation = ?";
         $update_stmt = $conn->prepare($update_sql);
         $update_stmt->bind_param('i', $reservation_id);
         $update_stmt->execute();
-
         echo "<script>alert('Paiement réussi !'); window.location.href='historique.php';</script>";
         exit;
     } else {
@@ -64,7 +55,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Paiement pour la Réservation</title>
     <style>
-        /* Global Styles */
         * {
             margin: 0;
             padding: 0;
