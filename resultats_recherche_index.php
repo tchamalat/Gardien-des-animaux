@@ -86,6 +86,13 @@ $conn->close();
             transform: translateY(-3px);
         }
 
+        header .auth-buttons {
+            display: flex;
+            gap: 10px;
+            margin-right: 30px; 
+        }
+
+
         .resultats-container {
             max-width: 1000px;
             margin: 150px auto 50px auto;
