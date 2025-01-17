@@ -183,63 +183,49 @@
     </header>
 
 
-    <!-- Conteneur principal de la recherche -->
-    <div class="search-container">
-        <h2>Trouvez un gardien pour vos animaux</h2>
-        <form action="resultats_recherche_index.php" method="GET">
-            <input type="hidden" name="latitude" value="<?php echo htmlspecialchars($_GET['latitude'] ?? ''); ?>">
-            <input type="hidden" name="longitude" value="<?php echo htmlspecialchars($_GET['longitude'] ?? ''); ?>">
+<!-- Conteneur principal de la recherche -->
+<div class="search-container">
+    <h2>Trouvez un gardien pour vos animaux</h2>
+    <form action="resultats_recherche.php" method="GET">
+        <div class="form-group">
+            <label for="service">Type de service</label>
+            <select name="service" id="service">
+                <option value="garde">Garde</option>
+                <option value="promenade">Promenade</option>
+            </select>
+        </div>
 
-            <!-- Type de service -->
-            <div class="form-group">
-                <label for="service">Type de service</label>
-                <select name="service" id="service">
-                    <option value="garde">Garde</option>
-                    <option value="promenade">Promenade</option>
-                </select>
-            </div>
+        <div class="form-group">
+            <label for="animal">Type d'animal</label>
+            <select name="animal" id="animal">
+                <option value="chien">Chien</option>
+                <option value="chat">Chat</option>
+                <option value="oiseau">Oiseau</option>
+                <option value="oiseau">Lapin</option>
+                <option value="oiseau">Rongeur</option>
+                <option value="oiseau">Reptile</option>
+                <option value="oiseau">Autre</option>
+            </select>
+        </div>
 
-            <!-- Type d'animal -->
-            <div class="form-group">
-                <label for="animal">Type d'animal</label>
-                <select name="animal" id="animal">
-                    <option value="chien">Chien</option>
-                    <option value="chat">Chat</option>
-                    <option value="oiseau">Oiseau</option>
-                    <option value="oiseau">Lapin</option>
-                    <option value="oiseau">Rongeur</option>
-                    <option value="oiseau">Reptile</option>
-                    <option value="oiseau">Autre</option>
-                </select>
-            </div>
+        <div class="form-group">
+            <label for="nombre">Nombre d'animaux</label>
+            <select name="nombre" id="nombre">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3+</option>
+            </select>
+        </div>
 
-            <!-- Nombre d'animaux -->
-            <div class="form-group">
-                <label for="nombre">Nombre d'animaux</label>
-                <select name="nombre" id="nombre">
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3+</option>
-                </select>
-            </div>
+        <div class="form-group">
+            <label for="budget_min">Budget minimum (€)</label>
+            <input type="number" name="budget_min" placeholder="Minimum" value="20">
+            <input type="number" name="budget_max" placeholder="Maximum" value="40">
+        </div>
 
-            <!-- Rayon de recherche -->
-            <div class="form-group">
-                <label for="rayon">Rayon autour de vous (km)</label>
-                <input type="number" name="rayon" id="rayon" value="20" min="1">
-            </div>
-
-            <!-- Budget -->
-            <div class="form-group">
-                <label for="budget_min">Budget minimum (€)</label>
-                <input type="number" name="budget_min" placeholder="Minimum" value="20">
-                <input type="number" name="budget_max" placeholder="Maximum" value="40">
-            </div>
-
-            <!-- Bouton de recherche -->
-            <button type="submit" class="search-btn">Recherche</button>
-        </form>
-    </div>
+        <button type="submit" class="search-btn">Recherche</button>
+    </form>
+</div>
 
     <!-- Footer -->
     <footer>
