@@ -52,19 +52,14 @@ $conn->close();
     <meta name='viewport' content='width=device-width, initial-scale=1.0'>
     <title>Résultats de la recherche</title>
     <style>
-        /* Styles globaux */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         body {
             font-family: Arial, sans-serif;
-            color: #fff;
+            color: #333;
             background: url('images/premierplan.png') no-repeat center center fixed;
             background-size: cover;
-            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
         }
 
         header {
@@ -73,23 +68,95 @@ $conn->close();
             left: 0;
             width: 100%;
             z-index: 10;
-            padding: 20px 30px;
+            padding: 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            background: none;
         }
 
-        header img {
-            height: 120px;
-            max-width: 200px;
+        header h1 {
+            color: orange;
+            font-size: 1.8em;
+            margin: 0;
         }
 
-        .auth-buttons {
+        header .btn {
+            background-color: orange;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            cursor: pointer;
+            text-decoration: none;
+            margin-left: 10px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        header .btn:hover {
+            background-color: #ff7f00;
+            transform: translateY(-3px);
+        }
+
+        .resultats-container {
+            max-width: 1000px;
+            margin: 150px auto 50px auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .resultats-container h2 {
+            color: orange;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .results-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .result-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .result-card .result-header {
             display: flex;
-            gap: 15px;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
         }
 
-        .auth-buttons .btn {
+        .result-card .gardien-name {
+            font-size: 1.5em;
+            color: #333;
+            margin: 0;
+        }
+
+        .result-card .badge {
+            background-color: orange;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.9em;
+        }
+
+        .result-card .result-details p {
+            margin: 8px 0;
+        }
+
+        .result-card .result-details span {
+            font-weight: bold;
+        }
+
+        .result-card .result-actions .btn-hero {
             background-color: orange;
             color: white;
             padding: 10px 20px;
@@ -101,70 +168,16 @@ $conn->close();
             transition: background-color 0.3s ease, transform 0.3s ease;
         }
 
-        .auth-buttons .btn:hover {
+        .result-card .result-actions .btn-hero:hover {
             background-color: #ff7f00;
             transform: translateY(-3px);
         }
 
-        .resultats-container {
-            max-width: 900px;
-            margin: 150px auto;
-            background: rgba(255, 255, 255, 0.9);
-            border-radius: 15px;
-            padding: 30px;
-            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
-            color: #333;
-        }
-
-        h2 {
-            color: orange;
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .results-list {
-            list-style: none;
-            padding: 0;
-        }
-
-        .result-card {
-            background: rgba(255, 255, 255, 0.85);
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        .result-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .gardien-name {
-            font-size: 1.5em;
-            color: #555;
-        }
-
-        .service-type {
-            background: orange;
-            color: white;
-            padding: 5px 10px;
-            border-radius: 20px;
-            font-size: 0.9em;
-        }
-
-        .result-details p {
-            margin: 10px 0;
-            font-size: 1em;
-        }
-
         .no-results {
             text-align: center;
+            color: #888;
+            margin-top: 20px;
             font-size: 1.2em;
-            color: #555;
-            margin-top: 30px;
         }
 
         ul {
@@ -192,7 +205,11 @@ $conn->close();
             background: rgba(0, 0, 0, 0.85);
             color: #fff;
             padding: 20px;
-            margin-top: 50px;
+            position: fixed; 
+            bottom: 0; 
+            left: 0;
+            width: 100%;
+            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2); 
         }
 
         footer .footer-links {
