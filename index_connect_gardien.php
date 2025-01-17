@@ -203,7 +203,7 @@
     <div class="auth-buttons">
         <button class="btn" onclick="window.location.href='profil_gardien.php'">Mon Profil</button>
         <button class="btn" onclick="window.location.href='mes_reservations.php'">Mes réservations</button>
-        <button class="btn" onclick="window.location.href='discussion_gardien.php'">Discussion</button>
+        <button class="btn" onclick="window.location.href='messages/index.php'">Discussion</button>
     </div>
 </header>
 
