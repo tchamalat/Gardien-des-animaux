@@ -26,7 +26,7 @@ try {
     $stmtAbonnements = $pdo->query("SELECT COUNT(*) as total FROM Abonnement");
     $totalAbonnements = $stmtAbonnements->fetch()['total'];
 
-    $stmtAnimaux = $pdo->query("SELECT COUNT(*) as total FROM animaux");
+    $stmtAnimaux = $pdo->query("SELECT COUNT(*) as total FROM Animal");
     $totalAnimaux = $stmtAnimaux->fetch()['total'];
 } catch (PDOException $e) {
     die("Erreur lors de la récupération des statistiques : " . $e->getMessage());
