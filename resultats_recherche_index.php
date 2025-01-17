@@ -61,10 +61,6 @@ $conn->close();
             align-items: center;
             background: none;
         }
-        header img {
-            height: 150px;
-            max-width: 170px;
-        }
 
         header h1 {
             color: orange;
@@ -231,64 +227,64 @@ $conn->close();
     </style>
 </head>
 <body>
-    <header>
-        <div class="header-container">
-            <img src="images/logo.png" alt="Logo Gardien des Animaux">
-            <div class="auth-buttons">
-                <button class="btn" onclick="window.location.href='search_page_index.php'">Nouvelle recherche</button>
-                <button class="btn" onclick="window.location.href='index.php'">Acceuil</button>                
-            </div>
-        </div>
-    </header>
+<header>
+    <h1>Résultats de la recherche</h1>
+    <button class="btn" onclick="window.location.href='search_page.php'">Nouvelle recherche</button>
+</header>
 
-    <div class="resultats-container">
-        <h2>Gardiens trouvés</h2>
-        <?php if (count($gardiens) > 0): ?>
-            <ul class="results-list">
-                <?php foreach ($gardiens as $gardien): ?>
-                    <li class="result-card">
-                        <div class="result-header">
-                            <h3 class="gardien-name"><?php echo htmlspecialchars($gardien['nom']); ?></h3>
-                            <span class="service-type"><?php echo htmlspecialchars($gardien['service']); ?></span>
-                        </div>
-                        <div class="result-details">
-                            <p><strong>Type d'animal:</strong> <?php echo htmlspecialchars($gardien['animal']); ?></p>
-                            <p><strong>Ville:</strong> <?php echo htmlspecialchars($gardien['ville']); ?></p>
-                            <p><strong>Budget:</strong> <?php echo htmlspecialchars($gardien['budget_min']); ?>€ - <?php echo htmlspecialchars($gardien['budget_max']); ?>€</p>
-                            <p><strong>Nombre d'animaux:</strong> <?php echo htmlspecialchars($gardien['nombre_animaux']); ?></p>
-                            <p><strong>Distance:</strong> <?php echo round($gardien['distance'], 2); ?> km</p>
-                        </div>
-                    </li>
-                <?php endforeach; ?>
+<div class="resultats-container">
+    <h2>Gardiens trouvés</h2>
+    <?php if (count($gardiens) > 0): ?>
+        <ul class="results-list">
+            <?php foreach ($gardiens as $gardien): ?>
+                <li class="result-card">
+                    <div class="result-header">
+                        <h3 class="gardien-name"><?php echo htmlspecialchars($gardien['nom']); ?></h3>
+                        <span class="service-type badge"><?php echo htmlspecialchars($gardien['service']); ?></span>
+                    </div>
+                    <div class="result-details">
+                        <p><span class="icon">🐾</span><strong>Type d'animal:</strong> <?php echo htmlspecialchars($gardien['animal']); ?></p>
+                        <p><span class="icon">📍</span><strong>Ville:</strong> <?php echo htmlspecialchars($gardien['ville']); ?></p>
+                        <p><span class="icon">💰</span><strong>Budget:</strong> <?php echo htmlspecialchars($gardien['budget_min']); ?>€ - <?php echo htmlspecialchars($gardien['budget_max']); ?>€</p>
+                        <p><span class="icon">🐕</span><strong>Nombre d'animaux:</strong> <?php echo htmlspecialchars($gardien['nombre_animaux']); ?></p>
+                        <p><span class="icon">🌍</span><strong>Distance:</strong> <?php echo round($gardien['distance'], 2); ?> km</p>
+                    </div>
+                    <div class="result-actions">
+                        <a href="login.html?gardien_id=<?php echo htmlspecialchars($gardien['id']); ?>" class="btn btn-hero">
+                            Réserver ce gardien
+                        </a>
+                    </div>
+                </li>
+            <?php endforeach; ?>
+        </ul>
+    <?php else: ?>
+        <p class="no-results">Aucun gardien trouvé pour ces critères de recherche.</p>
+    <?php endif; ?>
+</div>
+
+<footer>
+    <div class="footer-links">
+        <div>
+            <h4>En savoir plus :</h4>
+            <ul>
+                <li><a href="securite.php">Sécurité</a></li>
+                <li><a href="aide.php">Centre d'aide</a></li>
             </ul>
-        <?php else: ?>
-            <p class="no-results">Aucun gardien trouvé pour ces critères de recherche.</p>
-        <?php endif; ?>
-    </div>
-
-    <footer>
-        <div class="footer-links">
-            <div>
-                <h4>En savoir plus :</h4>
-                <ul>
-                    <li><a href="securite.php">Sécurité</a></li>
-                    <li><a href="aide.php">Centre d'aide</a></li>
-                </ul>
-            </div>
-            <div>
-                <h4>A propos de nous :</h4>
-                <ul>
-                    <li><a href="confidentialite.php">Politique de confidentialité</a></li>
-                    <li><a href="contact.php">Nous contacter</a></li>
-                </ul>
-            </div>
-            <div>
-                <h4>Conditions Générales :</h4>
-                <ul>
-                    <li><a href="conditions.php">Conditions d'utilisateur et de Service</a></li>
-                </ul>
-            </div>
         </div>
-    </footer>
+        <div>
+            <h4>A propos de nous :</h4>
+            <ul>
+                <li><a href="confidentialite.php">Politique de confidentialité</a></li>
+                <li><a href="contact.php">Nous contacter</a></li>
+            </ul>
+        </div>
+        <div>
+            <h4>Conditions Générales :</h4>
+            <ul>
+                <li><a href="conditions.php">Conditions d'utilisateur et de Service</a></li>
+            </ul>
+        </div>
+    </div>
+</footer>
 </body>
 </html>
