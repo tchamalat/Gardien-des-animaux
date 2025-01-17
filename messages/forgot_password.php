@@ -1,7 +1,7 @@
 <?php
 // Connexion à la base de données (exemple)
 $servername = "localhost";
-$username = "root";
+$username = "gardien";
 $password = "G@rdien-des-chiens";
 $dbname = "gardiendb"; // Remplacez par le nom de votre base de données
 
