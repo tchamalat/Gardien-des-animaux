@@ -38,7 +38,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <title>Gardien des Animaux - Connecté</title>
     <style>
         * {
-            margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
