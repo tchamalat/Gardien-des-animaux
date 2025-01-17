@@ -31,9 +31,6 @@
             align-items: center;
             background: none;
         }
-	header, footer {
-    	    flex-shrink: 0;
-	}
 
         header img {
             height: 120px;
