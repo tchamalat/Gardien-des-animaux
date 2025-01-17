@@ -1,17 +1,9 @@
 <?php
-// Inclusion de PHPMailer
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
-
-require 'lib/src/PHPMailer.php';
-require 'lib/src/SMTP.php';
-require 'lib/src/Exception.php';
-
 // Connexion à la base de données
 $servername = "localhost";
 $username = "gardien";
 $password = "G@rdien-des-chiens";
-$dbname = "gardiendb"; // Remplacez par le nom de votre base de données
+$dbname = "gardiendb" // Remplacez par le nom de votre base de données
 
 // Création de la connexion
 $conn = new mysqli($servername, $username, $password, $dbname);
@@ -21,48 +13,24 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// Fonction pour envoyer un email de confirmation avec PHPMailer
+// Fonction pour envoyer un email
 function envoyerEmailConfirmation($destinataire, $email) {
     $subject = "Confirmation de changement de mot de passe";
     $message = "Bonjour,\n\nVotre mot de passe a été modifié avec succès. Si vous n'êtes pas à l'origine de cette action, veuillez réinitialiser votre mot de passe en cliquant sur le lien suivant :\n\n";
-    $message .= "https://gardien-des-animaux.fr/messages/reset_password.php?email=" . urlencode($email) . "\n\nMerci,\nL'équipe MyChat";
+    $message .= "http://localhost/62/reset_password.php?email=" . urlencode($email) . "\n\nMerci,\nL'équipe MyChat";
 
-    // Utilisation de PHPMailer pour l'envoi de l'email
-    $mail = new PHPMailer(true);
+    $headers = "Content-Type: text/plain; charset=utf-8\r\n";
+    $headers .= "From: hatsasse@gmail.com\r\n"; // Remplacez par l'adresse email de l'expéditeur
 
-    try {
-        // Paramètres du serveur SMTP
-        $mail->isSMTP();
-        $mail->Host = 'smtp.gmail.com';
-        $mail->SMTPAuth = true;
-        $mail->Username = 'hatsasse@gmail.com'; // Votre adresse Gmail
-        $mail->Password = 'rqhhumfsmhshijgk'; // Mot de passe spécifique à l'application Gmail
-        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-        $mail->Port = 587;
-
-        // Destinataire
-        $mail->setFrom('hatsasse@gmail.com', 'Gardien des Chiens');
-        $mail->addAddress($destinataire);
-
-        // Contenu
-        $mail->isHTML(false); // Format texte brut
-        $mail->Subject = $subject;
-        $mail->Body = $message;
-
-        // Envoi de l'email
-        $mail->send();
-        return true;
-    } catch (Exception $e) {
-        return false;
-    }
+    return mail($destinataire, $subject, $message, $headers);
 }
 
 // Vérification de l'email dans l'URL
 if (isset($_GET['email']) && filter_var($_GET['email'], FILTER_VALIDATE_EMAIL)) {
     $email = $_GET['email'];
 
-    // Vérification de l'existence de l'email dans la base de données avec requête préparée
-    $stmt = $conn->prepare("SELECT * FROM users WHERE email = ?");
+    // Vérification de l'existence de l'email dans la base de données
+    $stmt = $conn->prepare("SELECT * FROM users WHERE email = ?"); // Utilisation des requêtes préparées
     $stmt->bind_param("s", $email);
     $stmt->execute();
     $result = $stmt->get_result();
