@@ -242,17 +242,6 @@
             }
         }
     </script>
-    <script>
-        const params = new URLSearchParams(window.location.search);
-        const errorMessage = params.get('error');
-        if (errorMessage) {
-            const errorDiv = document.getElementById('error-message');
-            errorDiv.textContent = decodeURIComponent(errorMessage);
-            errorDiv.style.display = 'block';
-        }
-    </script>
-
-
 
     <main>
         <div class="form-container">
@@ -279,7 +268,15 @@
             </form>
         </div>
     </main>
-
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        const errorMessage = params.get('error');
+        if (errorMessage) {
+            const errorDiv = document.getElementById('error-message');
+            errorDiv.textContent = decodeURIComponent(errorMessage);
+            errorDiv.style.display = 'block';
+        }
+    </script>
     <footer>
         <div class="footer-links">
             <div>
