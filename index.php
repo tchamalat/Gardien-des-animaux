@@ -256,6 +256,9 @@ include 'config.php';
             font-weight: bold;
             font-size: 1.2em; 
         }
+	.avis-section h2 {
+   	    margin-bottom: 20px; 
+        }
 	.voir-plus {
 	    background-color: #f5a623;
     	    color: white;
