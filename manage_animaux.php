@@ -2,6 +2,12 @@
 session_start();
 include 'config.php';
 
+if (isset($_GET['logout'])) {
+    session_destroy();
+    header("Location: login.html");
+    exit();
+}
+
 // Gestion de l'ajout ou de la mise à jour d'un animal
 if (isset($_POST['save'])) {
     $id = $_POST['id'] ?? null;
