@@ -80,12 +80,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $conn->commit();
             echo "success"; // Réponse de succès pour redirection
         } else {
-            $conn->rollback();
-            echo "<p style='color: red;'>Erreur lors de la création du compte. Veuillez réessayer.</p>";
+            throw new Exception("Erreur lors de l'exécution de la requête.");
         }
-    } catch (Exception $e) {
-        $conn->rollback();
-        echo "<p style='color: red;'>Erreur : " . $e->getMessage() . "</p>";
+    } catch (mysqli_sql_exception $e) {
+        $conn->rollback(); // Annule la transaction
+        if ($e->getCode() === 1062) { // Code erreur MySQL pour violation de contrainte unique
+            if (strpos($e->getMessage(), 'unique_email') !== false) {
+                echo "<p style='color: red;'>E-mail déjà utilisé.</p>";
+            } elseif (strpos($e->getMessage(), 'unique_phone') !== false) {
+                echo "<p style='color: red;'>Numéro de téléphone déjà utilisé.</p>";
+            } elseif (strpos($e->getMessage(), 'unique_username') !== false) {
+                echo "<p style='color: red;'>Nom d'utilisateur déjà utilisé.</p>";
+            } else {
+                echo "<p style='color: red;'>Doublon détecté. Veuillez vérifier vos informations.</p>";
+            }
+        } else {
+            echo "<p style='color: red;'>Erreur : " . $e->getMessage() . "</p>";
+        }
     }
 
     $stmt->close();
