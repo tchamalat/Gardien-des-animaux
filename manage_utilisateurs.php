@@ -186,7 +186,7 @@ $result = $conn->query("SELECT * FROM creation_compte");
 <div class="sidebar">
     <h2>Menu Admin</h2>
     <ul>
-        <li><a href="dashboard.php">Tableau de Bord</a></li>
+        <li><a href="admin.php">Tableau de Bord</a></li>
         <li><a href="manage_utilisateurs.php" class="active">Gérer les Utilisateurs</a></li>
         <li><a href="manage_reservations.php">Gérer les Réservations</a></li>
         <li><a href="manage_avis.php">Gérer les Avis</a></li>
