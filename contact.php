@@ -235,8 +235,8 @@
     
     <!-- Afficher le message de confirmation -->
     <?php if (!empty($confirmationMessage)): ?>
-        <div class="confirmation-message">
-        <?= htmlspecialchars($confirmationMessage); ?>
+        <div style="color: green; border: 1px solid green; padding: 10px; margin-bottom: 20px;">
+            <?= htmlspecialchars($confirmationMessage); ?>
         </div>
     <?php endif; ?>
 
