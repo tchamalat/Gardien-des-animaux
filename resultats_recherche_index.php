@@ -108,7 +108,7 @@ $conn->close();
             color: #333;
             position: relative;
             top: 50%; 
-            transform: translateY(-50%); 
+            transform: translateY(50%); 
         }
 
 
