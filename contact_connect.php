@@ -209,12 +209,12 @@
 
     <h2>1. Par email</h2>
     <p>
-        Envoyez-nous un email à : <a href="mailto:contact@gardien-des-animaux.fr">contact@gardien-des-animaux.fr</a>. Nous nous efforçons de répondre sous 24 à 48 heures.
+        Envoyez-nous un email à : <a href="mailto:gardien-des-animaux@gmail.com">gardien-des-animaux@gmail.com</a>. Nous nous efforçons de répondre sous 24 à 48 heures.
     </p>
 
     <h2>2. Par téléphone</h2>
     <p>
-        Appelez-nous au : <strong>+33 1 23 45 67 89</strong>. Nous sommes disponibles du lundi au vendredi, de 9h à 18h.
+        Appelez-nous au : <strong>+33 6 69 37 31 14</strong>. Nous sommes disponibles du lundi au vendredi, de 9h à 18h.
     </p>
 
     <h2>3. Formulaire de contact</h2>
