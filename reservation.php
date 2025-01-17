@@ -2,26 +2,21 @@
 include 'config.php';
 session_start();
 
-$message_confirmation = ''; // Variable pour stocker le message de confirmation
+$message_confirmation = '';
 
-// Vérification si un gardien est sélectionné
 if (isset($_GET['gardien_id'])) {
     $gardien_id = $_GET['gardien_id'];
     $_SESSION['selected_gardien'] = $gardien_id;
-
-    // Récupérer les informations du gardien depuis la base de données
     $sql = "SELECT nom_utilisateur, ville, service, budget_min, budget_max FROM creation_compte WHERE id = ? AND role = 0";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("i", $gardien_id);
     $stmt->execute();
     $result = $stmt->get_result();
-
     if ($result->num_rows > 0) {
         $gardien_info = $result->fetch_assoc();
     } else {
         die("Gardien introuvable ou non valide !");
     }
-
     $stmt->close();
 } elseif ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SESSION['selected_gardien'])) {
     $gardien_id = $_SESSION['selected_gardien'];
@@ -32,19 +27,14 @@ if (isset($_GET['gardien_id'])) {
     $heure_fin = $_POST['heure_fin'];
     $lieu = $_POST['lieu'];
     $type = $_POST['type'];
-
     if (!$date_debut || !$date_fin || !$heure_debut || !$heure_fin || !$lieu || !$type) {
         die("Tous les champs doivent être renseignés !");
     }
-
     $sql = "INSERT INTO reservation (gardien_id, id_utilisateur, date_debut, date_fin, lieu, type, heure_debut, heure_fin) 
             VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("iissssss", $gardien_id, $proprietaire_id, $date_debut, $date_fin, $lieu, $type, $heure_debut, $heure_fin);
-
     if ($stmt->execute()) {
-        // Utilisation du nom du gardien dans le message de confirmation
         $message_confirmation = "Votre réservation a été effectuée avec succès pour le gardien <strong>" 
                                 . htmlspecialchars($gardien_info['nom_utilisateur']) . "</strong> !";
         unset($_SESSION['selected_gardien']);
@@ -64,7 +54,6 @@ if (isset($_GET['gardien_id'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Réservation</title>
     <style>
-        /* Styles globaux */
         * {
             margin: 0;
             padding: 0;
@@ -94,7 +83,7 @@ if (isset($_GET['gardien_id'])) {
         }
 
         header h1 {
-            color: orange; /* "Réservation" en orange */
+            color: orange; 
             font-size: 2em;
         }
 
@@ -207,7 +196,7 @@ if (isset($_GET['gardien_id'])) {
         }
 
         .footer-links div h4 {
-            color: orange; /* "En savoir plus", "À propos de nous", etc. en orange */
+            color: orange;
             margin-bottom: 10px;
         }
 
@@ -217,7 +206,7 @@ if (isset($_GET['gardien_id'])) {
         }
 
         .footer-links a {
-            color: white; /* Liens en blanc */
+            color: white; 
             text-decoration: none;
             transition: color 0.3s ease;
         }
