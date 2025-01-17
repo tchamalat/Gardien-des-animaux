@@ -42,7 +42,19 @@
             margin-left: auto; 
             display: flex;
             gap: 15px;
+            margin-top: -90px;
         }
+
+	    @media (max-width: 600px) { 
+        		.auth-buttons {
+            		flex-direction: column; 
+        	    	gap: 15px;
+			        margin-top: -3px !important;
+    		    }
+	    }
+
+
+        
 
 
         .auth-buttons .btn {
