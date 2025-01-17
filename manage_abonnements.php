@@ -7,8 +7,6 @@ if (isset($_GET['logout'])) {
     header("Location: login.html");
     exit();
 }
-
-// Gestion de l'ajout d'un abonnement
 if (isset($_POST['add'])) {
     $id_utilisateur = $_POST['id_utilisateur'];
     $id_paiement = $_POST['id_paiement'];
@@ -16,7 +14,6 @@ if (isset($_POST['add'])) {
     $duree_abo = $_POST['duree_abo'];
     $date_debut_abo = $_POST['date_debut_abo'];
     $date_fin_abo = $_POST['date_fin_abo'];
-
     $stmt = $conn->prepare("INSERT INTO Abonnement (id_utilisateur, id_paiement, type_abo, duree_abo, date_debut_abo, date_fin_abo) VALUES (?, ?, ?, ?, ?, ?)");
     $stmt->bind_param("iissss", $id_utilisateur, $id_paiement, $type_abo, $duree_abo, $date_debut_abo, $date_fin_abo);
     $stmt->execute();
@@ -25,7 +22,6 @@ if (isset($_POST['add'])) {
     exit();
 }
 
-// Gestion de la suppression d'un abonnement
 if (isset($_GET['delete'])) {
     $id_abo = $_GET['delete'];
     $stmt = $conn->prepare("DELETE FROM Abonnement WHERE id_abo = ?");
@@ -36,7 +32,6 @@ if (isset($_GET['delete'])) {
     exit();
 }
 
-// Récupération des abonnements
 $result = $conn->query("SELECT * FROM Abonnement");
 ?>
 
