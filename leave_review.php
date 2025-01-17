@@ -72,7 +72,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             cursor: pointer;
             text-decoration: none;
             transition: background-color 0.3s ease, transform 0.3s ease;
-            margin-right: 20px;
+            margin-right: 30px;
         }
 
         header .btn:hover {
