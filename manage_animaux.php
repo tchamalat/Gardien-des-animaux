@@ -8,14 +8,11 @@ if (isset($_GET['logout'])) {
     exit();
 }
 
-// Gestion de l'ajout ou de la mise à jour d'un animal
 if (isset($_POST['save'])) {
     $id = $_POST['id'] ?? null;
     $id_utilisateur = $_POST['id_utilisateur'];
     $type = $_POST['type'];
     $prenom_animal = $_POST['prenom_animal'];
-
-    // Gestion du téléchargement de la photo
     if (isset($_FILES['url_photo']) && $_FILES['url_photo']['error'] === UPLOAD_ERR_OK) {
         $url_photo = file_get_contents($_FILES['url_photo']['tmp_name']);
     } else {
@@ -40,8 +37,6 @@ if (isset($_POST['save'])) {
     header("Location: manage_animaux.php");
     exit();
 }
-
-// Gestion de la suppression d'un animal
 if (isset($_GET['delete'])) {
     $id = $_GET['delete'];
     $stmt = $conn->prepare("DELETE FROM Animal WHERE id_animal = ?");
@@ -51,8 +46,6 @@ if (isset($_GET['delete'])) {
     header("Location: manage_animaux.php");
     exit();
 }
-
-// Récupération des animaux
 $result = $conn->query("SELECT * FROM Animal");
 ?>
 
