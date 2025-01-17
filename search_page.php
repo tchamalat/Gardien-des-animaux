@@ -5,16 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recherche de Gardien</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            color: #333;
-            background: url('images/premierplan.png') no-repeat center center fixed;
-            background-size: cover;
-            margin: 0;
-            padding: 0;
-            overflow-x: hidden;
-        }
-
+	    body {
+    	    display: flex;
+    	    flex-direction: column;
+    	    min-height: 100vh;
+    	    margin: 0;
+	        background: url('images/premierplan.png') no-repeat center center fixed;
+	        background-size: cover;
+	    }
         header {
             position: fixed;
             top: 0;
