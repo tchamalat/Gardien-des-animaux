@@ -104,6 +104,9 @@ $stmt_animaux->close();
             background-size: cover;
             margin: 0;
             padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
 
         header {
@@ -148,12 +151,15 @@ $stmt_animaux->close();
 
         .profile-container {
             max-width: 1200px;
-            margin: 120px auto 50px; 
+            margin: auto; /* Centre horizontalement */
+            margin-top: 170px; /* Donne de l'espace après le header */
+            margin-bottom: 100px; /* Donne de l'espace avant le footer */
             background: rgba(255, 255, 255, 0.95);
             border-radius: 15px;
             padding: 30px 40px;
             box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
             text-align: center;
+            flex-grow: 1; /* Permet au conteneur de remplir l'espace restant */
         }
 
         .profile-picture img {
