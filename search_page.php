@@ -132,9 +132,12 @@
             background: rgba(0, 0, 0, 0.85);
             color: #fff;
             padding: 20px;
-            margin-top: 50px;
+            position: fixed; 
+            bottom: 0; 
+            left: 0;
+            width: 100%; 
+            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2); 
         }
-
         footer .footer-links {
             display: flex;
             justify-content: space-around;
