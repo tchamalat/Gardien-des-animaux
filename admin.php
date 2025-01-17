@@ -15,7 +15,6 @@ try {
     die("Erreur de connexion : " . $e->getMessage());
 }
 
-// Récupération des statistiques
 try {
     $stmtUsers = $pdo->query("SELECT COUNT(*) as total FROM creation_compte");
     $totalUsers = $stmtUsers->fetch()['total'];
@@ -96,22 +95,22 @@ try {
 
         .stats-cards {
             display: flex;
-            justify-content: space-between; /* Espacement égal entre les cadres */
-            align-items: center; /* Aligner les cartes verticalement */
-            gap: 20px; /* Espace entre les cartes */
+            justify-content: space-between; 
+            align-items: center; 
+            gap: 20px;
             margin-bottom: 30px;
-            flex-wrap: nowrap; /* Empêche le retour à la ligne */
+            flex-wrap: nowrap;
         }
 
         .stat-card {
-            flex: 1; /* Les cartes prennent des tailles égales */
+            flex: 1; 
             background-color: orange;
             color: white;
             padding: 20px;
             border-radius: 8px;
             text-align: center;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-            max-width: 250px; /* Limite la largeur des cartes */
+            max-width: 250px; 
         }
 
 
@@ -183,7 +182,6 @@ try {
         }]
     };
 
-    // Configuration du graphique
     const config = {
         type: 'bar',
         data: data,
