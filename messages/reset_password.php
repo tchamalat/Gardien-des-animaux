@@ -3,9 +3,9 @@
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-require 'PHPMailer/src/Exception.php';
-require 'PHPMailer/src/PHPMailer.php';
-require 'PHPMailer/src/SMTP.php';
+require 'lib/src/PHPMailer.php';
+require 'lib/src/SMTP.php';
+require 'lib/src/Exception.php';
 
 // Connexion à la base de données
 $servername = "localhost";
@@ -36,7 +36,7 @@ function envoyerEmailConfirmation($destinataire, $email) {
         $mail->Host = 'smtp.gmail.com';
         $mail->SMTPAuth = true;
         $mail->Username = 'hatsasse@gmail.com'; // Votre adresse Gmail
-        $mail->Password = 'motdepasse_app'; // Mot de passe spécifique à l'application Gmail
+        $mail->Password = 'rqhhumfsmhshijgk'; // Mot de passe spécifique à l'application Gmail
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port = 587;
 
