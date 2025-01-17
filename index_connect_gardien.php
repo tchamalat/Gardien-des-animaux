@@ -43,6 +43,12 @@
             display: flex;
             gap: 15px;
         }
+	    @media (max-width: 600px) { 
+        		.auth-buttons {
+            		flex-direction: column; 
+        	    	gap: 15px; 
+    		    }
+	    }
 
         header .auth-buttons .btn {
             background-color: orange;
