@@ -8,14 +8,13 @@ $data = json_decode(file_get_contents('php://input'), true);
 if (isset($data['latitude'], $data['longitude'])) {
     $latitude = $data['latitude'];
     $longitude = $data['longitude'];
-    $radius = $data['radius'] ?? 50;
+
     $query = $conn->prepare("
         SELECT 
             id, nom_utilisateur, prenom, ville, profile_picture, latitude, longitude,
             (6371 * ACOS(COS(RADIANS(?)) * COS(RADIANS(latitude)) * COS(RADIANS(longitude) - RADIANS(?)) + SIN(RADIANS(?)) * SIN(RADIANS(latitude)))) AS distance
         FROM creation_compte
         WHERE role = 1 AND latitude IS NOT NULL AND longitude IS NOT NULL
-        HAVING distance <= ?
         ORDER BY distance ASC
     ");
 
@@ -24,7 +23,7 @@ if (isset($data['latitude'], $data['longitude'])) {
         exit;
     }
 
-    $query->bind_param("dddi", $latitude, $longitude, $latitude, $radius);
+    $query->bind_param("ddd", $latitude, $longitude, $latitude);
 
     if (!$query->execute()) {
         echo json_encode(['error' => 'Erreur d\'exécution de la requête : ' . $query->error]);
@@ -46,7 +45,7 @@ if (isset($data['latitude'], $data['longitude'])) {
     }
 
     if (empty($proprietaires)) {
-        echo json_encode(['error' => 'Aucun propriétaire trouvé dans ce rayon.']);
+        echo json_encode(['error' => 'Aucun propriétaire trouvé.']);
     } else {
         echo json_encode($proprietaires);
     }
