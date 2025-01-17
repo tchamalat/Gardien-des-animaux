@@ -23,78 +23,11 @@ try {
     $stmtReservations = $pdo->query("SELECT COUNT(*) as total FROM reservation");
     $totalReservations = $stmtReservations->fetch()['total'];
 
-    $stmtUserEvolution = $pdo->query("
-        SELECT MONTH(date_creation) AS mois, COUNT(*) AS total
-        FROM creation_compte
-        GROUP BY mois
-        ORDER BY mois ASC
-    ");
-    $userEvolution = $stmtUserEvolution->fetchAll(PDO::FETCH_ASSOC);
+    $stmtAbonnements = $pdo->query("SELECT COUNT(*) as total FROM abonnements");
+    $totalAbonnements = $stmtAbonnements->fetch()['total'];
 
-    $stmtReservationEvolution = $pdo->query("
-        SELECT MONTH(date_debut) AS mois, COUNT(*) AS total
-        FROM reservation
-        GROUP BY mois
-        ORDER BY mois ASC
-    ");
-    $reservationEvolution = $stmtReservationEvolution->fetchAll(PDO::FETCH_ASSOC);
-} catch (PDOException $e) {
-    die("Erreur lors de la récupération des statistiques : " . $e->getMessage());
-}
-
-// Préparation des données pour les graphiques
-function transformDataForChart($data) {
-    $labels = [];
-    $values = [];
-    $months = range(1, 12);
-
-    foreach ($months as $month) {
-        $found = false;
-        foreach ($data as $row) {
-            if ((int)$row['mois'] === $month) {
-                $labels[] = date("F", mktime(0, 0, 0, $month, 1));
-                $values[] = $row['total'];
-                $found = true;
-                break;
-            }
-        }
-        if (!$found) {
-            $labels[] = date("F", mktime(0, 0, 0, $month, 1));
-            $values[] = 0; // Valeur par défaut
-        }
-    }
-
-    return ['labels' => $labels, 'values' => $values];
-}
-
-$userChartData = transformDataForChart($userEvolution);
-$reservationChartData = transformDataForChart($reservationEvolution);
-?>
-
-<?php
-session_start();
-include 'config.php';
-
-if (isset($_GET['logout'])) {
-    session_destroy();
-    header("Location: login.html");
-    exit();
-}
-
-try {
-    $pdo = new PDO('mysql:host=localhost;dbname=gardiendb', 'gardien', 'G@rdien-des-chiens');
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch (PDOException $e) {
-    die("Erreur de connexion : " . $e->getMessage());
-}
-
-// Récupération des statistiques
-try {
-    $stmtUsers = $pdo->query("SELECT COUNT(*) as total FROM creation_compte");
-    $totalUsers = $stmtUsers->fetch()['total'];
-
-    $stmtReservations = $pdo->query("SELECT COUNT(*) as total FROM reservation");
-    $totalReservations = $stmtReservations->fetch()['total'];
+    $stmtAnimaux = $pdo->query("SELECT COUNT(*) as total FROM animaux");
+    $totalAnimaux = $stmtAnimaux->fetch()['total'];
 } catch (PDOException $e) {
     die("Erreur lors de la récupération des statistiques : " . $e->getMessage());
 }
@@ -165,6 +98,7 @@ try {
             display: flex;
             gap: 20px;
             margin-bottom: 30px;
+            flex-wrap: wrap;
         }
 
         .stat-card {
@@ -175,6 +109,7 @@ try {
             border-radius: 8px;
             text-align: center;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            min-width: 250px;
         }
 
         .stat-card h3 {
@@ -219,6 +154,14 @@ try {
             <h3><?= $totalReservations ?></h3>
             <p>Réservations</p>
         </div>
+        <div class="stat-card">
+            <h3><?= $totalAbonnements ?></h3>
+            <p>Abonnements</p>
+        </div>
+        <div class="stat-card">
+            <h3><?= $totalAnimaux ?></h3>
+            <p>Animaux</p>
+        </div>
     </div>
 
     <canvas id="adminChart"></canvas>
@@ -227,12 +170,12 @@ try {
 <script>
     // Données pour le graphique
     const data = {
-        labels: ['Utilisateurs', 'Réservations'],
+        labels: ['Utilisateurs', 'Réservations', 'Abonnements', 'Animaux'],
         datasets: [{
             label: 'Statistiques',
-            data: [<?= $totalUsers ?>, <?= $totalReservations ?>],
-            backgroundColor: ['#f4840c', '#e96d0c'],
-            borderColor: ['#d45a00', '#d45a00'],
+            data: [<?= $totalUsers ?>, <?= $totalReservations ?>, <?= $totalAbonnements ?>, <?= $totalAnimaux ?>],
+            backgroundColor: ['#f4840c', '#e96d0c', '#ffa726', '#fb8c00'],
+            borderColor: ['#d45a00', '#d45a00', '#f57c00', '#ef6c00'],
             borderWidth: 1
         }]
     };
@@ -259,11 +202,6 @@ try {
     // Rendu du graphique
     const ctx = document.getElementById('adminChart').getContext('2d');
     new Chart(ctx, config);
-</script>
-
-</body>
-</html>
-
 </script>
 
 </body>
