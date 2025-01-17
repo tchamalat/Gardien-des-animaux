@@ -449,6 +449,48 @@
             .catch(error => console.error('Erreur:', error));
         });
     </script>
+    <script>
+        document.getElementById('registerForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Empêche la soumission par défaut
+
+            const submitButton = this.querySelector('button[type="submit"]');
+            submitButton.disabled = true; // Désactive le bouton pour éviter les clics multiples
+            submitButton.textContent = 'En cours...'; // Indique que la soumission est en cours
+
+            const formData = new FormData(this);
+            const password = formData.get('password');
+            const confirmPassword = formData.get('confirm_password');
+
+            if (password !== confirmPassword) {
+                document.getElementById('passwordError').style.display = 'inline';
+                submitButton.disabled = false; // Réactive le bouton en cas d'erreur
+                submitButton.textContent = 'Créer un compte';
+                return;
+            }
+
+            fetch('register.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.text())
+            .then(data => {
+                submitButton.disabled = false;
+                submitButton.textContent = 'Créer un compte'; // Réinitialise le texte du bouton
+
+                if (data.trim() === "success") {
+                    window.location.href = "confirmation.php"; // Redirige en cas de succès
+                } else {
+                    document.getElementById('message').innerHTML = data; // Affiche l'erreur
+                }
+            })
+            .catch(error => {
+                submitButton.disabled = false; // Réactive le bouton en cas d'erreur
+                submitButton.textContent = 'Créer un compte';
+                console.error('Erreur:', error);
+            });
+        });
+    </script>
+
     <footer>
         <div class="footer-links">
             <div>
