@@ -38,7 +38,9 @@ if(isset($_FILES['file']) && $_FILES['file']['name'] != ""){
     if($_FILES['file']['error'] == 0 && in_array($_FILES['file']['type'], $allowed)){
 
         //good to go
-        $folder = "uploads/";
+        $base_url = "https://gardien-des-animaux.fr/messages"; // L'URL de votre site
+        $folder = $base_url . "/uploads/";
+
         if (!file_exists($folder)){
             mkdir($folder,0777, true);
 
