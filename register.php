@@ -33,30 +33,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Vérification de l'unicité des champs
     $stmt = $conn->prepare("
-        SELECT mail, numero_telephone, nom_utilisateur 
-        FROM creation_compte 
+        SELECT 
+            CASE WHEN mail = ? THEN 'email' END AS email_conflict,
+            CASE WHEN REPLACE(REPLACE(REPLACE(numero_telephone, ' ', ''), '-', ''), '.', '') = ? THEN 'phone' END AS phone_conflict,
+            CASE WHEN nom_utilisateur = ? THEN 'username' END AS username_conflict
+        FROM creation_compte
         WHERE mail = ? OR REPLACE(REPLACE(REPLACE(numero_telephone, ' ', ''), '-', ''), '.', '') = ? OR nom_utilisateur = ?
     ");
-    $stmt->bind_param("sss", $mail, $numero_telephone, $nom_utilisateur);
+    $stmt->bind_param("ssssss", $mail, $numero_telephone, $nom_utilisateur, $mail, $numero_telephone, $nom_utilisateur);
     $stmt->execute();
-    $stmt->bind_result($existingMail, $existingPhone, $existingUsername);
+    $stmt->bind_result($emailConflict, $phoneConflict, $usernameConflict);
 
-    $conflict = [];
+    $conflictMessages = [];
     while ($stmt->fetch()) {
-        if ($existingMail === $mail) {
-            $conflict[] = "E-mail déjà utilisé.";
+        if ($emailConflict) {
+            $conflictMessages[] = "E-mail déjà utilisé.";
         }
-        if ($existingPhone === $numero_telephone) {
-            $conflict[] = "Numéro de téléphone déjà utilisé.";
+        if ($phoneConflict) {
+            $conflictMessages[] = "Numéro de téléphone déjà utilisé.";
         }
-        if ($existingUsername === $nom_utilisateur) {
-            $conflict[] = "Nom d'utilisateur déjà utilisé.";
+        if ($usernameConflict) {
+            $conflictMessages[] = "Nom d'utilisateur déjà utilisé.";
         }
     }
     $stmt->close();
 
-    if (!empty($conflict)) {
-        echo "<p style='color: red;'>" . implode("<br>", $conflict) . "</p>";
+    if (!empty($conflictMessages)) {
+        echo "<p style='color: red;'>" . implode("<br>", array_unique($conflictMessages)) . "</p>";
         exit();
     }
 
