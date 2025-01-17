@@ -127,11 +127,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         .form-container {
             background: rgba(255, 255, 255, 0.9);
-            padding: 40px;
+            padding: 20px;
             border-radius: 15px;
             box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
-            width: 90%;
-            max-width: 500px;
+            width: 80%; 
+            max-width: 400px; 
             text-align: center;
             margin: 100px auto auto; 
             flex-grow: 1; 
