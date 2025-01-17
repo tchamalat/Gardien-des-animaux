@@ -29,8 +29,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // Insertion dans la table messages
-    $stmt = $conn->prepare("INSERT INTO messages (sender, message, date) VALUES (?, ?, NOW())");
-    $stmt->bind_param("ss", $email, $message);
+    $stmt = $conn->prepare("INSERT INTO contact (name, email, message, date_sent) VALUES (?, ?, ?, NOW())");
+    $stmt->bind_param("sss", $name, $email, $message);
+
 
     if ($stmt->execute()) {
         echo "<p>Merci, $name ! Votre message a été envoyé avec succès.</p>";
