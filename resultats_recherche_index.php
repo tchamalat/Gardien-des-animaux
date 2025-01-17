@@ -1,41 +1,27 @@
 <?php
 include 'config.php';
 session_start();
-
-// Récupération des paramètres de recherche
-$latitude_user = isset($_GET['latitude']) ? floatval($_GET['latitude']) : 0;
-$longitude_user = isset($_GET['longitude']) ? floatval($_GET['longitude']) : 0;
-$rayon = $_GET['rayon'] ?? 20;
-
 $service = $_GET['service'] ?? '';
 $animal = $_GET['animal'] ?? '';
 $budget_min = (int)($_GET['budget_min'] ?? 0);
 $budget_max = (int)($_GET['budget_max'] ?? 100);
-
-// Préparation de la requête SQL
 $sql = "
-    SELECT nom_utilisateur AS nom, type_animal AS animal, nombre_animal AS nombre_animaux, ville, budget_min, budget_max, service,
-    (
-        6371 * ACOS(
-            COS(RADIANS(?)) * COS(RADIANS(latitude)) * COS(RADIANS(longitude) - RADIANS(?)) +
-            SIN(RADIANS(?)) * SIN(RADIANS(latitude))
-        )
-    ) AS distance
-    FROM creation_compte
-    WHERE role = 0
-    AND (type_animal = ? OR ? = '')
-    AND (service = ? OR ? = '')
-    AND (budget_min >= ? AND budget_max <= ?)
-    HAVING distance <= ?
-    ORDER BY distance ASC
+    SELECT 
+        id, nom_utilisateur AS nom, type_animal AS animal, nombre_animal AS nombre_animaux, ville, budget_min, budget_max, service
+    FROM 
+        creation_compte
+    WHERE 
+        role = 0
+        AND (type_animal = ? OR ? = '')
+        AND (service = ? OR ? = '')
+        AND (budget_min >= ? AND budget_max <= ?)
+    ORDER BY 
+        budget_min ASC
 ";
-
 $stmt = $conn->prepare($sql);
-$stmt->bind_param("dddsssiiii", $latitude_user, $longitude_user, $latitude_user, $animal, $animal, $service, $service, $budget_min, $budget_max, $rayon);
+$stmt->bind_param("sssiii", $animal, $animal, $service, $service, $budget_min, $budget_max);
 $stmt->execute();
-
 $result = $stmt->get_result();
-
 $gardiens = [];
 while ($row = $result->fetch_assoc()) {
     $gardiens[] = $row;
@@ -44,6 +30,7 @@ while ($row = $result->fetch_assoc()) {
 $stmt->close();
 $conn->close();
 ?>
+
 
 <!DOCTYPE html>
 <html lang='fr'>
