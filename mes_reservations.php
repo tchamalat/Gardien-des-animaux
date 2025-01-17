@@ -74,7 +74,7 @@ $result = $stmt->get_result();
         }
 
         html, body {
-            height: auto; /* Permet à la hauteur de s'ajuster */
+            height: auto; 
             font-family: Arial, sans-serif;
             background: url('images/premierplan.png') no-repeat center center fixed;
             background-size: cover;
@@ -86,7 +86,7 @@ $result = $stmt->get_result();
         body {
             display: flex;
             flex-direction: column;
-            min-height: 100vh; /* Assure que la page occupe au moins la hauteur de la fenêtre */
+            min-height: 100vh;
         }
         header {
             position: fixed;
@@ -129,7 +129,7 @@ $result = $stmt->get_result();
         }
 
         .container {
-            flex-grow: 1; /* Permet à la section principale de s'étendre pour occuper l'espace disponible */
+            flex-grow: 1; 
             max-width: 90%; 
             margin: 120px auto 0;
             background: rgba(255, 255, 255, 0.95);
