@@ -2,6 +2,12 @@
 session_start();
 include 'config.php';
 
+if (isset($_GET['logout'])) {
+    session_destroy();
+    header("Location: login.html");
+    exit();
+}
+
 // Gestion de l'ajout d'un abonnement
 if (isset($_POST['add'])) {
     $id_utilisateur = $_POST['id_utilisateur'];
