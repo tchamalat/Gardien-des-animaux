@@ -215,7 +215,7 @@
     <h3>Besoin d'aide ?</h3>
     <p>
         Si vous avez des questions ou des inquiétudes concernant la sécurité, contactez-nous à : 
-        <a href="mailto:contact@gardien-des-animaux.fr">contact@gardien-des-animaux.fr</a>.
+        <a href="mailto:gardien-des-animaux@gmail.com">gardien-des-animaux@gmail.com</a>.
     </p>
 </div>
 
