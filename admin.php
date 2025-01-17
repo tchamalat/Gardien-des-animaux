@@ -96,21 +96,24 @@ try {
 
         .stats-cards {
             display: flex;
-            gap: 20px;
+            justify-content: space-between; /* Espacement égal entre les cadres */
+            align-items: center; /* Aligner les cartes verticalement */
+            gap: 20px; /* Espace entre les cartes */
             margin-bottom: 30px;
-            flex-wrap: wrap;
+            flex-wrap: nowrap; /* Empêche le retour à la ligne */
         }
 
         .stat-card {
-            flex: 1;
+            flex: 1; /* Les cartes prennent des tailles égales */
             background-color: orange;
             color: white;
             padding: 20px;
             border-radius: 8px;
             text-align: center;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-            min-width: 250px;
+            max-width: 250px; /* Limite la largeur des cartes */
         }
+
 
         .stat-card h3 {
             margin: 0;
