@@ -217,7 +217,7 @@ include 'config.php';
             display: flex;
             flex-direction: column;
             gap: 30px;
-	        align-items: center;
+	    align-items: center;
         }
 
         .avis {
@@ -252,7 +252,7 @@ include 'config.php';
             font-weight: bold;
             font-size: 1.2em; 
         }
-	    .voir-plus {
+	.voir-plus {
 	    background-color: #f5a623;
     	    color: white;
     	    padding: 15px 30px;
