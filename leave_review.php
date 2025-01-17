@@ -72,6 +72,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             cursor: pointer;
             text-decoration: none;
             transition: background-color 0.3s ease, transform 0.3s ease;
+            margin-right: 20px;
         }
 
         header .btn:hover {
@@ -165,11 +166,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             background: rgba(0, 0, 0, 0.85);
             color: #fff;
             padding: 20px;
-            position: fixed; /* Fixe le footer */
-            bottom: 0; /* Place le footer au bas de la page */
+            position: fixed; 
+            bottom: 0; 
             left: 0;
-            width: 100%; /* Prend toute la largeur de la page */
-            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2); /* Ajoute une ombre légère */
+            width: 100%; 
+            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2); 
         }
 
         footer .footer-links {
