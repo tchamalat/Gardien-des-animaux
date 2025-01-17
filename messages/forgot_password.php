@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if ($result->num_rows > 0) {
         // Email trouvé, envoi du lien de réinitialisation
-        $reset_link = "http://localhost/62/reset_password.php?email=" . urlencode($email); // Lien de réinitialisation (vous devrez créer la page 'reset_password.php')
+        $reset_link = "https://gardien-des-animaux.fr/messages/reset_password.php?email=" . urlencode($email); // Lien de réinitialisation (vous devrez créer la page 'reset_password.php')
 
         // Envoi de l'email
         $sto = $email; // Destinataire
