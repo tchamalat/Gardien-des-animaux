@@ -2,7 +2,6 @@
 include 'config.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Récupération des données du formulaire
     $prenom = $_POST['prenom'] ?? '';
     $nom = $_POST['nom'] ?? '';
     $nom_utilisateur = $_POST['username'] ?? '';
@@ -12,8 +11,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $ville = $_POST['ville'] ?? '';
     $mot_de_passe = $_POST['password'] ?? '';
     $role = $_POST['role'] ?? '';
-
-    // Validation des données du formulaire
     $password_pattern = '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&.])[A-Za-z\d@$!%*?&.]{8,}$/';
 
     if (!preg_match($password_pattern, $mot_de_passe)) {
@@ -30,8 +27,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         echo "<p style='color: red;'>Le numéro de téléphone doit contenir exactement 10 chiffres.</p>";
         exit();
     }
-
-    // Vérification de l'unicité des champs
     $stmt = $conn->prepare("
         SELECT 
             CASE WHEN mail = ? THEN 'email' END AS email_conflict,
@@ -62,11 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         echo "<p style='color: red;'>" . implode("<br>", array_unique($conflictMessages)) . "</p>";
         exit();
     }
-
-    // Hachage du mot de passe
     $mot_de_passe_hache = password_hash($mot_de_passe, PASSWORD_DEFAULT);
-
-    // Utilisation d'une transaction pour garantir l'intégrité
     $conn->begin_transaction();
 
     try {
@@ -78,13 +69,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if ($stmt->execute()) {
             $conn->commit();
-            echo "success"; // Réponse de succès pour redirection
+            echo "success"; 
         } else {
             throw new Exception("Erreur lors de l'exécution de la requête.");
         }
     } catch (mysqli_sql_exception $e) {
-        $conn->rollback(); // Annule la transaction
-        if ($e->getCode() === 1062) { // Code erreur MySQL pour violation de contrainte unique
+        $conn->rollback(); 
+        if ($e->getCode() === 1062) { 
             if (strpos($e->getMessage(), 'unique_email') !== false) {
                 echo "<p style='color: red;'>E-mail déjà utilisé.</p>";
             } elseif (strpos($e->getMessage(), 'unique_phone') !== false) {
