@@ -45,6 +45,7 @@
             text-decoration: none;
             margin-left: 10px;
             transition: background-color 0.3s ease, transform 0.3s ease;
+            margin-right: 30px; 
         }
 
         header .auth-buttons .btn:hover {
