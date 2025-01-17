@@ -17,6 +17,7 @@
     	    min-height: 100vh;
     	    margin: 0;
 	    background: url('images/premierplan.png') no-repeat center center fixed;
+	    background-size: cover;
 	}
 
         header {
