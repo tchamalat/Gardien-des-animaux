@@ -10,12 +10,10 @@ include 'config.php';
 
 $user_id = $_SESSION['user_id'];
 
-// Activer le débogage
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-// Gérer l'ajout des animaux
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ajouter_animaux']) && isset($_POST['nom_animal'])) {
     $noms_animaux = is_array($_POST['nom_animal']) ? $_POST['nom_animal'] : [$_POST['nom_animal']];
     $photos_animaux = $_FILES['photo_animal'];
@@ -47,7 +45,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ajouter_animaux']) &&
     $message = "Animaux ajoutés avec succès !";
 }
 
-// Gérer la mise à jour des animaux
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_animal'])) {
     $id_animal = $_POST['id_animal'];
     $nom_animal = $_POST['nom_animal'];
@@ -68,7 +65,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_animal'])) {
     $message = "Animal mis à jour avec succès !";
 }
 
-// Gérer la suppression des animaux
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_animal'])) {
     $id_animal = $_POST['id_animal'];
     $sql_delete = "DELETE FROM Animal WHERE id_animal = ?";
@@ -79,7 +75,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_animal'])) {
     $message = "Animal supprimé avec succès !";
 }
 
-// Récupérer les informations utilisateur
 $sql_user = "SELECT nom_utilisateur, profile_picture FROM creation_compte WHERE id = ?";
 $stmt_user = $conn->prepare($sql_user);
 $stmt_user->bind_param("i", $user_id);
@@ -87,8 +82,6 @@ $stmt_user->execute();
 $stmt_user->bind_result($nom_utilisateur, $profile_picture);
 $stmt_user->fetch();
 $stmt_user->close();
-
-// Récupérer les animaux de l'utilisateur
 $sql_animaux = "SELECT id_animal, prenom_animal, url_photo FROM Animal WHERE id_utilisateur = ?";
 $stmt_animaux = $conn->prepare($sql_animaux);
 $stmt_animaux->bind_param("i", $user_id);
@@ -153,7 +146,7 @@ $stmt_animaux->close();
 
         .profile-container {
             max-width: 1200px;
-            margin: 120px auto 50px; /* Espace entre header et footer */
+            margin: 120px auto 50px; 
             background: rgba(255, 255, 255, 0.95);
             border-radius: 15px;
             padding: 30px 40px;
