@@ -42,17 +42,23 @@ $result = $conn->query("SELECT * FROM Abonnement");
     <title>Gérer les Abonnements</title>
     <link rel="stylesheet" href="style.css">
     <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+        }
+
         .sidebar {
             width: 250px;
             height: 100vh;
-            background-color: #343a40;
+            background-color: #2c3e50;
             color: white;
             position: fixed;
             top: 0;
             left: 0;
+            padding: 20px;
             display: flex;
             flex-direction: column;
-            padding: 20px;
         }
 
         .sidebar h2 {
@@ -62,35 +68,42 @@ $result = $conn->query("SELECT * FROM Abonnement");
             text-align: center;
         }
 
-        .sidebar a {
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar ul li {
+            margin: 10px 0;
+        }
+
+        .sidebar ul li a {
             color: white;
             text-decoration: none;
-            margin: 10px 0;
             padding: 10px 15px;
             border-radius: 5px;
+            display: block;
             transition: background-color 0.3s;
         }
 
-        .sidebar a:hover {
-            background-color: #f4840c;
+        .sidebar ul li a:hover {
+            background-color: #34495e;
         }
 
-        .sidebar a.active {
+        .sidebar ul li a.active {
             background-color: #e96d0c;
         }
 
         .content {
             margin-left: 270px;
             padding: 20px;
-            min-height: 100vh;
-            background-color: #f9f9f9;
         }
 
         .content h1 {
             font-size: 2.5rem;
             color: orange;
-            margin-bottom: 20px;
             text-align: center;
+            margin-bottom: 20px;
         }
 
         .form-container {
@@ -160,15 +173,19 @@ $result = $conn->query("SELECT * FROM Abonnement");
 
 <!-- Barre latérale -->
 <div class="sidebar">
-    <h2>Admin Dashboard</h2>
-    <a href="dashboard.php">Accueil</a>
-    <a href="utilisateurs.php">Gestion des Utilisateurs</a>
-    <a href="recettes.php">Gestion des Recettes</a>
-    <a href="ingredients.php">Gestion des Ingrédients</a>
-    <a href="abonnements.php" class="active">Gestion des Abonnements</a>
-    <a href="commentaires.php">Gestion des Commentaires</a>
-    <a href="blocked_users.php">Gestion des Utilisateurs Bloqués</a>
-    <a href="settings.php">Paramètres</a>
+    <h2>Menu Admin</h2>
+    <ul>
+        <li><a href="dashboard.php">Tableau de Bord</a></li>
+        <li><a href="manage_abonnements.php" class="active">Gérer les Abonnements</a></li>
+        <li><a href="manage_utilisateurs.php">Gérer les Utilisateurs</a></li>
+        <li><a href="manage_reservations.php">Gérer les Réservations</a></li>
+        <li><a href="manage_avis.php">Gérer les Avis</a></li>
+        <li><a href="manage_animaux.php">Gérer les Animaux</a></li>
+        <li><a href="manage_faq.php">Gérer la FAQ</a></li>
+        <li><a href="manage_paiements.php">Gérer les Paiements</a></li>
+        <li><a href="manage_hebergements.php">Gérer les Hébergements</a></li>
+        <li><a href="?logout=1">Déconnexion</a></li>
+    </ul>
 </div>
 
 <!-- Contenu principal -->
