@@ -8,7 +8,6 @@ if (isset($_GET['logout'])) {
     exit();
 }
 
-// Gestion de l'ajout ou de la mise à jour d'un hébergement
 if (isset($_POST['save'])) {
     $id = $_POST['id'] ?? null;
     $id_reservation = $_POST['id_reservation'];
@@ -17,7 +16,6 @@ if (isset($_POST['save'])) {
     $date_debut = $_POST['date_debut'];
     $date_fin = $_POST['date_fin'];
     $lieu = $_POST['lieu'];
-
     if ($id) {
         $stmt = $conn->prepare("UPDATE Hebergement SET id_reservation = ?, id_paiement = ?, id_avis = ?, date_debut = ?, date_fin = ?, lieu = ? WHERE id_hebergement = ?");
         $stmt->bind_param("iiisssi", $id_reservation, $id_paiement, $id_avis, $date_debut, $date_fin, $lieu, $id);
@@ -25,14 +23,12 @@ if (isset($_POST['save'])) {
         $stmt = $conn->prepare("INSERT INTO Hebergement (id_reservation, id_paiement, id_avis, date_debut, date_fin, lieu) VALUES (?, ?, ?, ?, ?, ?)");
         $stmt->bind_param("iiisss", $id_reservation, $id_paiement, $id_avis, $date_debut, $date_fin, $lieu);
     }
-
     $stmt->execute();
     $stmt->close();
     header("Location: manage_hebergements.php");
     exit();
 }
 
-// Gestion de la suppression d'un hébergement
 if (isset($_GET['delete'])) {
     $id = $_GET['delete'];
     $stmt = $conn->prepare("DELETE FROM Hebergement WHERE id_hebergement = ?");
@@ -42,8 +38,6 @@ if (isset($_GET['delete'])) {
     header("Location: manage_hebergements.php");
     exit();
 }
-
-// Récupération des hébergements
 $result = $conn->query("SELECT * FROM Hebergement");
 ?>
 
