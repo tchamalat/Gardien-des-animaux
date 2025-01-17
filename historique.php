@@ -60,7 +60,7 @@ $result = $stmt->get_result();
         header .auth-buttons {
             display: flex;
             gap: 10px;
-            margin-right: 20px; 
+            margin-right: 30px; 
         }
 
 
