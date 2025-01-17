@@ -259,9 +259,7 @@ include 'config.php';
 	.avis-section h2 {
    	    margin-bottom: 20px; 
         }
-	.avis-section p {
-    	    margin-top: 20px; /* Si vous préférez modifier la marge du paragraphe */
-	}
+
 	.voir-plus {
 	    background-color: #f5a623;
     	    color: white;
