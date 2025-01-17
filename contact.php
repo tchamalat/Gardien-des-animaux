@@ -197,6 +197,14 @@
         footer .footer-links a:hover {
             color: orange;
         }
+        .confirmation-message {
+            background-color: #dff0d8;
+            color: #3c763d;
+            padding: 15px;
+            border: 1px solid #d6e9c6;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
     </style>
     <script>
         window.addEventListener('scroll', () => {
