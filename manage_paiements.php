@@ -8,14 +8,12 @@ if (isset($_GET['logout'])) {
     exit();
 }
 
-// Gestion de l'ajout ou de la mise à jour d'un paiement
 if (isset($_POST['save'])) {
     $id = $_POST['id'] ?? null;
     $id_reservation = $_POST['id_reservation'];
     $prix = $_POST['prix'];
     $date = $_POST['date'];
     $statut_du_paiement = $_POST['statut_du_paiement'];
-
     if ($id) {
         $stmt = $conn->prepare("UPDATE Paiement SET id_reservation = ?, prix = ?, date = ?, statut_du_paiement = ? WHERE id_paiement = ?");
         $stmt->bind_param("idssi", $id_reservation, $prix, $date, $statut_du_paiement, $id);
@@ -23,14 +21,12 @@ if (isset($_POST['save'])) {
         $stmt = $conn->prepare("INSERT INTO Paiement (id_reservation, prix, date, statut_du_paiement) VALUES (?, ?, ?, ?)");
         $stmt->bind_param("idss", $id_reservation, $prix, $date, $statut_du_paiement);
     }
-
     $stmt->execute();
     $stmt->close();
     header("Location: manage_paiements.php");
     exit();
 }
 
-// Gestion de la suppression d'un paiement
 if (isset($_GET['delete'])) {
     $id = $_GET['delete'];
     $stmt = $conn->prepare("DELETE FROM Paiement WHERE id_paiement = ?");
@@ -40,8 +36,6 @@ if (isset($_GET['delete'])) {
     header("Location: manage_paiements.php");
     exit();
 }
-
-// Récupération des paiements
 $result = $conn->query("SELECT * FROM Paiement");
 ?>
 
