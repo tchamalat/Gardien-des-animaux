@@ -4,11 +4,20 @@ $servername = "localhost";
 $username = "gardien";
 $password = "G@rdien-des-chiens";
 $dbname = "gardiendb";
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// Vérification de la connexion
+if ($conn->connect_error) {
+    die("Connexion échouée : " . $conn->connect_error);
+}
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Récupérer les données du formulaire
     $name = htmlspecialchars(trim($_POST['name']));
     $email = htmlspecialchars(trim($_POST['email']));
     $message = htmlspecialchars(trim($_POST['message']));
+
+    // Validation des données
     if (empty($name) || empty($email) || empty($message)) {
         echo "<p>Veuillez remplir tous les champs.</p>";
         exit;
@@ -18,6 +27,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo "<p>Adresse email invalide.</p>";
         exit;
     }
+
+    // Insertion dans la table messages
     $stmt = $conn->prepare("INSERT INTO messages (sender, message, date) VALUES (?, ?, NOW())");
     $stmt->bind_param("ss", $email, $message);
 
@@ -32,3 +43,4 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 $conn->close();
 ?>
+
