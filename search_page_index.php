@@ -11,14 +11,12 @@
             box-sizing: border-box;
         }
 
-        body {
-            font-family: Arial, sans-serif;
-            color: #fff;
-            min-height: 100vh;
-            overflow-x: hidden;
-            background: url('images/premierplan.png') no-repeat center center fixed;
-            background-size: cover;
-        }
+	body {
+    	    display: flex;
+    	    flex-direction: column;
+    	    min-height: 100vh;
+    	    margin: 0;
+	}
 
         header {
             position: fixed;
@@ -32,6 +30,9 @@
             align-items: center;
             background: none;
         }
+	header, footer {
+    	    flex-shrink: 0;
+	}
 
         header img {
             height: 120px;
@@ -52,10 +53,6 @@
 			        margin-top: -3px !important;
     		    }
 	    }
-
-
-        
-
 
         .auth-buttons .btn {
             background-color: orange;
@@ -149,12 +146,12 @@
             font-weight: bold;
         }
 
-        footer {
-            background: rgba(0, 0, 0, 0.85);
-            color: #fff;
-            padding: 20px;
-            margin-top: 50px;
-        }
+	footer {
+    	    background: rgba(0, 0, 0, 0.85);
+    	    color: #fff;
+    	    padding: 20px;
+    	    text-align: center;
+	}
 
         footer .footer-links {
             display: flex;
