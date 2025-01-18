@@ -98,6 +98,7 @@ try {
             justify-content: space-between; 
             align-items: center; 
             gap: 20px;
+            margin: 0 5%;
             margin-bottom: 30px;
             flex-wrap: nowrap;
         }
@@ -121,7 +122,7 @@ try {
 
         canvas {
             max-width: 100%;
-            margin: 20px auto;
+            margin: 20px 20px;
             display: block;
             height: 400px;
         }
