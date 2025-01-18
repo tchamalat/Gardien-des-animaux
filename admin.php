@@ -167,12 +167,12 @@ try {
 <script>
     // Données pour le graphique
     const data = {
-        labels: ['Utilisateurs', 'Réservations', 'Abonnements', 'Animaux'],
+        labels: ['Utilisateurs', 'Réservations', 'Animaux'],
         datasets: [{
             label: 'Statistiques',
-            data: [<?= $totalUsers ?>, <?= $totalReservations ?>, <?= $totalAbonnements ?>, <?= $totalAnimaux ?>],
-            backgroundColor: ['#f4840c', '#e96d0c', '#ffa726', '#fb8c00'],
-            borderColor: ['#d45a00', '#d45a00', '#f57c00', '#ef6c00'],
+            data: [<?= $totalUsers ?>, <?= $totalReservations ?>, <?= $totalAnimaux ?>],
+            backgroundColor: ['#f4840c', '#e96d0c', '#fb8c00'],
+            borderColor: ['#d45a00', '#d45a00', '#ef6c00'],
             borderWidth: 1
         }]
     };
