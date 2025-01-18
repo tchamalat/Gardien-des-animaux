@@ -156,10 +156,6 @@ try {
             <p>Réservations</p>
         </div>
         <div class="stat-card">
-            <h3><?= $totalAbonnements ?></h3>
-            <p>Abonnements</p>
-        </div>
-        <div class="stat-card">
             <h3><?= $totalAnimaux ?></h3>
             <p>Animaux</p>
         </div>
