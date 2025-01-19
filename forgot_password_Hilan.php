@@ -152,8 +152,8 @@ $conn->close();
             <input type="email" name="email" placeholder="Entrez votre adresse email" required>
             <input type="submit" value="Envoyer le lien de réinitialisation">
         </form>
-        <a href="signup.php">Créer un compte</a>
-        <a href="login.php">Retour à la connexion</a>
+        <a href="https://gardien-des-animaux.fr/messages/signup.php">Créer un compte</a>
+        <a href="https://gardien-des-animaux.fr/messages/login.php">Retour à la connexion</a>
     </div>
 </body>
 </html>
