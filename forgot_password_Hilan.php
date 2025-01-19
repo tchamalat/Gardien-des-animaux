@@ -71,12 +71,90 @@ $conn->close();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Récupérer votre mot de passe</title>
-    <!-- Ajoutez votre style ici -->
+    <style>
+        /* Styles généraux */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f9f4ed; /* Beige clair */
+            color: #d77f29; /* Orange */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: #fff; /* Blanc */
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        input[type="email"], input[type="submit"] {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #d7a261; /* Beige-orangé */
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+
+        input[type="email"] {
+            background-color: #fefdfb; /* Beige clair */
+        }
+
+        input[type="email"]:focus {
+            outline: none;
+            border-color: #d77f29;
+        }
+
+        input[type="submit"] {
+            background-color: #d77f29; /* Orange */
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #b86a1e; /* Orange foncé */
+        }
+
+        a {
+            display: block;
+            margin-top: 15px;
+            color: #d77f29; /* Orange */
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            color: #b86a1e; /* Orange foncé */
+        }
+    </style>
 </head>
 <body>
-    <form method="POST">
-        <input type="email" name="email" placeholder="Entrez votre adresse email" required>
-        <input type="submit" value="Envoyer le lien de réinitialisation">
-    </form>
+    <div class="container">
+        <h2>Récupérer votre mot de passe</h2>
+        <form method="POST">
+            <input type="email" name="email" placeholder="Entrez votre adresse email" required>
+            <input type="submit" value="Envoyer le lien de réinitialisation">
+        </form>
+        <a href="signup.php">Créer un compte</a>
+        <a href="login.php">Retour à la connexion</a>
+    </div>
 </body>
 </html>
+
