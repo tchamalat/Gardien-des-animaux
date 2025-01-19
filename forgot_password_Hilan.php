@@ -31,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if ($result->num_rows > 0) {
         // Génération du lien de réinitialisation
-        $reset_link = "https://gardien-des-animaux.fr/messages/reset_password.php?email=" . urlencode($email);
+        $reset_link = "https://gardien-des-animaux.fr/reset_password_Hilan.php?email=" . urlencode($email);
 
         // Envoi du mail via PHPMailer
         $mail = new PHPMailer(true);
