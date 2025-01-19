@@ -21,7 +21,7 @@ if ($conn->connect_error) {
 function envoyerEmailConfirmation($destinataire) {
     $subject = "Confirmation de changement de mot de passe";
     $message = "Bonjour,\n\nVotre mot de passe a été modifié avec succès.\n\nMerci,\nL'équipe.";
-    $headers = "From: dan.bensimon44@gmail.com\r\n";
+    $headers = "From:dan.bensimon44@gmail.com\r\n";
 
     // Retourne le résultat de la fonction mail()
     return mail($destinataire, $subject, $message, $headers);
