@@ -11,13 +11,14 @@ $password = "G@rdien-des-chiens";
 $dbname = "gardiendb";
 
 $conn = new mysqli($servername, $username, $password, $dbname);
-  // Génération du lien de réinitialisation
- $reset_link = "https://gardien-des-animaux.fr/reset_password_Hilan.php?email=" . urlencode($email);
-
+ 
 // Vérification de la connexion
 if ($conn->connect_error) {
     die("Erreur de connexion : " . $conn->connect_error);
 }
+
+ // Génération du lien de réinitialisation
+ $reset_link = "https://gardien-des-animaux.fr/reset_password_Hilan.php?email=" . urlencode($email);
 
 // Fonction pour envoyer un email de confirmation
 function envoyerEmailConfirmation($email, $reset_link) {
