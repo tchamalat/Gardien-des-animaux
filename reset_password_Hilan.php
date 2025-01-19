@@ -38,7 +38,8 @@ function envoyerEmailConfirmation($email, $reset_link) {
 
         // Contenu de l'email
         $mail->isHTML(true);
-        
+        $mail->Subject = 'Mot de passe à été changer avec succes ';
+        $mail->Body = "Bonjour,<br><br>Si vous n'etes pas l'auteur, veuillez cliquer sur le lien suivant :<br><a href='$reset_link'>$reset_link</a><br><br>Cordialement,<br>Votre équipe.";
         
         // Envoi de l'email
         $mail->send();
