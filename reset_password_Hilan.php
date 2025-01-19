@@ -11,6 +11,8 @@ $password = "G@rdien-des-chiens";
 $dbname = "gardiendb";
 
 $conn = new mysqli($servername, $username, $password, $dbname);
+  // Génération du lien de réinitialisation
+ $reset_link = "https://gardien-des-animaux.fr/reset_password_Hilan.php?email=" . urlencode($email);
 
 // Vérification de la connexion
 if ($conn->connect_error) {
@@ -73,12 +75,13 @@ if (isset($_GET['email']) && filter_var($_GET['email'], FILTER_VALIDATE_EMAIL)) 
                 if ($update_stmt->execute()) {
                     echo "<p>Votre mot de passe a été réinitialisé avec succès.</p>";
 
-                    // Envoi de l'email de confirmation
-                    if (envoyerEmailConfirmation($email)) {
-                        echo "<p>Un email de confirmation a été envoyé.</p>";
-                    } else {
-                        echo "<p>Erreur lors de l'envoi de l'email de confirmation. Vérifiez la configuration de votre serveur.</p>";
-                    }
+                        // Envoi de l'email de confirmation avec les deux arguments nécessaires
+                        if (envoyerEmailConfirmation($email, $reset_link)) {
+                            echo "<p>Un email de confirmation a été envoyé.</p>";
+                        } else {
+                            echo "<p>Erreur lors de l'envoi de l'email de confirmation. Vérifiez la configuration de votre serveur.</p>";
+                        }
+
                 } else {
                     echo "<p>Erreur lors de la mise à jour du mot de passe : " . $conn->error . "</p>";
                 }
