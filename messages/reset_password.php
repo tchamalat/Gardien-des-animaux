@@ -14,13 +14,12 @@ if ($conn->connect_error) {
 }
 
 // Fonction pour envoyer un email
-function envoyerEmailConfirmation($destinataire, $email) {
+function envoyerEmailConfirmation($destinataire) {
     $subject = "Confirmation de changement de mot de passe";
-    $message = "Bonjour,\n\nVotre mot de passe a été modifié avec succès. Si vous n'êtes pas à l'origine de cette action, veuillez réinitialiser votre mot de passe en cliquant sur le lien suivant :\n\n";
-    $message .= "http://localhost/62/reset_password.php?email=" . urlencode($email) . "\n\nMerci,\nL'équipe MyChat";
+    $message = "Bonjour,\n\nVotre mot de passe a été modifié avec succès. Si vous n'êtes pas à l'origine de cette action, veuillez contacter notre support.\n\nMerci,\nL'équipe Gardien des Animaux";
 
     $headers = "Content-Type: text/plain; charset=utf-8\r\n";
-    $headers .= "From: hatsasse@gmail.com\r\n"; // Remplacez par l'adresse email de l'expéditeur
+    $headers .= "From: noreply@gardien-des-animaux.fr\r\n"; // Remplacez par l'adresse email de l'expéditeur
 
     return mail($destinataire, $subject, $message, $headers);
 }
@@ -45,13 +44,14 @@ if (isset($_GET['email']) && filter_var($_GET['email'], FILTER_VALIDATE_EMAIL)) 
             if (strlen($new_password) >= 6) { // Critères de sécurité
 
                 // Mise à jour du mot de passe dans la base de données
+                $hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
                 $update_stmt = $conn->prepare("UPDATE users SET password = ? WHERE email = ?");
-                $update_stmt->bind_param("ss", $new_password, $email);
+                $update_stmt->bind_param("ss", $hashed_password, $email);
                 if ($update_stmt->execute()) {
                     echo "<p>Votre mot de passe a été réinitialisé avec succès.</p>";
 
                     // Envoi de l'email de confirmation
-                    if (envoyerEmailConfirmation($email, $email)) {
+                    if (envoyerEmailConfirmation($email)) {
                         echo "<p>Un email de confirmation a été envoyé.</p>";
                     } else {
                         echo "<p>Erreur lors de l'envoi de l'email de confirmation.</p>";
