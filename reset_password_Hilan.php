@@ -18,7 +18,7 @@ function envoyerEmailConfirmation($destinataire) {
     $subject = "Confirmation de changement de mot de passe";
     $message = "Bonjour,\n\nVotre mot de passe a été modifié avec succès.\n\nMerci,\nL'équipe.";
     
-    $headers = "From: votre_email@gmail.com\r\n";
+    $headers = "From: dan.bensimon44@gmail.com\r\n";
     return mail($destinataire, $subject, $message, $headers);
 }
 
@@ -38,11 +38,11 @@ if (isset($_GET['email']) && filter_var($_GET['email'], FILTER_VALIDATE_EMAIL)) 
 
             // Validation du mot de passe
             if (strlen($new_password) >= 6) {
-                $hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
+                
 
                 // Mise à jour du mot de passe
                 $update_stmt = $conn->prepare("UPDATE users SET password = ? WHERE email = ?");
-                $update_stmt->bind_param("ss", $hashed_password, $email);
+                
 
                 if ($update_stmt->execute()) {
                     echo "<p>Votre mot de passe a été réinitialisé avec succès.</p>";
