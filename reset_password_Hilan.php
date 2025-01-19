@@ -18,15 +18,36 @@ if ($conn->connect_error) {
 }
 
 // Fonction pour envoyer un email de confirmation
-function envoyerEmailConfirmation($destinataire) {
-    $subject = "Confirmation de changement de mot de passe";
-    $message = "Bonjour,\n\nVotre mot de passe a été modifié avec succès.\n\nMerci,\nL'équipe.";
-    $headers = "From:dan.bensimon44@gmail.com\r\n";
+function envoyerEmailConfirmation($email, $reset_link) {
+    // Création d'une instance PHPMailer
+    $mail = new PHPMailer(true);
 
-    // Retourne le résultat de la fonction mail()
-    return mail($destinataire, $subject, $message, $headers);
+    try {
+        // Paramètres du serveur SMTP
+        $mail->isSMTP();
+        $mail->Host = 'smtp.gmail.com';            
+        $mail->SMTPAuth = true;
+        $mail->Username = 'dan.bensimon44@gmail.com';  // Adresse email expéditeur
+        $mail->Password = 'ltiw cegp hnjh hdup';  // Mot de passe de l'email expéditeur
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+        $mail->Port = 587;
+
+        // Paramètres de l'email
+        $mail->setFrom('noreply@gardien-des-animaux.fr', 'Gardien des Animaux');
+        $mail->addAddress($email);  // Destinataire
+
+        // Contenu de l'email
+        $mail->isHTML(true);
+        
+        
+        // Envoi de l'email
+        $mail->send();
+        return true;  // Retourne vrai si l'email a été envoyé
+    } catch (Exception $e) {
+        // Si une erreur se produit, renvoyer l'erreur
+        return false;  // Retourne faux si l'envoi échoue
+    }
 }
-
 // Vérification de l'email dans l'URL
 if (isset($_GET['email']) && filter_var($_GET['email'], FILTER_VALIDATE_EMAIL)) {
     $email = $_GET['email'];
