@@ -140,6 +140,18 @@ $conn->close();
         input[type="submit"]:hover {
             background-color: #b86a1e; /* Orange foncé */
         }
+         a {
+            display: block;
+            margin-top: 15px;
+            color: #d77f29; /* Orange */
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            color: #b86a1e; /* Orange foncé */
+        }
     </style>
 </head>
 <body>
