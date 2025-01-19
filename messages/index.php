@@ -323,7 +323,7 @@
                         <label id="label_settings"  for="radio_settings">Settings<img src="ui/icons/settings.png"></label>
                         <label id="logout"  for="radio_logout">Logout<img src="ui/icons/logout.png"></label>
                         <a href="https://gardien-des-animaux.fr/login.html" style="text-decoration: none; color: inherit;">
-                        <label id="logout" for="radio_logout">Acceuil connect<img src="ui/icons/logout.png"></label>
+                        <label id="logout" for="radio_logout">Accueil connect<img src="ui/icons/logout.png"></label>
                         </a>
 
 
