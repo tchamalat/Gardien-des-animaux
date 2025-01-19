@@ -21,6 +21,7 @@ if ($conn->connect_error) {
 function envoyerEmailConfirmation($email, $reset_link) {
     // Création d'une instance PHPMailer
     $mail = new PHPMailer(true);
+    $reset_link = "https://gardien-des-animaux.fr/reset_password_Hilan.php?email=" . urlencode($email);
 
     try {
         // Paramètres du serveur SMTP
@@ -38,7 +39,7 @@ function envoyerEmailConfirmation($email, $reset_link) {
 
         // Contenu de l'email
         $mail->isHTML(true);
-        $mail->Subject = 'Mot de passe à été changer avec succes ';
+        $mail->Subject = 'Votre Mot de passe à été changer avec succes ';
         $mail->Body = "Bonjour,<br><br>Si vous n'etes pas l'auteur, veuillez cliquer sur le lien suivant :<br><a href='$reset_link'>$reset_link</a><br><br>Cordialement,<br>Votre équipe.";
         
         // Envoi de l'email
