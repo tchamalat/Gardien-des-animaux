@@ -149,6 +149,8 @@ $conn->close();
             <input type="password" name="password" placeholder="Entrez un nouveau mot de passe" required>
             <input type="submit" value="Réinitialiser le mot de passe">
         </form>
+        <a href="https://gardien-des-animaux.fr/messages/signup.php">Créer un compte</a>
+        <a href="https://gardien-des-animaux.fr/messages/login.php">Retour à la connexion</a>
     </div>
 </body>
 </html>
