@@ -1,10 +1,14 @@
 <?php
+// Activation des erreurs PHP pour le débogage
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 // Connexion à la base de données
 $servername = "localhost";
 $username = "gardien";
 $password = "G@rdien-des-chiens";
 $dbname = "gardiendb";
-
 
 $conn = new mysqli($servername, $username, $password, $dbname);
 
@@ -17,8 +21,9 @@ if ($conn->connect_error) {
 function envoyerEmailConfirmation($destinataire) {
     $subject = "Confirmation de changement de mot de passe";
     $message = "Bonjour,\n\nVotre mot de passe a été modifié avec succès.\n\nMerci,\nL'équipe.";
-    
     $headers = "From: dan.bensimon44@gmail.com\r\n";
+
+    // Retourne le résultat de la fonction mail()
     return mail($destinataire, $subject, $message, $headers);
 }
 
@@ -34,15 +39,13 @@ if (isset($_GET['email']) && filter_var($_GET['email'], FILTER_VALIDATE_EMAIL)) 
 
     if ($result->num_rows > 0) {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $new_password = $_POST['password'];
+            $new_password = trim($_POST['password']); // Validation de la saisie utilisateur
 
-            // Validation du mot de passe
+            // Vérification de la longueur du mot de passe
             if (strlen($new_password) >= 6) {
-                
-
                 // Mise à jour du mot de passe
                 $update_stmt = $conn->prepare("UPDATE users SET password = ? WHERE email = ?");
-                
+                $update_stmt->bind_param("ss", $new_password, $email);
 
                 if ($update_stmt->execute()) {
                     echo "<p>Votre mot de passe a été réinitialisé avec succès.</p>";
@@ -51,10 +54,10 @@ if (isset($_GET['email']) && filter_var($_GET['email'], FILTER_VALIDATE_EMAIL)) 
                     if (envoyerEmailConfirmation($email)) {
                         echo "<p>Un email de confirmation a été envoyé.</p>";
                     } else {
-                        echo "<p>Erreur lors de l'envoi de l'email de confirmation.</p>";
+                        echo "<p>Erreur lors de l'envoi de l'email de confirmation. Vérifiez la configuration de votre serveur.</p>";
                     }
                 } else {
-                    echo "<p>Erreur lors de la mise à jour du mot de passe.</p>";
+                    echo "<p>Erreur lors de la mise à jour du mot de passe : " . $conn->error . "</p>";
                 }
                 $update_stmt->close();
             } else {
@@ -149,4 +152,3 @@ $conn->close();
     </div>
 </body>
 </html>
-
