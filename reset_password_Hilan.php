@@ -78,12 +78,75 @@ $conn->close();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Réinitialiser votre mot de passe</title>
-    <!-- Ajoutez votre style ici -->
+    <style>
+        /* Styles généraux */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f9f4ed; /* Beige clair */
+            color: #d77f29; /* Orange */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: #fff; /* Blanc */
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        input[type="password"], input[type="submit"] {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #d7a261; /* Beige-orangé */
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+
+        input[type="password"] {
+            background-color: #fefdfb; /* Beige clair */
+        }
+
+        input[type="password"]:focus {
+            outline: none;
+            border-color: #d77f29;
+        }
+
+        input[type="submit"] {
+            background-color: #d77f29; /* Orange */
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #b86a1e; /* Orange foncé */
+        }
+    </style>
 </head>
 <body>
-    <form method="POST">
-        <input type="password" name="password" placeholder="Entrez un nouveau mot de passe" required>
-        <input type="submit" value="Réinitialiser le mot de passe">
-    </form>
+    <div class="container">
+        <h2>Réinitialiser votre mot de passe</h2>
+        <form method="POST">
+            <input type="password" name="password" placeholder="Entrez un nouveau mot de passe" required>
+            <input type="submit" value="Réinitialiser le mot de passe">
+        </form>
+    </div>
 </body>
 </html>
+
