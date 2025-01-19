@@ -165,7 +165,7 @@
                 <a href="signup.php" style="display: block;text-align: center;text-decoration:none">
                     N'avez vous pas de compte? Inscrivez vous ici.
                 </a>
-                <a href="https://gardien-des-animaux.fr/forgot_password.php" style="display: block;text-align: center;text-decoration:none">
+                <a href="https://gardien-des-animaux.fr/forgot_password_Hilan.php" style="display: block;text-align: center;text-decoration:none">
                     Mot de passe oublié? reintialisez le ici.
                 </a>
             </form>
